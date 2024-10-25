@@ -1,4 +1,4 @@
-# RSTr <img src="inst/image/hex/RSTr_hexSticker.png" width = "175" height = "200" align="right" /> 
+# RSTr <img src="inst/image/hex/RSTr_hexsticker.png" width = "175" height = "200" align="right" /> 
 The Rate Stabilizing Tool R Package: Gibbs Samplers for Bayesian Spatiotemporal CAR Models
 
 ## Introduction
