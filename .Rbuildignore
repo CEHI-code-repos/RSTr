@@ -9,3 +9,4 @@
 ^inst/.*\.dll$
 ^inst/.*\.so$
 ^libs/
+^inst/image/
