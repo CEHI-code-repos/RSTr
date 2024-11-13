@@ -4,7 +4,7 @@
 \alias{run_sampler}
 \title{Run Gibbs sampler}
 \usage{
-run_sampler(name, dir, .show_plots = TRUE)
+run_sampler(name, dir, .show_plots = TRUE, .discard_burnin = FALSE)
 }
 \arguments{
 \item{name}{Name of model and corresponding folder}
@@ -12,6 +12,8 @@ run_sampler(name, dir, .show_plots = TRUE)
 \item{dir}{Directory where model lives}
 
 \item{.show_plots}{Show or hide traceplots as}
+
+\item{.discard_burnin}{If set to \code{TRUE}, won't save burn-in samples}
 }
 \description{
 Run Gibbs sampler

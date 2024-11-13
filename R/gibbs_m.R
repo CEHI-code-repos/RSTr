@@ -5,7 +5,7 @@
 #' @importFrom RcppArmadillo fastLm
 #'
 #' @noRd
-gibbs_m = function(name, dir, .show_plots) {
+gibbs_m = function(name, dir, .show_plots, .discard_burnin) {
   data = readRDS(paste0(dir, name, "/data.Rds"))
   Y    = data$Y
   n    = data$n
@@ -126,11 +126,12 @@ gibbs_m = function(name, dir, .show_plots) {
     saveRDS(params, paste0(dir, name, "/params.Rds"))
     saveRDS(priors, paste0(dir, name, "/priors.Rds"))
     saveRDS(inits,  paste0(dir, name, "/inits.Rds"))
-    saveRDS(output$beta , paste0(dir, name, "/beta/" , "beta_out_" , batch, ".Rds"))
-    saveRDS(output$theta, paste0(dir, name, "/theta/", "theta_out_", batch, ".Rds"))
-    saveRDS(output$Z    , paste0(dir, name, "/Z/"    , "Z_out_"    , batch, ".Rds"))
-    saveRDS(output$G    , paste0(dir, name, "/G/"    , "G_out_"    , batch, ".Rds"))
-    saveRDS(output$tau2 , paste0(dir, name, "/tau2/" , "tau2_out_" , batch, ".Rds"))
+    # saveRDS(output$beta , paste0(dir, name, "/beta/" , "beta_out_" , batch, ".Rds"))
+    # saveRDS(output$theta, paste0(dir, name, "/theta/", "theta_out_", batch, ".Rds"))
+    # saveRDS(output$Z    , paste0(dir, name, "/Z/"    , "Z_out_"    , batch, ".Rds"))
+    # saveRDS(output$G    , paste0(dir, name, "/G/"    , "G_out_"    , batch, ".Rds"))
+    # saveRDS(output$tau2 , paste0(dir, name, "/tau2/" , "tau2_out_" , batch, ".Rds"))
+    save_output(output, batch, dir, name, .discard_burnin)
     if (.show_plots) {
       # Output some of the estimates for plotting purposes
       plots$beta  = c(plots$beta,  output$beta [1, 1, ])

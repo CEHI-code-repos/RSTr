@@ -5,7 +5,7 @@
 #' @importFrom RcppArmadillo fastLm
 #'
 #' @noRd
-gibbs_mst = function(name, dir, .show_plots) {
+gibbs_mst = function(name, dir, .show_plots, .discard_burnin) {
   data = readRDS(paste0(dir, name, "/data.Rds"))
   Y    = data$Y
   n    = data$n
@@ -48,9 +48,11 @@ gibbs_mst = function(name, dir, .show_plots) {
   impute_ub = params$impute_ub
   start_batch = params$batch
 
-  plots = output = vector("list", length(inits))
-  names(plots) = names(output) = par_up = names(inits)
+  par_up = names(inits)
   if (!rho_up) par_up = par_up[-which(par_up == "rho")]
+  plots = output = vector("list", length(par_up))
+  names(plots) = names(output) = par_up
+  
   for (batch in start_batch:60) {
     time = format(Sys.time(), "%a %b %d %X")
     cat("Batch", paste0(batch, ","), "Iteration", paste0(total, ","), time, "\r")
@@ -164,15 +166,8 @@ gibbs_mst = function(name, dir, .show_plots) {
     saveRDS(params, paste0(dir, name, "/params.Rds"))
     saveRDS(priors, paste0(dir, name, "/priors.Rds"))
     saveRDS(inits,  paste0(dir, name, "/inits.Rds"))
-    saveRDS(output$beta , paste0(dir, name, "/beta/" , "beta_out_" , batch, ".Rds"))
-    saveRDS(output$theta, paste0(dir, name, "/theta/", "theta_out_", batch, ".Rds"))
-    saveRDS(output$Z    , paste0(dir, name, "/Z/"    , "Z_out_"    , batch, ".Rds"))
-    saveRDS(output$G    , paste0(dir, name, "/G/"    , "G_out_"    , batch, ".Rds"))
-    saveRDS(output$tau2 , paste0(dir, name, "/tau2/" , "tau2_out_" , batch, ".Rds"))
-    saveRDS(output$Ag   , paste0(dir, name, "/Ag/"   , "Ag_out_"   , batch, ".Rds"))
-    if (rho_up) {
-      saveRDS(output$rho, paste0(dir, name, "/rho/", "rho_out_", batch, ".Rds"))
-    }
+    save_output(output, batch, dir, name, .discard_burnin)
+    
     if (.show_plots) {
       # Output some of the estimates for plotting purposes
       plots$beta  = c(plots$beta,  output$beta [1, 1, 1, ])
