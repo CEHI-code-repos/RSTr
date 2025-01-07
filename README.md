@@ -43,7 +43,7 @@ To update RSTr, remove the package from R, restart R, and re-install from GitHub
 ```sh
 remove.packages("RSTr")
 # Restart R to allow package installation
-remotes::install_github("CDCgov/rst", build_vignettes = TRUE)
+remotes::install_github("CDCgov/RSTr", build_vignettes = TRUE)
 ```
 
 ## Thanks!
