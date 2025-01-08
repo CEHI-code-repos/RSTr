@@ -5,6 +5,6 @@
 #' @importFrom RcppArmadillo fastLm
 #'
 #' @noRd
-gibbs_ust = function(name, dir, .show_plots, .discard_burnin) {
+gibbs_ust <- function(name, dir, .show_plots, .discard_burnin) {
   stop("This model is not yet built out. Please try a different type of model.\n")
 }

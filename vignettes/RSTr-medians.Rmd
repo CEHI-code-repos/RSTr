@@ -23,29 +23,29 @@ In the previous vignette, we finally ran our model using `run_sampler()`, import
 Previously, we generated age-standardized estimates for `theta` based on our example Michigan dataset, `theta`. To get the medians, let's reload our age-standardized data and population array, then load our samples into `get_medians()`:
 
 ```{r eval = FALSE}
-std_pop = c(113154, 100640, 95799)
-margin_age = 2
-theta = load_samples("my_test_model", getwd()) * 1e5
-theta = bind_samples(
+std_pop <- c(113154, 100640, 95799)
+margin_age <- 2
+theta <- load_samples("my_test_model", getwd()) * 1e5
+theta <- bind_samples(
   theta,
   age_standardize(theta[, 1:3, , ], std_pop, margin_age),
   margin_age,
   "35-64"
 )
-pop = load_pop("my_test_model", getwd())
-pop = bind_samples(
+pop <- load_pop("my_test_model", getwd())
+pop <- bind_samples(
   pop,
   pop_aggregate(pop[, 1:3, ], margin_age),
   margin_age,
   "35-64"
 )
-medians = get_medians(theta)
+medians <- get_medians(theta)
 ```
 
 From here, we can map our estimates:
 
 ```{r eval = FALSE}
-est_35_64 = medians[, "35-64", "1979"]
+est_35_64 <- medians[, "35-64", "1979"]
 ggplot(mishp) +
   geom_sf(aes(fill = est_35_64)) +
   labs(
@@ -68,26 +68,26 @@ Reliability can be easily tested in CAR models using two criteria:
 Let's get some reliability metrics for our dataset. First, let's generate our relative precisions at 95% credibility using the `get_relative_precision()` function and then create a `logical` array that tells us which estimates are unreliable:
 
 ```{r eval = FALSE}
-rel_prec = get_relative_precision(
+rel_prec <- get_relative_precision(
   output = theta,
   medians = medians,
   perc_ci = 0.95
 )
-low_rel_prec = rel_prec < 1
+low_rel_prec <- rel_prec < 1
 ```
 
 Now, let's generate a similar `logical` `array` for populations less than 1000 and use both of these criteria to create a set of suppressed medians. A median will be suppressed if it meets either of the two criteria:
 
 ```{r eval = FALSE}
-low_population = pop < 1000
-medians_supp = medians
-medians_supp[low_rel_prec | low_population] = NA
+low_population <- pop < 1000
+medians_supp <- medians
+medians_supp[low_rel_prec | low_population] <- NA
 ```
 
 Looking at our dataset, we can see that most of our estimates meet both criteria! Certain counties, unfortunately, are too small to get reliable estimates for, but fortunately our estimates generally had high relative precision. Let's now map our suppressed estimates again and see what changed:
 
 ```{r eval = FALSE}
-est_35_64 = medians_supp[, "35-64", "1979"]
+est_35_64 <- medians_supp[, "35-64", "1979"]
 ggplot(mishp) +
   geom_sf(aes(fill = est_35_64)) +
   labs(
@@ -101,15 +101,15 @@ ggplot(mishp) +
 In this group in 1979, it seems only one region has been suppressed (i.e., grayed out). This is because age-standardizing the samples after running the model both helps to bolster our relative precisions and to increase the total population in our groups, increasing values for both suppression criteria. If we suppress our estimates in our more granular, non-age-standardized `theta` samples, we will see that, even with a small credible interval, many more counties are suppressed:
 
 ```{r eval = FALSE}
-rel_prec = get_relative_precision(
+rel_prec <- get_relative_precision(
   output = theta,
   medians = medians,
   perc_ci = 0.5
 )
-low_rel_prec = rel_prec < 1
-medians_supp = medians
-medians_supp[low_rel_prec | low_population] = NA
-est_35_44 = medians_supp[, "35-44", "1979"]
+low_rel_prec <- rel_prec < 1
+medians_supp <- medians
+medians_supp[low_rel_prec | low_population] <- NA
+est_35_44 <- medians_supp[, "35-44", "1979"]
 ggplot(mishp) +
   geom_sf(aes(fill = est_35_44)) +
   labs(
@@ -124,15 +124,15 @@ ggplot(mishp) +
 As we widen our credible interval, the reliability criteria will become more conservative and suppress more counties:
 
 ```{r eval = FALSE}
-rel_prec = get_relative_precision(
+rel_prec <- get_relative_precision(
   output = theta,
   medians = medians,
   perc_ci = 0.995
 )
-low_rel_prec = rel_prec < 1
-medians_supp = medians
-medians_supp[low_rel_prec | low_population] = NA
-est_35_44 = medians_supp[, "35-44", "1979"]
+low_rel_prec <- rel_prec < 1
+medians_supp <- medians
+medians_supp[low_rel_prec | low_population] <- NA
+est_35_44 <- medians_supp[, "35-44", "1979"]
 ggplot(mishp) +
   geom_sf(aes(fill = est_35_44)) +
   labs(

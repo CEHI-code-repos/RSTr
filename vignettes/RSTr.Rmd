@@ -102,7 +102,7 @@ If you want to learn more about the `run_sampler()` function, read `vignette("RS
 After `run_sampler()` is done running (i.e., generates 6000 iterations) and your samples have been saved to `mod_test`, you can bring the samples into R using the `load_samples()` function. We can pull in samples from any of our available parameters, but let's pull in the outputs for `theta`, our rate estimates:
 
 ```{r eval = FALSE}
-output = load_data(
+output <- load_data(
   name = "my_test_model",
   dir = getwd(),
   burn = 2000,
@@ -119,7 +119,7 @@ If you want to learn more about the `load_samples()` function, read `vignette("R
 With our output loaded into R, we can finally get our estimates. We put our `output` object into the `get_medians()` function:
 
 ```{r eval = FALSE}
-medians = get_medians(output)
+medians <- get_medians(output)
 ```
 
 This creates an `array` object with median estimates for `theta` along each year, county, and region:
@@ -151,7 +151,7 @@ With our estimates finally in a form we can use, we can get a better picture of 
 ```{r eval = FALSE}
 library(tidyverse)
 # Original Myocardial Infarction Death Rates in MI, Ages 55-64, 1979
-raw_65_74 = (data$Y / data$n * 1e5)[, "65-74", "1979"]
+raw_65_74 <- (data$Y / data$n * 1e5)[, "65-74", "1979"]
 ggplot(mishp) +
   geom_sf(aes(fill = raw_65_74)) +
   labs(
@@ -161,7 +161,7 @@ ggplot(mishp) +
   scale_fill_viridis_c() +
   theme_void()
 # Spatially Smoothed MI Death Rates in MI
-est_65_74 = medians[, "65-74", "1979"] * 1e5
+est_65_74 <- medians[, "65-74", "1979"] * 1e5
 ggplot(mishp) +
   geom_sf(aes(fill = est_65_74)) +
   labs(

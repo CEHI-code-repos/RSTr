@@ -42,16 +42,16 @@ Once `run_sampler()` tells you that the model is finished running, you can impor
 Any `dimnames` that were saved to `data` will be applied to the samples as appropriate. Here, we pull in the `theta` samples for our test Michigan dataset with a 2000-sample burn-in period (as specified by the default arguments). We also multiply by 100,000 as it is common to display mortality rates per 100,000 individuals:
 
 ```{r eval = FALSE}
-theta = load_samples("my_test_model", getwd()) * 1e5
+theta <- load_samples("my_test_model", getwd()) * 1e5
 ```
 
 ### Age-standardization
 But what if we want to age-standardize our samples? In our Michigan dataset, we have six 10-year age groups started at age 35 years. Perhaps we can age-standardize these into a new 35-64 group. Since we are using data from 1979-1988, we can use 1980 standard populations from [NIH](https://seer.cancer.gov/stdpopulations/stdpop.19ages.html) to generate our `std_pop` vector:
 
 ```{r eval = FALSE}
-age = c("35-44", "45-54", "55-64")
-std_pop = c(113154, 100640, 95799)
-names(std_pop) = age
+age <- c("35-44", "45-54", "55-64")
+std_pop <- c(113154, 100640, 95799)
+names(std_pop) <- age
 ```
 
 With `std_pop` generated, we need to then check which margin contains our age group information using the `dim()` function:
@@ -63,8 +63,8 @@ dim(theta)
 Our `theta` array has four margins with dimensions `83`, `6`, `10`, and `400`, representing the spatial regions, age groups, time periods, and sample, respectively. Let's set a variable `margin_age` to represent our age group margin and standardize our `theta` estimates using the `age_standardize()` function:
 
 ```{r eval = FALSE}
-margin_age = 2
-theta_3564 = age_standardize(theta[, 1:3, , ], std_pop, margin_age)
+margin_age <- 2
+theta_3564 <- age_standardize(theta[, 1:3, , ], std_pop, margin_age)
 ```
 
 We subset `theta` to only the columns containing our age groups of interest: `35-44`, `45-54`, and `55-64` (i,e,. columns 1-3).
@@ -72,7 +72,7 @@ We subset `theta` to only the columns containing our age groups of interest: `35
 Now, we have a standalone array for our age-standardized 35-64 age group. Let's consolidate this into our main `theta` array using the `bind_samples()` function:
 
 ```{r eval = FALSE}
-theta = bind_samples(
+theta <- bind_samples(
   sample = theta,
   agg_sample = theta_3564,
   margin = margin_age,
@@ -83,8 +83,8 @@ theta = bind_samples(
 Now, our last samples and our age-standardized samples live in the same array. In case we are trying to do aggregation *without* standardization, such as weighted averages among non-age groups, it is important to also pull in the population array as the weight and to calculate population information along any consolidated or standardized groups. If the population data isn't readily available, it can be pulled from the model folder using the `load_pop()` function, then prepared for use with `theta` using `pop_aggregate()` and `bind_samples()`:
 
 ```{r eval = FALSE}
-pop = load_pop("my_test_model", getwd())
-pop = bind_samples(
+pop <- load_pop("my_test_model", getwd())
+pop <- bind_samples(
   sample = pop,
   agg_sample = pop_aggregate(pop[, 1:3, ], margin_age),
   margin = margin_age,
@@ -95,14 +95,14 @@ pop = bind_samples(
 So now, what if we want to get estimates across all years? In this case, we will expand our `theta` and `pop` arrays using the `group_aggregate()` and `pop_aggregate()` functions, respectively:
 
 ```{r eval = FALSE}
-margin_year = 3
-theta = bind_samples(
+margin_year <- 3
+theta <- bind_samples(
   theta,
   group_aggregate(theta, pop, margin_year),
   margin_year,
   "1979-1988"
 )
-pop = bind_samples(
+pop <- bind_samples(
   pop,
   pop_aggregate(pop, margin_year),
   margin_year,
@@ -119,12 +119,12 @@ Note that the process of age- and group-standardization is identical for both MS
 Before we generate our median estimates for our samples, let's quickly check some high- and low-population counties to see the stability of the samples:
 
 ```{r eval = FALSE}
-counties = c(which.max(miheart$n[, "55-64", "1979"]), which.min(miheart$n[, "55-64", "1979"]))
-x     = dimnames(theta)[[4]]
-yhigh = theta[counties[1], "35-64", "1979", ]
-ylow  = theta[counties[2], "35-64", "1979", ]
-raw_high = sum(miheart$Y[counties[1], 1:3, "1979"]) / sum(miheart$n[counties[1], 1:3, "1979"]) * 1e5
-raw_low  = sum(miheart$Y[counties[2], 1:3, "1979"]) / sum(miheart$n[counties[2], 1:3, "1979"]) * 1e5
+counties <- c(which.max(miheart$n[, "55-64", "1979"]), which.min(miheart$n[, "55-64", "1979"]))
+x     <- dimnames(theta)[[4]]
+yhigh <- theta[counties[1], "35-64", "1979", ]
+ylow  <- theta[counties[2], "35-64", "1979", ]
+raw_high <- sum(miheart$Y[counties[1], 1:3, "1979"]) / sum(miheart$n[counties[1], 1:3, "1979"]) * 1e5
+raw_low  <- sum(miheart$Y[counties[2], 1:3, "1979"]) / sum(miheart$n[counties[2], 1:3, "1979"]) * 1e5
 par(mfrow = c(1, 2))
 plot(x, yhigh, type = "l", main = paste0("Smoothed rates, 1979, 35-64, FIPS ", names(counties[1])))
 abline(h = raw_high, col = "red")
