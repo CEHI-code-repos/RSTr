@@ -5,15 +5,14 @@
 #'
 #' @export
 age_standardize <- function(sample, std_pop, margin) {
-  mar <- seq_along(dim(sample))[-margin]
-  wts <- std_pop / sum(std_pop)
+  mar     <- seq_along(dim(sample))[-margin]
+  wts     <- std_pop / sum(std_pop)
   new_dim <- dim(sample)
   new_dim[margin] <- 1
-  std_samp <- array(
+  array(
     apply(sweep(sample, margin, wts, "*"), mar, sum, na.rm = TRUE),
     dim <- new_dim
   )
-  std_samp
 }
 
 #' Aggregate samples
@@ -22,16 +21,15 @@ age_standardize <- function(sample, std_pop, margin) {
 #' @param margin The margin on which the groups of interest are stratified
 #'
 #' @export
-group_aggregate <- function(sample, pop, margin) {
-  mar <- seq_along(dim(sample))[-margin]
+aggregate_group <- function(sample, pop, margin) {
+  mar     <- seq_along(dim(sample))[-margin]
   pop_arr <- array(pop, dim = c(dim(pop), rev(dim(sample))[1]))
   new_dim <- dim(sample)
   new_dim[margin] <- 1
-  agg_samp <- array(
+  array(
     apply(sample * pop_arr, mar, sum, na.rm = TRUE) / apply(pop_arr, mar, sum, na.rm = TRUE),
     dim = new_dim
   )
-  agg_samp
 }
 
 #' Bind and name standardized/aggregated samples
@@ -55,7 +53,7 @@ bind_samples <- function(sample, agg_sample, margin, new_name = NULL) {
 #' @param dir Directory of the model
 #'
 #' @export
-load_pop <- function(name, dir) {
+load_pop <- function(name, dir = getwd()) {
   readRDS(paste0(dir, "/", name, "/data.Rds"))$n
 }
 
@@ -64,10 +62,9 @@ load_pop <- function(name, dir) {
 #' @param margin The margin on which the groups of interest are stratified
 #'
 #' @export
-pop_aggregate <- function(pop, margin) {
-  mar <- seq_along(dim(pop))[-margin]
+aggregate_pop <- function(pop, margin) {
+  mar     <- seq_along(dim(pop))[-margin]
   new_dim <- dim(pop)
   new_dim[margin] <- 1
-  agg_samp <- array(apply(pop, mar, sum, na.rm = TRUE), dim = new_dim)
-  agg_samp
+  array(apply(pop, mar, sum, na.rm = TRUE), dim = new_dim)
 }

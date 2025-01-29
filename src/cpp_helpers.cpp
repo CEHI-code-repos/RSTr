@@ -50,7 +50,7 @@ arma::field<arma::mat> Sig_eta(const arma::field<arma::mat> Sein) {
 }
 
 arma::mat cpp_rmvnorm(const arma::vec& mean, const arma::mat& covar) {
-  vec out = mean;
+  vec out  = mean;
   vec rand = Rcpp::rnorm(covar.n_cols, 0, 1);
   out += covar * rand;
   return out;

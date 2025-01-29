@@ -3,9 +3,9 @@
 #' @noRd
 check_data <- function(data) {
   cat("Checking data...\n")
-  Y <- data$Y
-  n <- data$n
-  chk <- c("Y", "n")
+  Y    <- data$Y
+  n    <- data$n
+  chk  <- c("Y", "n")
   miss <- sapply(1:length(chk), \(x) !any(names(data) == chk[x]))
   if (sum(miss)) {
     stop("One or more objects missing from list 'data': ", paste(chk[miss], collapse = ", "))

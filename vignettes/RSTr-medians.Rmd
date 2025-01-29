@@ -35,7 +35,7 @@ theta <- bind_samples(
 pop <- load_pop("my_test_model", getwd())
 pop <- bind_samples(
   pop,
-  pop_aggregate(pop[, 1:3, ], margin_age),
+  aggregate_pop(pop[, 1:3, ], margin_age),
   margin_age,
   "35-64"
 )

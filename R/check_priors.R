@@ -192,8 +192,6 @@ check_priors_m <- function(priors, num_region, num_group, num_time) {
   }
 }
 
-
-
 #' Check priors MSTCAR
 #'
 #' @noRd
@@ -208,8 +206,8 @@ check_priors_mst <- function(priors, num_region, num_group, num_time) {
   rho_b    <- priors$rho_b
   theta_sd <- priors$theta_sd
   rho_sd   <- priors$rho_sd
-  chk  <- c("Ag_scale", "G_df", "Ag_df", "tau_a", "tau_b", "rho_a", "rho_b", "theta_sd", "rho_sd")
-  miss <- sapply(1:length(chk), \(x) !any(names(priors) == chk[x]))
+  chk      <- c("Ag_scale", "G_df", "Ag_df", "tau_a", "tau_b", "rho_a", "rho_b", "theta_sd", "rho_sd")
+  miss     <- sapply(1:length(chk), \(x) !any(names(priors) == chk[x]))
   if (sum(miss)) {
     stop("One or more objects missing from list 'priors': ", paste(chk[miss], collapse = ", "))
   }

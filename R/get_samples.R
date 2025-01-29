@@ -5,21 +5,17 @@
 #' @param burn  Numer of burn-in samples to discard
 #'
 #' @export
-load_samples <- function(name, dir, param = "theta", burn = 2000) {
+load_samples <- function(name, dir = getwd(), param = "theta", burn = 2000) {
   if (substr(dir, nchar(dir), nchar(dir)) != "/") {
     dir <- paste0(dir, "/")
   }
   model <- readRDS(paste0(dir, name, "/params.Rds"))$model
-  samples <- NULL
   if (model == "ucar") {
     samples <- load_samples_u(name, dir, param, burn)
   }
   if (model == "mcar") {
     samples <- load_samples_m(name, dir, param, burn)
   }
-  #if (model == "ustcar") {
-  #  samples <- load_samples_ust(name, dir, param, burn)
-  #}
   if (model == "mstcar") {
     samples <- load_samples_mst(name, dir, param, burn)
   }
@@ -40,7 +36,7 @@ load_samples_u <- function(name, dir, param, burn) {
   output <- abind::abind(lapply(files, readRDS), along = mar[param])
   if (param %in% c("theta", "beta")) {
     if (params$method == "binom") output <- expit(output)
-    if (params$method == "pois" ) output <- exp(output)
+    if (params$method == "pois")  output <- exp(output)
   }
   dims <- params$dimnames
   if (!is.null(dims)) {
@@ -70,7 +66,7 @@ load_samples_m <- function(name, dir, param, burn) {
   output <- abind::abind(lapply(files, readRDS), along = mar[param])
   if (param %in% c("theta", "beta")) {
     if (params$method == "binom") output <- expit(output)
-    if (params$method == "pois" ) output <- exp(output)
+    if (params$method == "pois")  output <- exp(output)
   }
   dims <- params$dimnames
   if (!is.null(dims)) {
@@ -106,7 +102,7 @@ load_samples_mst <- function(name, dir, param, burn) {
   output <- abind::abind(lapply(files, readRDS), along = mar[param])
   if (param %in% c("theta", "beta")) {
     if (params$method == "binom") output <- expit(output)
-    if (params$method == "pois" ) output <- exp(output)
+    if (params$method == "pois")  output <- exp(output)
   }
   dims <- params$dimnames
   if (!is.null(dims)) {

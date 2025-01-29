@@ -5,7 +5,7 @@ using namespace Rcpp;
 using namespace arma;
 
 //[[Rcpp::export]]
-arma::cube mst_update_beta(
+arma::cube update_beta_mst(
   arma::cube& beta,
   const arma::cube& theta,
   const arma::cube& Z,
@@ -17,7 +17,7 @@ arma::cube mst_update_beta(
   uword num_island = island_region.n_elem;
   for (uword isl = 0; isl < num_island; isl++) {
     uword num_island_region = island_region[isl].n_elem;
-    mat var_beta = repmat(sqrt(tau2 / num_island_region), 1, num_time);
+    mat var_beta  = repmat(sqrt(tau2 / num_island_region), 1, num_time);
     mat mean_beta = mean(get_regs(theta, island_region[isl]) - get_regs(Z, island_region[isl]), 0);
     beta.row(isl) = mat(num_group, num_time, fill::randn) % var_beta + mean_beta;
   }
@@ -25,7 +25,7 @@ arma::cube mst_update_beta(
 }
 
 //[[Rcpp::export]]
-arma::cube mst_update_Z(
+arma::cube update_Z_mst(
   arma::cube& Z,
   const arma::cube& G,
   const arma::cube& theta,
@@ -37,11 +37,11 @@ arma::cube mst_update_Z(
   const arma::field<arma::uvec>& island_region,
   const arma::uvec& island_id
 ) {
-  uword num_region = Z.n_rows;
-  uword num_group  = Z.n_cols;
-  uword num_time   = Z.n_slices;
-  uword num_island = island_region.n_elem;
-  field<mat> Sein = Sig_eta_i(G, rho);
+  uword num_region  = Z.n_rows;
+  uword num_group   = Z.n_cols;
+  uword num_time    = Z.n_slices;
+  uword num_island  = island_region.n_elem;
+  field<mat> Sein   = Sig_eta_i(G, rho);
   field<mat> SeSein = Sig_eta(Sein);
   field<mat> Z_cov(num_time, max(num_adj) + 1);
   field<mat> Z_coveig(num_time, max(num_adj) + 1);
@@ -64,7 +64,7 @@ arma::cube mst_update_Z(
         muZp += SeSein(time, time + 1) * (nZm.col(time + 1) - get_grp(Z, reg, time + 1));
       }
       mat Z_mean = Z_cov(time, num_adj[reg]) * (get_grp(rate_diff, reg, time) / tau2 + (num_adj[reg] * Sein(time, time) * muZp));
-      vec Z_new = cpp_rmvnorm(Z_mean, Z_coveig(time, num_adj[reg]));
+      vec Z_new  = cpp_rmvnorm(Z_mean, Z_coveig(time, num_adj[reg]));
       for (uword grp = 0; grp < num_group; grp++) {
         Z(reg, grp, time) = Z_new(grp);
       }
@@ -79,7 +79,7 @@ arma::cube mst_update_Z(
 }
 
 //[[Rcpp::export]]
-arma::cube mst_update_G(
+arma::cube update_G_mst(
     arma::cube& G,
     const arma::cube& Z,
     const arma::mat& Ag,
@@ -115,14 +115,14 @@ arma::cube mst_update_G(
 }
 
 //[[Rcpp::export]]
-arma::mat mst_update_Ag(
+arma::mat update_Ag_mst(
   arma::mat& Ag,
   const arma::cube& G,
   const arma::mat& Ag_scale,
   const double& G_df,
   const double& Ag_df
 ) {
-  uword num_time = G.n_slices;
+  uword num_time  = G.n_slices;
   uword num_group = G.n_rows;
   mat Ag_covar(num_group, num_group, fill::zeros);
   Ag_covar += inv(Ag_scale);
@@ -134,7 +134,7 @@ arma::mat mst_update_Ag(
 }
 
 //[[Rcpp::export]]
-arma::vec mst_update_tau2(
+arma::vec update_tau2_mst(
   arma::vec& tau2,
   const arma::cube& theta,
   const arma::cube& beta,
@@ -156,7 +156,7 @@ arma::vec mst_update_tau2(
 }
 
 //[[Rcpp::export]]
-arma::cube mst_update_theta(
+arma::cube update_theta_mst(
   arma::cube& theta,
   arma::cube& t_accept,
   const arma::cube& Y,
@@ -197,7 +197,7 @@ arma::cube mst_update_theta(
 }
 
 //[[Rcpp::export]]
-arma::vec mst_update_rho(
+arma::vec update_rho_mst(
   arma::vec& rho,
   arma::vec& r_accept,
   const arma::cube& G,
@@ -211,10 +211,10 @@ arma::vec mst_update_rho(
   uword num_region = Z.n_rows;
   uword num_group  = Z.n_cols;
   uword num_time   = Z.n_slices;
-  vec logit_rho = log(rho / (1 - rho));
-  vec rand = Rcpp::rnorm(num_group, 0, 1);
-  vec expit_rho = rand % rho_sd + logit_rho;
-  vec rho_star_0 = 1 / (1 + exp(-expit_rho));
+  vec logit_rho    = log(rho / (1 - rho));
+  vec rand         = Rcpp::rnorm(num_group, 0, 1);
+  vec expit_rho    = rand % rho_sd + logit_rho;
+  vec rho_star_0   = 1 / (1 + exp(-expit_rho));
   vec r(num_group, fill::zeros);
   vec ra(num_group, fill::zeros);
   vec rb(num_group, fill::zeros);

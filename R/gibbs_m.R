@@ -5,7 +5,7 @@
 #' @importFrom RcppArmadillo fastLm
 #'
 #' @noRd
-gibbs_m <- function(name, dir, .show_plots, .discard_burnin) {
+gibbs_m <- function(name, dir, iterations, .show_plots, .discard_burnin) {
   data <- readRDS(paste0(dir, name, "/data.Rds"))
   Y    <- data$Y
   n    <- data$n
@@ -34,23 +34,24 @@ gibbs_m <- function(name, dir, .show_plots, .discard_burnin) {
   tau2  <- inits$tau2
 
   params <- readRDS(paste0(dir, name, "/params.Rds"))
-  total  <-   params$total
-  method <- params$method
-  impute_lb <- params$impute_lb
-  impute_ub <- params$impute_ub
+  total       <- params$total
+  method      <- params$method
+  impute_lb   <- params$impute_lb
+  impute_ub   <- params$impute_ub
   start_batch <- params$batch
+  batches     <- seq(start_batch + 1, start_batch + iterations / 100)
 
   plots <- output <- vector("list", length(inits))
   names(plots) <- names(output) <- par_up <- names(inits)
-  for (batch in start_batch:60) {
+  for (batch in batches) {
     time <- format(Sys.time(), "%a %b %d %X")
     cat("Batch", paste0(batch, ","), "Iteration", paste0(total, ","), time, "\r")
     T_inc <- 100
-    output$theta <- array(dim = c(dim(theta)  , T_inc / 10))
-    output$beta  <- array(dim = c(dim(beta)   , T_inc / 10))
-    output$G     <- array(dim = c(dim(G)      , T_inc / 10))
+    output$theta <- array(dim = c(dim(theta),   T_inc / 10))
+    output$beta  <- array(dim = c(dim(beta),    T_inc / 10))
+    output$G     <- array(dim = c(dim(G),       T_inc / 10))
     output$tau2  <- array(dim = c(length(tau2), T_inc / 10))
-    output$Z     <- array(dim = c(dim(Z)      , T_inc / 10))
+    output$Z     <- array(dim = c(dim(Z),       T_inc / 10))
 
     # Metropolis for Yikt
     t_accept <- ifelse(t_accept < 1 / 6, 1 / 6, ifelse(t_accept > 0.75, 0.75, t_accept))
@@ -65,7 +66,7 @@ gibbs_m <- function(name, dir, .show_plots, .discard_burnin) {
       if (length(miss)) {
         if (method == "binom") {
           rate <- expit(theta[miss])
-          rp <- stats::runif(
+          rp   <- stats::runif(
             length(miss),
             stats::pbinom(impute_lb - 0.1, round(n[miss]), rate),
             stats::pbinom(impute_ub + 0.1, round(n[miss]), rate)
@@ -74,7 +75,7 @@ gibbs_m <- function(name, dir, .show_plots, .discard_burnin) {
         }
         if (method == "pois") {
           rate <- n[miss] * exp(theta[miss])
-          rp <- stats::runif(
+          rp   <- stats::runif(
             length(miss),
             stats::ppois(impute_lb - 0.1, rate),
             stats::ppois(impute_ub + 0.1, rate)
@@ -83,20 +84,12 @@ gibbs_m <- function(name, dir, .show_plots, .discard_burnin) {
         }
       }
 
-      # Sample beta
-      beta <- m_update_beta(beta, theta, Z, tau2, island_region)
-
-      # Sample Z
-      Z <- m_update_Z(Z, G, theta, beta, tau2, adjacency, num_adj, island_region, island_id)
-
-      # Sample G
-      G <- m_update_G(G, Z, G_df, G_scale, adjacency, num_island)
-
-      ## Sample tau2
-      tau2 <- m_update_tau2(tau2, theta, beta, Z, tau_a, tau_b, island_id)
-
-      # Sample theta
-      theta <- m_update_theta(theta, t_accept, Y, n, Z, beta, tau2, theta_sd, island_id, method)
+      #### Update parameters ####
+      beta  <- update_beta_m(beta, theta, Z, tau2, island_region)
+      Z     <- update_Z_m(Z, G, theta, beta, tau2, adjacency, num_adj, island_region, island_id)
+      G     <- update_G_m(G, Z, G_df, G_scale, adjacency, num_island)
+      tau2  <- update_tau2_m(tau2, theta, beta, Z, tau_a, tau_b, island_id)
+      theta <- update_theta_m(theta, t_accept, Y, n, Z, beta, tau2, theta_sd, island_id, method)
 
       #### Save outputs ####
       if (it %% 10 == 0) {
@@ -110,19 +103,19 @@ gibbs_m <- function(name, dir, .show_plots, .discard_burnin) {
     }
 
     # modify meta-parameters, save outputs to respective files
-    total <- total + T_inc
+    total    <- total + T_inc
     t_accept <- t_accept / T_inc
-    inits <- list(
+    inits    <- list(
       theta = theta,
-      beta = beta,
-      Z = Z,
-      G = G,
-      tau2 = tau2
+      beta  = beta,
+      Z     = Z,
+      G     = G,
+      tau2  = tau2
     )
     priors$theta_sd <- theta_sd
     priors$t_accept <- t_accept
-    params$total <- total
-    params$batch <- batch
+    params$total    <- total
+    params$batch    <- batch
     saveRDS(params, paste0(dir, name, "/params.Rds"))
     saveRDS(priors, paste0(dir, name, "/priors.Rds"))
     saveRDS(inits,  paste0(dir, name, "/inits.Rds"))
@@ -140,10 +133,10 @@ gibbs_m <- function(name, dir, .show_plots, .discard_burnin) {
       burn <- min(floor(total / 20), 200)
       its  <- burn:(total / 10)
       plot(its * 10, plots$theta[its], type = "l", main = "theta")
-      plot(its * 10, plots$beta[its], type = "l", main = "beta")
-      plot(its * 10, plots$tau2[its], type = "l", main = "tau2")
-      plot(its * 10, plots$G[its], type = "l", main = "G")
-      plot(its * 10, plots$Z[its], type = "l", main = "Z")
+      plot(its * 10, plots$beta [its], type = "l", main = "beta")
+      plot(its * 10, plots$tau2 [its], type = "l", main = "tau2")
+      plot(its * 10, plots$G    [its], type = "l", main = "G")
+      plot(its * 10, plots$Z    [its], type = "l", main = "Z")
     }
 
   }

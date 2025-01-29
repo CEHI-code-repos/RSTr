@@ -6,7 +6,7 @@ using namespace Rcpp;
 using namespace arma;
 
 //[[Rcpp::export]]
-arma::mat m_update_beta(
+arma::mat update_beta_m(
   arma::mat& beta,
   const arma::mat& theta,
   const arma::mat& Z,
@@ -16,15 +16,15 @@ arma::mat m_update_beta(
   uword num_group  = Z.n_cols;
   uword num_island = island_region.n_elem;
   for (uword isl = 0; isl < num_island; isl++) {
-    rowvec sd_beta = sqrt(tau2 / island_region[isl].n_elem);
+    rowvec sd_beta   = sqrt(tau2 / island_region[isl].n_elem);
     rowvec mean_beta = mean(theta.rows(island_region[isl]) - Z.rows(island_region[isl]), 0);
-    beta.row(isl) = rowvec(num_group, fill::randn) % sd_beta + mean_beta;
+    beta.row(isl)    = rowvec(num_group, fill::randn) % sd_beta + mean_beta;
   }
   return beta;
 }
 
 //[[Rcpp::export]]
-arma::mat m_update_Z(
+arma::mat update_Z_m(
   arma::mat& Z,
   const arma::mat& G,
   const arma::mat& theta,
@@ -47,9 +47,9 @@ arma::mat m_update_Z(
   }
   mat rate_diff = theta - beta.rows(island_id);
   for (uword reg = 0; reg < num_region; reg++) {
-    vec sum_adj = sum(Z.rows(adjacency[reg]), 0).t();
-    vec Z_mean = Z_cov(num_adj[reg]) * (rate_diff.row(reg).t() / tau2 + G * sum_adj);
-    Z.row(reg) = cpp_rmvnorm(Z_mean, Z_coveig(num_adj[reg])).t();
+    vec sum_adj  = sum(Z.rows(adjacency[reg]), 0).t();
+    vec Z_mean   = Z_cov(num_adj[reg]) * (rate_diff.row(reg).t() / tau2 + G * sum_adj);
+    Z.row(reg)   = cpp_rmvnorm(Z_mean, Z_coveig(num_adj[reg])).t();
   }
   mat Zkt(num_island, num_group);
   for (uword isl = 0; isl < num_island; isl++) {
@@ -60,7 +60,7 @@ arma::mat m_update_Z(
 }
 
 //[[Rcpp::export]]
-arma::mat m_update_G(
+arma::mat update_G_m(
   arma::mat& G,
   const arma::mat& Z,
   const double& G_df,
@@ -80,7 +80,7 @@ arma::mat m_update_G(
 }
 
 //[[Rcpp::export]]
-arma::vec m_update_tau2(
+arma::vec update_tau2_m(
   arma::vec& tau2,
   const arma::mat& theta,
   const arma::mat& beta,
@@ -101,7 +101,7 @@ arma::vec m_update_tau2(
 }
 
 //[[Rcpp::export]]
-arma::mat m_update_theta(
+arma::mat update_theta_m(
   arma::mat& theta,
   arma::mat& t_accept,
   const arma::mat& Y,

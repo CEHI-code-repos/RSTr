@@ -46,7 +46,7 @@ check_inits_u <- function(inits, num_region, num_island) {
   }
 
   # beta
-  # dimensions don't match num_time num_island num_group
+  # length doesn't match num_island
   if (length(beta) != num_island) {
     errct  <- errct + 1
     errtxt <- paste(errct, ": theta is not a length num_island vector. Ensure length(beta) == num_island or use default value")
@@ -75,7 +75,7 @@ check_inits_u <- function(inits, num_region, num_island) {
   }
 
   # Z
-  # dimensions don't match num_region num_group num_time
+  # length doesn't match num_region
   if (length(Z) != num_region) {
     errct  <- errct + 1
     errtxt <- paste(errct, ": Z is not a length num_region vector. Ensure length(Z) == length(Y) or use default value")
@@ -92,7 +92,7 @@ check_inits_u <- function(inits, num_region, num_island) {
   }
 }
 
-#' Check initial values MSTCAR
+#' Check initial values MCAR
 #'
 #' @noRd
 #'
@@ -140,7 +140,7 @@ check_inits_m <- function(inits, num_region, num_group, num_island) {
   }
 
   # beta
-  # dimensions don't match num_time num_island num_group
+  # dimensions don't match num_island num_group
   if (!all(dim(beta) == c(num_island, num_group))) {
     errct  <- errct + 1
     errtxt <- paste(errct, ": beta is not an num_island x num_group array. Ensure dim(beta) == num_island x num_group or use default value")
@@ -264,7 +264,7 @@ check_inits_mst <- function(inits, num_region, num_group, num_time, num_island) 
   }
 
   # beta
-  # dimensions don't match num_time num_island num_group
+  # dimensions don't match num_island num_group num_time
   if (!all(dim(beta) == c(num_island, num_group, num_time))) {
     errct  <- errct + 1
     errtxt <- paste(errct, ": beta is not an num_island x num_group x num_time array. Ensure dim(beta) == num_island x num_group x num_time or use default value")
