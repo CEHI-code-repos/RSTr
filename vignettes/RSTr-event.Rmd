@@ -30,7 +30,7 @@ The event and population data are at the core of the `RSTr` model. They work alo
 
 -   Time periods, regions, and groups must be consistent. If your data contains counts for all regions in a specified set of groups for 1979 and 1981, for example, it must also include counts for all regions and all groups for 1980 as well, even if those counts have zero events;
 
--   Groups of many types are allowed, but all groups must be combined into the appropriate margin (3 for MSTCAR, 2 for MCAR/USTCAR). For example, your groups may include just age groups, a mixture of age-sex groups, or even a mix of age-race-sex groups;
+-   Groups of many types are allowed as long as your sociodemographic groups are combined in the appropriate margin. For example, your groups may include just age groups, a mixture of age-sex groups, or even a mix of age-race-sex groups;
 
 -   Finally, `Y` and `n` can optionally have dimension names associated with them. This makes for easy identification of counties, groups, and time periods, and is necessary should you want to age-standardize data using `RSTr`'s additional functionality.
 
@@ -84,7 +84,7 @@ Y <- aperm(Y, perm = c(2, 1, 3))
 n <- aperm(n, perm = c(2, 1, 3))
 ```
 
-Now, we have our time periods on the rows, our counties on the columns, and our sex groups on the matrix slices. Finally, we can use a `list` in conjunction with the `unique()` function to specify the dimension names for both of these arrays:
+Now, we have our regions on the rows, our sex groups on the columns, and our time periods on the matrix slices. Finally, we can use a `list` in conjunction with the `unique()` function to specify the dimension names for both of these arrays:
 
 ```{r eval = FALSE}
 dimnames(Y) <- dimnames(n) <- list(
@@ -104,7 +104,7 @@ Now that our arrays are set up, organized, and properly named, we can finally co
 data <- list(Y = Y, n = n)
 ```
 
-Note that you must specify the names of each array as above, as creating a list with just the objects will not name each element, and the names `Y` and `n` are necessary for `RSTr` to know how to use the data.
+Note that you must specify the names of each array element as above, as creating a list with just the objects will not name each element, and the names `Y` and `n` are necessary for `RSTr` to know how to use the data.
 
 ## Data setup for other models
 

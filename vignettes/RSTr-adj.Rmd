@@ -20,7 +20,7 @@ The adjacency structure is a set of instructions that show the spatial relations
 
 ## Requirements
 
-Adjacency information is input as a `list` `adj` where each element `adj[[i]]` is a vector of indices denoting regions that are neighbors of region `i`. Below, we will walk through the construction of both of these types of adjacency information and address common issues that may arise.
+Adjacency information is input as a `list` `adj` where each element `adj[[i]]` is a vector of indices denoting regions that are neighbors of region `i`. Below, we will walk through the construction of the adjacency information and address common issues that may arise.
 
 ## Example: Massachusetts Map Data
 

@@ -221,6 +221,8 @@ check_inits_mst <- function(inits, num_region, num_group, num_time, num_island) 
   theta <- inits$theta
   beta  <- inits$beta
   G     <- inits$G
+  sig2  <- apply(G, 3, diag)
+  gcor  <- apply(G, 3, \(G) G[lower.tri(G)])
   tau2  <- inits$tau2
   Z     <- inits$Z
   rho   <- inits$rho
