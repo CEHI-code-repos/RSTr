@@ -17,9 +17,6 @@ run_sampler <- function(name, dir = getwd(), iterations = 6000, .show_plots = TR
   if (model == "mcar") {
     gibbs_m(name, dir, iterations, .show_plots, .discard_burnin)
   }
-  if (model == "ustcar") {
-    gibbs_ust(name, dir, iterations, .show_plots, .discard_burnin)
-  }
   if (model == "mstcar") {
     gibbs_mst(name, dir, iterations, .show_plots, .discard_burnin)
   }

@@ -96,7 +96,7 @@ By default, most of these priors are relatively non-informative. Similar to `ini
 
 ### `m0` and `A`
 
-`m0` and `A` are two components that determine the intensity of the smoothing of CAR models. `m0` should be a positive scalar, and the size of `A` is dependent on the group/time structure of your data: `A` will be a positive scalar for UCAR models, a `vector` of size `num_group` for MCAR models, a `vector` of size `num_time` for USTCAR models, and a matrix of size `num_group` x `num_time` for MSTCAR models. Note, however, that these informativeness restriction measures are currently only developed for the UCAR model, and restrictions for more complex models will be added to the `RSTr` package as they are developed.
+`m0` and `A` are two components that determine the intensity of the smoothing of CAR models. `m0` should be a positive scalar, and the size of `A` is dependent on the group/time structure of your data: `A` will be a positive scalar for UCAR models, a `vector` of size `num_group` for MCAR models, and a matrix of size `num_group` x `num_time` for MSTCAR models. Note, however, that these informativeness restriction measures are currently only developed for the UCAR model, and restrictions for more complex models will be added to the `RSTr` package as their respective methods are developed.
 
 ### The `rho_up` argument
 

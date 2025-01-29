@@ -21,9 +21,7 @@ The models provided in the `RSTr` package are based on the [Besag, York, and Mol
 
 -   Univariate CAR (UCAR): Spatially smooths across geographies;
 
--   Multivariate CAR (MCAR): Spatially smooths across geographies and sociodemographic groups;
-
--   Univariate Spatiotemporal CAR (USTCAR): Spatially smooths across geographies and time periods; and
+-   Multivariate CAR (MCAR): Spatially smooths across geographies and sociodemographic groups; and
 
 -   Multivariate Spatiotemporal CAR (MSTCAR): Spatially smooths across geographies, sociodemographic groups, and time periods.
 
@@ -31,7 +29,7 @@ For this vignette, we will demonstrate `RSTr`'s functionality with an MSTCAR mod
 
 ### Restricted-informativeness models {#sec-restricted-models}
 
-A problem with CAR models pointed out by [Quick, et al. (2021)](https://pubmed.ncbi.nlm.nih.gov/33980402/) is that of over-smoothing due to the informativeness of the BYM model. The `RSTr` package provides parameters to restrict informativeness in UCAR models for both Poisson- and binomially-distributed data. Informativeness restrictions for the MCAR, USTCAR, and MSTCAR models are under progress, and will be incorporated into the `RSTr` package as they are developed.
+A problem with CAR models pointed out by [Quick, et al. (2021)](https://pubmed.ncbi.nlm.nih.gov/33980402/) is that of over-smoothing due to the informativeness of the BYM model. The `RSTr` package provides parameters to restrict informativeness in UCAR models for both Poisson- and binomially-distributed data. Informativeness restrictions for the MCAR and MSTCAR models are under progress, and will be incorporated into the `RSTr` package as they are developed.
 
 ## Datasets {#sec-datasets}
 

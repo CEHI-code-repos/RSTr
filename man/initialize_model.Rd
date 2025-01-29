@@ -11,7 +11,7 @@ initialize_model(
   adjacency,
   inits = NULL,
   priors = NULL,
-  model = c("mstcar", "ucar", "ustcar", "mcar"),
+  model = c("mstcar", "ucar", "mcar"),
   method = c("binom", "pois"),
   m0 = 3,
   A = NULL,
@@ -35,7 +35,7 @@ initialize_model(
 
 \item{priors}{Optional list of priors for updates}
 
-\item{model}{Run model as an MSTCAR/UCAR/USTCAR/MCAR model}
+\item{model}{Run model as an MSTCAR/UCAR/MCAR model}
 
 \item{method}{Run model with either Binomial data or Poisson data}
 
@@ -43,7 +43,7 @@ initialize_model(
 
 \item{A}{Describes intensity of smoothing between regions}
 
-\item{rho_up}{Controls whether rho update is performed for USTCAR or MSTCAR models}
+\item{rho_up}{Controls whether rho update is performed for MSTCAR models}
 
 \item{impute_lb}{If counts between lb and ub are suppressed for privacy reasons, impute_lb is lower bound}
 

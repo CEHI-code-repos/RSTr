@@ -26,7 +26,7 @@ The event and population data are at the core of the `RSTr` model. They work alo
 
 -   `Y` and `n` must contain real numbers. Negative and infinite counts are not allowed, but suppressed data containing `NA`'s is acceptable for the `Y` values. Note, however, that `n` must have all population counts;
 
--   For the MSTCAR model, `Y` and `n` must be a three-dimensional array: the first margin (rows) specifies the region, the second margin (columns) specifies the groups of interest, and the third margin (matrix slices) specifies the time period. Other models will follow this same order of margins: for example, data for the MCAR model will be a two-dimensional array (matrix) with regions along the rows and groups along the columns, and a USTCAR model will have regions along the rows and time periods along the columns. Data for the UCAR model can simply be a vector;
+-   For the MSTCAR model, `Y` and `n` must be a three-dimensional array: the first margin (rows) specifies the region, the second margin (columns) specifies the groups of interest, and the third margin (matrix slices) specifies the time period. Other models will follow this same order of margins: for example, data for the MCAR model will be a two-dimensional array (matrix) with regions along the rows and groups along the columns. Data for the UCAR model can simply be a vector;
 
 -   Time periods, regions, and groups must be consistent. If your data contains counts for all regions in a specified set of groups for 1979 and 1981, for example, it must also include counts for all regions and all groups for 1980 as well, even if those counts have zero events;
 
@@ -123,8 +123,6 @@ dimnames(Y) <- dimnames(n) <- list(
 )
 data <- list(Y = Y, n = n)
 ```
-
-The USTCAR model will follow a similar process to the MCAR model, but with a single group and multiple time periods.
 
 For the UCAR model, setup is even easier:
 
