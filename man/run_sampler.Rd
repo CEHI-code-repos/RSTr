@@ -4,7 +4,13 @@
 \alias{run_sampler}
 \title{Run Gibbs sampler}
 \usage{
-run_sampler(name, dir, .show_plots = TRUE, .discard_burnin = FALSE)
+run_sampler(
+  name,
+  dir = getwd(),
+  iterations = 6000,
+  .show_plots = TRUE,
+  .discard_burnin = FALSE
+)
 }
 \arguments{
 \item{name}{Name of model and corresponding folder}

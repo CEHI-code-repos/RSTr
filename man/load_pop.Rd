@@ -4,7 +4,7 @@
 \alias{load_pop}
 \title{Load population array}
 \usage{
-load_pop(name, dir)
+load_pop(name, dir = getwd())
 }
 \arguments{
 \item{name}{Name of the model}
