@@ -49,7 +49,7 @@ gibbs_u <- function(name, dir, iterations, .show_plots, .discard_burnin) {
 
   plots <- output <- vector("list", length(inits))
   names(plots) <- names(output) <- par_up <- names(inits)
-
+  plot_its <- NULL
   for (batch in batches) {
     time <- format(Sys.time(), "%a %b %d %X")
     cat("Batch", paste0(batch, ","), "Iteration", paste0(total, ","), time, "\r")
@@ -127,22 +127,24 @@ gibbs_u <- function(name, dir, iterations, .show_plots, .discard_burnin) {
     saveRDS(inits,  paste0(dir, name, "/inits.Rds"))
     save_output(output, batch, dir, name, .discard_burnin)
     if (.show_plots) {
-      # Output some of the estimates for plotting purposes
+      output_its  <- seq((batch - 1) * 100 + 10, batch * 100, 10)
+      plot_its    <- c(plot_its, output_its)
       plots$beta  <- c(plots$beta,  output$beta [1, ])
       plots$theta <- c(plots$theta, output$theta[1, ])
       plots$Z     <- c(plots$Z,     output$Z    [1, ])
       plots$tau2  <- c(plots$tau2,  output$tau2)
       plots$sig2  <- c(plots$sig2,  output$sig2)
-
       grid <- c(2, 3)
       graphics::par(mfrow = grid)
-      burn <- min(floor(total / 20), 200)
-      its  <- burn:(total / 10)
-      plot(its * 10, plots$theta[its], type = "l", main = "theta")
-      plot(its * 10, plots$beta [its], type = "l", main = "beta")
-      plot(its * 10, plots$tau2 [its], type = "l", main = "tau2")
-      plot(its * 10, plots$sig2 [its], type = "l", main = "sig2")
-      plot(its * 10, plots$Z    [its], type = "l", main = "Z")
+      # Gradually remove plots in burn-in, then plot
+      if (plot_its[1] < 2000) {
+        plots    <- lapply(plots, \(par) par[-(1:5)])
+        plot_its <- plot_its[-(1:5)]
+      }
+      lapply(
+        par_up,
+        \(par) plot(plot_its, plots[[par]], type = "l", main = par, xlab = "Iteration", ylab = "Value")
+      )
     }
 
   }

@@ -53,6 +53,7 @@ gibbs_mst <- function(name, dir, iterations, .show_plots, .discard_burnin) {
   if (!rho_up) par_up <- par_up[-which(par_up == "rho")]
   plots <- output <- vector("list", length(par_up))
   names(plots) <- names(output) <- par_up
+  plot_its <- NULL
 
   for (batch in batches) {
     time <- format(Sys.time(), "%a %b %d %X")
@@ -115,7 +116,7 @@ gibbs_mst <- function(name, dir, iterations, .show_plots, .discard_burnin) {
       tau2  <- update_tau2_mst(tau2, theta, beta, Z, tau_a, tau_b, island_id)
       theta <- update_theta_mst(theta, t_accept, Y, n, Z, beta, tau2, theta_sd, island_id, method)
       if (rho_up) {
-        rho <- mst_update_rho(rho, r_accept, G, Z, rho_a, rho_b, rho_sd, adjacency, num_island)
+        rho <- update_rho_mst(rho, r_accept, G, Z, rho_a, rho_b, rho_sd, adjacency, num_island)
       }
 
       #### Save outputs ####
@@ -156,33 +157,30 @@ gibbs_mst <- function(name, dir, iterations, .show_plots, .discard_burnin) {
     saveRDS(priors, paste0(dir, name, "/priors.Rds"))
     saveRDS(inits,  paste0(dir, name, "/inits.Rds"))
     save_output(output, batch, dir, name, .discard_burnin)
-    
+
     if (.show_plots) {
-      # Output some of the estimates for plotting purposes
-      plots$beta  <- c(plots$beta,  output$beta [1, 1, 1, ])
+      output_its  <- seq((batch - 1) * 100 + 10, batch * 100, 10)
+      plot_its    <- c(plot_its, output_its)
       plots$theta <- c(plots$theta, output$theta[1, 1, 1, ])
+      plots$beta  <- c(plots$beta,  output$beta [1, 1, 1, ])
       plots$Z     <- c(plots$Z,     output$Z    [1, 1, 1, ])
-      plots$tau2  <- c(plots$tau2,  output$tau2 [1,       ])
       plots$G     <- c(plots$G,     output$G    [1, 1, 1, ])
+      plots$tau2  <- c(plots$tau2,  output$tau2 [1,       ])
       plots$Ag    <- c(plots$Ag,    output$Ag   [1, 1,    ])
       if (rho_up) {
         plots$rho <- c(plots$rho, output$rho[1, ])
       }
-
-      grid <- c(2, 3)
-      if (rho_up) grid <- c(2, 4)
+      grid <- c(2, ifelse(rho_up, 4, 3))
       graphics::par(mfrow = grid)
-      burn <- min(floor(total / 20), 200)
-      its  <- burn:(total / 10)
-      plot(its * 10, plots$theta[its], type = "l", main = "theta")
-      plot(its * 10, plots$beta [its], type = "l", main = "beta")
-      plot(its * 10, plots$tau2 [its], type = "l", main = "tau2")
-      plot(its * 10, plots$G    [its], type = "l", main = "G")
-      plot(its * 10, plots$Z    [its], type = "l", main = "Z")
-      plot(its * 10, plots$Ag   [its], type = "l", main = "Ag")
-      if (rho_up) {
-        plot(its * 10, plots$rho[its], type = "l", main = "rho")
+      # Gradually remove plots in burn-in, then plot
+      if (plot_its[1] < 2000) {
+        plots    <- lapply(plots, \(par) par[-(1:5)])
+        plot_its <- plot_its[-(1:5)]
       }
+      lapply(
+        par_up,
+        \(par) plot(plot_its, plots[[par]], type = "l", main = par, xlab = "Iteration", ylab = "Value")
+      )
     }
 
   }
