@@ -26,12 +26,12 @@ load_samples <- function(name, dir = getwd(), param = "theta", burn = 2000) {
 #'
 #' @noRd
 load_samples_u <- function(name, dir, param, burn) {
-  mar   <- c("theta" = 2, "beta" = 2, "Z" = 2, "sig2" = 1, "tau2" = 1)
-  batch <- which(1:60 * 100 > burn)
+  mar    <- c("theta" = 2, "beta" = 2, "Z" = 2, "sig2" = 1, "tau2" = 1)
+  params <- readRDS(paste0(dir, name, "/params.Rds"))
+  batch  <- which(1:params$batch * 100 > burn)
   if (substr(dir, nchar(dir), nchar(dir)) != "/") {
     dir <- paste0(dir, "/")
   }
-  params <- readRDS(paste0(dir, name, "/params.Rds"))
   files  <- paste0(dir, name, "/", param, "/", param, "_out_", batch, ".Rds")
   output <- abind::abind(lapply(files, readRDS), along = mar[param])
   if (param %in% c("theta", "beta")) {
@@ -40,7 +40,7 @@ load_samples_u <- function(name, dir, param, burn) {
   }
   dims <- params$dimnames
   if (!is.null(dims)) {
-    its <- seq(burn + 10, 6000, by = 10)
+    its <- seq(burn + 10, max(batch) * 100, by = 10)
     if (param == "beta") {
       num_island <- readRDS(paste0(dir, name, "/spatial_data.Rds"))$num_island
       dimnames(output) <- list(island = 1:num_island, its = its)
@@ -57,11 +57,11 @@ load_samples_u <- function(name, dir, param, burn) {
 #' @noRd
 load_samples_m <- function(name, dir, param, burn) {
   mar   <- c("theta" = 3, "beta" = 3, "Z" = 3, "G" = 3, "tau2" = 2)
-  batch <- which(1:60 * 100 > burn)
+  params <- readRDS(paste0(dir, name, "/params.Rds"))
+  batch  <- which(1:params$batch * 100 > burn)
   if (substr(dir, nchar(dir), nchar(dir)) != "/") {
     dir <- paste0(dir, "/")
   }
-  params <- readRDS(paste0(dir, name, "/params.Rds"))
   files  <- paste0(dir, name, "/", param, "/", param, "_out_", batch, ".Rds")
   output <- abind::abind(lapply(files, readRDS), along = mar[param])
   if (param %in% c("theta", "beta")) {
@@ -70,7 +70,7 @@ load_samples_m <- function(name, dir, param, burn) {
   }
   dims <- params$dimnames
   if (!is.null(dims)) {
-    its <- seq(burn + 10, 6000, by = 10)
+    its <- seq(burn + 10, max(batch) * 100, by = 10)
     if (param == "beta") {
       num_island <- readRDS(paste0(dir, name, "/spatial_data.Rds"))$num_island
       dimnames(output) <- list(island = 1:num_island, group = dims[[2]], time = dims[[3]], its = its)
@@ -93,11 +93,11 @@ load_samples_m <- function(name, dir, param, burn) {
 #' @noRd
 load_samples_mst <- function(name, dir, param, burn) {
   mar   <- c("theta" = 4, "beta" = 4, "Z" = 4, "G" = 4, "Ag" = 3, "tau2" = 2, "rho" = 2)
-  batch <- which(1:60 * 100 > burn)
+  params <- readRDS(paste0(dir, name, "/params.Rds"))
+  batch  <- which(1:params$batch * 100 > burn)
   if (substr(dir, nchar(dir), nchar(dir)) != "/") {
     dir <- paste0(dir, "/")
   }
-  params <- readRDS(paste0(dir, name, "/params.Rds"))
   files  <- paste0(dir, name, "/", param, "/", param, "_out_", batch, ".Rds")
   output <- abind::abind(lapply(files, readRDS), along = mar[param])
   if (param %in% c("theta", "beta")) {
@@ -106,7 +106,7 @@ load_samples_mst <- function(name, dir, param, burn) {
   }
   dims <- params$dimnames
   if (!is.null(dims)) {
-    its <- seq(burn + 10, 6000, by = 10)
+    its <- seq(burn + 10, max(batch) * 100, by = 10)
     if (param == "beta") {
       num_island <- readRDS(paste0(dir, name, "/spatial_data.Rds"))$num_island
       dimnames(output) <- list(island = 1:num_island, group = dims[[2]], time = dims[[3]], its = its)
