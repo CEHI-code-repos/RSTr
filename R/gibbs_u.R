@@ -6,6 +6,7 @@
 #'
 #' @noRd
 gibbs_u <- function(name, dir, iterations, .show_plots, .discard_burnin) {
+  sampler_start <- Sys.time()
   data <- readRDS(paste0(dir, name, "/data.Rds"))
   Y    <- data$Y
   n    <- data$n
@@ -47,13 +48,13 @@ gibbs_u <- function(name, dir, iterations, .show_plots, .discard_burnin) {
   num_region  <- length(Y)
   num_island  <- length(beta)
 
+  cat("Starting sampler on Batch", start_batch + 1, "at", format(Sys.time(), "%a %b %d %X"), "\n")
   plots <- output <- vector("list", length(inits))
   names(plots) <- names(output) <- par_up <- names(inits)
   plot_its <- NULL
   for (batch in batches) {
-    time <- format(Sys.time(), "%a %b %d %X")
-    cat("Batch", paste0(batch, ","), "Iteration", paste0(total, ","), time, "\r")
     T_inc <- 100
+    display_progress(batch, max(batches), total, 0, T_inc, sampler_start)
     output$theta <- array(dim = c(num_region, T_inc / 10))
     output$beta  <- array(dim = c(num_island, T_inc / 10))
     output$sig2  <- array(dim = c(T_inc / 10))
@@ -105,7 +106,7 @@ gibbs_u <- function(name, dir, iterations, .show_plots, .discard_burnin) {
         output$theta[, it / 10] <- theta
         output$Z    [, it / 10] <- Z
       }
-      cat("Batch", paste0(batch, ","), "Iteration", paste0(total + it, ","), time, ifelse(it == T_inc, "\n", "\r"))
+      display_progress(batch, max(batches), total, it, T_inc, sampler_start)
     }
 
     # modify meta-parameters, save outputs to respective files
@@ -148,5 +149,5 @@ gibbs_u <- function(name, dir, iterations, .show_plots, .discard_burnin) {
     }
 
   }
-  cat("Finished running model at:", format(Sys.time(), "%a %b %d %X"))
+  cat("\nModel finished at", format(Sys.time(), "%a %b %d %X"), "\n")
 }

@@ -6,6 +6,7 @@
 #'
 #' @noRd
 gibbs_mst <- function(name, dir, iterations, .show_plots, .discard_burnin) {
+  sampler_start <- Sys.time()
   data <- readRDS(paste0(dir, name, "/data.Rds"))
   Y    <- data$Y
   n    <- data$n
@@ -49,16 +50,15 @@ gibbs_mst <- function(name, dir, iterations, .show_plots, .discard_burnin) {
   start_batch <- params$batch
   batches     <- seq(start_batch + 1, start_batch + iterations / 100)
 
+  cat("Starting sampler on Batch", start_batch + 1, "at", format(Sys.time(), "%a %b %d %X"), "\n")
   par_up <- names(inits)
   if (!rho_up) par_up <- par_up[-which(par_up == "rho")]
   plots <- output <- vector("list", length(par_up))
   names(plots) <- names(output) <- par_up
   plot_its <- NULL
-
   for (batch in batches) {
-    time <- format(Sys.time(), "%a %b %d %X")
-    cat("Batch", paste0(batch, ","), "Iteration", paste0(total, ","), time, "\r")
     T_inc <- 100
+    display_progress(batch, max(batches), total, 0, T_inc, sampler_start)
     output$theta <- array(dim = c(dim(theta),   T_inc / 10))
     output$beta  <- array(dim = c(dim(beta),    T_inc / 10))
     output$G     <- array(dim = c(dim(G),       T_inc / 10))
@@ -128,10 +128,10 @@ gibbs_mst <- function(name, dir, iterations, .show_plots, .discard_burnin) {
         output$Z    [, , , it / 10] <- Z
         output$Ag   [, ,   it / 10] <- Ag
         if (rho_up) {
-          output$rho[,     it / 10] <- rho
+          output$rho[, it / 10] <- rho
         }
       }
-      cat("Batch", paste0(batch, ","), "Iteration", paste0(total + it, ","), time, ifelse(it == T_inc, "\n", "\r"))
+      display_progress(batch, max(batches), total, it, T_inc, sampler_start)
     }
 
     # modify meta-parameters, save outputs to respective files
@@ -184,5 +184,5 @@ gibbs_mst <- function(name, dir, iterations, .show_plots, .discard_burnin) {
     }
 
   }
-  cat("Finished running model at:", format(Sys.time(), "%a %b %d %X"))
+  cat("\nModel finished at", format(Sys.time(), "%a %b %d %X"), "\n")
 }
