@@ -22,6 +22,17 @@ The adjacency structure is a set of instructions that show the spatial relations
 
 Adjacency information is input as a `list` `adj` where each element `adj[[i]]` is a vector of indices denoting regions that are neighbors of region `i`. Below, we will walk through the construction of the adjacency information and address common issues that may arise.
 
+A quick aside regarding adjacency structure: in BUGS programs and Nimble, it is common to specify `adj` as a vector along with a vector of number of neighbors `num_adj`. In order for R to more effectively handle the adjacency structure, we instead input `adj` in a "neighborhood dictionary" format. It is easy to get this into the correct format if you have `adj` and `num_adj`:
+
+```{r eval = FALSE}
+adj_list = vector(mode = "list", length = length(num_adj))
+index = 0
+for (i in seq_along(num_adj)) {
+  adj_list[[i]] = adj[(index + 1):(index + num_adj[i])]
+  index = index + num_adj[i]
+}
+```
+
 ## Example: Massachusetts Map Data
 
 For this example, we will continue using Massachusetts data as we did in section 2. Included is an example dataset that contains Massachusetts shapefile information, generated using the `tigris` package:

@@ -17,7 +17,7 @@ The `RSTr` package is a tool that provides a host of Bayesian spatiotemporal mod
 
 ## Models {#sec-models}
 
-The models provided in the `RSTr` package are based on the [Besag, York, and Mollié (1991)](https://link.springer.com/article/10.1007/bf00116466) Conditional Autoregressive (CAR) model, which spatially smooths data by incorporating information such as event and population counts from neighboring geographic units (counties, census tracts, etc.). The degree of spatial smoothing is determined by a spatial region's respective population size. The CAR model can be extended to several levels of complexity, depending on the input data:
+The models provided in the `RSTr` package are based on the [Besag, York, and Mollié (1991)](https://link.springer.com/article/10.1007/bf00116466) Conditional Autoregressive (CAR) model (heretofore referred to as the "Univariate CAR" or "UCAR" model), which spatially smooths data by incorporating information such as event and population counts from neighboring geographic units (counties, census tracts, etc.). The degree of spatial smoothing is determined by a spatial region's respective population size. The CAR model can be extended to several levels of complexity, depending on the input data:
 
 -   Univariate CAR (UCAR): Spatially smooths across geographies;
 

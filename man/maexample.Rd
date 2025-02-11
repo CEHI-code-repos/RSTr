@@ -29,6 +29,6 @@ maexample
 }
 \description{
 An example dataset from CDC WONDER containing counts for Myocardial Infarction (ICD-9 code 410.0)
-deaths in all 14 Massachusetts counties for individuals in 2 gender groups across 3 years.
+deaths in all 14 Massachusetts counties for individuals in 2 sex groups across 3 years.
 }
 \keyword{datasets}

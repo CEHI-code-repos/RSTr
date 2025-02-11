@@ -49,7 +49,7 @@ $$
 
 ## The MCAR Hierarchical Model
 
-The MCAR model used by `RSTr` is an extension of the model developed by [Besag, York, and Mollié (1991)](https://link.springer.com/article/10.1007/bf00116466) with modifications using inverse transform sampling for restricted informativeness based on [Quick, et al. (2021)](https://pubmed.ncbi.nlm.nih.gov/33980402/):
+The MCAR model used by `RSTr` is an extension of the model developed by [Besag, York, and Mollié (1991)](https://link.springer.com/article/10.1007/bf00116466):
 
 For models using `method = "binom"`,
 

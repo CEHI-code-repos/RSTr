@@ -17,6 +17,8 @@ run_sampler(
 
 \item{dir}{Directory where model lives}
 
+\item{iterations}{Specifies number of iterations to run}
+
 \item{.show_plots}{Show or hide traceplots as}
 
 \item{.discard_burnin}{If set to \code{TRUE}, won't save burn-in samples}
