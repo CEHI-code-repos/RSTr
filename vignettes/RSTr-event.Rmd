@@ -50,7 +50,7 @@ Our example dataset contains acute myocardial infarction (ICD-9: 410) mortality 
 
 -   `County` and `County.Code` specify the county name and associated FIPS code;
 
--   `Gender` and `Gender.Code` specify the sex group;
+-   `Sex` and `Sex.Code` specify the sex group;
 
 -   `Deaths` contains our mortality counts of interest;
 
@@ -89,7 +89,7 @@ Now, we have our regions on the rows, our sex groups on the columns, and our tim
 ```{r eval = FALSE}
 dimnames(Y) <- dimnames(n) <- list(
   county = unique(ma_mort$County.Code),
-  group = unique(ma_mort$Gender.Code),
+  group = unique(ma_mort$Sex.Code),
   year = unique(ma_mort$Year.Code)
 )
 Y
@@ -119,7 +119,7 @@ Y <- t(Y) # transpose so that regions are on rows, groups are on columns
 n <- t(n)
 dimnames(Y) <- dimnames(n) <- list(
   county = unique(ma_mort_mcar$County.Code),
-  group = unique(ma_mort_mcar$Gender.Code)
+  group = unique(ma_mort_mcar$Sex.Code)
 )
 data <- list(Y = Y, n = n)
 ```
@@ -128,7 +128,7 @@ For the UCAR model, setup is even easier:
 
 ```{r eval = FALSE}
 ma_mort_ucar <- maexample[which(!is.na(maexample$Year)), ]
-ma_mort_ucar <- ma_mort_ucar[ma_mort_ucar$Year == 1979 & ma_mort_ucar$Gender == "Male", ] # filter dataset to only show 1979 data for men
+ma_mort_ucar <- ma_mort_ucar[ma_mort_ucar$Year == 1979 & ma_mort_ucar$Sex == "Male", ] # filter dataset to only show 1979 data for men
 Y <- ma_mort_ucar$Deaths
 n <- ma_mort_ucar$Population
 names(Y) <- names(n) <- unique(ma_mort_ucar$County.Code)

@@ -10,6 +10,7 @@ Authors@R:
                  email = "sfq1@cdc.gov",
                  comment = c(ORCID = "0000-0003-0485-7549")),
           person("Centers for Disease Control and Prevention", 
+                 role = c("aut"),
                  comment = c(ROR = "042twtr12")))
 Maintainer: David DeLara <sfq1@cdc.gov>
 Description: Takes Poisson or Binomial discrete spatial data and runs a Gibbs sampler for a variety of Spatiotemporal CAR models. Includes measures to prevent estimate over-smoothing through a restriction of model informativeness for select models. Also provides tools to load output and get median estimates.
