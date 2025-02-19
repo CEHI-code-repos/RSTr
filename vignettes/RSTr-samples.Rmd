@@ -23,8 +23,8 @@ After initializing the model with `initialize_model()`, you can gather and load 
 `run_sampler()` takes in four arguments: `name`, `dir`, `.show_plots`, and `.discard_burnin`. `name` and `dir` are associated wtih the name of the folder that contains the model content and the directory where that folder lives, respectively. `.show_plots` allows you to hide the traceplots generated while the model runs and `.discard_burnin` prevents samples from being saved before the 2000-iteration burn-in period in case the dataset is particularly large. The information needed to generate the model is already saved in `name`, and so `run_sampler()` pulls this information in to generate parameter samples. When running `run_sampler()`, the R console will generate outputs describing the batch number, the total iteration number, and the time when the last batch started. By default, `run_sampler()` will generate 6000 samples, but other values can be specified as desired, rounded down to the nearest 100. For example, we can begin a simple model and generate samples:
 
 ```{r eval = FALSE}
-initialize_model(name = "my_test_model", dir = getwd(), data = miheart, adjacency = miadj)
-run_sampler("my_test_model", getwd())
+initialize_model(name = "my_test_model", data = miheart, adjacency = miadj)
+run_sampler("my_test_model")
 ```
 
 ## The `load_samples()` function
@@ -33,7 +33,7 @@ Once `run_sampler()` tells you that the model is finished running, you can impor
 
 -   `name`: Name of the model;
 
--   `dir`: Directory of the model;
+-   `dir`: Directory of the model. Saves to R's temporary directory by default;
 
 -   `param`: The parameter to import samples for. By default, imports `theta`. Values for `theta` and `beta` are expit- or exp-transformed, depending on the `method` chosen in `initialize_model()`; and
 
@@ -42,7 +42,7 @@ Once `run_sampler()` tells you that the model is finished running, you can impor
 Any `dimnames` that were saved to `data` will be applied to the samples as appropriate. Here, we pull in the `theta` samples for our test Michigan dataset with a 2000-sample burn-in period (as specified by the default arguments). We also multiply by 100,000 as it is common to display mortality rates per 100,000 individuals:
 
 ```{r eval = FALSE}
-theta <- load_samples("my_test_model", getwd()) * 1e5
+theta <- load_samples("my_test_model") * 1e5
 ```
 
 ### Age-standardization
@@ -83,7 +83,7 @@ theta <- bind_samples(
 Now, our last samples and our age-standardized samples live in the same array. In case we are trying to do aggregation *without* standardization, such as weighted averages among non-age groups, it is important to also pull in the population array as the weight and to calculate population information along any consolidated or standardized groups. If the population data isn't readily available, it can be pulled from the model folder using the `load_pop()` function, then prepared for use with `theta` using `aggregate_pop()` and `bind_samples()`:
 
 ```{r eval = FALSE}
-pop <- load_pop("my_test_model", getwd())
+pop <- load_pop("my_test_model")
 pop <- bind_samples(
   sample = pop,
   agg_sample = aggregate_pop(pop[, 1:3, ], margin_age),

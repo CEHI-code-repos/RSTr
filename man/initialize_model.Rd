@@ -6,7 +6,7 @@
 \usage{
 initialize_model(
   name,
-  dir = getwd(),
+  dir = tempdir(),
   data,
   adjacency,
   inits = NULL,

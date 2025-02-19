@@ -5,7 +5,7 @@
 #' @param burn  Numer of burn-in samples to discard
 #'
 #' @export
-load_samples <- function(name, dir = getwd(), param = "theta", burn = 2000) {
+load_samples <- function(name, dir = tempdir(), param = "theta", burn = 2000) {
   if (substr(dir, nchar(dir), nchar(dir)) != "/") {
     dir <- paste0(dir, "/")
   }

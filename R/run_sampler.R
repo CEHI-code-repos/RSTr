@@ -6,7 +6,7 @@
 #' @param .discard_burnin If set to \code{TRUE}, won't save burn-in samples
 #'
 #' @export
-run_sampler <- function(name, dir = getwd(), iterations = 6000, .show_plots = TRUE, .discard_burnin = FALSE) {
+run_sampler <- function(name, dir = tempdir(), iterations = 6000, .show_plots = TRUE, .discard_burnin = FALSE) {
   if (substr(dir, nchar(dir), nchar(dir)) != "/") {
     dir <- paste0(dir, "/")
   }

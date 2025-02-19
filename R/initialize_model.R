@@ -19,7 +19,7 @@
 #' @export
 initialize_model <- function(
   name,
-  dir = getwd(),
+  dir = tempdir(),
   data,
   adjacency,
   inits     = NULL,

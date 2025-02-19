@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-The `initialize_model()` function builds the necessary features needed to run `RSTr` and places them in a file specified by the user. In this vignette, we will talk in detail about each argument and how to use them.
+The `initialize_model()` function builds the necessary features needed to run `RSTr` and places them in R's temporary directory. In this vignette, we will talk in detail about each argument and how to use them.
 
 ## Arguments of the `initialize_model()` function
 
@@ -24,7 +24,7 @@ The `initialize_model()` function builds the necessary features needed to run `R
 
 -   `name`: The name of the folder your model information lives in;
 
--   `dir`: The directory where the model folder lives;
+-   `dir`: The directory where the model folder lives. By default, this saves into your temporary directory, so the model information will be lost after the R session ends. Should you want to save your model to be analyzed at a later date or ensure that your samples are intact if R crashes during runtime, specify a different directory;
 
 -   `data`: The `list` object containing the event `Y` and population `n` data. For more information on `data` setup, read `vignette("RSTr-event")`;
 

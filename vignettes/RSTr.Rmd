@@ -62,7 +62,6 @@ With an understanding of the example datasets and the functions, we can start ru
 library(RSTr)
 initialize_model(
   name = "my_test_model",
-  dir = getwd(),
   data = miheart,
   adjacency = miadj
 )
@@ -71,11 +70,10 @@ initialize_model(
 Here, we use the `initialize_model()` function to specify our model. `initialize_model()` accepts a few different arguments in this case:
 
 -   The `name` argument specifies the directory where the model data lives;
--   The `dir` argument specifies the directory where the model folder will be saved;
 -   The `data` argument specifies our event data; and
 -   The `adjacency` argument specifies our adjacency structure.
 
-`initialize_model()` creates a folder named `my_test_model` in the directory specified in `dir` containing folders that will hold batches of outputs for each parameter update, along with a set of `.Rds` files associated with model configuration. Nothing here is saved in the R environment because MSTCAR models can quickly become so large that it's impossible to hold the entire sample in RAM. Therefore, all of the data related to running the model is saved locally.
+`initialize_model()` creates a folder named `my_test_model` in R's temporary directory containing folders that will hold batches of outputs for each parameter update, along with a set of `.Rds` files associated with model configuration. Nothing here is saved in the R environment because MSTCAR models can quickly become so large that it's impossible to hold the entire sample in RAM. Therefore, all of the data related to running the model is saved locally. Should you want to save it somewhere besides the temporary directory, you can specify a folder with the `dir` argument.
 
 Note that `initialize_model()` accepts more arguments than are used here, but these are the only ones that are needed to get started. Also note that when we run the model, we get a couple of messages telling us certain priors and initial values were automatically generated. Priors and initial values can be specified manually, but this is outside the scope of this vignette. There will also be checks performed on the input data: if something is wrong, it will tell you what is wrong and how to fix it. For a full list of diagnostic errors and what they mean, read `vignette("RSTr-troubleshooting")`.
 
@@ -88,7 +86,7 @@ If you want to learn more about the `initialize_model()` function, read `vignett
 Once we have our model object set up, we can start getting samples. This is the heart of the `RSTr` package and what allows us to gather our final rate estimates. To get your samples, simply specify the name of the model and the directory:
 
 ```{r eval = FALSE}
-run_sampler(name = "my_test_model", dir = getwd())
+run_sampler(name = "my_test_model")
 ```
 
 The `run_sampler()` function takes information saved in `my_test_model` and uses it to run the `RSTr` Gibbs sampler. The `RSTr` package works by generating samples in batches, then saving these batches locally inside of `my_test_model` to be retrieved once the model is finished running. Generating samples in batches in samples accomplishes two primary goals: it helps facilitate the tuning of the underlying MCMC algorithm and it helps avoid computational burdern by only holding a fraction of the total samples in memory at any given time. `RSTr` runs 6,000 iterations split into 60 batches of size 100 each. All batches are thinned for every 10 iterations by default, as the `thetas` tend to exhibit autocorrelation. Moreover, thinning saves space when writing samples to the hard drive, as batches from larger models can balloon to gigabytes of size before thinning. Console outputs will show when the last batch was saved and the current iteration count of the model. The `run_sampler()` function also saves a few `.Rds` files containing all the different information regarding the model to the `my_test_model` folder in case you need to reload your model at a later date. If the model crashes for any reason or R closes while the model is being run, the model will keep track of the current batch and pick back up where it left off when it is re-run.
@@ -100,15 +98,10 @@ If you want to learn more about the `run_sampler()` function, read `vignette("RS
 After `run_sampler()` is done running (i.e., generates 6000 iterations) and your samples have been saved to `mod_test`, you can bring the samples into R using the `load_samples()` function. We can pull in samples from any of our available parameters, but let's pull in the outputs for `theta`, our rate estimates:
 
 ```{r eval = FALSE}
-output <- load_data(
-  name = "my_test_model",
-  dir = getwd(),
-  burn = 2000,
-  param = "theta"
-)
+output <- load_data(name = "my_test_model", burn = 2000)
 ```
 
-Here, the `load_samples()` function brings in samples from the model `my_test_model` in the directory `dir`, only loading in iterations after `burn`. The `burn` argument works to ensure that the estimates we get are sound by specifying a period where the model has a bit of time to "figure itself out" before gathering samples. In total, we have pulled in `(6000 - 2000) / 10 = 400` samples, as the sampler only saves every 10 iterations. To learn more about post-Gibbs sampler diagnostics, read `vignette("RSTr-samples")`.
+Here, the `load_samples()` function brings in samples from the model `my_test_model` in R's temporary directory, only loading in iterations after `burn`. The `burn` argument works to ensure that the estimates we get are sound by specifying a period where the model has a bit of time to "figure itself out" before gathering samples. In total, we have pulled in `(6000 - 2000) / 10 = 400` samples, as the sampler only saves every 10 iterations. To learn more about post-Gibbs sampler diagnostics, read `vignette("RSTr-samples")`.
 
 If you want to learn more about the `load_samples()` function, read `vignette("RSTr-samples")`.
 

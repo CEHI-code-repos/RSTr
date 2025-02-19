@@ -53,7 +53,7 @@ bind_samples <- function(sample, agg_sample, margin, new_name = NULL) {
 #' @param dir Directory of the model
 #'
 #' @export
-load_pop <- function(name, dir = getwd()) {
+load_pop <- function(name, dir = tempdir()) {
   readRDS(paste0(dir, "/", name, "/data.Rds"))$n
 }
 

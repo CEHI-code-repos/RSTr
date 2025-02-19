@@ -25,14 +25,14 @@ Previously, we generated age-standardized estimates for `theta` based on our exa
 ```{r eval = FALSE}
 std_pop <- c(113154, 100640, 95799)
 margin_age <- 2
-theta <- load_samples("my_test_model", getwd()) * 1e5
+theta <- load_samples("my_test_model") * 1e5
 theta <- bind_samples(
   theta,
   age_standardize(theta[, 1:3, , ], std_pop, margin_age),
   margin_age,
   "35-64"
 )
-pop <- load_pop("my_test_model", getwd())
+pop <- load_pop("my_test_model")
 pop <- bind_samples(
   pop,
   aggregate_pop(pop[, 1:3, ], margin_age),

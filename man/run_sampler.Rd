@@ -6,7 +6,7 @@
 \usage{
 run_sampler(
   name,
-  dir = getwd(),
+  dir = tempdir(),
   iterations = 6000,
   .show_plots = TRUE,
   .discard_burnin = FALSE
