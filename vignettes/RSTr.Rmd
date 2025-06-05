@@ -49,7 +49,7 @@ Some quick notes about data setup:
 
 `RSTr` comes with a set of functions to generate small area estimates from your dataset. Here is a brief overview of the basic functions and their purpose:
 
--   `initialize_model()`: Inputs data and model speciefics and creates a local folder with all associated files to prepare for sample generation;
+-   `initialize_model()`: Inputs data and model specifics and creates a local folder with all associated files to prepare for sample generation;
 -   `run_sampler()`: The Gibbs sampler function which saves your model and its samples to a local folder;
 -   `load_samples()`: Imports samples generated with `run_sampler()` into your R session; and
 -   `get_medians()`: Calculates median estimates loaded in by `load_samples()`.

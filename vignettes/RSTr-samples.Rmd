@@ -46,6 +46,7 @@ theta <- load_samples("my_test_model") * 1e5
 ```
 
 ### Age-standardization
+
 But what if we want to age-standardize our samples? In our Michigan dataset, we have six 10-year age groups started at age 35 years. Perhaps we can age-standardize these into a new 35-64 group. Since we are using data from 1979-1988, we can use 1980 standard populations from [NIH](https://seer.cancer.gov/stdpopulations/stdpop.19ages.html) to generate our `std_pop` vector:
 
 ```{r eval = FALSE}

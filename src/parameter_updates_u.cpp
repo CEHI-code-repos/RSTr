@@ -15,12 +15,17 @@ arma::vec update_Z_u(
   const arma::uvec& island_id
 ) {
   uword num_region = Z.n_elem;
+  uword num_island = island_region.n_elem;
   for (uword reg = 0; reg < num_region; reg++) {
     double var_Z  = 1 / (1 / tau2 + num_adj[reg] / sig2);
     double mean_Z = var_Z * ((theta[reg] - beta[island_id[reg]]) / tau2 + sum(Z.elem(adjacency[reg])) / sig2);
     Z[reg] = R::rnorm(mean_Z, sqrt(var_Z));
   }
-  Z -= mean(Z);
+  vec Zi(num_island);
+  for (uword isl = 0; isl < num_island; isl++) {
+    Zi(isl) = mean(Z.elem(island_region[isl]));
+  }
+  Z -= Zi.elem(island_id);
   return Z;
 }
 

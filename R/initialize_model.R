@@ -69,7 +69,7 @@ initialize_model_u <- function(name, dir, data, adjacency, inits, priors, method
     }
   }
   if (is.null(A)) {
-    A <- 1
+    A <- 6
   }
 
   num_region <- length(Y)
@@ -122,7 +122,7 @@ initialize_model_m <- function(name, dir, data, adjacency, inits, priors, method
   num_region <- dim(Y)[1]
   num_group  <- dim(Y)[2]
   if (is.null(A)) {
-    A <- num_group * colSums(Y) / sum(Y)
+    A <- 6
   }
   set.seed(seed)
   params <- list(
@@ -177,7 +177,7 @@ initialize_model_mst <- function(name, dir, data, adjacency, inits, priors, meth
   plot(dimnames(Y)[[3]], apply(n, 3, sum))
 
   if (is.null(A)) {
-    A <- NULL
+    A <- 6
   }
   num_region <- dim(Y)[1]
   num_group  <- dim(Y)[2]
