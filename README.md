@@ -31,7 +31,7 @@ installr::install.Rtools()
 Then, the package can be installed from GitHub:
 ```sh
 install.packages("remotes") # Optional if you already have an R package which can install from GitHub
-remotes::install_github("CDCgov/RSTr", build_vignettes = TRUE)
+remotes::install_github("CEHI-code-repos/RSTr", build_vignettes = TRUE)
 ```
 If this is your first time using the RSTr package, check the introductory vignette to learn how to use the package:
 ```sh
@@ -43,7 +43,7 @@ To update RSTr, remove the package from R, restart R, and re-install from GitHub
 ```sh
 remove.packages("RSTr")
 # Restart R to allow package installation
-remotes::install_github("CDCgov/RSTr", build_vignettes = TRUE)
+remotes::install_github("CEHI-code-repos/RSTr", build_vignettes = TRUE)
 ```
 
 ## Thanks!
