@@ -25,25 +25,25 @@ The UCAR model used by `RSTr` is based on the model developed by [Besag, York, a
 For models using `method = "binom"`,
 
 $$
-Y_{i} \sim \text{Binomial}(n_{i}, \theta_{i}) \\
-\theta_{i} \sim \text{LogitNormal}(\beta_{j} + Z_{i}, \tau^2),\\ 
+Y_{i} \sim \text{Binomial}(n_{i}, \theta_{i}) \\\\
+\theta_{i} \sim \text{LogitNormal}(\beta_{j} + Z_{i}, \tau^2), \\\\ 
 i=\{1,...,N_s\}, j=\{1,...,N_{is}\}
 $$
 
 For models using `method = "pois"`,
 
-$$
-Y_{i} \sim \text{Poisson}(n_{i} \theta_{i}) \\
-\theta_{i} \sim \text{LogNormal}(\beta_{j} + Z_{i}, \tau^2),\\ 
+$$  
+Y_{i} \sim \text{Poisson}(n_{i} \theta_{i}) \\\\
+\theta_{i} \sim \text{LogNormal}(\beta_{j} + Z_{i}, \tau^2), \\\\ 
 i=\{1,...,N_{s}\},\ j=\{1,...,N_{is}\}
 $$
 
 For both models,
 
 $$
-\beta_{j} \sim \text{Normal}(0,\sigma_{\beta}^2),\ \sigma_{\beta}^2 \to \infty \\
-Z \sim \text{CAR}(\sigma^2) \\
-\sigma^2 \sim \text{InvGamma}(a_\sigma,b_\sigma) \\
+\beta_{j} \sim \text{Normal}(0,\sigma_{\beta}^2),\ \sigma_{\beta}^2 \to \infty \\\\
+Z \sim \text{CAR}(\sigma^2) \\\\
+\sigma^2 \sim \text{InvGamma}(a_\sigma,b_\sigma) \\\\
 \tau^2 \sim \text{InvGamma}(a_\tau,b_\tau)
 $$
 
@@ -54,25 +54,25 @@ The MCAR model used by `RSTr` is an extension of the model developed by [Besag, 
 For models using `method = "binom"`,
 
 $$
-Y_{ik} \sim \text{Binomial}(n_{ik}, \theta_{ik}) \\
-\theta_{ik} \sim \text{LogitNormal}(\beta_{jk} + Z_{ik}, \tau_k^2),\\ 
+Y_{ik} \sim \text{Binomial}(n_{ik}, \theta_{ik}) \\\\
+\theta_{ik} \sim \text{LogitNormal}(\beta_{jk} + Z_{ik}, \tau_k^2), \\\\ 
 i=\{1,...,N_s\}, k=\{1,...,N_{g}\}, j=\{1,...,N_{is}\}
 $$
 
 For models using `method = "pois"`,
 
 $$
-Y_{ik} \sim \text{Poisson}(n_{ik}, \theta_{ik}) \\
-\theta_{ik} \sim \text{LogNormal}(\beta_{jk} + Z_{ik}, \tau_k^2),\\ 
+Y_{ik} \sim \text{Poisson}(n_{ik}, \theta_{ik}) \\\\
+\theta_{ik} \sim \text{LogNormal}(\beta_{jk} + Z_{ik}, \tau_k^2), \\\\ 
 i=\{1,...,N_s\}, k=\{1,...,N_{g}\}, j=\{1,...,N_{is}\}
 $$
 
 For both models,
 
 $$
-\beta_{jk} \sim \text{Normal}(0,\sigma_{\beta}^2),\ \sigma_{\beta}^2 \to \infty \\
-Z \sim \text{CAR}(G) \\
-G \sim \text{InvWishart}(\nu,G_0) \\
+\beta_{jk} \sim \text{Normal}(0,\sigma_{\beta}^2),\ \sigma_{\beta}^2 \to \infty \\\\
+Z \sim \text{CAR}(G) \\\\
+G \sim \text{InvWishart}(\nu,G_0) \\\\
 \tau^2 \sim \text{InvGamma}(a_\tau,b_\tau)
 $$
 
@@ -83,28 +83,28 @@ The MSTCAR model used by `RSTr` is based on the model developed by [Quick, et al
 For models using `method = "binom"`,
 
 $$
-Y_{ikt} \sim \text{Binomial}(n_{ikt}, \theta_{ikt}) \\
-\theta_{ikt} \sim \text{LogitNormal}(\beta_{jkt} + Z_{ikt}, \tau_k^2),\\ 
+Y_{ikt} \sim \text{Binomial}(n_{ikt}, \theta_{ikt}) \\\\
+\theta_{ikt} \sim \text{LogitNormal}(\beta_{jkt} + Z_{ikt}, \tau_k^2), \\\\ 
 i=\{1,...,N_s\},\ k=\{1,...,N_g\},\ t=\{1,...,N_t\},\ j=\{1,...,N_{is}\}
 $$
 
 For models using `method = "pois"`,
 
 $$
-Y_{ikt} \sim \text{Poisson}(n_{ikt} \theta_{ikt}) \\
-\theta_{ikt} \sim \text{LogNormal}(\beta_{jkt} + Z_{ikt}, \tau_k^2),\\ 
+Y_{ikt} \sim \text{Poisson}(n_{ikt} \theta_{ikt}) \\\\
+\theta_{ikt} \sim \text{LogNormal}(\beta_{jkt} + Z_{ikt}, \tau_k^2), \\\\ 
 t=\{1,...,N_t\},\ i=\{1,...,N_s\},\ k=\{1,...,N_g\},\ j=\{1,...,N_{is}\}
 $$
 
 For both models,
 
 $$
-\beta_{jkt} \sim \text{Normal}(0,\sigma_{\beta}^2),\ \sigma_{\beta}^2 \to \infty \\
-Z \sim \text{MSTCAR}(\mathcal{G}, \mathcal{R}), \ \mathcal{G}=\{G_1,...,G_{N_t}\}, \ \mathcal{R}=\{R_1,...,R_{N_g}\} \\
-G_t \sim \text{InvWishart}(A_G, \nu) \\
-A_G \sim \text{Wishart}(A_{G_0}, \nu_0) \\
-R_k = \text{AR}(1,\rho_k) \\
-\rho_k \sim \text{Beta}(a_{\rho}, b_{\rho}) \\
+\beta_{jkt} \sim \text{Normal}(0,\sigma_{\beta}^2),\ \sigma_{\beta}^2 \to \infty \\\\
+Z \sim \text{MSTCAR}(\mathcal{G}, \mathcal{R}), \ \mathcal{G}=\{G_1,...,G_{N_t}\}, \ \mathcal{R}=\{R_1,...,R_{N_g}\} \\\\
+G_t \sim \text{InvWishart}(A_G, \nu) \\\\
+A_G \sim \text{Wishart}(A_{G_0}, \nu_0) \\\\
+R_k = \text{AR}(1,\rho_k) \\\\
+\rho_k \sim \text{Beta}(a_{\rho}, b_{\rho}) \\\\
 \tau_k^2 \sim \text{InvGamma}(a_\tau,b_\tau)
 $$
 

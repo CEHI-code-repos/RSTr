@@ -1,0 +1,47 @@
+url: ~
+template:
+  bootstrap: 5
+  math-rendering: mathjax
+articles:
+- title: Articles
+  navbar: ~
+  contents:
+  - RSTr-event
+  - RSTr-adj
+  - RSTr-init
+  - RSTr-samples
+  - RSTr-medians
+  - RSTr-models
+  - RSTr-troubleshoot
+reference:
+- title: Modeling
+  contents:
+  - initialize_model
+  - run_sampler
+  - get_medians
+  - get_relative_precision
+- title: Aggregation
+  contents:
+  - age_standardize
+  - aggregate_group
+  - aggregate_pop
+  - bind_samples
+- title: Loading data
+  contents:
+  - load_samples
+  - load_pop
+- title: Transformations
+  contents:
+  - logit
+  - expit
+- title: Example data
+  contents:
+  - miheart
+  - mishp
+  - miadj
+  - maexample
+  - mamap
+- title: Package details
+- contents:
+  - RSTr-package 
+  - RSTr 

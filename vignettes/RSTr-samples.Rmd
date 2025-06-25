@@ -23,6 +23,8 @@ After initializing the model with `initialize_model()`, you can gather and load 
 `run_sampler()` takes in four arguments: `name`, `dir`, `.show_plots`, and `.discard_burnin`. `name` and `dir` are associated wtih the name of the folder that contains the model content and the directory where that folder lives, respectively. `.show_plots` allows you to hide the traceplots generated while the model runs and `.discard_burnin` prevents samples from being saved before the 2000-iteration burn-in period in case the dataset is particularly large. The information needed to generate the model is already saved in `name`, and so `run_sampler()` pulls this information in to generate parameter samples. When running `run_sampler()`, the R console will generate outputs describing the batch number, the total iteration number, and the time when the last batch started. By default, `run_sampler()` will generate 6000 samples, but other values can be specified as desired, rounded down to the nearest 100. For example, we can begin a simple model and generate samples:
 
 ```{r eval = FALSE}
+library(RSTr)
+
 initialize_model(name = "my_test_model", data = miheart, adjacency = miadj)
 run_sampler("my_test_model")
 ```
@@ -45,11 +47,17 @@ Any `dimnames` that were saved to `data` will be applied to the samples as appro
 theta <- load_samples("my_test_model") * 1e5
 ```
 
+```{r include = FALSE}
+library(RSTr)
+
+theta <- readRDS("RSTr-samples/theta.RDS")
+```
+
 ### Age-standardization
 
 But what if we want to age-standardize our samples? In our Michigan dataset, we have six 10-year age groups started at age 35 years. Perhaps we can age-standardize these into a new 35-64 group. Since we are using data from 1979-1988, we can use 1980 standard populations from [NIH](https://seer.cancer.gov/stdpopulations/stdpop.19ages.html) to generate our `std_pop` vector:
 
-```{r eval = FALSE}
+```{r}
 age <- c("35-44", "45-54", "55-64")
 std_pop <- c(113154, 100640, 95799)
 names(std_pop) <- age
@@ -57,13 +65,13 @@ names(std_pop) <- age
 
 With `std_pop` generated, we need to then check which margin contains our age group information using the `dim()` function:
 
-```{r eval = FALSE}
+```{r}
 dim(theta)
 ```
 
 Our `theta` array has four margins with dimensions `83`, `6`, `10`, and `400`, representing the spatial regions, age groups, time periods, and samples, respectively. Let's set a variable `margin_age` to represent our age group margin and standardize our `theta` estimates using the `age_standardize()` function:
 
-```{r eval = FALSE}
+```{r}
 margin_age <- 2
 theta_3564 <- age_standardize(theta[, 1:3, , ], std_pop, margin_age)
 ```
@@ -72,7 +80,7 @@ We subset `theta` to only the columns containing our age groups of interest: `35
 
 Now, we have a standalone array for our age-standardized 35-64 age group. Let's consolidate this into our main `theta` array using the `bind_samples()` function:
 
-```{r eval = FALSE}
+```{r}
 theta <- bind_samples(
   sample = theta,
   agg_sample = theta_3564,
@@ -82,6 +90,16 @@ theta <- bind_samples(
 ```
 
 Now, our last samples and our age-standardized samples live in the same array. In case we are trying to do aggregation *without* standardization, such as weighted averages among non-age groups, it is important to also pull in the population array as the weight and to calculate population information along any consolidated or standardized groups. If the population data isn't readily available, it can be pulled from the model folder using the `load_pop()` function, then prepared for use with `theta` using `aggregate_pop()` and `bind_samples()`:
+
+```{r include = FALSE}
+pop <- miheart$n
+pop <- bind_samples(
+  sample = pop,
+  agg_sample = aggregate_pop(pop[, 1:3, ], margin_age),
+  margin = margin_age,
+  new_name = "35-64"
+)
+```
 
 ```{r eval = FALSE}
 pop <- load_pop("my_test_model")
@@ -95,7 +113,7 @@ pop <- bind_samples(
 
 So now, what if we want to get estimates averaged across all years? In this case, we will expand our `theta` and `pop` arrays using the `aggregate_group()` and `aggregate_pop()` functions, respectively:
 
-```{r eval = FALSE}
+```{r}
 margin_year <- 3
 theta <- bind_samples(
   theta,
@@ -119,17 +137,34 @@ Note that the process of age- and group-standardization is identical for both MS
 
 Before we generate our median estimates for our samples, let's quickly check some high- and low-population counties to see the stability of the samples:
 
-```{r eval = FALSE}
-counties <- c(which.max(miheart$n[, "55-64", "1979"]), which.min(miheart$n[, "55-64", "1979"]))
-x     <- dimnames(theta)[[4]]
+```{r}
+counties <- c(
+  which.max(miheart$n[, "55-64", "1979"]),
+  which.min(miheart$n[, "55-64", "1979"])
+)
+x <- dimnames(theta)[[4]]
 yhigh <- theta[counties[1], "35-64", "1979", ]
-ylow  <- theta[counties[2], "35-64", "1979", ]
-raw_high <- sum(miheart$Y[counties[1], 1:3, "1979"]) / sum(miheart$n[counties[1], 1:3, "1979"]) * 1e5
-raw_low  <- sum(miheart$Y[counties[2], 1:3, "1979"]) / sum(miheart$n[counties[2], 1:3, "1979"]) * 1e5
+ylow <- theta[counties[2], "35-64", "1979", ]
+raw_high <- sum(miheart$Y[counties[1], 1:3, "1979"]) /
+  sum(miheart$n[counties[1], 1:3, "1979"]) *
+  1e5
+raw_low <- sum(miheart$Y[counties[2], 1:3, "1979"]) /
+  sum(miheart$n[counties[2], 1:3, "1979"]) *
+  1e5
 par(mfrow = c(1, 2))
-plot(x, yhigh, type = "l", main = paste0("Smoothed rates, 1979, 35-64, FIPS ", names(counties[1])))
+plot(
+  x,
+  yhigh,
+  type = "l",
+  main = paste0("Smoothed rates, 1979, 35-64, FIPS ", names(counties[1]))
+)
 abline(h = raw_high, col = "red")
-plot(x, ylow, type = "l", main = paste0("Smoothed rates, 1979, 35-64, FIPS ", names(counties[2])))
+plot(
+  x,
+  ylow,
+  type = "l",
+  main = paste0("Smoothed rates, 1979, 35-64, FIPS ", names(counties[2]))
+)
 abline(h = raw_low, col = "red")
 ```
 

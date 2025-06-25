@@ -58,8 +58,9 @@ Some quick notes about data setup:
 
 With an understanding of the example datasets and the functions, we can start running our first model. The example datasets are set up for us to run out-of-the-box:
 
-```{r eval = FALSE}
+```{r}
 library(RSTr)
+
 initialize_model(
   name = "my_test_model",
   data = miheart,
@@ -85,7 +86,7 @@ If you want to learn more about the `initialize_model()` function, read `vignett
 
 Once we have our model object set up, we can start getting samples. This is the heart of the `RSTr` package and what allows us to gather our final rate estimates. To get your samples, simply specify the name of the model and the directory:
 
-```{r eval = FALSE}
+```{r, eval = FALSE}
 run_sampler(name = "my_test_model")
 ```
 
@@ -97,8 +98,12 @@ If you want to learn more about the `run_sampler()` function, read `vignette("RS
 
 After `run_sampler()` is done running (i.e., generates 6000 iterations) and your samples have been saved to `mod_test`, you can bring the samples into R using the `load_samples()` function. We can pull in samples from any of our available parameters, but let's pull in the outputs for `theta`, our rate estimates:
 
-```{r eval = FALSE}
-output <- load_data(name = "my_test_model", burn = 2000)
+```{r, eval = FALSE}
+output <- load_samples(name = "my_test_model", burn = 2000)
+```
+
+```{r, include = FALSE}
+output <- readRDS("RSTr/output.RDS")
 ```
 
 Here, the `load_samples()` function brings in samples from the model `my_test_model` in R's temporary directory, only loading in iterations after `burn`. The `burn` argument works to ensure that the estimates we get are sound by specifying a period where the model has a bit of time to "figure itself out" before gathering samples. In total, we have pulled in `(6000 - 2000) / 10 = 400` samples, as the sampler only saves every 10 iterations. To learn more about post-Gibbs sampler diagnostics, read `vignette("RSTr-samples")`.
@@ -109,28 +114,35 @@ If you want to learn more about the `load_samples()` function, read `vignette("R
 
 With our output loaded into R, we can finally get our estimates. We put our `output` object into the `get_medians()` function:
 
-```{r eval = FALSE}
+```{r}
 medians <- get_medians(output)
 ```
 
 This creates an `array` object with median estimates for `theta` along each year, county, and region:
 
-```{r eval = FALSE}
-medians
+```{r}
+head(medians)
 ```
 
 For this type of mortality data, it is common to observe the rates per 100,000 population. Therefore, in this case we multiply the rates by 100,000 prior to interpretation:
 
-```{r eval = FALSE}
-medians * 1e5
+```{r}
+# the first 5 counties for the first 3 years
+head(medians) * 1e5
 ```
 
 You can also inspect rates by age group, year, or region:
 
-```{r eval = FALSE}
-medians["26005", "65-74",       ] * 1e5 # explore between time periods
-medians[       , "65-74", "1979"] * 1e5 # explore between counties
-medians["26005",        , "1979"] * 1e5 # explore between age groups
+```{r}
+medians["26005", "65-74", ] * 1e5 # explore between time periods
+```
+
+```{r}
+medians[, "65-74", "1979"] * 1e5 # explore between counties
+```
+
+```{r}
+medians["26005", , "1979"] * 1e5 # explore between age groups
 ```
 
 For more information about the median estimates, read `vignette("RSTr-medians")`.
@@ -139,10 +151,10 @@ For more information about the median estimates, read `vignette("RSTr-medians")`
 
 With our estimates finally in a form we can use, we can get a better picture of geographic patterns with a map, which can easily be made using `ggplot` (or your favorite mapping package). Let's see how the estimates were smoothed:
 
-```{r eval = FALSE}
-library(tidyverse)
+```{r}
+library(ggplot2)
 # Original Myocardial Infarction Death Rates in MI, Ages 55-64, 1979
-raw_65_74 <- (data$Y / data$n * 1e5)[, "65-74", "1979"]
+raw_65_74 <- (miheart$Y / miheart$n * 1e5)[, "65-74", "1979"]
 ggplot(mishp) +
   geom_sf(aes(fill = raw_65_74)) +
   labs(
