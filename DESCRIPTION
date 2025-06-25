@@ -19,16 +19,18 @@ Encoding: UTF-8
 LinkingTo: 
 	Rcpp, 
 	RcppArmadillo,
-        RcppDist
+    RcppDist
 Suggests: 
+    dplyr,
 	knitr,
 	ggplot2,
-	rmarkdown
+	rmarkdown,
+    sfdep
 Imports:
-	abind,
-	Rcpp,
-	RcppArmadillo,
-	RcppDist
+    abind,
+    Rcpp,
+    RcppArmadillo,
+    RcppDist
 Depends:
 	R (>= 4.1.0)
 LazyData: true
