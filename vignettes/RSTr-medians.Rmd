@@ -20,7 +20,39 @@ In the previous vignette, we finally ran our model using `run_sampler()`, import
 
 ## The `get_medians()` function
 
-Previously, we generated age-standardized estimates for `theta` based on our example Michigan dataset, `theta`. To get the medians, let's reload our age-standardized data and population array, then load our samples into `get_medians()`:
+Previously, we generated age-standardized estimates for `theta` based on our example Michigan dataset, `theta`.
+
+```{r eval = FALSE}
+# from vignette("RSTr-samples")
+library(RSTr)
+
+initialize_model(name = "my_test_model", data = miheart, adjacency = miadj)
+run_sampler("my_test_model")
+```
+
+To get the medians, let's reload our age-standardized data and population array, then load our samples into `get_medians()`:
+
+```{r include = FALSE}
+library(RSTr)
+
+std_pop <- c(113154, 100640, 95799)
+margin_age <- 2
+theta <- readRDS("RSTr-medians/theta.RDS")
+theta <- bind_samples(
+  theta,
+  age_standardize(theta[, 1:3, , ], std_pop, margin_age),
+  margin_age,
+  "35-64"
+)
+pop <- readRDS("RSTr-medians/pop.RDS")
+pop <- bind_samples(
+  pop,
+  aggregate_pop(pop[, 1:3, ], margin_age),
+  margin_age,
+  "35-64"
+)
+medians <- get_medians(theta)
+```
 
 ```{r eval = FALSE}
 std_pop <- c(113154, 100640, 95799)
@@ -44,8 +76,11 @@ medians <- get_medians(theta)
 
 From here, we can map our estimates:
 
-```{r eval = FALSE}
+```{r}
+library(ggplot2)
+
 est_35_64 <- medians[, "35-64", "1979"]
+
 ggplot(mishp) +
   geom_sf(aes(fill = est_35_64)) +
   labs(
@@ -67,7 +102,7 @@ Reliability can be easily tested in CAR models using two criteria:
 
 Let's get some reliability metrics for our dataset. First, let's generate our relative precisions at 95% credibility using the `get_relative_precision()` function and then create a `logical` array that tells us which estimates are unreliable:
 
-```{r eval = FALSE}
+```{r}
 rel_prec <- get_relative_precision(
   output = theta,
   medians = medians,
@@ -78,7 +113,7 @@ low_rel_prec <- rel_prec < 1
 
 Now, let's generate a similar `logical` `array` for populations less than 1000 and use both of these criteria to create a set of suppressed medians. A median will be suppressed if it meets either of the two criteria:
 
-```{r eval = FALSE}
+```{r}
 low_population <- pop < 1000
 medians_supp <- medians
 medians_supp[low_rel_prec | low_population] <- NA
@@ -86,8 +121,9 @@ medians_supp[low_rel_prec | low_population] <- NA
 
 Looking at our dataset, we can see that most of our estimates meet both criteria! Certain counties, unfortunately, are too small to get reliable estimates for, but fortunately our estimates generally had high relative precision. Let's now map our suppressed estimates again and see what changed:
 
-```{r eval = FALSE}
+```{r}
 est_35_64 <- medians_supp[, "35-64", "1979"]
+
 ggplot(mishp) +
   geom_sf(aes(fill = est_35_64)) +
   labs(
@@ -110,6 +146,7 @@ low_rel_prec <- rel_prec < 1
 medians_supp <- medians
 medians_supp[low_rel_prec | low_population] <- NA
 est_35_44 <- medians_supp[, "35-44", "1979"]
+
 ggplot(mishp) +
   geom_sf(aes(fill = est_35_44)) +
   labs(
@@ -133,6 +170,7 @@ low_rel_prec <- rel_prec < 1
 medians_supp <- medians
 medians_supp[low_rel_prec | low_population] <- NA
 est_35_44 <- medians_supp[, "35-44", "1979"]
+
 ggplot(mishp) +
   geom_sf(aes(fill = est_35_44)) +
   labs(

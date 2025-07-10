@@ -16,3 +16,6 @@ src/parameter_updates_u.o
 src/parameter_updates_ust.o
 src/cpp_helpers.o
 src/RcppExports.o
+docs
+/doc/
+/Meta/
