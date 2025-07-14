@@ -1,0 +1,13 @@
+pandoc: 3.1.11
+pkgdown: 2.1.3
+pkgdown_sha: ~
+articles:
+  RSTr-adj: RSTr-adj.html
+  RSTr-event: RSTr-event.html
+  RSTr-init: RSTr-init.html
+  RSTr-medians: RSTr-medians.html
+  RSTr-models: RSTr-models.html
+  RSTr-samples: RSTr-samples.html
+  RSTr-troubleshoot: RSTr-troubleshoot.html
+  RSTr: RSTr.html
+last_built: 2025-07-14T18:02Z
