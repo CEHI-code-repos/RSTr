@@ -97,23 +97,29 @@ sampling for restricted informativeness based on <a href="https://pubmed.ncbi.nl
 al. (2021)</a>:</p>
 <p>For models using <code>method = "binom"</code>,</p>
 <p><span class="math display">\[
-Y_{i} \sim \text{Binomial}(n_{i}, \theta_{i}) \\\\
-\theta_{i} \sim \text{LogitNormal}(\beta_{j} + Z_{i}, \tau^2), \\\\
-i=\{1,...,N_s\}, j=\{1,...,N_{is}\}
+\begin{split}
+Y_{i} &amp;\sim \text{Binomial}(n_{i}, \theta_{i}) \\
+\theta_{i} &amp;\sim \text{LogitNormal}(\beta_{j} + Z_{i}, \tau^2), \\
+i &amp;=\{1,...,N_s\}, j =\{1,...,N_{is}\}
+\end{split}
 \]</span></p>
 <p>For models using <code>method = "pois"</code>,</p>
 <p><span class="math display">\[  
-Y_{i} \sim \text{Poisson}(n_{i} \theta_{i}) \\\\
-\theta_{i} \sim \text{LogNormal}(\beta_{j} + Z_{i}, \tau^2), \\\\
-i=\{1,...,N_{s}\},\ j=\{1,...,N_{is}\}
+\begin{split}
+Y_{i} &amp;\sim \text{Poisson}(n_{i} \theta_{i}) \\
+\theta_{i} &amp;\sim \text{LogNormal}(\beta_{j} + Z_{i}, \tau^2), \\
+i &amp;=\{1,...,N_{s}\},\ j =\{1,...,N_{is}\}
+\end{split}
 \]</span></p>
 <p>For both models,</p>
 <p><span class="math display">\[
-\beta_{j} \sim \text{Normal}(0,\sigma_{\beta}^2),\ \sigma_{\beta}^2 \to
-\infty \\\\
-Z \sim \text{CAR}(\sigma^2) \\\\
-\sigma^2 \sim \text{InvGamma}(a_\sigma,b_\sigma) \\\\
-\tau^2 \sim \text{InvGamma}(a_\tau,b_\tau)
+\begin{split}
+\beta_{j} &amp;\sim \text{Normal}(0,\sigma_{\beta}^2),\ \sigma_{\beta}^2
+\to \infty \\
+Z &amp;\sim \text{CAR}(\sigma^2) \\
+\sigma^2 &amp;\sim \text{InvGamma}(a_\sigma,b_\sigma) \\
+\tau^2 &amp;\sim \text{InvGamma}(a_\tau,b_\tau)
+\end{split}
 \]</span></p>
 </div>
 <div class="section level2">
@@ -124,23 +130,31 @@ developed by <a href="https://link.springer.com/article/10.1007/bf00116466" clas
 and Mollié (1991)</a>:</p>
 <p>For models using <code>method = "binom"</code>,</p>
 <p><span class="math display">\[
-Y_{ik} \sim \text{Binomial}(n_{ik}, \theta_{ik}) \\\\
-\theta_{ik} \sim \text{LogitNormal}(\beta_{jk} + Z_{ik}, \tau_k^2), \\\\
-i=\{1,...,N_s\}, k=\{1,...,N_{g}\}, j=\{1,...,N_{is}\}
+\begin{split}
+Y_{ik} &amp;\sim \text{Binomial}(n_{ik}, \theta_{ik}) \\
+\theta_{ik} &amp;\sim \text{LogitNormal}(\beta_{jk} + Z_{ik}, \tau_k^2),
+\\
+i &amp;=\{1,...,N_s\}, k =\{1,...,N_{g}\}, j=\{1,...,N_{is}\}
+\end{split}
 \]</span></p>
 <p>For models using <code>method = "pois"</code>,</p>
 <p><span class="math display">\[
-Y_{ik} \sim \text{Poisson}(n_{ik}, \theta_{ik}) \\\\
-\theta_{ik} \sim \text{LogNormal}(\beta_{jk} + Z_{ik}, \tau_k^2), \\\\
-i=\{1,...,N_s\}, k=\{1,...,N_{g}\}, j=\{1,...,N_{is}\}
+\begin{split}
+Y_{ik} &amp;\sim \text{Poisson}(n_{ik}, \theta_{ik}) \\
+\theta_{ik} &amp;\sim \text{LogNormal}(\beta_{jk} + Z_{ik}, \tau_k^2),
+\\
+i &amp;=\{1,...,N_s\}, k =\{1,...,N_{g}\}, j=\{1,...,N_{is}\}
+\end{split}
 \]</span></p>
 <p>For both models,</p>
 <p><span class="math display">\[
-\beta_{jk} \sim \text{Normal}(0,\sigma_{\beta}^2),\ \sigma_{\beta}^2 \to
-\infty \\\\
-Z \sim \text{CAR}(G) \\\\
-G \sim \text{InvWishart}(\nu,G_0) \\\\
-\tau^2 \sim \text{InvGamma}(a_\tau,b_\tau)
+\begin{split}
+\beta_{jk} &amp;\sim \text{Normal}(0,\sigma_{\beta}^2),\
+\sigma_{\beta}^2 \to \infty \\
+Z &amp;\sim \text{CAR}(G) \\
+G &amp;\sim \text{InvWishart}(\nu,G_0) \\
+\tau^2 &amp;\sim \text{InvGamma}(a_\tau,b_\tau)
+\end{split}
 \]</span></p>
 </div>
 <div class="section level2">
@@ -151,29 +165,37 @@ developed by <a href="https://doi.org/10.1214/17-AOAS1068" class="external-link"
 al. (2017)</a>:</p>
 <p>For models using <code>method = "binom"</code>,</p>
 <p><span class="math display">\[
-Y_{ikt} \sim \text{Binomial}(n_{ikt}, \theta_{ikt}) \\\\
-\theta_{ikt} \sim \text{LogitNormal}(\beta_{jkt} + Z_{ikt}, \tau_k^2),
-\\\\
-i=\{1,...,N_s\},\ k=\{1,...,N_g\},\ t=\{1,...,N_t\},\ j=\{1,...,N_{is}\}
+\begin{split}
+Y_{ikt} &amp;\sim \text{Binomial}(n_{ikt}, \theta_{ikt}) \\
+\theta_{ikt} &amp;\sim \text{LogitNormal}(\beta_{jkt} + Z_{ikt},
+\tau_k^2), \\
+i &amp;=\{1,...,N_s\},\ k =\{1,...,N_g\},\ t=\{1,...,N_t\},\
+j=\{1,...,N_{is}\}
+\end{split}
 \]</span></p>
 <p>For models using <code>method = "pois"</code>,</p>
 <p><span class="math display">\[
-Y_{ikt} \sim \text{Poisson}(n_{ikt} \theta_{ikt}) \\\\
-\theta_{ikt} \sim \text{LogNormal}(\beta_{jkt} + Z_{ikt}, \tau_k^2),
-\\\\
-t=\{1,...,N_t\},\ i=\{1,...,N_s\},\ k=\{1,...,N_g\},\ j=\{1,...,N_{is}\}
+\begin{split}
+Y_{ikt} &amp;\sim \text{Poisson}(n_{ikt} \theta_{ikt}) \\
+\theta_{ikt} &amp;\sim \text{LogNormal}(\beta_{jkt} + Z_{ikt},
+\tau_k^2), \\
+t &amp;=\{1,...,N_t\},\ i =\{1,...,N_s\},\ k=\{1,...,N_g\},\
+j=\{1,...,N_{is}\}
+\end{split}
 \]</span></p>
 <p>For both models,</p>
 <p><span class="math display">\[
-\beta_{jkt} \sim \text{Normal}(0,\sigma_{\beta}^2),\ \sigma_{\beta}^2
-\to \infty \\\\
-Z \sim \text{MSTCAR}(\mathcal{G}, \mathcal{R}), \
-\mathcal{G}=\{G_1,...,G_{N_t}\}, \ \mathcal{R}=\{R_1,...,R_{N_g}\} \\\\
-G_t \sim \text{InvWishart}(A_G, \nu) \\\\
-A_G \sim \text{Wishart}(A_{G_0}, \nu_0) \\\\
-R_k = \text{AR}(1,\rho_k) \\\\
-\rho_k \sim \text{Beta}(a_{\rho}, b_{\rho}) \\\\
-\tau_k^2 \sim \text{InvGamma}(a_\tau,b_\tau)
+\begin{split}
+\beta_{jkt} &amp;\sim \text{Normal}(0,\sigma_{\beta}^2),\
+\sigma_{\beta}^2 \to \infty \\
+Z &amp;\sim \text{MSTCAR}(\mathcal{G}, \mathcal{R}), \
+\mathcal{G}=\{G_1,...,G_{N_t}\}, \ \mathcal{R}=\{R_1,...,R_{N_g}\} \\
+G_t &amp;\sim \text{InvWishart}(A_G, \nu) \\
+A_G &amp;\sim \text{Wishart}(A_{G_0}, \nu_0) \\
+R_k &amp;= \text{AR}(1,\rho_k) \\
+\rho_k &amp;\sim \text{Beta}(a_{\rho}, b_{\rho}) \\
+\tau_k^2 &amp;\sim \text{InvGamma}(a_\tau,b_\tau)
+\end{split}
 \]</span></p>
 <p>For more information regarding the model and its full-conditional
 distributions, reference <a href="https://doi.org/10.1214/17-AOAS1068" class="external-link">Quick, et al. (2017)</a>.</p>
