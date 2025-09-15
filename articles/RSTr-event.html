@@ -203,111 +203,23 @@ how our data is listed out:</p>
 <span><span class="co">#&gt; 4      22465             280.4</span></span>
 <span><span class="co">#&gt; 5      80171              64.9</span></span>
 <span><span class="co">#&gt; 6      71943             265.5</span></span></code></pre></div>
-<p>It’s important to take note of how the data cycles through each
-year-county-sex group so we can appropriately construct our array. In
-<code>ma_mort</code>, the data cycles through each sex group, then each
-county, and finally each year. This means that when we initially
-construct our arrays, the dimensions will be num_group x num_county x
-num_year. We know that in our dataset, there are 2 sex groups, 14
-counties, and 3 years, so we can use that information to construct
-<code>Y</code> and <code>n</code> from <code>ma_mort$Deaths</code> and
-<code>ma_mort$Population</code>:</p>
+<p>We can use the <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code> function to transform our
+<code>data.frame</code> into mortality and population arrays with
+properly oriented margins:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="va">ma_mort</span><span class="op">$</span><span class="va">Deaths</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">14</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">array</a></span><span class="op">(</span><span class="va">ma_mort</span><span class="op">$</span><span class="va">Population</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">14</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Now we have our two arrays set up. However, we have two more things
-to address before our data is ready to be put into a <code>list</code>
-and into our model: the order of the margins and the dimension names. To
-fix the order of the margins, we can use the <code><a href="https://rdrr.io/r/base/aperm.html" class="external-link">aperm()</a></code>
-function, which helps to reorder the margins of a dataset as
-desired:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/aperm.html" class="external-link">aperm</a></span><span class="op">(</span><span class="va">Y</span>, perm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/aperm.html" class="external-link">aperm</a></span><span class="op">(</span><span class="va">n</span>, perm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Now, we have our regions on the rows, our sex groups on the columns,
-and our time periods on the matrix slices. Finally, we can use a
-<code>list</code> in conjunction with the <code><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique()</a></code> function
-to specify the dimension names for both of these arrays:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  county <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ma_mort</span><span class="op">$</span><span class="va">County.Code</span><span class="op">)</span>,</span>
-<span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ma_mort</span><span class="op">$</span><span class="va">Sex.Code</span><span class="op">)</span>,</span>
-<span>  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ma_mort</span><span class="op">$</span><span class="va">Year.Code</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span></span>
-<span><span class="co">#&gt; , , year = 1979</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;        group</span></span>
-<span><span class="co">#&gt; county   F   M</span></span>
-<span><span class="co">#&gt;   25001 15  57</span></span>
-<span><span class="co">#&gt;   25003 11  63</span></span>
-<span><span class="co">#&gt;   25005 52 191</span></span>
-<span><span class="co">#&gt;   25007  4   1</span></span>
-<span><span class="co">#&gt;   25009 70 239</span></span>
-<span><span class="co">#&gt;   25011  6  27</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; , , year = 1980</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;        group</span></span>
-<span><span class="co">#&gt; county   F   M</span></span>
-<span><span class="co">#&gt;   25001 13  46</span></span>
-<span><span class="co">#&gt;   25003 15  63</span></span>
-<span><span class="co">#&gt;   25005 59 211</span></span>
-<span><span class="co">#&gt;   25007  0   4</span></span>
-<span><span class="co">#&gt;   25009 68 241</span></span>
-<span><span class="co">#&gt;   25011 10  21</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; , , year = 1981</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;        group</span></span>
-<span><span class="co">#&gt; county   F   M</span></span>
-<span><span class="co">#&gt;   25001 15  52</span></span>
-<span><span class="co">#&gt;   25003 13  42</span></span>
-<span><span class="co">#&gt;   25005 49 201</span></span>
-<span><span class="co">#&gt;   25007  1   5</span></span>
-<span><span class="co">#&gt;   25009 74 225</span></span>
-<span><span class="co">#&gt;   25011  5  21</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
-<span><span class="co">#&gt; , , year = 1979</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;        group</span></span>
-<span><span class="co">#&gt; county       F     M</span></span>
-<span><span class="co">#&gt;   25001  25239 21261</span></span>
-<span><span class="co">#&gt;   25003  24884 22465</span></span>
-<span><span class="co">#&gt;   25005  80171 71943</span></span>
-<span><span class="co">#&gt;   25007   1498  1361</span></span>
-<span><span class="co">#&gt;   25009 108762 98222</span></span>
-<span><span class="co">#&gt;   25011  10188  9669</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; , , year = 1980</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;        group</span></span>
-<span><span class="co">#&gt; county       F     M</span></span>
-<span><span class="co">#&gt;   25001  25578 21552</span></span>
-<span><span class="co">#&gt;   25003  24842 22408</span></span>
-<span><span class="co">#&gt;   25005  80195 71977</span></span>
-<span><span class="co">#&gt;   25007   1432  1310</span></span>
-<span><span class="co">#&gt;   25009 108882 98258</span></span>
-<span><span class="co">#&gt;   25011  10137  9635</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; , , year = 1981</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;        group</span></span>
-<span><span class="co">#&gt; county       F     M</span></span>
-<span><span class="co">#&gt;   25001  26365 22381</span></span>
-<span><span class="co">#&gt;   25003  24631 22285</span></span>
-<span><span class="co">#&gt;   25005  80023 72116</span></span>
-<span><span class="co">#&gt;   25007   1509  1392</span></span>
-<span><span class="co">#&gt;   25009 109453 99112</span></span>
-<span><span class="co">#&gt;   25011  10117  9643</span></span></code></pre></div>
-<p>If you have multiple types of groups, such as race and sex, it can
-take a little finessing to set up your group data, such as creating a
-combined race-sex group, but data setup will follow the same principles
+<code class="sourceCode R"><span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Deaths</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span> <span class="op">+</span> <span class="va">Year.Code</span>, data <span class="op">=</span> <span class="va">ma_mort</span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Population</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span> <span class="op">+</span> <span class="va">Year.Code</span>, data <span class="op">=</span> <span class="va">ma_mort</span><span class="op">)</span></span></code></pre></div>
+<p>When preparing data for the MSTCAR model, make sure that the
+variables in your <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code> expression follow the order
+listed above: geographic regions, sociodemographic groups, and years. If
+you have multiple types of groups, such as race and sex, it can take a
+little finessing to set up your group data, such as creating a combined
+race-sex group variable, but data setup will follow the same principles
 as above.</p>
 <p>Now that our arrays are set up, organized, and properly named, we can
 finally consolidate them into a <code>list</code> to be used with the
 model:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Y</span>, n <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span></code></pre></div>
 <p>Note that you must specify the names of each array element as above,
 as creating a list with just the objects will not name each element, and
@@ -321,50 +233,50 @@ the names <code>Y</code> and <code>n</code> are necessary for
 what if we only want to run an MCAR or even a UCAR model? We can filter
 the original dataset and follow a similar procedure to prepare our data
 for the MCAR model:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ma_mort_mcar</span> <span class="op">&lt;-</span> <span class="va">maexample</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">maexample</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">ma_mort_mcar</span> <span class="op">&lt;-</span> <span class="va">ma_mort_mcar</span><span class="op">[</span><span class="va">ma_mort_mcar</span><span class="op">$</span><span class="va">Year</span> <span class="op">==</span> <span class="fl">1979</span>, <span class="op">]</span> <span class="co"># filter dataset to only show 1979 data</span></span>
-<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">ma_mort_mcar</span><span class="op">$</span><span class="va">Deaths</span>, nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">14</span><span class="op">)</span> <span class="co"># data goes by sex group first, then county</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">ma_mort_mcar</span><span class="op">$</span><span class="va">Population</span>, nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">14</span><span class="op">)</span></span>
-<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="co"># transpose so that regions are on rows, groups are on columns</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  county <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ma_mort_mcar</span><span class="op">$</span><span class="va">County.Code</span><span class="op">)</span>,</span>
-<span>  group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ma_mort_mcar</span><span class="op">$</span><span class="va">Sex.Code</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Deaths</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span>, data <span class="op">=</span> <span class="va">ma_mort_mcar</span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Population</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span>, data <span class="op">=</span> <span class="va">ma_mort_mcar</span><span class="op">)</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Y</span>, n <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        group</span></span>
-<span><span class="co">#&gt; county   F   M</span></span>
-<span><span class="co">#&gt;   25001 15  57</span></span>
-<span><span class="co">#&gt;   25003 11  63</span></span>
-<span><span class="co">#&gt;   25005 52 191</span></span>
-<span><span class="co">#&gt;   25007  4   1</span></span>
-<span><span class="co">#&gt;   25009 70 239</span></span>
-<span><span class="co">#&gt;   25011  6  27</span></span>
+<span><span class="co">#&gt;            Sex.Code</span></span>
+<span><span class="co">#&gt; County.Code   F   M</span></span>
+<span><span class="co">#&gt;       25001  15  57</span></span>
+<span><span class="co">#&gt;       25003  11  63</span></span>
+<span><span class="co">#&gt;       25005  52 191</span></span>
+<span><span class="co">#&gt;       25007   4   1</span></span>
+<span><span class="co">#&gt;       25009  70 239</span></span>
+<span><span class="co">#&gt;       25011   6  27</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">n</span><span class="op">)</span></span>
-<span><span class="co">#&gt;        group</span></span>
-<span><span class="co">#&gt; county       F     M</span></span>
-<span><span class="co">#&gt;   25001  25239 21261</span></span>
-<span><span class="co">#&gt;   25003  24884 22465</span></span>
-<span><span class="co">#&gt;   25005  80171 71943</span></span>
-<span><span class="co">#&gt;   25007   1498  1361</span></span>
-<span><span class="co">#&gt;   25009 108762 98222</span></span>
-<span><span class="co">#&gt;   25011  10188  9669</span></span></code></pre></div>
-<p>For the UCAR model, setup is even easier:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;            Sex.Code</span></span>
+<span><span class="co">#&gt; County.Code      F      M</span></span>
+<span><span class="co">#&gt;       25001  25239  21261</span></span>
+<span><span class="co">#&gt;       25003  24884  22465</span></span>
+<span><span class="co">#&gt;       25005  80171  71943</span></span>
+<span><span class="co">#&gt;       25007   1498   1361</span></span>
+<span><span class="co">#&gt;       25009 108762  98222</span></span>
+<span><span class="co">#&gt;       25011  10188   9669</span></span></code></pre></div>
+<p>Note that <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code> works by aggregating data along the
+specified variables in the expression argument. In the case of the MCAR
+model, we filter down to the year we want because otherwise, it would
+give us the mortality and population counts for all years in our dataset
+instead of just for 1979.</p>
+<p>For the UCAR model, setup is similar:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ma_mort_ucar</span> <span class="op">&lt;-</span> <span class="va">maexample</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">maexample</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">ma_mort_ucar</span> <span class="op">&lt;-</span> <span class="va">ma_mort_ucar</span><span class="op">[</span></span>
-<span>  <span class="va">ma_mort_ucar</span><span class="op">$</span><span class="va">Year</span> <span class="op">==</span> <span class="fl">1979</span> <span class="op">&amp;</span> <span class="va">ma_mort_ucar</span><span class="op">$</span><span class="va">Sex</span> <span class="op">==</span> <span class="st">"Male"</span>,</span>
+<span>  <span class="va">ma_mort_ucar</span><span class="op">$</span><span class="va">Year</span> <span class="op">==</span> <span class="fl">1979</span> <span class="op">&amp;</span> <span class="va">ma_mort_ucar</span><span class="op">$</span><span class="va">Sex</span> <span class="op">==</span> <span class="st">"Male"</span>, <span class="co"># filter dataset to only show 1979 data for men</span></span>
 <span><span class="op">]</span> <span class="co"># filter dataset to only show 1979 data for men</span></span>
-<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">ma_mort_ucar</span><span class="op">$</span><span class="va">Deaths</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="va">ma_mort_ucar</span><span class="op">$</span><span class="va">Population</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">ma_mort_ucar</span><span class="op">$</span><span class="va">County.Code</span><span class="op">)</span></span>
+<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Deaths</span> <span class="op">~</span> <span class="va">County.Code</span>, data <span class="op">=</span> <span class="va">ma_mort_ucar</span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Population</span> <span class="op">~</span> <span class="va">County.Code</span>, data <span class="op">=</span> <span class="va">ma_mort_ucar</span><span class="op">)</span></span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Y</span>, n <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
+<span><span class="co">#&gt; County.Code</span></span>
 <span><span class="co">#&gt; 25001 25003 25005 25007 25009 25011 </span></span>
 <span><span class="co">#&gt;    57    63   191     1   239    27</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">n</span><span class="op">)</span></span>
+<span><span class="co">#&gt; County.Code</span></span>
 <span><span class="co">#&gt; 25001 25003 25005 25007 25009 25011 </span></span>
 <span><span class="co">#&gt; 21261 22465 71943  1361 98222  9669</span></span></code></pre></div>
 </div>
@@ -373,11 +285,10 @@ for the MCAR model:</p>
 </h2>
 <p>In this vignette, we used data generated from CDC WONDER to construct
 our event and population counts, remove unnecessary rows using
-<code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>, construct arrays using <code><a href="https://rdrr.io/r/base/array.html" class="external-link">array()</a></code>,
-permute those arrays using <code><a href="https://rdrr.io/r/base/aperm.html" class="external-link">aperm()</a></code>, and named the arrays
-using <code><a href="https://rdrr.io/r/base/dimnames.html" class="external-link">dimnames()</a></code>. Setting up the data for <code>RSTr</code>
-can seem daunting at first, but with a few quick tricks in R, it can be
-easy to have your data organized for analysis.</p>
+<code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>, and construct our arrays using
+<code>xtab()</code>. Setting up the data for <code>RSTr</code> can seem
+daunting at first, but with a few quick tricks in R, it can be easy to
+have your data organized for analysis.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
