@@ -108,6 +108,9 @@ Negative and infinite counts are not allowed, but suppressed data
 containing <code>NA</code>’s is acceptable for the <code>Y</code>
 values. Note, however, that <code>n</code> must have all population
 counts;</p></li>
+<li><p><code>Y</code> must have at least one total event. The CAR model
+will not be able to smooth information if there is no event data
+present;</p></li>
 <li><p>For the MSTCAR model, <code>Y</code> and <code>n</code> must be a
 three-dimensional array: the first margin (rows) specifies the region,
 the second margin (columns) specifies the groups of interest, and the
