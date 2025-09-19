@@ -16,9 +16,8 @@
 <url><loc>/index.html</loc></url>
 <url><loc>/reference/RSTr-package.html</loc></url>
 <url><loc>/reference/age_standardize.html</loc></url>
-<url><loc>/reference/aggregate_group.html</loc></url>
+<url><loc>/reference/aggregate_groups.html</loc></url>
 <url><loc>/reference/aggregate_pop.html</loc></url>
-<url><loc>/reference/bind_samples.html</loc></url>
 <url><loc>/reference/expit.html</loc></url>
 <url><loc>/reference/get_credible_interval.html</loc></url>
 <url><loc>/reference/get_medians.html</loc></url>
@@ -32,6 +31,7 @@
 <url><loc>/reference/mamap.html</loc></url>
 <url><loc>/reference/miadj.html</loc></url>
 <url><loc>/reference/miheart.html</loc></url>
+<url><loc>/reference/minsample.html</loc></url>
 <url><loc>/reference/mishp.html</loc></url>
 <url><loc>/reference/run_sampler.html</loc></url>
 </urlset>

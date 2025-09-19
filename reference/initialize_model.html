@@ -68,6 +68,7 @@
 <span>  impute_lb <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  impute_ub <span class="op">=</span> <span class="fl">9</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">1234</span>,</span>
+<span>  .show_plots <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .ignore_checks <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -121,19 +122,23 @@
 
 
 <dt id="arg-impute-lb">impute_lb<a class="anchor" aria-label="anchor" href="#arg-impute-lb"></a></dt>
-<dd><p>If counts are suppressed for privacy reasons, impute_lb is lower bound of suppression, typically 0 or 1</p></dd>
+<dd><p>If counts are suppressed for privacy reasons, <code>impute_lb</code> is lower bound of suppression, typically 0 or 1</p></dd>
 
 
 <dt id="arg-impute-ub">impute_ub<a class="anchor" aria-label="anchor" href="#arg-impute-ub"></a></dt>
-<dd><p>If counts are suppressed for privacy reasons, impute_ub is upper bound of suppression, typically 10</p></dd>
+<dd><p>If counts are suppressed for privacy reasons, <code>impute_ub</code> is upper bound of suppression, typically 10</p></dd>
 
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
 <dd><p>Set of random seeds to use for data replication</p></dd>
 
 
+<dt id="arg--show-plots">.show_plots<a class="anchor" aria-label="anchor" href="#arg--show-plots"></a></dt>
+<dd><p>If set to <code>FALSE</code>, suppresses check plots generated for MSTCAR models</p></dd>
+
+
 <dt id="arg--ignore-checks">.ignore_checks<a class="anchor" aria-label="anchor" href="#arg--ignore-checks"></a></dt>
-<dd><p>If set to TRUE, ignores data checks. Only use if you are certain that your input data is
+<dd><p>If set to <code>TRUE</code>, ignores data checks. Only use if you are certain that your input data is
 correct and you are encountering bugs during setup</p></dd>
 
 </dl></div>
