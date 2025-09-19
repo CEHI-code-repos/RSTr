@@ -95,7 +95,7 @@ developed by <a href="https://link.springer.com/article/10.1007/bf00116466" clas
 and Mollié (1991)</a> with modifications using inverse transform
 sampling for restricted informativeness based on <a href="https://pubmed.ncbi.nlm.nih.gov/33980402/" class="external-link">Quick, et
 al. (2021)</a>:</p>
-<p>For models using <code>method = "binom"</code>,</p>
+<p>For models using <code>method = "binomial"</code>,</p>
 <p><span class="math display">\[
 \begin{split}
 Y_{i} &amp;\sim \text{Binomial}(n_{i}, \theta_{i}) \\
@@ -103,7 +103,7 @@ Y_{i} &amp;\sim \text{Binomial}(n_{i}, \theta_{i}) \\
 i &amp;=\{1,...,N_s\}, j =\{1,...,N_{is}\}
 \end{split}
 \]</span></p>
-<p>For models using <code>method = "pois"</code>,</p>
+<p>For models using <code>method = "poisson"</code>,</p>
 <p><span class="math display">\[  
 \begin{split}
 Y_{i} &amp;\sim \text{Poisson}(n_{i} \theta_{i}) \\
@@ -128,7 +128,7 @@ Z &amp;\sim \text{CAR}(\sigma^2) \\
 <p>The MCAR model used by <code>RSTr</code> is an extension of the model
 developed by <a href="https://link.springer.com/article/10.1007/bf00116466" class="external-link">Besag, York,
 and Mollié (1991)</a>:</p>
-<p>For models using <code>method = "binom"</code>,</p>
+<p>For models using <code>method = "binomial"</code>,</p>
 <p><span class="math display">\[
 \begin{split}
 Y_{ik} &amp;\sim \text{Binomial}(n_{ik}, \theta_{ik}) \\
@@ -137,7 +137,7 @@ Y_{ik} &amp;\sim \text{Binomial}(n_{ik}, \theta_{ik}) \\
 i &amp;=\{1,...,N_s\}, k =\{1,...,N_{g}\}, j=\{1,...,N_{is}\}
 \end{split}
 \]</span></p>
-<p>For models using <code>method = "pois"</code>,</p>
+<p>For models using <code>method = "poisson"</code>,</p>
 <p><span class="math display">\[
 \begin{split}
 Y_{ik} &amp;\sim \text{Poisson}(n_{ik}, \theta_{ik}) \\
@@ -163,7 +163,7 @@ G &amp;\sim \text{InvWishart}(\nu,G_0) \\
 <p>The MSTCAR model used by <code>RSTr</code> is based on the model
 developed by <a href="https://doi.org/10.1214/17-AOAS1068" class="external-link">Quick, et
 al. (2017)</a>:</p>
-<p>For models using <code>method = "binom"</code>,</p>
+<p>For models using <code>method = "binomial"</code>,</p>
 <p><span class="math display">\[
 \begin{split}
 Y_{ikt} &amp;\sim \text{Binomial}(n_{ikt}, \theta_{ikt}) \\
@@ -173,7 +173,7 @@ i &amp;=\{1,...,N_s\},\ k =\{1,...,N_g\},\ t=\{1,...,N_t\},\
 j=\{1,...,N_{is}\}
 \end{split}
 \]</span></p>
-<p>For models using <code>method = "pois"</code>,</p>
+<p>For models using <code>method = "poisson"</code>,</p>
 <p><span class="math display">\[
 \begin{split}
 Y_{ikt} &amp;\sim \text{Poisson}(n_{ikt} \theta_{ikt}) \\

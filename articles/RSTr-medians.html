@@ -157,11 +157,11 @@ to 100.</li>
 </ul>
 <p>Let’s get some reliability metrics for our dataset. First, let’s
 generate our relative precisions at 95% credibility using the
-<code><a href="../reference/get_relative_precision.html">get_relative_precision()</a></code> function and then create a
+<code><a href="../reference/get_medians.html">get_relative_precision()</a></code> function and then create a
 <code>logical</code> <code>array</code> that tells us which estimates
 are unreliable:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rel_prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_relative_precision.html">get_relative_precision</a></span><span class="op">(</span>output <span class="op">=</span> <span class="va">theta</span>, medians <span class="op">=</span> <span class="va">medians</span>, perc_ci <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">rel_prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_relative_precision</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">theta</span>, medians <span class="op">=</span> <span class="va">medians</span>, perc_ci <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
 <span><span class="va">low_rel_prec</span> <span class="op">&lt;-</span> <span class="va">rel_prec</span> <span class="op">&lt;</span> <span class="fl">1</span></span></code></pre></div>
 <p>Now, let’s generate a similar <code>logical</code> <code>array</code>
 for populations less than 1000 and use both of these criteria to create
@@ -198,8 +198,8 @@ suppression criteria. If we suppress our estimates in our more granular,
 non-age-standardized <code>theta</code> samples, we will see that, even
 with a small credible interval, many more counties are suppressed:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rel_prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_relative_precision.html">get_relative_precision</a></span><span class="op">(</span></span>
-<span>  output <span class="op">=</span> <span class="va">theta</span>,</span>
+<code class="sourceCode R"><span><span class="va">rel_prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_relative_precision</a></span><span class="op">(</span></span>
+<span>  sample <span class="op">=</span> <span class="va">theta</span>,</span>
 <span>  medians <span class="op">=</span> <span class="va">medians</span>,</span>
 <span>  perc_ci <span class="op">=</span> <span class="fl">0.5</span></span>
 <span><span class="op">)</span></span>
@@ -221,8 +221,8 @@ with a small credible interval, many more counties are suppressed:</p>
 <p>As we widen our credible interval, the reliability criteria will
 become more conservative and suppress more counties:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rel_prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_relative_precision.html">get_relative_precision</a></span><span class="op">(</span></span>
-<span>  output <span class="op">=</span> <span class="va">theta</span>,</span>
+<code class="sourceCode R"><span><span class="va">rel_prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_relative_precision</a></span><span class="op">(</span></span>
+<span>  sample <span class="op">=</span> <span class="va">theta</span>,</span>
 <span>  medians <span class="op">=</span> <span class="va">medians</span>,</span>
 <span>  perc_ci <span class="op">=</span> <span class="fl">0.995</span></span>
 <span><span class="op">)</span></span>

@@ -156,9 +156,9 @@ dimensions <code>num_region x num_group x num_time</code>. Note that to
 facilitate the Metropolis update done by <code>theta</code>, all values
 are either logit- or log-transformed, depending on which
 <code>method</code> you choose, so be sure to use <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code> or
-<code><a href="../reference/logit.html">logit()</a></code> to transform your data accordingly.
-<code>method = "binom"</code> is associated with <code><a href="../reference/logit.html">logit()</a></code>
-and <code>method = "pois"</code> is associated with
+<code>logit()</code> to transform your data accordingly.
+<code>method = "binomial"</code> is associated with <code>logit()</code>
+and <code>method = "poisson"</code> is associated with
 <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code>;</p></li>
 <li><p><code>beta</code>: The mean rate for each island-group-year on
 the transformed scale. Islands are sets of regions that contain a set of
@@ -254,18 +254,18 @@ will be ignored.</p>
 <div class="section level3">
 <h3 id="the-method-argument">The <code>method</code> argument<a class="anchor" aria-label="anchor" href="#the-method-argument"></a>
 </h3>
-<p><code>method</code> offers two values: <code>"binom"</code> and
-<code>"pois"</code>. These values determine how the data is transformed
-and how the <code>theta</code> Metropolis update is performed:
-<code>"binom"</code> treats the event data as Binomial-distributed and
-<code>"pois"</code> treats the event data as Poisson-distributed.
-Depending on your use case, you’ll want to choose between the two: for
-example, if you are working with very small mortality rates,
-<code>"pois"</code> will work well, but if you are working with birth
-rates, for example, then <code>"binom"</code> will work better. Note
-that <code>"binom"</code> works in most general use cases and
-<code>"pois"</code> only works well for datasets with small rates under
-approximately 1%.</p>
+<p><code>method</code> offers two values: <code>"binomial"</code> and
+<code>"poisson"</code>. These values determine how the data is
+transformed and how the <code>theta</code> Metropolis update is
+performed: <code>"binomial"</code> treats the event data as
+Binomial-distributed and <code>"poisson"</code> treats the event data as
+Poisson-distributed. Depending on your use case, you’ll want to choose
+between the two: for example, if you are working with very small
+mortality rates, <code>"poisson"</code> will work well, but if you are
+working with birth rates, for example, then <code>"binomial"</code> will
+work better. Note that <code>"binomial"</code> works in most general use
+cases and <code>"poisson"</code> only works well for datasets with small
+rates under approximately 1%.</p>
 </div>
 <div class="section level3">
 <h3 id="m0-and-a">
