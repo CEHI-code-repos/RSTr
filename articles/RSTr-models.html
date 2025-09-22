@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Appendix A: The MSTCAR Hierarchical Model • RSTr</title>
+<title>Appendix A: The CAR Hierarchical Models • RSTr</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -21,7 +21,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Appendix A: The MSTCAR Hierarchical Model">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Appendix A: The CAR Hierarchical Models">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -50,7 +50,7 @@
     <li><a class="dropdown-item" href="../articles/RSTr-init.html">03: Initializing Your Model</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-samples.html">04: Gathering and Loading Samples</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-medians.html">05: Calculating Parameter Medians</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-models.html">Appendix A: The MSTCAR Hierarchical Model</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-models.html">Appendix A: The CAR Hierarchical Models</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-troubleshoot.html">Appendix B: Troubleshooting Error Messages</a></li>
   </ul>
 </li>
@@ -71,7 +71,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Appendix A: The MSTCAR Hierarchical Model</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Appendix A: The CAR Hierarchical Models</h1>
             
       
 
@@ -91,9 +91,9 @@ used for each update.</p>
 <h2 id="the-ucar-hierarchical-model">The UCAR Hierarchical Model<a class="anchor" aria-label="anchor" href="#the-ucar-hierarchical-model"></a>
 </h2>
 <p>The UCAR model used by <code>RSTr</code> is based on the model
-developed by <a href="https://link.springer.com/article/10.1007/bf00116466" class="external-link">Besag, York,
+developed by <a href="https://doi.org/10.1007/BF00116466" class="external-link">Besag, York,
 and Mollié (1991)</a> with modifications using inverse transform
-sampling for restricted informativeness based on <a href="https://pubmed.ncbi.nlm.nih.gov/33980402/" class="external-link">Quick, et
+sampling for restricted informativeness based on <a href="https://doi.org/10.1016/j.sste.2021.100420" class="external-link">Quick, et
 al. (2021)</a>:</p>
 <p>For models using <code>method = "binomial"</code>,</p>
 <p><span class="math display">\[
@@ -125,9 +125,9 @@ Z &amp;\sim \text{CAR}(\sigma^2) \\
 <div class="section level2">
 <h2 id="the-mcar-hierarchical-model">The MCAR Hierarchical Model<a class="anchor" aria-label="anchor" href="#the-mcar-hierarchical-model"></a>
 </h2>
-<p>The MCAR model used by <code>RSTr</code> is an extension of the model
-developed by <a href="https://link.springer.com/article/10.1007/bf00116466" class="external-link">Besag, York,
-and Mollié (1991)</a>:</p>
+<p>The MCAR model used by <code>RSTr</code> is based on the model
+developed by <a href="https://doi.org/10.1093/biostatistics/4.1.11" class="external-link">Gelfand and
+Vounatsou (2003)</a>:</p>
 <p>For models using <code>method = "binomial"</code>,</p>
 <p><span class="math display">\[
 \begin{split}
@@ -197,8 +197,6 @@ R_k &amp;= \text{AR}(1,\rho_k) \\
 \tau_k^2 &amp;\sim \text{InvGamma}(a_\tau,b_\tau)
 \end{split}
 \]</span></p>
-<p>For more information regarding the model and its full-conditional
-distributions, reference <a href="https://doi.org/10.1214/17-AOAS1068" class="external-link">Quick, et al. (2017)</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
