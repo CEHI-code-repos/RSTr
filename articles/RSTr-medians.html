@@ -113,8 +113,44 @@ Michigan dataset. To get the medians, we simply load our samples into
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="RSTr-medians_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p>Recall, though, in the previous vignette, we discovered that some
+traceplots were not as stable (i.e., reliable) as others. How can we
+test for reliability in our estimates?</p>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="estimate-reliability">Estimate reliability<a class="anchor" aria-label="anchor" href="#estimate-reliability"></a>
+</h2>
+<p>Reliability can be easily tested in CAR models using two
+criteria:</p>
+<ul>
+<li>Relative precision: In <a href="https://doi.org/10.1177/0282423X241244917" class="external-link">Quick, et al 2024</a>,
+relative precision is measured as a ratio of the posterior median to its
+credible interval. If an estimate’s ratio is less than 1, then that
+estimate is considered unreliable at that level of credibility.
+Effectively, this means that unreliable estimates have a spread of
+samples larger than the value of the estimate itself; and</li>
+<li>Population counts: Though <code>RSTr</code> is designed to stabilize
+low-population regions, there is a limit to the amount of information
+the model can gather, and estimates from exceedingly low-population
+regions may be over-smoothed. Therefore, estimates from any region that
+fall below a specified threshold will be considered unreliable,
+regardless of relative precision. Use your judgment when setting this
+threshold depending on what kind of data you are working with: for
+example, 1,000 population is generally a good rule of thumb for
+mortality data, whereas an appropriate cutoff for birth data is closer
+to 100.</li>
+</ul>
+<p>Let’s get some reliability metrics for our dataset. First, let’s
+generate our relative precisions at 95% credibility using the
+<code><a href="../reference/get_medians.html">get_relative_precision()</a></code> function and then create a
+<code>logical</code> <code>array</code> that tells us which estimates
+are unreliable:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rel_prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_relative_precision</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">theta</span>, medians <span class="op">=</span> <span class="va">medians</span>, perc_ci <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<span><span class="va">low_rel_prec</span> <span class="op">&lt;-</span> <span class="va">rel_prec</span> <span class="op">&lt;</span> <span class="fl">1</span></span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
