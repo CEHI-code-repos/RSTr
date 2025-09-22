@@ -201,6 +201,7 @@ us to run out-of-the-box:</p>
 <span></span>
 <span><span class="fu"><a href="../reference/initialize_model.html">initialize_model</a></span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"my_test_model"</span>,</span>
+<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">miheart</span>,</span>
 <span>  adjacency <span class="op">=</span> <span class="va">miadj</span></span>
 <span><span class="op">)</span></span>
@@ -216,8 +217,10 @@ us to run out-of-the-box:</p>
 our model. <code><a href="../reference/initialize_model.html">initialize_model()</a></code> accepts a few different
 arguments in this case:</p>
 <ul>
-<li>The <code>name</code> argument specifies the directory where the
-model data lives;</li>
+<li>The <code>name</code> argument specifies the folder where the model
+data lives;</li>
+<li>The <code>dir</code> argument specifies the directory where to save
+the folder;</li>
 <li>The <code>data</code> argument specifies our event data; and</li>
 <li>The <code>adjacency</code> argument specifies our adjacency
 structure.</li>
@@ -262,9 +265,9 @@ gather our final rate estimates. To get your samples, simply specify the
 name of the model and the directory:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/run_sampler.html">run_sampler</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Mon Sep 22 19:59:52</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Mon Sep 22 20:10:24</span></span></code></pre></div>
 <p><img src="RSTr_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
-<pre><code><span><span class="co">#&gt; Model finished at Mon Sep 22 20:00:15</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Model finished at Mon Sep 22 20:10:48</span></span></code></pre>
 <p>The <code><a href="../reference/run_sampler.html">run_sampler()</a></code> function takes information saved in
 <code>my_test_model</code> and uses it to run the <code>RSTr</code>
 Gibbs sampler. The <code>RSTr</code> package works by generating samples
