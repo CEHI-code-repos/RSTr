@@ -84,11 +84,11 @@
 <h2 id="sec-overview">Overview<a class="anchor" aria-label="anchor" href="#sec-overview"></a>
 </h2>
 <p>The <code>RSTr</code> package is a tool that provides a host of
-Bayesian spatiotemporal models in conjunction with C++ to help you
-quickly and easily generate spatially smoothed estimates for your
-spatial data. This document introduces you to the basics of the
-<code>RSTr</code> package and shows you how to apply the basic functions
-to the included example data to get small area estimates.</p>
+Bayesian spatiotemporal models in conjunction with C++ to quickly and
+easily generate spatially smoothed estimates for your spatial data. This
+document introduces you to the basics of the <code>RSTr</code> package
+and shows you how to apply the basic functions to the included example
+data to get small area estimates.</p>
 </div>
 <div class="section level2">
 <h2 id="sec-models">Models<a class="anchor" aria-label="anchor" href="#sec-models"></a>
@@ -120,8 +120,8 @@ functionality with an MSTCAR model.</p>
 al. (2021)</a> is that of over-smoothing due to the informativeness of
 the BYM model. The <code>RSTr</code> package provides parameters to
 restrict informativeness in UCAR models for both Poisson- and
-binomially-distributed data. Informativeness restrictions for the MCAR
-and MSTCAR models are under progress, and will be incorporated into the
+binomial-distributed data. Informativeness restrictions for the MCAR and
+MSTCAR models are under progress, and will be incorporated into the
 <code>RSTr</code> package as they are developed.</p>
 </div>
 </div>
@@ -132,21 +132,21 @@ and MSTCAR models are under progress, and will be incorporated into the
 <code>miheart</code>, <code>miadj</code>, and <code>mishp</code>.
 <code>miheart</code> and <code>miadj</code> are related to the necessary
 components of our models, and <code>mishp</code> is a shapefile that
-helps you map your results. To run an MSTCAR model, two components are
+helps map your results. To run an MSTCAR model, two components are
 necessary:</p>
 <ul>
 <li><p>Event counts for a parameter of interest, stratified by region,
-group, and time period, along with the corresponding population counts.
-These data may be binomial- or Poisson-distributed. The example dataset
-is binomial-distributed myocardial infarction deaths in six age groups
-from 1979-1988 in Michigan. Reference <code>miheart</code> to see how
-this data looks or <code><a href="../reference/miheart.html">?miheart</a></code> for more information on the
-dataset. For more information on preparing your event data, read
+group, and time period, and its corresponding population counts. These
+data may be binomial- or Poisson-distributed. The example dataset is
+binomial-distributed myocardial infarction deaths in six age groups from
+1979-1988 in Michigan. Reference <code>miheart</code> to see how this
+data looks or <code><a href="../reference/miheart.html">?miheart</a></code> for more information on the dataset.
+For more information on preparing your event data, read
 <code><a href="../articles/RSTr-event.html">vignette("RSTr-event")</a></code>.</p></li>
-<li><p>An adjacency structure for your data. This is, in essence, a
-dataset that tells <code>RSTr</code> which regions are neighbors with
-each other. <code>RSTr</code> will accept a <code>list</code> of vectors
-whose indices represent the neighbors of each region. Reference
+<li><p>An adjacency structure for your data. This is a dataset that
+tells <code>RSTr</code> which regions are neighbors with each other.
+<code>RSTr</code> will accept a <code>list</code> of vectors whose
+indices represent the neighbors of each region. Reference
 <code>miadj</code> for an example adjacency structure list. For more
 information on preparing your adjacency data, read
 <code><a href="../articles/RSTr-adj.html">vignette("RSTr-adj")</a></code>.</p></li>
@@ -176,8 +176,8 @@ functions and their purpose:</p>
 creates a local folder with all associated files to prepare for sample
 generation;</li>
 <li>
-<code><a href="../reference/run_sampler.html">run_sampler()</a></code>: The Gibbs sampler function which saves
-your model and its samples to a local folder;</li>
+<code><a href="../reference/run_sampler.html">run_sampler()</a></code>: The Gibbs sampler function which
+generates samples and saves them to a local folder;</li>
 <li>
 <code><a href="../reference/load_samples.html">load_samples()</a></code>: Imports samples generated with
 <code><a href="../reference/run_sampler.html">run_sampler()</a></code> into your R session; and</li>
@@ -221,7 +221,8 @@ arguments in this case:</p>
 data lives;</li>
 <li>The <code>dir</code> argument specifies the directory where to save
 the folder;</li>
-<li>The <code>data</code> argument specifies our event data; and</li>
+<li>The <code>data</code> argument specifies event/population data;
+and</li>
 <li>The <code>adjacency</code> argument specifies our adjacency
 structure.</li>
 </ul>
@@ -232,26 +233,26 @@ a set of <code>.Rds</code> files associated with model configuration.
 Nothing here is saved in the R environment because MSTCAR models can
 quickly become so large that it’s impossible to hold the entire sample
 in RAM. Therefore, all of the data related to running the model is saved
-locally. Should you want to save it somewhere besides the temporary
-directory, you can specify a folder with the <code>dir</code>
-argument.</p>
+locally. Should you want to save your model somewhere besides the
+temporary directory for future use, you can specify a folder with the
+<code>dir</code> argument.</p>
 <p>Note that <code><a href="../reference/initialize_model.html">initialize_model()</a></code> accepts more arguments than
 are used here, but these are the only ones that are needed to get
 started. Also note that when we run the model, we get a couple of
 messages telling us certain priors and initial values were automatically
 generated. Priors and initial values can be specified manually, but this
 is outside the scope of this vignette. There will also be checks
-performed on the input data: if something is wrong, it will tell you
-what is wrong and how to fix it. For a full list of diagnostic errors
-and what they mean, read
+performed on the input data: if something is wrong, the warnings and
+error messages will tell you what is wrong and how to fix it. For a list
+of diagnostic errors and what they mean, read
 <code>vignette("RSTr-troubleshooting")</code>.</p>
 <p>Finally, you may notice a plot was generated during model setup. This
-is one last double-check to make sure the data are set up correctly
-before running the model, showing the total event and population count
-for each year of data. If the number of datapoints does not match up to
-the number of years in your dataset or if the changes in values over
-time don’t entirely make sense, you may need to double-check your data
-input.</p>
+is one last double-check for the MSTCAR model to make sure the data are
+set up correctly before running the model, showing the total event and
+population count for each year of data. If the number of datapoints does
+not match up to the number of years in your dataset or if the changes in
+values over time don’t entirely make sense, you may need to double-check
+your data input.</p>
 <p>If you want to learn more about the <code><a href="../reference/initialize_model.html">initialize_model()</a></code>
 function, read <code><a href="../articles/RSTr-init.html">vignette("RSTr-init")</a></code>.</p>
 </div>
@@ -265,16 +266,16 @@ gather our final rate estimates. To get your samples, simply specify the
 name of the model and the directory:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/run_sampler.html">run_sampler</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Mon Sep 22 20:48:28</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Tue Sep 23 21:58:48</span></span></code></pre></div>
 <p><img src="RSTr_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
-<pre><code><span><span class="co">#&gt; Model finished at Mon Sep 22 20:48:52</span></span></code></pre>
-<p>The <code><a href="../reference/run_sampler.html">run_sampler()</a></code> function takes information saved in
+<pre><code><span><span class="co">#&gt; Model finished at Tue Sep 23 21:59:12</span></span></code></pre>
+<p><code><a href="../reference/run_sampler.html">run_sampler()</a></code> takes information saved in
 <code>my_test_model</code> and uses it to run the <code>RSTr</code>
 Gibbs sampler. The <code>RSTr</code> package works by generating samples
 in batches, then saving these batches locally inside of
 <code>my_test_model</code> to be retrieved once the model is finished
 running. Generating samples in batches helps facilitate the tuning of
-the underlying MCMC algorithm and it helps avoid computational burden by
+the underlying MCMC algorithm and helps avoid computational burden by
 only holding a fraction of the total samples in memory at any given
 time. <code>RSTr</code> runs 6,000 iterations split into 60 batches of
 size 100 each. All batches are thinned for every 10 iterations by
@@ -283,12 +284,11 @@ Moreover, thinning saves space when writing samples to the hard drive,
 as batches from larger models can balloon to gigabytes of size before
 thinning. Console outputs will show when the last batch was saved and
 the current iteration count of the model. The <code><a href="../reference/run_sampler.html">run_sampler()</a></code>
-function also saves a few <code>.Rds</code> files containing all the
-different information regarding the model to the
-<code>my_test_model</code> folder in case you need to reload your model
-at a later date. If the model crashes for any reason or R closes while
-the model is being run, the model will keep track of the current batch
-and pick back up where it left off when it is re-run.</p>
+function also updates the <code>.Rds</code> files containing different
+information regarding the model in case you need to reload your model at
+a later date. If the model crashes for any reason or R closes while the
+model is being run, the metadata <code>Rds</code> files will keep track
+of the current batch and pick back up where it left off when re-run.</p>
 <p>If you want to learn more about the <code><a href="../reference/run_sampler.html">run_sampler()</a></code>
 function, read <code><a href="../articles/RSTr-samples.html">vignette("RSTr-samples")</a></code>.</p>
 </div>
@@ -303,28 +303,27 @@ function, read <code><a href="../articles/RSTr-samples.html">vignette("RSTr-samp
 our available parameters, but let’s pull in the outputs for
 <code>theta</code>, our rate estimates:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_samples.html">load_samples</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, burn <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_samples.html">load_samples</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, param <span class="op">=</span> <span class="st">"theta"</span>, burn <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
 <p>Here, the <code><a href="../reference/load_samples.html">load_samples()</a></code> function brings in samples from
 the model <code>my_test_model</code> in R’s temporary directory, only
 loading in iterations after <code>burn</code>. The <code>burn</code>
 argument works to ensure that the estimates we get are sound by
-specifying a period where the model has a bit of time to “figure itself
-out” before gathering samples. In total, we have pulled in
+specifying a period where the model has a bit of time to stabilize
+before gathering samples. In total, we have pulled in
 <code>(6000 - 2000) / 10 = 400</code> samples, as the sampler only saves
-every 10 iterations. To learn more about post-Gibbs sampler diagnostics,
-read <code><a href="../articles/RSTr-samples.html">vignette("RSTr-samples")</a></code>.</p>
-<p>If you want to learn more about the <code><a href="../reference/load_samples.html">load_samples()</a></code>
-function, read <code><a href="../articles/RSTr-samples.html">vignette("RSTr-samples")</a></code>.</p>
+every 10 iterations. To learn more about post-Gibbs sampler diagnostics
+or about <code><a href="../reference/load_samples.html">load_samples()</a></code>, read
+<code><a href="../articles/RSTr-samples.html">vignette("RSTr-samples")</a></code>.</p>
 </div>
 <div class="section level3">
 <h3 id="sec-getmedians">
 <code>get_medians()</code><a class="anchor" aria-label="anchor" href="#sec-getmedians"></a>
 </h3>
-<p>With our output loaded into R, we can finally get our estimates. We
-put our <code>output</code> object into the <code><a href="../reference/get_medians.html">get_medians()</a></code>
-function:</p>
+<p>With our output loaded into R, we can finally get our estimates by
+putting our <code>samples</code> object into the
+<code><a href="../reference/get_medians.html">get_medians()</a></code> function:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">medians</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_medians</a></span><span class="op">(</span><span class="va">output</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">medians</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_medians</a></span><span class="op">(</span><span class="va">samples</span><span class="op">)</span></span></code></pre></div>
 <p>This creates an <code>array</code> object with median estimates for
 <code>theta</code> along each year, county, and region:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -403,7 +402,7 @@ spatiotemporal model.</p>
 <code><a href="../reference/initialize_model.html">initialize_model()</a></code> function, getting samples with the
 <code><a href="../reference/run_sampler.html">run_sampler()</a></code> function, loading those samples into R with
 the <code><a href="../reference/load_samples.html">load_samples()</a></code> function, and finally making a map with
-estimates gathered with the <code><a href="../reference/get_medians.html">get_medians()</a></code> function. What
+estimates gathered from the <code><a href="../reference/get_medians.html">get_medians()</a></code> function. What
 we’ve discussed here is just scratching the surface of the
 <code>RSTr</code> package. Other package vignettes will dive deeper into
 the intricacies of each component of the package, into the construction

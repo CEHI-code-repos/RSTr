@@ -200,13 +200,13 @@ with dimensions <code>num_group x num_group</code>.</p></li>
 <p>Note that you don’t have to specify inits for <em>all</em> parameters
 if you only want to specify some of them - any undefined inits will be
 defined by the default values. For example, you can specify only the
-prior for the <code>theta</code> values and all other values will be
+initial values for <code>theta</code> and all other values will be
 generated on their own. However, if one value is specified for a certain
 parameter in <code>inits</code>, all values must be specified for that
-parameter in <code>inits</code>: you cannot, for example, define priors
-for just one year of <code>theta</code>. Finally, any values included in
-your <code>inits</code> list that aren’t aligned with the above names
-will be ignored.</p>
+parameter in <code>inits</code>: you cannot, for example, define initial
+values for just one year of <code>theta</code>. Finally, any values
+included in your <code>inits</code> list that aren’t aligned with the
+above names will be ignored.</p>
 </div>
 <div class="section level3">
 <h3 id="the-priors-argument">The <code>priors</code> argument<a class="anchor" aria-label="anchor" href="#the-priors-argument"></a>
