@@ -229,7 +229,7 @@ counties are associated with which indices:</p>
 necessary to our adjacency structure using
 <code><a href="../reference/add_neighbors.html">add_neighbors()</a></code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">new_neighs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">10</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">new_neighs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="va">ma_adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_neighbors.html">add_neighbors</a></span><span class="op">(</span>adjacency <span class="op">=</span> <span class="va">ma_adj</span>, neighs <span class="op">=</span> <span class="va">new_neighs</span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="../reference/add_neighbors.html">add_neighbors()</a></code> mutually appends each index listed in
 <code>new_neighs</code> to each respective list of neighbors, removing
