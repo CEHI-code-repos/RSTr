@@ -98,8 +98,7 @@ get_relative_precision() generates the relative precision of each estimate using
 <span class="r-in"><span><span class="co"># Reducing perc_ci narrows the credible interval</span></span></span>
 <span class="r-in"><span><span class="va">minci_75</span> <span class="op">&lt;-</span> <span class="fu">get_credible_interval</span><span class="op">(</span><span class="va">minsample</span>, perc_ci <span class="op">=</span> <span class="fl">0.75</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># low relative precision due to small data size</span></span></span>
-<span class="r-in"><span><span class="va">minrp</span> <span class="op">&lt;-</span> <span class="fu">get_relative_precision</span><span class="op">(</span><span class="va">minsample</span>, <span class="va">minci</span><span class="op">)</span> </span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in medians/(ci$hi - ci$lo):</span> non-conformable arrays</span>
+<span class="r-in"><span><span class="va">minrp</span> <span class="op">&lt;-</span> <span class="fu">get_relative_precision</span><span class="op">(</span><span class="va">minmedians</span>, <span class="va">minci</span><span class="op">)</span> </span></span>
 <span class="r-in"><span><span class="co"># reducing CI increases relative precision</span></span></span>
 <span class="r-in"><span><span class="va">minrp_75</span> <span class="op">&lt;-</span> <span class="fu">get_relative_precision</span><span class="op">(</span><span class="va">minmedians</span>, <span class="va">minci_75</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># find estimates with low relative precision</span></span></span>
