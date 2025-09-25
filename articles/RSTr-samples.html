@@ -92,11 +92,11 @@ plotting, we can look at our results and make sure they make sense.</p>
 <h2 id="the-run_sampler-function">The <code>run_sampler()</code> function<a class="anchor" aria-label="anchor" href="#the-run_sampler-function"></a>
 </h2>
 <p><code><a href="../reference/run_sampler.html">run_sampler()</a></code> takes in four arguments:
-<code>name</code>, <code>dir</code>, <code>.show_plots</code>, and
+<code>name</code>, <code>dir</code>, <code>show_plots</code>, and
 <code>.discard_burnin</code>. <code>name</code> and <code>dir</code> are
 associated with the name of the folder that contains the model content
 and the directory where that folder lives, respectively.
-<code>.show_plots</code> allows you to hide the traceplots generated
+<code>show_plots</code> allows you to hide the traceplots generated
 while the model runs and <code>.discard_burnin</code> prevents samples
 from being saved before the 2000-iteration burn-in period in case the
 dataset is particularly large. The information needed to generate the
@@ -121,9 +121,9 @@ example, we can begin a simple model and generate samples:</p>
 <span><span class="co">#&gt; Model ready!</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/run_sampler.html">run_sampler</a></span><span class="op">(</span><span class="st">"my_test_model"</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Thu Sep 25 20:01:34</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Thu Sep 25 21:21:12</span></span></code></pre></div>
 <p><img src="RSTr-samples_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
-<pre><code><span><span class="co">#&gt; Model finished at Thu Sep 25 20:01:59</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Model finished at Thu Sep 25 21:21:37</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="the-load_samples-function">The <code>load_samples()</code> function<a class="anchor" aria-label="anchor" href="#the-load_samples-function"></a>
