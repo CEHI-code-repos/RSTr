@@ -255,8 +255,8 @@ adjacency information saved in your model’s
 <code>spatial_data.Rds</code> file, the indices will have changed. This
 is because <code>ma_adj</code> is only used within Rcpp, which uses a
 0-indexing system as opposed to the 1-indexing system used by R. When
-inputting data into <code><a href="../reference/initialize_model.html">initialize_model()</a></code>, only use a
-1-indexed adjacency structure.</p>
+inputting data into <code>initialize_*()</code>, only use a 1-indexed
+adjacency structure.</p>
 <p>Finally, even though we connected the two island counties to the
 mainland counties of MA, as long as each region has at least one
 neighbor, it is usable within <code>RSTr</code>. This means that,

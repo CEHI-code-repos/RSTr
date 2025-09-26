@@ -172,7 +172,7 @@ area estimates from your dataset. Here is a brief overview of the basic
 functions and their purpose:</p>
 <ul>
 <li>
-<code><a href="../reference/initialize_model.html">initialize_model()</a></code>: Inputs data and model specifics and
+<code>initialize_*()</code>: Inputs data and model specifics and
 creates a local folder with all associated files to prepare for sample
 generation;</li>
 <li>
@@ -190,8 +190,8 @@ generates samples and saves them to a local folder;</li>
 <h2 id="sec-init">Example Model<a class="anchor" aria-label="anchor" href="#sec-init"></a>
 </h2>
 <div class="section level3">
-<h3 id="initialize_model">
-<code>initialize_model()</code><a class="anchor" aria-label="anchor" href="#initialize_model"></a>
+<h3 id="initialize_mstcar">
+<code>initialize_mstcar()</code><a class="anchor" aria-label="anchor" href="#initialize_mstcar"></a>
 </h3>
 <p>With an understanding of the example datasets and the functions, we
 can start running our first model. The example datasets are set up for
@@ -199,11 +199,11 @@ us to run out-of-the-box:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cehi-code-repos.github.io/RSTr/" class="external-link">RSTr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/initialize_model.html">initialize_model</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="../reference/initialize_ucar.html">initialize_mstcar</a></span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"my_test_model"</span>,</span>
-<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">miheart</span>,</span>
-<span>  adjacency <span class="op">=</span> <span class="va">miadj</span></span>
+<span>  adjacency <span class="op">=</span> <span class="va">miadj</span>,</span>
+<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Checking data...</span></span></code></pre></div>
 <p><img src="RSTr_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
@@ -213,20 +213,19 @@ us to run out-of-the-box:</p>
 <span><span class="co">#&gt; Checking priors...</span></span>
 <span><span class="co">#&gt; The following objects were created using defaults in 'priors': theta_sd tau_a tau_b Ag_scale Ag_df G_df rho_a rho_b rho_sd</span></span>
 <span><span class="co">#&gt; Model ready!</span></span></code></pre>
-<p>Here, we use the <code><a href="../reference/initialize_model.html">initialize_model()</a></code> function to specify
-our model. <code><a href="../reference/initialize_model.html">initialize_model()</a></code> accepts a few different
+<p>Here, we use the <code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code> function to specify
+our model. <code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code> accepts a few different
 arguments in this case:</p>
 <ul>
 <li>The <code>name</code> argument specifies the folder where the model
 data lives;</li>
-<li>The <code>dir</code> argument specifies the directory where to save
-the folder;</li>
-<li>The <code>data</code> argument specifies event/population data;
-and</li>
+<li>The <code>data</code> argument specifies event/population data;</li>
 <li>The <code>adjacency</code> argument specifies our adjacency
-structure.</li>
+structure; and</li>
+<li>The <code>dir</code> argument specifies the directory where to save
+the folder.</li>
 </ul>
-<p><code><a href="../reference/initialize_model.html">initialize_model()</a></code> creates a folder named
+<p><code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code> creates a folder named
 <code>my_test_model</code> in R’s temporary directory containing folders
 that will hold batches of outputs for each parameter update, along with
 a set of <code>.Rds</code> files associated with model configuration.
@@ -236,8 +235,8 @@ in RAM. Therefore, all of the data related to running the model is saved
 locally. Should you want to save your model somewhere besides the
 temporary directory for future use, you can specify a folder with the
 <code>dir</code> argument.</p>
-<p>Note that <code><a href="../reference/initialize_model.html">initialize_model()</a></code> accepts more arguments than
-are used here, but these are the only ones that are needed to get
+<p>Note that <code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code> accepts more arguments
+than are used here, but these are the only ones that are needed to get
 started. Also note that when we run the model, we get a couple of
 messages telling us certain priors and initial values were automatically
 generated. Priors and initial values can be specified manually, but this
@@ -253,8 +252,9 @@ population count for each year of data. If the number of datapoints does
 not match up to the number of years in your dataset or if the changes in
 values over time don’t entirely make sense, you may need to double-check
 your data input.</p>
-<p>If you want to learn more about the <code><a href="../reference/initialize_model.html">initialize_model()</a></code>
-function, read <code><a href="../articles/RSTr-init.html">vignette("RSTr-init")</a></code>.</p>
+<p>If you want to learn more about <code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code> and
+the other initialization functions, read
+<code><a href="../articles/RSTr-init.html">vignette("RSTr-init")</a></code>.</p>
 </div>
 <div class="section level3">
 <h3 id="sec-samples">
@@ -266,9 +266,9 @@ gather our final rate estimates. To get your samples, simply specify the
 name of the model and the directory:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/run_sampler.html">run_sampler</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Thu Sep 25 21:21:44</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Fri Sep 26 13:14:40</span></span></code></pre></div>
 <p><img src="RSTr_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
-<pre><code><span><span class="co">#&gt; Model finished at Thu Sep 25 21:22:09</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Model finished at Fri Sep 26 13:15:04</span></span></code></pre>
 <p><code><a href="../reference/run_sampler.html">run_sampler()</a></code> takes information saved in
 <code>my_test_model</code> and uses it to run the <code>RSTr</code>
 Gibbs sampler. The <code>RSTr</code> package works by generating samples
@@ -399,7 +399,7 @@ spatiotemporal model.</p>
 <h2 id="closing-thoughts">Closing Thoughts<a class="anchor" aria-label="anchor" href="#closing-thoughts"></a>
 </h2>
 <p>This vignette introduces you to inputting data into the
-<code><a href="../reference/initialize_model.html">initialize_model()</a></code> function, getting samples with the
+<code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code> function, getting samples with the
 <code><a href="../reference/run_sampler.html">run_sampler()</a></code> function, loading those samples into R with
 the <code><a href="../reference/load_samples.html">load_samples()</a></code> function, and finally making a map with
 estimates gathered from the <code><a href="../reference/get_medians.html">get_medians()</a></code> function. What
