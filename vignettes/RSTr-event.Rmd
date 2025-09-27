@@ -122,4 +122,4 @@ head(data$n)
 
 ## Closing Thoughts
 
-In this vignette, we used data generated from CDC WONDER to construct our event and population counts, remove unnecessary rows using `filter()`, and construct our arrays using `xtab()`. Setting up the data for `RSTr` can seem daunting at first, but with a few quick tricks in R, it can be easy to have your data organized for analysis.
+In this vignette, we used data generated from CDC WONDER to construct our event and population counts, remove unnecessary rows using `filter()`, and construct our arrays using `xtabs()`. Setting up the data for `RSTr` can seem daunting at first, but with a few quick tricks in R, it can be easy to have your data organized for analysis.
