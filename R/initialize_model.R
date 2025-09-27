@@ -55,7 +55,9 @@ initialize_model <- function(
       dir.create(paste0(dir, name, "/", par))
     }
   }
-  set.seed(seed)
+  if (!is.null(seed)) {
+    set.seed(seed)
+  }
   params <- list(
     seed = .Random.seed,
     batch = 0,
@@ -142,7 +144,7 @@ initialize_ucar <- function(
   method = c("binomial", "poisson"),
   impute_lb = 1,
   impute_ub = 9,
-  seed = 1234,
+  seed = NULL,
   inits = NULL,
   priors = NULL
 ) {
@@ -180,7 +182,7 @@ initialize_ucar_restricted <- function(
   method = c("binomial", "poisson"),
   impute_lb = 1,
   impute_ub = 9,
-  seed = 1234,
+  seed = NULL,
   inits = NULL,
   priors = NULL
 ) {
@@ -220,7 +222,7 @@ initialize_mcar <- function(
   method = c("binomial", "poisson"),
   impute_lb = 1,
   impute_ub = 9,
-  seed = 1234,
+  seed = NULL,
   inits = NULL,
   priors = NULL
 ) {
@@ -255,7 +257,7 @@ initialize_mstcar <- function(
   method = c("binomial", "poisson"),
   impute_lb = 1,
   impute_ub = 9,
-  seed = 1234,
+  seed = NULL,
   inits = NULL,
   priors = NULL,
   rho_up = FALSE
