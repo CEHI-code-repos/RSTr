@@ -19,80 +19,63 @@ check_inits_u <- function(inits, data, num_island) {
     stop("One or more objects missing from list 'inits': ", paste(chk[miss], collapse = ", "))
   }
   # Check for warnings
-  warnout <- NULL
-  warnct <- 0
+  warnout <- character()
   # Check for unused elements in 'inits'
   chk_elem <- which(!(names(inits) %in% chk))
   if (length(chk_elem)) {
-    warnct <- warnct + 1
-    warntxt <- paste(warnct, ": Unused elements of list 'inits':", paste(names(inits)[chk_elem], collapse = ", "))
-    warnout <- c(warnout, warntxt)
+    warnout <- c(warnout, paste("Unused elements of list 'inits':", paste(names(inits)[chk_elem], collapse = ", ")))
   }
-  if (warnct) {
-    warning(paste(warnct, "warning(s) found in list 'inits':\n", paste(warnout, collapse = "\n ")))
+  if (length(warnout) != 0) {
+    warnout <- paste(seq_along(warnout), ":", warnout)
+    warning(paste(length(warnout), "warning(s) found in list 'inits':\n", paste(warnout, collapse = "\n ")))
   }
 
   # Check for errors
-  errout <- NULL
-  errct <- 0
+  errout <- character()
   # theta
   # dimensions don't match num_region num_group num_time
   if (!all(dim(theta) == dim(Y))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": theta is not a num_region x num_group x num_time array. Ensure dim(theta) == dim(Y) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "theta is not a num_region x num_group x num_time array. Ensure dim(theta) == dim(Y) or use default value")
   }
   # values are infinite
   if (any(!is.finite(theta))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": theta contains infinite values. Ensure all(is.finite(theta)) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "theta contains infinite values. Ensure all(is.finite(theta)) or use default value")
   }
 
   # beta
   # length doesn't match num_island
   if (!all(dim(beta) == c(num_island, num_group, num_time))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": beta is not an num_island x num_group x num_time array. Ensure dim(beta) == num_island x num_group x num_time or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "beta is not an num_island x num_group x num_time array. Ensure dim(beta) == num_island x num_group x num_time or use default value")
   }
   # values are infinite
   if (any(!is.finite(beta))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": beta contains infinite values. Ensure all(is.finite(beta)) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "beta contains infinite values. Ensure all(is.finite(beta)) or use default value")
   }
   # sig2
   # is non-positive or infinite
   if (any(sig2 <= 0) | any(!is.finite(sig2))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Some or all sig2 are non-positive or infinite. Ensure all sig2 > 0 and not infinite or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Some or all sig2 are non-positive or infinite. Ensure all sig2 > 0 and not infinite or use default value")
   }
 
   # tau2
   # is non-positive or infinite
   if (any(tau2 <= 0) | any(!is.finite(tau2))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Some or all tau2 are non-positive or infinite. Ensure all tau2 > 0 and not infinite or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Some or all tau2 are non-positive or infinite. Ensure all tau2 > 0 and not infinite or use default value")
   }
 
   # Z
   # length doesn't match num_region
   if (!all(dim(Z) == dim(Y))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Z is not an num_region x num_group x num_time array. Ensure dim(Z) == dim(Y) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Z is not an num_region x num_group x num_time array. Ensure dim(Z) == dim(Y) or use default value")
   }
   # values are infinite
   if (any(!is.finite(Z))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Z contains infinite values. Ensure all(is.finite(Z)) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Z contains infinite values. Ensure all(is.finite(Z)) or use default value")
   }
-  if (errct) {
-    stop(paste(errct, "error(s) found in list 'inits':\n", paste(errout, collapse = "\n ")))
+
+  if (length(errout) != 0) {
+    errout <- paste(seq_along(errout), ":", errout)
+    stop(paste(length(errout), "error(s) found in list 'inits':\n", paste(errout, collapse = "\n ")))
   }
 }
 
@@ -113,105 +96,81 @@ check_inits_m <- function(inits, num_region, num_group, num_island) {
     stop("One or more objects missing from list 'inits': ", paste(chk[miss], collapse = ", "))
   }
   # Check for warnings
-  warnout <- NULL
-  warnct <- 0
+  warnout <- character()
   # Check for unused elements in 'inits'
   chk_elem <- which(!(names(inits) %in% chk))
   if (length(chk_elem)) {
-    warnct <- warnct + 1
-    warntxt <- paste(warnct, ": Unused elements of list 'inits':", paste(names(inits)[chk_elem], collapse = ", "))
-    warnout <- c(warnout, warntxt)
+    warnout <- c(warnout, paste("Unused elements of list 'inits':", paste(names(inits)[chk_elem], collapse = ", ")))
   }
-  if (warnct) {
-    warning(paste(warnct, "warning(s) found in list 'inits':\n", paste(warnout, collapse = "\n ")))
+  if (length(warnout) != 0) {
+    warnout <- paste(seq_along(warnout), ":", warnout)
+    warning(paste(length(warnout), "warning(s) found in list 'inits':\n", paste(warnout, collapse = "\n ")))
   }
 
   # Check for errors
-  errout <- NULL
-  errct <- 0
+  errout <- character()
   # theta
   # dimensions don't match num_region num_group
   if (!all(dim(theta) == c(num_region, num_group))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": theta is not an num_region x num_group array. Ensure dim(theta) == dim(Y) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "theta is not an num_region x num_group array. Ensure dim(theta) == dim(Y) or use default value")
   }
   # values are infinite
   if (any(!is.finite(theta))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": theta contains infinite values. Ensure all(is.finite(theta)) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "theta contains infinite values. Ensure all(is.finite(theta)) or use default value")
   }
 
   # beta
   # dimensions don't match num_island num_group
   if (!all(dim(beta) == c(num_island, num_group))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": beta is not an num_island x num_group array. Ensure dim(beta) == num_island x num_group or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "beta is not an num_island x num_group array. Ensure dim(beta) == num_island x num_group or use default value")
   }
   # values are infinite
   if (any(!is.finite(beta))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": beta contains infinite values. Ensure all(is.finite(beta)) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "beta contains infinite values. Ensure all(is.finite(beta)) or use default value")
   }
   # G
   sig2 <- diag(G)
   gcor <- G[lower.tri(G)]
   # G not symmetric
   if (!isSymmetric(G)) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": G is not symmetric. Ensure G is symmetric or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "G is not symmetric. Ensure G is symmetric or use default value")
   }
 
   # sig2
   # is non-positive or infinite
   if (any((sig2 <= 0) | !is.finite(sig2))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Diagonals of G contain non-positive values. Ensure all diag(G) > 0 and not infinite or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Diagonals of G contain non-positive values. Ensure all diag(G) > 0 and not infinite or use default value")
   }
 
   # gcor
   # values are infinite
   if (any(!is.finite(gcor))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Off-diagonals of G contain infinite values. Ensure all(is.finite(G)) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Off-diagonals of G contain infinite values. Ensure all(is.finite(G)) or use default value")
   }
 
   # tau2
   # length not num_group
   if (length(tau2) != num_group) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": tau2 is not length num_group. Ensure length(tau2) == num_group or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "tau2 is not length num_group. Ensure length(tau2) == num_group or use default value")
   }
   # is non-positive or infinite
   if (any((tau2 <= 0) | !is.finite(tau2))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": tau2 contains non-positive values. Ensure all(tau2 > 0) and not infinite or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "tau2 contains non-positive values. Ensure all(tau2 > 0) and not infinite or use default value")
   }
 
   # Z
   # dimensions don't match num_region num_group
   if (!all(dim(Z) == c(num_region, num_group))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Z is not an num_region x num_group array. Ensure dim(Z) == dim(Y) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Z is not an num_region x num_group array. Ensure dim(Z) == dim(Y) or use default value")
   }
   # values are infinite
   if (any(!is.finite(Z))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Z contains infinite values. Ensure all(is.finite(Z)) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Z contains infinite values. Ensure all(is.finite(Z)) or use default value")
   }
 
-  if (errct) {
-    stop(paste(errct, "error(s) found in list 'inits':\n", paste(errout, collapse = "\n ")))
+  if (length(errout) != 0) {
+    errout <- paste(seq_along(errout), ":", errout)
+    stop(paste(length(errout), "error(s) found in list 'inits':\n", paste(errout, collapse = "\n ")))
   }
 }
 
@@ -237,134 +196,100 @@ check_inits_mst <- function(inits, num_region, num_group, num_time, num_island) 
     stop("One or more objects missing from list 'inits': ", paste(chk[miss], collapse = ", "))
   }
   # Check for warnings
-  warnout <- NULL
-  warnct <- 0
+  warnout <- character()
   # Check for unused elements in 'inits'
   chk_elem <- which(!(names(inits) %in% chk))
   if (length(chk_elem)) {
-    warnct <- warnct + 1
-    warntxt <- paste(warnct, ": Unused elements of list 'inits':", paste(names(inits)[chk_elem], collapse = ", "))
-    warnout <- c(warnout, warntxt)
+    warnout <- c(warnout, paste("Unused elements of list 'inits':", paste(names(inits)[chk_elem], collapse = ", ")))
   }
-  if (warnct) {
-    warning(paste(warnct, "warning(s) found in list 'inits':\n", paste(warnout, collapse = "\n ")))
+  if (length(warnout) != 0) {
+    warnout <- paste(seq_along(warnout), ":", warnout)
+    warning(paste(length(warnout), "warning(s) found in list 'inits':\n", paste(warnout, collapse = "\n ")))
   }
 
   # Check for errors
-  errout <- NULL
-  errct <- 0
+  errout <- character()
   # theta
   # dimensions don't match num_region num_group num_time
   if (!all(dim(theta) == c(num_region, num_group, num_time))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": theta is not an num_region x num_group x num_time array. Ensure dim(theta) == dim(Y) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "theta is not an num_region x num_group x num_time array. Ensure dim(theta) == dim(Y) or use default value")
   }
   # values are infinite
   if (any(!is.finite(theta))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": theta contains infinite values. Ensure all(is.finite(theta)) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "theta contains infinite values. Ensure all(is.finite(theta)) or use default value")
   }
 
   # beta
   # dimensions don't match num_island num_group num_time
   if (!all(dim(beta) == c(num_island, num_group, num_time))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": beta is not an num_island x num_group x num_time array. Ensure dim(beta) == num_island x num_group x num_time or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "beta is not an num_island x num_group x num_time array. Ensure dim(beta) == num_island x num_group x num_time or use default value")
   }
   # values are infinite
   if (any(!is.finite(beta))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": beta contains infinite values. Ensure all(is.finite(beta)) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "beta contains infinite values. Ensure all(is.finite(beta)) or use default value")
   }
   # sig2
   # is non-positive or infinite
   if (any((sig2 <= 0) | !is.finite(sig2))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Diagonals of G contain non-positive values. Ensure all diag(G) > 0 and not infinite or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Diagonals of G contain non-positive values. Ensure all diag(G) > 0 and not infinite or use default value")
   }
 
   # gcor
   # values are infinite
   if (any(!is.finite(gcor))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Off-diagonals of G contain infinite values. Ensure all(is.finite(G)) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Off-diagonals of G contain infinite values. Ensure all(is.finite(G)) or use default value")
   }
 
   # tau2
   # length not num_group
   if (length(tau2) != num_group) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": tau2 is not length num_group. Ensure length(tau2) == num_group or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "tau2 is not length num_group. Ensure length(tau2) == num_group or use default value")
   }
   # is non-positive or infinite
   if (any((tau2 <= 0) | !is.finite(tau2))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": tau2 contains non-positive values. Ensure all(tau2 > 0) and not infinite or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "tau2 contains non-positive values. Ensure all(tau2 > 0) and not infinite or use default value")
   }
 
   # rho
   # length not num_group
   if (length(rho) != num_group) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": rho is not length num_group. Ensure length(rho) == num_group or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "rho is not length num_group. Ensure length(rho) == num_group or use default value")
   }
   # is non-positive or infinite
   if (any((rho <= 0) | !is.finite(rho))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": rho contains non-positive values. Ensure all(rho > 0) and not infinite or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "rho contains non-positive values. Ensure all(rho > 0) and not infinite or use default value")
   }
 
   # Z
   # dimensions don't match num_region num_group num_time
   if (!all(dim(Z) == c(num_region, num_group, num_time))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Z is not an num_region x num_group x num_time array. Ensure dim(Z) == dim(Y) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Z is not an num_region x num_group x num_time array. Ensure dim(Z) == dim(Y) or use default value")
   }
   # values are infinite
   if (any(!is.finite(Z))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Z contains infinite values. Ensure all(is.finite(Z)) or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Z contains infinite values. Ensure all(is.finite(Z)) or use default value")
   }
 
   # Ag
   # dimensions don't match num_group num_group
   if (!all(dim(Ag) == c(num_group, num_group))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Ag is not an num_group x num_group matrix. Ensure dim(Ag) == num_group x num_group or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Ag is not an num_group x num_group matrix. Ensure dim(Ag) == num_group x num_group or use default value")
   }
   # matrix is not symmetric
   if (!isSymmetric(Ag)) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Ag is not symmetric. Ensure Ag is symmetric or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Ag is not symmetric. Ensure Ag is symmetric or use default value")
   }
   # values are infinite
   if (any(!is.finite(Ag))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Ag contains infinite values. Ensure Ag is finite or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Ag contains infinite values. Ensure Ag is finite or use default value")
   }
   # diagonals are not positive
   if (any(diag(Ag) <= 0)) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": diag(Ag) contains non-positive values. Ensure diag(Ag) is positive or use default value")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "diag(Ag) contains non-positive values. Ensure diag(Ag) is positive or use default value")
   }
 
-  if (errct) {
-    stop(paste(errct, "error(s) found in list 'inits':\n", paste(errout, collapse = "\n ")))
+  if (length(errout) != 0) {
+    errout <- paste(seq_along(errout), ":", errout)
+    stop(paste(length(errout), "error(s) found in list 'inits':\n", paste(errout, collapse = "\n ")))
   }
 }

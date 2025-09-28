@@ -12,22 +12,19 @@ check_data <- function(data) {
   }
 
   # Check for warnings
-  warnout <- NULL
-  warnct <- 0
+  warnout <- character()
   # Check for unused elements in 'data'
   chk_elem <- which(!(names(data) %in% c("Y", "n")))
   if (length(chk_elem)) {
-    warnct <- warnct + 1
-    warntxt <- paste(warnct, ": Unused elements of list 'data':", paste(names(data)[chk_elem], collapse = ", "))
-    warnout <- c(warnout, warntxt)
+    errout <- c(errout, paste("Unused elements of list 'data':", paste(names(data)[chk_elem], collapse = ", ")))
   }
-  if (warnct) {
-    warning(paste(warnct, "warning(s) found in list 'data':\n", paste(warnout, collapse = "\n ")))
+  if (length(warnout) != 0) {
+    warnout <- paste(seq_along(warnout), ":", warnout)
+    warning(paste(length(warnout), "warning(s) found in list 'data':\n", paste(warnout, collapse = "\n ")))
   }
 
   # Check for errors
-  errout <- NULL
-  errct <- 0
+  errout <- character()
   # Dimensions of Y and n are not the same
   dimtest <- NULL
   if (is.null(dim(Y))) {
@@ -36,30 +33,23 @@ check_data <- function(data) {
     dimtest <- any(dim(Y) != dim(n))
   }
   if (dimtest) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Data not same dimensions. Ensure dim(Y) == dim(n)")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Data not same dimensions. Ensure dim(Y) == dim(n)")
   }
   # Values of Y are either negative or infinite
   Ychk <- Y[which(!is.na(Y) & !is.null(Y))]
   if (any((Ychk < 0) | is.infinite(Ychk))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Invalid Y values. Check that all Y's are at least 0 and finite")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Invalid Y values. Check that all Y's are at least 0 and finite")
   }
   # Sum of Ys is zero
   if (sum(Y) == 0) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": No events in Y. Ensure that Y has at least one event")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "No events in Y. Ensure that Y has at least one event")
   }
   # Values of n are either negative or infinite
   if (any((n < 0) | is.infinite(n))) {
-    errct <- errct + 1
-    errtxt <- paste(errct, ": Invalid n values. Check that all n's are at least 0 and finite")
-    errout <- c(errout, errtxt)
+    errout <- c(errout, "Invalid n values. Check that all n's are at least 0 and finite")
   }
-  if (errct) {
-    stop(paste(errct, "error(s) found in list 'data':\n", paste(errout, collapse = "\n ")))
+  if (length(errout) != 0) {
+    errout <- paste(seq_along(errout), ":", errout)
+    stop(paste(length(errout), "error(s) found in list 'data':\n", paste(errout, collapse = "\n ")))
   }
 }
