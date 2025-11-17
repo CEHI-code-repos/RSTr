@@ -112,7 +112,7 @@ example, we can begin a simple model and generate samples:</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cehi-code-repos.github.io/RSTr/" class="external-link">RSTr</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/initialize_ucar.html">initialize_mstcar</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, data <span class="op">=</span> <span class="va">miheart</span>, adjacency <span class="op">=</span> <span class="va">miadj</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Checking data...</span></span></code></pre></div>
-<p><img src="RSTr-samples_files/figure-html/unnamed-chunk-1-1.png" width="700"></p>
+<p><img src="RSTr-samples_files/figure-html/unnamed-chunk-1-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Checking spatial data...</span></span>
 <span><span class="co">#&gt; Checking inits...</span></span>
 <span><span class="co">#&gt; The following objects were created using defaults in 'inits': beta theta Z G rho tau2 Ag</span></span>
@@ -121,9 +121,9 @@ example, we can begin a simple model and generate samples:</p>
 <span><span class="co">#&gt; Model ready!</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/run_sampler.html">run_sampler</a></span><span class="op">(</span><span class="st">"my_test_model"</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Sat Sep 27 14:26:58</span></span></code></pre></div>
-<p><img src="RSTr-samples_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
-<pre><code><span><span class="co">#&gt; Model finished at Sat Sep 27 14:27:23</span></span></code></pre>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Mon Nov 17 23:01:58</span></span></code></pre></div>
+<p><img src="RSTr-samples_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
+<pre><code><span><span class="co">#&gt; Model finished at Mon Nov 17 23:02:22</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="the-load_samples-function">The <code>load_samples()</code> function<a class="anchor" aria-label="anchor" href="#the-load_samples-function"></a>
@@ -265,7 +265,7 @@ stability of the samples:</p>
 <span><span class="va">title_cty2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Smoothed rates, 1979, 35-64,\nFIPS "</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">counties</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">ylow</span>, type <span class="op">=</span> <span class="st">"l"</span>, main <span class="op">=</span> <span class="va">title_cty2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="va">raw_low</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="RSTr-samples_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="RSTr-samples_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" width="700"></p>
 <p>This code generates two traceplots representing our sample values
 over time for a given county-group-year. On the left, we can see a
 traceplot for the highest-population county, and on the right is a
@@ -309,7 +309,7 @@ sporadic traceplots.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

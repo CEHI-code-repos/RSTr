@@ -1,0 +1,95 @@
+# RSTr
+
+The Rate Stabilizing Tool R Package (RSTr): Gibbs Samplers for Bayesian
+Spatiotemporal CAR Models
+
+The RSTr package is a tool that uses Bayesian spatiotemporal models in
+conjunction with C++ to help you quickly and easily generate spatially
+smoothed estimates for your spatiotemporal small area data. For the
+ArcGIS Python Toolbox, visit the [Rate Stabilizing Toolbox
+(RSTbx)](https://github.com/CEHI-code-repos/RateStabilizingToolbox).
+
+## Installation
+
+Windows users must first install
+[RTools](https://cran.r-project.org/bin/windows/Rtools/) before
+installing any package from source. You may find it useful to use the
+`installr` package to install RTools like below:
+
+``` r
+install.packages("installr")
+installr::install.Rtools()
+```
+
+You can install the development version of `RSTr`.
+
+``` r
+devtools::install_github("CEHI-code-repos/RSTr", build_vignettes = TRUE)
+```
+
+If this is your first time using RSTr, check out
+[`vignette("RSTr")`](articles/RSTr.md) to learn how to use the package.
+
+## Thanks!
+
+Thanks for checking out the RSTr package. I hope you find it useful in
+your spatiotemporal modeling! Please feel free to give feedback on bugs,
+ways to make the package more accessible to use, and features you’d like
+to see added to the package.
+
+# Package index
+
+## Modeling
+
+- [`initialize_ucar()`](initialize_ucar.md)
+  [`initialize_ucar_restricted()`](initialize_ucar.md)
+  [`initialize_mcar()`](initialize_ucar.md)
+  [`initialize_mstcar()`](initialize_ucar.md) : Initialize CAR model
+- [`run_sampler()`](run_sampler.md) : Run Gibbs sampler
+- [`get_medians()`](get_medians.md)
+  [`get_credible_interval()`](get_medians.md)
+  [`get_relative_precision()`](get_medians.md) : Generate medians,
+  credible intervals, and relative precisions
+
+## Aggregation
+
+- [`age_standardize()`](age_standardize.md) : Age-standardize samples
+- [`aggregate_groups()`](aggregate_groups.md) : Aggregate samples by
+  non-age group
+- [`aggregate_pop()`](aggregate_pop.md) : Aggregate population arrays
+
+## Loading and preparing data
+
+- [`load_samples()`](load_samples.md) : Load MCMC samples
+- [`load_pop()`](load_pop.md) : Load population array
+- [`add_neighbors()`](add_neighbors.md) : Add neighbors to adjacency
+  information
+
+## Example data
+
+- [`miheart`](miheart.md) : Michigan Heart Attack Mortality Data
+- [`mishp`](mishp.md) : Michigan Shapefile
+- [`miadj`](miadj.md) : Michigan Adjacency Data
+- [`maexample`](maexample.md) : Massachusetts Heart Attack Mortality
+  Data
+- [`mamap`](mamap.md) : Massachusetts Shapefile
+- [`minsample`](minsample.md) : Samples Generated for Michigan data
+
+## Package details
+
+- [`RSTr-package`](RSTr-package.md) [`RSTr`](RSTr-package.md) : Rate
+  Stabilizing Tool: Gibbs Samplers for Bayesian Spatiotemporal CAR
+  Models
+
+# Articles
+
+### Articles
+
+- [01: Understanding and Preparing Your Event Data](RSTr-event.md):
+- [02: Understanding and Preparing Your Adjacency
+  Structure](RSTr-adj.md):
+- [03: Initializing Your Model](RSTr-init.md):
+- [04: Gathering and Loading Samples](RSTr-samples.md):
+- [05: Calculating Parameter Medians](RSTr-medians.md):
+- [Appendix A: The CAR Hierarchical Models](RSTr-models.md):
+- [Appendix B: Troubleshooting Error Messages](RSTr-troubleshoot.md):
