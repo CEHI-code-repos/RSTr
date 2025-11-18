@@ -43,6 +43,6 @@ initialize_model("test", tempdir(), data_min, adj_min, .show_plots = FALSE)
 run_sampler("test", .show_plots = FALSE, show_progress = FALSE)
 #> Error in run_sampler("test", .show_plots = FALSE, show_progress = FALSE): unused argument (.show_plots = FALSE)
 theta <- load_samples("test", tempdir()) * 1e5
-#> Warning: cannot open compressed file '/tmp/RtmpQPtRqv/test/theta/theta_out_.Rds', probable reason 'No such file or directory'
+#> Warning: cannot open compressed file '/tmp/RtmpNujpgS/test/theta/theta_out_.Rds', probable reason 'No such file or directory'
 #> Error in gzfile(file, "rb"): cannot open the connection
 ```

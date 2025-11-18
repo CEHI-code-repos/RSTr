@@ -45,12 +45,12 @@ initialize_mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 
 ``` r
 run_sampler("my_test_model", dir = tempdir())
-#> Starting sampler on Batch 1 at Tue Nov 18 16:50:16
+#> Starting sampler on Batch 1 at Tue Nov 18 19:39:23
 ```
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Tue Nov 18 16:50:40
+    #> Model finished at Tue Nov 18 19:39:48
 
 ## The `load_samples()` function
 

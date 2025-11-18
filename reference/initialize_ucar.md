@@ -184,5 +184,6 @@ initialize_ucar_restricted("test", data_u, miadj, tempdir(), A = 6)
 #> Checking inits...
 #> The following objects were created using defaults in 'inits': beta theta Z tau2 sig2
 #> Checking priors...
-#> Error in if (dim(theta_sd) != dim(data$Y)) {    errct <- errct + 1    errtxt <- paste(errct, ": theta_sd has different length than data. Ensure length(theta_sd) == length(Y) or use default value")    errout <- c(errout, errtxt)}: the condition has length > 1
+#> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b sig_a sig_b
+#> Model ready!
 ```
