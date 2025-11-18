@@ -57,11 +57,11 @@ initialize_mstcar("test", data_min, adj_min, tempdir())
 
 #> Checking spatial data...
 #> Checking inits...
-#> The following objects were created using defaults in 'inits': beta theta Z G rho tau2 Ag
+#> The following objects were created using defaults in 'inits': beta theta Z tau2 G rho Ag
 #> Checking priors...
-#> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b Ag_scale Ag_df G_df rho_a rho_b rho_sd
+#> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
 #> Model ready!
 run_sampler("test", show_plots = FALSE, show_progress = FALSE)
-#> Starting sampler on Batch 1 at Tue Nov 18 19:38:26
-#> Model finished at Tue Nov 18 19:38:27
+#> Starting sampler on Batch 1 at Tue Nov 18 22:12:06
+#> Model finished at Tue Nov 18 22:12:07
 ```

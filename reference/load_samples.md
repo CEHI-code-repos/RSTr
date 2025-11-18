@@ -38,11 +38,10 @@ An `array` of samples from model `name`
 # prepare truncated dataset
 data_min <- lapply(miheart, \(x) x[1:2, 1:3, 1:3])
 adj_min <- list(2, 1)
-initialize_model("test", tempdir(), data_min, adj_min, .show_plots = FALSE)
-#> Error in initialize_model("test", tempdir(), data_min, adj_min, .show_plots = FALSE): could not find function "initialize_model"
-run_sampler("test", .show_plots = FALSE, show_progress = FALSE)
-#> Error in run_sampler("test", .show_plots = FALSE, show_progress = FALSE): unused argument (.show_plots = FALSE)
+initialize_model("test", tempdir(), data_min, adj_min, show_plots = FALSE)
+#> Error in initialize_model("test", tempdir(), data_min, adj_min, show_plots = FALSE): could not find function "initialize_model"
+run_sampler("test", show_plots = FALSE, show_progress = FALSE)
+#> Starting sampler on Batch 1 at Tue Nov 18 22:11:45
+#> Model finished at Tue Nov 18 22:12:05
 theta <- load_samples("test", tempdir()) * 1e5
-#> Warning: cannot open compressed file '/tmp/RtmpNujpgS/test/theta/theta_out_.Rds', probable reason 'No such file or directory'
-#> Error in gzfile(file, "rb"): cannot open the connection
 ```

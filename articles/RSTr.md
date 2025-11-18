@@ -32,15 +32,16 @@ complexity, depending on the input data:
 For this vignette, we will demonstrate `RSTr`’s functionality with an
 MSTCAR model.
 
-### Restricted-informativeness models
+### Enhanced models to prevent over-smoothing
 
 A problem with CAR models pointed out by [Quick, et
 al. (2021)](https://pubmed.ncbi.nlm.nih.gov/33980402/) is that of
 over-smoothing due to the informativeness of the BYM model. The `RSTr`
-package provides parameters to restrict informativeness in UCAR models
-for both Poisson- and binomial-distributed data. Informativeness
-restrictions for the MCAR and MSTCAR models are under progress, and will
-be incorporated into the `RSTr` package as they are developed.
+package provides enhancements to the UCAR models for both Poisson- and
+binomial-distributed data that prevent over-smoothing by restricting
+model informativeness. Enhancements for the MCAR and MSTCAR models are
+under progress, and will be incorporated into the `RSTr` package as they
+are developed.
 
 ## Datasets
 
@@ -59,8 +60,8 @@ an MSTCAR model, two components are necessary:
   [`vignette("RSTr-event")`](../articles/RSTr-event.md).
 
 - An adjacency structure for your data. This is a dataset that tells
-  `RSTr` which regions are neighbors with each other. `RSTr` will accept
-  a `list` of vectors whose indices represent the neighbors of each
+  `RSTr` which regions are neighbors of one other. `RSTr` will accept a
+  `list` of vectors whose indices represent the neighbors of each
   region. Reference `miadj` for an example adjacency structure list. For
   more information on preparing your adjacency data, read
   [`vignette("RSTr-adj")`](../articles/RSTr-adj.md).
@@ -70,12 +71,13 @@ Some quick notes about data setup:
 - Event/population data must be organized in a very specific manner.
   `RSTr`’s MSTCAR model can only accept 3-dimensional arrays: spatial
   regions must be on the rows, socio/demographic groups must be on the
-  columns, and time periods must be on the matrix slices. Moreover, your
-  event data’s regions should be listed in the same order in your
+  columns, and time periods must be on the matrix slices. Additionally,
+  your event data’s regions should be listed in the same order in your
   adjacency structure data.
 
-- Every region must have at least one neighbor. Moreover, the adjacency
-  structures must be listed in the same order as your count data.
+- Every region must have at least one neighbor. Additionally, the
+  adjacency structures must be listed in the same order as your count
+  data.
 
 ## Functions
 
@@ -99,8 +101,8 @@ their purpose:
 ### `initialize_mstcar()`
 
 With an understanding of the example datasets and the functions, we can
-start running our first model. The example datasets are set up for us to
-run out-of-the-box:
+start running our first model. The example datasets are set up to run
+out-of-the-box:
 
 ``` r
 library(RSTr)
@@ -118,9 +120,9 @@ initialize_mstcar(
 
     #> Checking spatial data...
     #> Checking inits...
-    #> The following objects were created using defaults in 'inits': beta theta Z G rho tau2 Ag
+    #> The following objects were created using defaults in 'inits': beta theta Z tau2 G rho Ag
     #> Checking priors...
-    #> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b Ag_scale Ag_df G_df rho_a rho_b rho_sd
+    #> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
     #> Model ready!
 
 Here, we use the
@@ -138,18 +140,18 @@ different arguments in this case:
 folder named `my_test_model` in R’s temporary directory containing
 folders that will hold batches of outputs for each parameter update,
 along with a set of `.Rds` files associated with model configuration.
-Nothing here is saved in the R environment because MSTCAR models can
-quickly become so large that it’s impossible to hold the entire sample
-in RAM. Therefore, all of the data related to running the model is saved
-locally. Should you want to save your model somewhere besides the
-temporary directory for future use, you can specify a folder with the
-`dir` argument.
+Nothing here is saved in the R environment because, given a sufficiently
+large dataset, MSTCAR models can become so large that it’s impossible to
+hold the entire sample in RAM. Therefore, all of the data related to
+running the model is saved locally. Should you want to save your model
+somewhere besides the temporary directory for future use, you can
+specify a folder with the `dir` argument.
 
 Note that [`initialize_mstcar()`](../reference/initialize_ucar.md)
 accepts more arguments than are used here, but these are the only ones
-that are needed to get started. Also note that when we run the model, we
-get a couple of messages telling us certain priors and initial values
-were automatically generated. Priors and initial values can be specified
+needed to get started. Also note that when we run the model, we get a
+couple of messages telling us certain priors and initial values were
+automatically generated. Priors and initial values can be specified
 manually, but this is outside the scope of this vignette. There will
 also be checks performed on the input data: if something is wrong, the
 warnings and error messages will tell you what is wrong and how to fix
@@ -178,12 +180,12 @@ the model and the directory:
 
 ``` r
 run_sampler(name = "my_test_model")
-#> Starting sampler on Batch 1 at Tue Nov 18 19:39:54
+#> Starting sampler on Batch 1 at Tue Nov 18 22:13:36
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Tue Nov 18 19:40:19
+    #> Model finished at Tue Nov 18 22:14:00
 
 [`run_sampler()`](../reference/run_sampler.md) takes information saved
 in `my_test_model` and uses it to run the `RSTr` Gibbs sampler. The
@@ -194,16 +196,17 @@ tuning of the underlying MCMC algorithm and helps avoid computational
 burden by only holding a fraction of the total samples in memory at any
 given time. `RSTr` runs 6,000 iterations split into 60 batches of size
 100 each. All batches are thinned for every 10 iterations by default, as
-the `thetas` tend to exhibit autocorrelation. Moreover, thinning saves
-space when writing samples to the hard drive, as batches from larger
-models can balloon to gigabytes of size before thinning. Console outputs
-will show when the last batch was saved and the current iteration count
-of the model. The [`run_sampler()`](../reference/run_sampler.md)
-function also updates the `.Rds` files containing different information
-regarding the model in case you need to reload your model at a later
-date. If the model crashes for any reason or R closes while the model is
-being run, the metadata `Rds` files will keep track of the current batch
-and pick back up where it left off when re-run.
+the `thetas` (a.k.a., the rate estimates) tend to exhibit
+autocorrelation. Moreover, thinning saves space when writing samples to
+the hard drive, as batches from larger models can balloon to gigabytes
+of size before thinning. Console outputs will show the current batch
+number, the progress within that batch, and the elapsed time. The
+[`run_sampler()`](../reference/run_sampler.md) function also updates the
+`.Rds` files containing different information regarding the model in
+case you need to reload your model at a later date. If the model crashes
+for any reason or R closes while the model is being run, the metadata
+`Rds` files will keep track of the current batch and pick back up where
+it left off when re-run.
 
 If you want to learn more about the
 [`run_sampler()`](../reference/run_sampler.md) function, read
@@ -225,11 +228,10 @@ samples <- load_samples(name = "my_test_model", param = "theta", burn = 2000)
 Here, the [`load_samples()`](../reference/load_samples.md) function
 brings in samples from the model `my_test_model` in R’s temporary
 directory, only loading in iterations after `burn`. The `burn` argument
-works to ensure that the estimates we get are sound by specifying a
-period where the model has a bit of time to stabilize before gathering
-samples. In total, we have pulled in `(6000 - 2000) / 10 = 400` samples,
-as the sampler only saves every 10 iterations. To learn more about
-post-Gibbs sampler diagnostics or about
+specifies a burn-in period that allows the model to stabilize before
+gathering samples. In total, we have pulled in
+`(6000 - 2000) / 10 = 400` samples, as the sampler only saves every 10
+iterations. To learn more about post-Gibbs sampler diagnostics or about
 [`load_samples()`](../reference/load_samples.md), read
 [`vignette("RSTr-samples")`](../articles/RSTr-samples.md).
 
@@ -244,7 +246,7 @@ medians <- get_medians(samples)
 ```
 
 This creates an `array` object with median estimates for `theta` along
-each year, county, and region:
+each region, group, and year:
 
 ``` r
 head(medians)
@@ -273,9 +275,8 @@ For more information about the median estimates, read
 ## Illustrative Example: Mapping Estimates
 
 With our estimates finally in a form we can use, we can get a better
-picture of geographic patterns with a map, which can easily be made
-using `ggplot` (or your favorite mapping package). Let’s see how the
-estimates were smoothed:
+picture of geographic patterns with a map. Using `ggplot` (or your
+favorite mapping package), Let’s see how the estimates were smoothed:
 
 ``` r
 library(ggplot2)
@@ -322,7 +323,7 @@ portion of the Lower Peninsula (LP), but on the smoothed map, much of
 this area has attenuated rates. On the flip side, many areas in the
 Upper Peninsula (UP) have low rates on the first map, but we can see on
 the smoothed map that the places with higher rates on the UP actually go
-further eastward and the higher-rate areas on the LP are focused around
+further eastward. The higher-rate areas on the LP are focused around
 counties on the Saginaw Bay, indicating that these areas may require
 more attention than previously thought. These are the kinds of
 inferences that can be made using estimates generated by the `RSTr`
@@ -333,7 +334,7 @@ package and the main motivation for running this spatiotemporal model.
 This vignette introduces you to inputting data into the
 [`initialize_mstcar()`](../reference/initialize_ucar.md) function,
 getting samples with the [`run_sampler()`](../reference/run_sampler.md)
-function, loading those samples into R with the
+function, loading samples into R with the
 [`load_samples()`](../reference/load_samples.md) function, and finally
 making a map with estimates gathered from the
 [`get_medians()`](../reference/get_medians.md) function. What we’ve
