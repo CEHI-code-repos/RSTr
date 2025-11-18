@@ -178,12 +178,12 @@ the model and the directory:
 
 ``` r
 run_sampler(name = "my_test_model")
-#> Starting sampler on Batch 1 at Mon Nov 17 23:02:29
+#> Starting sampler on Batch 1 at Tue Nov 18 16:50:47
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Mon Nov 17 23:02:54
+    #> Model finished at Tue Nov 18 16:51:12
 
 [`run_sampler()`](../reference/run_sampler.md) takes information saved
 in `my_test_model` and uses it to run the `RSTr` Gibbs sampler. The
