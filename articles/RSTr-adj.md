@@ -147,7 +147,7 @@ Here, we’ve generated a map colored by region and labeled with the name
 of each county. We can see Dukes and Nantucket in the southeast corner,
 and if you zoom in, you can see that these two counties aren’t touching
 any other counties. Upon closer inspection, Barnstable County seems like
-a good contender for a neighbor to both Dukes and Nantucket County, and
+a good contender for a neighbor to both Dukes and Nantucket County;
 Dukes and Nantucket County are also close enough to be neighbors to each
 other. To rectify this, we can manually make some changes to our
 adjacency information. Let’s first get a feel for which counties are
@@ -164,19 +164,15 @@ county_key
 ```
 
 We can see that Barnstable has an index of 1, Dukes has an index of 4,
-and Nantucket has an index of 10. Now, let’s manually add neighbors as
-necessary to our adjacency structures:
+and Nantucket has an index of 10. We can use the
+[`add_neighbors()`](../reference/add_neighbors.md) function to set these
+counties as mutual neighbors:
 
 ``` r
-ma_adj[[1]] <- as.integer(c(ma_adj[[1]], 4, 10)) # Add neighbors to Barnstable
-ma_adj[[4]] <- as.integer(c(1, 10)) # Replace 0 with neighbors for Dukes
-ma_adj[[10]] <- as.integer(c(1, 4)) # Replace 0 with neighbors for Nantucket
+ma_adj <- add_neighbors(ma_adj, c(1, 4, 10))
 ```
 
-Here, we append the neighbors of Barnstable to the pre-existing
-neighbors of Barnstable, but overwrite the 0’s for Dukes and Nantucket
-and cast them all as integer vectors. Now if we look at `ma_adj`, the
-message about no-link regions is gone.
+Now if we look at `ma_adj`, the message about no-link regions is gone.
 
 One last feature we can add to these adjacencies are dimension names.
 This isn’t necessary, but it can be useful to associate regions in our
@@ -204,17 +200,15 @@ Finally, even though we connected the two island counties to the
 mainland counties of MA, as long as each region has at least one
 neighbor, it is usable within `RSTr`. This means that, theoretically, we
 could have made just Dukes and Nantucket neighbors of each other,
-creating two separate “islands” of regions with no related neighbors,
-but every region on both “islands” still has at least one neighbor.
+creating two separate islands with no related neighbors. In this case,
+every region on both islands still has at least one neighbor.
 
 ## Closing Thoughts
 
 In this vignette, we used the
 [`poly2nb()`](https://r-spatial.github.io/spdep/reference/poly2nb.html)
 function inside of the `spdep` package to generate our adjacency
-structure and demonstrated the two types of appropriate adjacency
-objects: a list of indices or a binary matrix. We then fixed issues with
-counties without neighbors and applied a naming scheme to the adjacency
-information consistent with the `data` object created in section 2. From
-here, the `RSTr` model is ready to be run with our `data` and
-`adjacency` information!
+structure. We then fixed issues with counties without neighbors and
+applied a naming scheme to the adjacency information consistent with the
+`data` object created in section 2. From here, the `RSTr` model is ready
+to be run with our `data` and `adjacency` information!

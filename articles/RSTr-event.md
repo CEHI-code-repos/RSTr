@@ -24,17 +24,23 @@ data and walk through an example with a `data.frame`.
   for the `Y` values. Note, however, that `n` must have all population
   counts;
 
-- `Y` must have at least one total event. The CAR model will not be able
-  to smooth information if there is no event data present;
+- For a given CAR model, `Y` must have at least one total event. The CAR
+  model will not be able to smooth information if there is no event data
+  present. For a UCAR model, this includes any set of all regions; for
+  an MCAR model, this is any set of all regions and groups; and for the
+  MSTCAR model, this is the entire dataset;
 
 - For the MSTCAR model, `Y` and `n` must be a three-dimensional array:
   the first margin (rows) specifies the region, the second margin
   (columns) specifies the groups of interest, and the third margin
   (matrix slices) specifies the time period. Other models will follow
   this same order of margins: for example, data for the MCAR model will
-  be a two-dimensional array (matrix) with regions along the rows and
-  groups along the columns. Data for the UCAR model can simply be a
-  vector;
+  be at minimum a two-dimensional array (matrix) with regions along the
+  rows and groups along the columns. Data for the UCAR model can simply
+  be a vector. However, both the UCAR and MCAR model can be used with
+  higher-dimensional arrays as long as it follows the same conventions
+  as the MSTCAR model (i.e., regions on margin 1, groups on margin 2,
+  and time periods on margin 3);
 
 - Time periods, regions, and groups must be consistent. If your data
   contains counts for all regions in a specified set of groups for 1979
@@ -98,7 +104,7 @@ several variables:
 - `Population` contains our population counts of interest;
 
 - `Crude.Rate` shows the rates per 100,000 in each year-county-sex
-  group. This column will not be used by us.
+  group. For our purposes, this column can be ignored.
 
 The first thing we want to do with our dataset is remove the notes from
 the bottom rows - while they are useful for getting acquainted with the
@@ -141,13 +147,13 @@ Y <- xtabs(Deaths ~ County.Code + Sex.Code + Year.Code, data = ma_mort)
 n <- xtabs(Population ~ County.Code + Sex.Code + Year.Code, data = ma_mort)
 ```
 
-When preparing data for the MSTCAR model, make sure that the variables
-in your [`xtabs()`](https://rdrr.io/r/stats/xtabs.html) expression
-follow the order listed above: geographic regions, sociodemographic
-groups, and time periods. If you have multiple types of groups, such as
-race and sex, it can take a little finessing to set up your group data,
-such as creating a combined race-sex group variable, but data setup will
-follow the same principles as above.
+When preparing data for a CAR model, make sure that the variables in
+your [`xtabs()`](https://rdrr.io/r/stats/xtabs.html) expression follow
+the order listed above: geographic regions, sociodemographic groups, and
+time periods. If you have multiple types of groups, such as race and
+sex, it can take a little finessing to set up your group data, such as
+creating a combined race-sex group variable, but data setup will follow
+the same principles as above.
 
 Now that our arrays are set up, organized, and properly named, we can
 finally consolidate them into a `list` to be used with the model:
@@ -164,9 +170,9 @@ data.
 ## Data setup for other models
 
 The above dataset is prepared specifically for an MSTCAR model. But what
-if we only want to run an MCAR or even a UCAR model? We can filter the
-original dataset and follow a similar procedure to prepare our data for
-the MCAR model:
+if we want to prepare data for an MCAR or even a UCAR model? We can
+filter the original dataset and follow a similar procedure to prepare
+our data for the MCAR model:
 
 ``` r
 ma_mort_mcar <- maexample[which(!is.na(maexample$Year)), ]

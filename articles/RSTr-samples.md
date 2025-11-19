@@ -17,9 +17,9 @@ and the directory where that folder lives, respectively. `show_plots`
 allows you to hide the traceplots generated while the model runs and
 `discard_burnin` prevents samples from being saved before the
 2000-iteration burn-in period in case the dataset is particularly large.
-The information needed to generate the model is already saved in `name`,
-and so [`run_sampler()`](../reference/run_sampler.md) pulls this
-information in to generate parameter samples. When running
+The information needed to load the model is already saved in `name`, and
+so [`run_sampler()`](../reference/run_sampler.md) pulls this information
+in to generate parameter samples. When running
 [`run_sampler()`](../reference/run_sampler.md), the R console will
 generate outputs describing the batch number, the total iteration
 number, and the time when the last batch started. By default,
@@ -45,12 +45,12 @@ initialize_mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 
 ``` r
 run_sampler("my_test_model", dir = tempdir())
-#> Starting sampler on Batch 1 at Tue Nov 18 22:13:05
+#> Starting sampler on Batch 1 at Wed Nov 19 14:57:34
 ```
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Tue Nov 18 22:13:29
+    #> Model finished at Wed Nov 19 14:57:59
 
 ## The `load_samples()` function
 
@@ -62,8 +62,7 @@ arguments:
 
 - `name`: Name of the model;
 
-- `dir`: Directory of the model. Saves to R’s temporary directory by
-  default;
+- `dir`: Directory of the model;
 
 - `param`: The parameter to import samples for. By default, imports
   `theta`. Values for `theta` and `beta` are expit- or exp-transformed,
@@ -71,9 +70,7 @@ arguments:
 
 - `burn`: Specifies a burn-in period for samples. This allows the model
   time to stabilize before using samples to generate estimates. By
-  default, has a burn-in period of 2000 samples. Because of the way that
-  [`load_samples()`](../reference/load_samples.md) utilizes `burn`, it
-  is safest to choose a burn-in period that is a multiple of 500.
+  default, has a burn-in period of 2000 samples.
 
 Any `dimnames` that were saved to `data` will be applied to the samples
 as appropriate. Here, we pull in the `theta` samples for our test
@@ -117,7 +114,7 @@ theta_7988 <- aggregate_groups(theta, pop, margin_time)
 ```
 
 Now, we have a standalone sample array for our 1979-1988 samples. But
-what if we are interested in both the individual year data and the
+what if we are interested in both the individual year data *and* the
 prevalence data? We can alternatively bind these new samples to our main
 `theta` array by adding in values for the `bind_new` and `new_name`
 arguments:
@@ -152,21 +149,19 @@ dim(theta)
 ```
 
 Our age groups lay along the second margin. Let’s set a variable
-`margin_age` to represent our age group margin and standardize our
-`theta` estimates across ages 35-64 using the
-[`age_standardize()`](../reference/age_standardize.md) function:
+`margin_age` and standardize our `theta` estimates across ages 35-64
+using the [`age_standardize()`](../reference/age_standardize.md)
+function:
 
 ``` r
 margin_age <- 2
 theta_3564 <- age_standardize(theta, std_pop, margin_age, groups = c("35-44", "45-54", "55-64"))
 ```
 
-We subset `theta` to only the columns containing our age groups of
-interest: `35-44`, `45-54`, and `55-64` (i,e,. columns 1-3). Note that
-there may be times where you have groups stratified by both age and
-other sociodemographic groups. In these cases, you’ll have to refactor
-your sample array so that the age groups are separated from your other
-groups before doing age-standardization, such as using
+Note that there may be times where you have groups stratified by both
+age and other sociodemographic groups. In these cases, you’ll have to
+refactor your sample array so that the age groups are separated from
+your other groups before doing age-standardization, such as using
 [`as.data.frame.table()`](https://rdrr.io/r/base/table.html) in
 conjunction with [`xtabs()`](https://rdrr.io/r/stats/xtabs.html).
 
@@ -177,7 +172,14 @@ alternatively consolidate this into our main `theta` array by adding in
 values for the `bind_new` and `new_name` arguments:
 
 ``` r
-theta <- age_standardize(theta, std_pop, margin_age, groups = c("35-44", "45-54", "55-64"), bind_new = TRUE, new_name = "35-64")
+theta <- age_standardize(
+    theta,
+    std_pop,
+    margin_age,
+    groups = c("35-44", "45-54", "55-64"),
+    bind_new = TRUE,
+    new_name = "35-64"
+)
 ```
 
 Now, our samples for `theta` are aggregated by year and
@@ -186,10 +188,6 @@ if you plan on doing a mix of non-age aggregation and
 age-standardization, do age-standardization *after* aggregation, as
 doing age-standardization first will alter the results of any
 aggregation done afterward.
-
-Note that the process of age- and group-standardization is identical for
-both MSTCAR and MCAR models, and that age/group-standardization is not
-possible for UCAR models.
 
 ### Traceplots
 
@@ -249,7 +247,7 @@ measures, read
 
 In this vignette, we discussed generating samples with
 [`run_sampler()`](../reference/run_sampler.md), importing those samples
-into R and age-standardization using
-[`load_samples()`](../reference/load_samples.md), and generating
-traceplots to get a gut-check on our dataset and the implications of
+into R, age-standardization using
+[`load_samples()`](../reference/load_samples.md), generating traceplots
+to get a gut-check on our dataset, along with the implications of
 sporadic traceplots.

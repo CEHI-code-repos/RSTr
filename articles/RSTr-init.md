@@ -6,7 +6,7 @@ The `initialize_*()` functions
 ([`initialize_ucar_restricted()`](../reference/initialize_ucar.md),
 [`initialize_ucar()`](../reference/initialize_ucar.md),
 [`initialize_mcar()`](../reference/initialize_ucar.md),
-[`initialize_mstcar()`](../reference/initialize_ucar.md)) builds the
+[`initialize_mstcar()`](../reference/initialize_ucar.md)) build the
 necessary features needed to run `RSTr` and places them in R’s temporary
 directory. In this vignette, we will talk in detail about each argument
 and how to use them.
@@ -91,12 +91,12 @@ the possible initial value parameters for the MSTCAR model:
   [`log()`](https://rdrr.io/r/base/Log.html);
 
 - `beta`: The mean rate for each island-group-year on the transformed
-  scale. Islands are sets of regions that contain a set of neighbors
-  that are all related to each other. For example, in `miadj`, there are
-  two islands that represent the counties of the Upper Peninsula and the
-  Lower Peninsula. These islands don’t touch each other, and therefore
-  don’t share adjacency information. Therefore, each island is assigned
-  its own `beta`. `beta` is an `array` of real numbers with dimensions
+  scale. Islands are sets of regions that exclusively share adjacency
+  information. For example, in `miadj`, there are two islands that
+  represent the counties of the Upper Peninsula and the Lower Peninsula.
+  These islands don’t touch each other, and thus don’t share adjacency
+  information. Therefore, each island is assigned its own `beta`. `beta`
+  is an `array` of real numbers with dimensions
   `num_island x num_group x num_time`. Note that this is also logit- or
   log-transformed, similar to `theta`;
 
@@ -113,12 +113,12 @@ the possible initial value parameters for the MSTCAR model:
 
 - `rho`: The temporal correlation. This parameter decides the strength
   of the relationship between values in time period `t` to values in
-  time period `t-1`. It is a `vector` of length `num_group` of real
+  time period `t-1`. It is a `matrix` of size `num_group x 1` of real
   numbers with support `[0,1]`;
 
 - `tau2`: The non-spatial variance. This parameter picks up any variance
-  in values of `theta` for each group. It is a `vector` of length
-  `num_group` of positive real numbers; and
+  in values of `theta` for each group. It is a `matrix` of size
+  `num_group x 1` of positive real numbers; and
 
 - `Ag`: The general spatial covariance matrix. This parameter describes
   the overall relationship between groups across the entire model and is
@@ -126,13 +126,13 @@ the possible initial value parameters for the MSTCAR model:
   positive-definite symmetric matrix with dimensions
   `num_group x num_group`.
 
-Note that you don’t have to specify inits for *all* parameters if you
-only want to specify some of them - any undefined inits will be defined
-by the default values. For example, you can specify only the initial
-values for `theta` and all other values will be generated on their own.
-However, if one value is specified for a certain parameter in `inits`,
-all values must be specified for that parameter in `inits`: you cannot,
-for example, define initial values for just one year of `theta`.
+Note that you don’t have to specify `inits` for *all* parameters if you
+only want to specify some of them - any undefined `inits` will be
+defined by the default values. For example, you can specify only the
+initial values for `theta` and all other values will be generated on
+their own. However, if one value is specified for a certain parameter in
+`inits`, all values must be specified for that parameter in `inits`: you
+cannot, for example, define initial values for just one year of `theta`.
 Finally, any values included in your `inits` list that aren’t aligned
 with the above names will be ignored.
 
@@ -200,12 +200,13 @@ well for datasets with small rates under approximately 1%.
 `m0` and `A` are two components that determine the intensity of the
 smoothing of restricted CAR models. `m0` should be a positive scalar,
 and the size of `A` is dependent on the group/time structure of your
-data: `A` will be a positive scalar for UCAR models, a `vector` of size
-`num_group` for MCAR models, and a matrix of size `num_group` x
-`num_time` for MSTCAR models. Note, however, that these informativeness
-restriction measures are currently only developed for the UCAR model,
-and restrictions for more complex models will be added to the `RSTr`
-package as their respective methods are developed.
+data: `A` will be a positive scalar for region-only models, a `vector`
+of size `num_group` for region-group models, and a matrix of size
+`num_group` x `num_time` for region-group-time models. Note, however,
+that these informativeness restriction measures are currently only
+developed for the UCAR model, and restrictions for more complex models
+will be added to the `RSTr` package as their respective methods are
+developed.
 
 ### The `rho_up` argument
 
@@ -227,9 +228,8 @@ estimates, set by default to `1234`.
 As development continues on `RSTr`, there are occasions where the checks
 performed on the inputs of `initialize_*()` throw an error, even though
 you may be certain that all of your inputs are behaving as expected. To
-override the checks, you can use the `ignore_checks` argument. By
-default, this is marked as `FALSE`, but specifying `TRUE` will skip this
-step.
+override the checks, you can use the `ignore_checks` argument. Set this
+to `TRUE` to skip this step.
 
 ## Closing Thoughts
 

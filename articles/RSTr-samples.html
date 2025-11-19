@@ -99,15 +99,15 @@ and the directory where that folder lives, respectively.
 <code>show_plots</code> allows you to hide the traceplots generated
 while the model runs and <code>discard_burnin</code> prevents samples
 from being saved before the 2000-iteration burn-in period in case the
-dataset is particularly large. The information needed to generate the
-model is already saved in <code>name</code>, and so
-<code><a href="../reference/run_sampler.html">run_sampler()</a></code> pulls this information in to generate
-parameter samples. When running <code><a href="../reference/run_sampler.html">run_sampler()</a></code>, the R
-console will generate outputs describing the batch number, the total
-iteration number, and the time when the last batch started. By default,
-<code><a href="../reference/run_sampler.html">run_sampler()</a></code> will generate 6000 samples, but other values
-can be specified as desired, rounded down to the nearest 100. For
-example, we can begin a simple model and generate samples:</p>
+dataset is particularly large. The information needed to load the model
+is already saved in <code>name</code>, and so <code><a href="../reference/run_sampler.html">run_sampler()</a></code>
+pulls this information in to generate parameter samples. When running
+<code><a href="../reference/run_sampler.html">run_sampler()</a></code>, the R console will generate outputs
+describing the batch number, the total iteration number, and the time
+when the last batch started. By default, <code><a href="../reference/run_sampler.html">run_sampler()</a></code> will
+generate 6000 samples, but other values can be specified as desired,
+rounded down to the nearest 100. For example, we can begin a simple
+model and generate samples:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cehi-code-repos.github.io/RSTr/" class="external-link">RSTr</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/initialize_ucar.html">initialize_mstcar</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, data <span class="op">=</span> <span class="va">miheart</span>, adjacency <span class="op">=</span> <span class="va">miadj</span><span class="op">)</span></span>
@@ -121,9 +121,9 @@ example, we can begin a simple model and generate samples:</p>
 <span><span class="co">#&gt; Model ready!</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/run_sampler.html">run_sampler</a></span><span class="op">(</span><span class="st">"my_test_model"</span>, dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Tue Nov 18 22:13:05</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Nov 19 14:57:34</span></span></code></pre></div>
 <p><img src="RSTr-samples_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
-<pre><code><span><span class="co">#&gt; Model finished at Tue Nov 18 22:13:29</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Model finished at Wed Nov 19 14:57:59</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="the-load_samples-function">The <code>load_samples()</code> function<a class="anchor" aria-label="anchor" href="#the-load_samples-function"></a>
@@ -134,17 +134,14 @@ running, you can import samples into R using
 arguments:</p>
 <ul>
 <li><p><code>name</code>: Name of the model;</p></li>
-<li><p><code>dir</code>: Directory of the model. Saves to R’s temporary
-directory by default;</p></li>
+<li><p><code>dir</code>: Directory of the model;</p></li>
 <li><p><code>param</code>: The parameter to import samples for. By
 default, imports <code>theta</code>. Values for <code>theta</code> and
 <code>beta</code> are expit- or exp-transformed, depending on the
 <code>method</code> chosen in <code>initialize_*()</code>; and</p></li>
 <li><p><code>burn</code>: Specifies a burn-in period for samples. This
 allows the model time to stabilize before using samples to generate
-estimates. By default, has a burn-in period of 2000 samples. Because of
-the way that <code><a href="../reference/load_samples.html">load_samples()</a></code> utilizes <code>burn</code>, it
-is safest to choose a burn-in period that is a multiple of 500.</p></li>
+estimates. By default, has a burn-in period of 2000 samples.</p></li>
 </ul>
 <p>Any <code>dimnames</code> that were saved to <code>data</code> will
 be applied to the samples as appropriate. Here, we pull in the
@@ -180,9 +177,9 @@ from the model folder using the <code><a href="../reference/load_pop.html">load_
 <span><span class="va">pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_pop.html">load_pop</a></span><span class="op">(</span><span class="st">"my_test_model"</span><span class="op">)</span></span>
 <span><span class="va">theta_7988</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aggregate_groups.html">aggregate_groups</a></span><span class="op">(</span><span class="va">theta</span>, <span class="va">pop</span>, <span class="va">margin_time</span><span class="op">)</span></span></code></pre></div>
 <p>Now, we have a standalone sample array for our 1979-1988 samples. But
-what if we are interested in both the individual year data and the
-prevalence data? We can alternatively bind these new samples to our main
-<code>theta</code> array by adding in values for the
+what if we are interested in both the individual year data <em>and</em>
+the prevalence data? We can alternatively bind these new samples to our
+main <code>theta</code> array by adding in values for the
 <code>bind_new</code> and <code>new_name</code> arguments:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aggregate_groups.html">aggregate_groups</a></span><span class="op">(</span><span class="va">theta</span>, <span class="va">pop</span>, <span class="va">margin_time</span>, bind_new <span class="op">=</span> <span class="cn">TRUE</span>, new_name <span class="op">=</span> <span class="st">"1979-1988"</span><span class="op">)</span></span></code></pre></div>
@@ -207,36 +204,37 @@ function:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">theta</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1]  83   6  11 400</span></span></code></pre></div>
 <p>Our age groups lay along the second margin. Let’s set a variable
-<code>margin_age</code> to represent our age group margin and
-standardize our <code>theta</code> estimates across ages 35-64 using the
-<code><a href="../reference/age_standardize.html">age_standardize()</a></code> function:</p>
+<code>margin_age</code> and standardize our <code>theta</code> estimates
+across ages 35-64 using the <code><a href="../reference/age_standardize.html">age_standardize()</a></code> function:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">margin_age</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
 <span><span class="va">theta_3564</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/age_standardize.html">age_standardize</a></span><span class="op">(</span><span class="va">theta</span>, <span class="va">std_pop</span>, <span class="va">margin_age</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>We subset <code>theta</code> to only the columns containing our age
-groups of interest: <code>35-44</code>, <code>45-54</code>, and
-<code>55-64</code> (i,e,. columns 1-3). Note that there may be times
-where you have groups stratified by both age and other sociodemographic
-groups. In these cases, you’ll have to refactor your sample array so
-that the age groups are separated from your other groups before doing
-age-standardization, such as using <code><a href="https://rdrr.io/r/base/table.html" class="external-link">as.data.frame.table()</a></code> in
-conjunction with <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code>.</p>
+<p>Note that there may be times where you have groups stratified by both
+age and other sociodemographic groups. In these cases, you’ll have to
+refactor your sample array so that the age groups are separated from
+your other groups before doing age-standardization, such as using
+<code><a href="https://rdrr.io/r/base/table.html" class="external-link">as.data.frame.table()</a></code> in conjunction with
+<code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code>.</p>
 <p>Now, we have a standalone array for our age-standardized 35-64 age
 group. Similarly to <code><a href="../reference/aggregate_groups.html">aggregate_groups()</a></code>, we can
 alternatively consolidate this into our main <code>theta</code> array by
 adding in values for the <code>bind_new</code> and <code>new_name</code>
 arguments:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/age_standardize.html">age_standardize</a></span><span class="op">(</span><span class="va">theta</span>, <span class="va">std_pop</span>, <span class="va">margin_age</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span><span class="op">)</span>, bind_new <span class="op">=</span> <span class="cn">TRUE</span>, new_name <span class="op">=</span> <span class="st">"35-64"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/age_standardize.html">age_standardize</a></span><span class="op">(</span></span>
+<span>    <span class="va">theta</span>,</span>
+<span>    <span class="va">std_pop</span>,</span>
+<span>    <span class="va">margin_age</span>,</span>
+<span>    groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span><span class="op">)</span>,</span>
+<span>    bind_new <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    new_name <span class="op">=</span> <span class="st">"35-64"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Now, our samples for <code>theta</code> are aggregated by year and
 age-standardized, and we have matching array values for
 <code>pop</code>. Note that if you plan on doing a mix of non-age
 aggregation and age-standardization, do age-standardization
 <em>after</em> aggregation, as doing age-standardization first will
 alter the results of any aggregation done afterward.</p>
-<p>Note that the process of age- and group-standardization is identical
-for both MSTCAR and MCAR models, and that age/group-standardization is
-not possible for UCAR models.</p>
 </div>
 <div class="section level3">
 <h3 id="traceplots">Traceplots<a class="anchor" aria-label="anchor" href="#traceplots"></a>
@@ -293,10 +291,10 @@ more about reliability measures, read
 <h2 id="closing-thoughts">Closing Thoughts<a class="anchor" aria-label="anchor" href="#closing-thoughts"></a>
 </h2>
 <p>In this vignette, we discussed generating samples with
-<code><a href="../reference/run_sampler.html">run_sampler()</a></code>, importing those samples into R and
-age-standardization using <code><a href="../reference/load_samples.html">load_samples()</a></code>, and generating
-traceplots to get a gut-check on our dataset and the implications of
-sporadic traceplots.</p>
+<code><a href="../reference/run_sampler.html">run_sampler()</a></code>, importing those samples into R,
+age-standardization using <code><a href="../reference/load_samples.html">load_samples()</a></code>, generating
+traceplots to get a gut-check on our dataset, along with the
+implications of sporadic traceplots.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -41,7 +41,7 @@ package provides enhancements to the UCAR models for both Poisson- and
 binomial-distributed data that prevent over-smoothing by restricting
 model informativeness. Enhancements for the MCAR and MSTCAR models are
 under progress, and will be incorporated into the `RSTr` package as they
-are developed.
+are developed. These models are heretofore called ‘restricted models’.
 
 ## Datasets
 
@@ -180,12 +180,12 @@ the model and the directory:
 
 ``` r
 run_sampler(name = "my_test_model")
-#> Starting sampler on Batch 1 at Tue Nov 18 22:13:36
+#> Starting sampler on Batch 1 at Wed Nov 19 14:58:05
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Tue Nov 18 22:14:00
+    #> Model finished at Wed Nov 19 14:58:30
 
 [`run_sampler()`](../reference/run_sampler.md) takes information saved
 in `my_test_model` and uses it to run the `RSTr` Gibbs sampler. The

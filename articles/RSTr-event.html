@@ -108,17 +108,22 @@ Negative and infinite counts are not allowed, but suppressed data
 containing <code>NA</code>’s is acceptable for the <code>Y</code>
 values. Note, however, that <code>n</code> must have all population
 counts;</p></li>
-<li><p><code>Y</code> must have at least one total event. The CAR model
-will not be able to smooth information if there is no event data
-present;</p></li>
+<li><p>For a given CAR model, <code>Y</code> must have at least one
+total event. The CAR model will not be able to smooth information if
+there is no event data present. For a UCAR model, this includes any set
+of all regions; for an MCAR model, this is any set of all regions and
+groups; and for the MSTCAR model, this is the entire dataset;</p></li>
 <li><p>For the MSTCAR model, <code>Y</code> and <code>n</code> must be a
 three-dimensional array: the first margin (rows) specifies the region,
 the second margin (columns) specifies the groups of interest, and the
 third margin (matrix slices) specifies the time period. Other models
 will follow this same order of margins: for example, data for the MCAR
-model will be a two-dimensional array (matrix) with regions along the
-rows and groups along the columns. Data for the UCAR model can simply be
-a vector;</p></li>
+model will be at minimum a two-dimensional array (matrix) with regions
+along the rows and groups along the columns. Data for the UCAR model can
+simply be a vector. However, both the UCAR and MCAR model can be used
+with higher-dimensional arrays as long as it follows the same
+conventions as the MSTCAR model (i.e., regions on margin 1, groups on
+margin 2, and time periods on margin 3);</p></li>
 <li><p>Time periods, regions, and groups must be consistent. If your
 data contains counts for all regions in a specified set of groups for
 1979 and 1981, for example, it must also include counts for all regions
@@ -178,7 +183,8 @@ interest;</p></li>
 <li><p><code>Population</code> contains our population counts of
 interest;</p></li>
 <li><p><code>Crude.Rate</code> shows the rates per 100,000 in each
-year-county-sex group. This column will not be used by us.</p></li>
+year-county-sex group. For our purposes, this column can be
+ignored.</p></li>
 </ul>
 <p>The first thing we want to do with our dataset is remove the notes
 from the bottom rows - while they are useful for getting acquainted with
@@ -213,13 +219,13 @@ properly oriented margins:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Deaths</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span> <span class="op">+</span> <span class="va">Year.Code</span>, data <span class="op">=</span> <span class="va">ma_mort</span><span class="op">)</span></span>
 <span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Population</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span> <span class="op">+</span> <span class="va">Year.Code</span>, data <span class="op">=</span> <span class="va">ma_mort</span><span class="op">)</span></span></code></pre></div>
-<p>When preparing data for the MSTCAR model, make sure that the
-variables in your <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code> expression follow the order
-listed above: geographic regions, sociodemographic groups, and time
-periods. If you have multiple types of groups, such as race and sex, it
-can take a little finessing to set up your group data, such as creating
-a combined race-sex group variable, but data setup will follow the same
-principles as above.</p>
+<p>When preparing data for a CAR model, make sure that the variables in
+your <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code> expression follow the order listed above:
+geographic regions, sociodemographic groups, and time periods. If you
+have multiple types of groups, such as race and sex, it can take a
+little finessing to set up your group data, such as creating a combined
+race-sex group variable, but data setup will follow the same principles
+as above.</p>
 <p>Now that our arrays are set up, organized, and properly named, we can
 finally consolidate them into a <code>list</code> to be used with the
 model:</p>
@@ -234,9 +240,9 @@ the names <code>Y</code> and <code>n</code> are necessary for
 <h2 id="data-setup-for-other-models">Data setup for other models<a class="anchor" aria-label="anchor" href="#data-setup-for-other-models"></a>
 </h2>
 <p>The above dataset is prepared specifically for an MSTCAR model. But
-what if we only want to run an MCAR or even a UCAR model? We can filter
-the original dataset and follow a similar procedure to prepare our data
-for the MCAR model:</p>
+what if we want to prepare data for an MCAR or even a UCAR model? We can
+filter the original dataset and follow a similar procedure to prepare
+our data for the MCAR model:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ma_mort_mcar</span> <span class="op">&lt;-</span> <span class="va">maexample</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">maexample</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">ma_mort_mcar</span> <span class="op">&lt;-</span> <span class="va">ma_mort_mcar</span><span class="op">[</span><span class="va">ma_mort_mcar</span><span class="op">$</span><span class="va">Year</span> <span class="op">==</span> <span class="fl">1979</span>, <span class="op">]</span> <span class="co"># filter dataset to only show 1979 data</span></span>

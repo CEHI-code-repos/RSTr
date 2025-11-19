@@ -68,7 +68,9 @@ Reliability can be easily tested in CAR models using two criteria:
   threshold depending on what kind of data you are working with: for
   example, 1,000 population is generally a good rule of thumb for
   mortality data, whereas an appropriate cutoff for birth data is closer
-  to 100.
+  to 100. Note that this population count metric only applies for
+  unrestricted models; the enhancements of the restricted CAR models
+  mean that we don’t need this criterion when evaluating reliability.
 
 Let’s get some reliability metrics for our dataset. First, let’s
 generate our relative precisions at 95% credibility using the
@@ -87,7 +89,8 @@ Now, let’s generate a similar `logical` `array` for populations less
 than 1000 and use these criteria to create a set of suppressed medians.
 A median will be suppressed if it meets either of the two criteria. Note
 that since our samples are age-standardized, we also have to extend our
-`pop` array to match in size:
+`pop` array to match in size using the
+[`aggregate_pop()`](../reference/aggregate_pop.md) function:
 
 ``` r
 pop <- load_pop("my_test_model")

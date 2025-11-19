@@ -62,6 +62,6 @@ initialize_mstcar("test", data_min, adj_min, tempdir())
 #> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
 #> Model ready!
 run_sampler("test", show_plots = FALSE, show_progress = FALSE)
-#> Starting sampler on Batch 1 at Tue Nov 18 22:12:06
-#> Model finished at Tue Nov 18 22:12:07
+#> Starting sampler on Batch 1 at Wed Nov 19 14:56:35
+#> Model finished at Wed Nov 19 14:56:37
 ```

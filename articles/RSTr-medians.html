@@ -144,7 +144,9 @@ regardless of relative precision. Use your judgment when setting this
 threshold depending on what kind of data you are working with: for
 example, 1,000 population is generally a good rule of thumb for
 mortality data, whereas an appropriate cutoff for birth data is closer
-to 100.</li>
+to 100. Note that this population count metric only applies for
+unrestricted models; the enhancements of the restricted CAR models mean
+that we don’t need this criterion when evaluating reliability.</li>
 </ul>
 <p>Let’s get some reliability metrics for our dataset. First, let’s
 generate our relative precisions at 95% credibility using the
@@ -160,7 +162,8 @@ are unreliable:</p>
 for populations less than 1000 and use these criteria to create a set of
 suppressed medians. A median will be suppressed if it meets either of
 the two criteria. Note that since our samples are age-standardized, we
-also have to extend our <code>pop</code> array to match in size:</p>
+also have to extend our <code>pop</code> array to match in size using
+the <code><a href="../reference/aggregate_pop.html">aggregate_pop()</a></code> function:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_pop.html">load_pop</a></span><span class="op">(</span><span class="st">"my_test_model"</span><span class="op">)</span></span>
 <span><span class="va">pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aggregate_pop.html">aggregate_pop</a></span><span class="op">(</span><span class="va">pop</span>, <span class="va">margin_age</span>, groups <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, bind_new <span class="op">=</span> <span class="cn">TRUE</span>, new_name <span class="op">=</span> <span class="st">"35-64"</span><span class="op">)</span></span>

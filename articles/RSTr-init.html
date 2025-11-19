@@ -86,8 +86,8 @@
 <p>The <code>initialize_*()</code> functions
 (<code><a href="../reference/initialize_ucar.html">initialize_ucar_restricted()</a></code>,
 <code><a href="../reference/initialize_ucar.html">initialize_ucar()</a></code>, <code><a href="../reference/initialize_ucar.html">initialize_mcar()</a></code>,
-<code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code>) builds the necessary features needed
-to run <code>RSTr</code> and places them in R’s temporary directory. In
+<code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code>) build the necessary features needed to
+run <code>RSTr</code> and places them in R’s temporary directory. In
 this vignette, we will talk in detail about each argument and how to use
 them.</p>
 </div>
@@ -168,13 +168,13 @@ are either logit- or log-transformed, depending on which
 and <code>method = "poisson"</code> is associated with
 <code><a href="https://rdrr.io/r/base/Log.html" class="external-link">log()</a></code>;</p></li>
 <li><p><code>beta</code>: The mean rate for each island-group-year on
-the transformed scale. Islands are sets of regions that contain a set of
-neighbors that are all related to each other. For example, in
-<code>miadj</code>, there are two islands that represent the counties of
-the Upper Peninsula and the Lower Peninsula. These islands don’t touch
-each other, and therefore don’t share adjacency information. Therefore,
-each island is assigned its own <code>beta</code>. <code>beta</code> is
-an <code>array</code> of real numbers with dimensions
+the transformed scale. Islands are sets of regions that exclusively
+share adjacency information. For example, in <code>miadj</code>, there
+are two islands that represent the counties of the Upper Peninsula and
+the Lower Peninsula. These islands don’t touch each other, and thus
+don’t share adjacency information. Therefore, each island is assigned
+its own <code>beta</code>. <code>beta</code> is an <code>array</code> of
+real numbers with dimensions
 <code>num_island x num_group x num_time</code>. Note that this is also
 logit- or log-transformed, similar to <code>theta</code>;</p></li>
 <li><p><code>Z</code>: The spatiotemporal random effects. These are the
@@ -192,11 +192,11 @@ matrices with dimensions
 <li><p><code>rho</code>: The temporal correlation. This parameter
 decides the strength of the relationship between values in time period
 <code>t</code> to values in time period <code>t-1</code>. It is a
-<code>vector</code> of length <code>num_group</code> of real numbers
+<code>matrix</code> of size <code>num_group x 1</code> of real numbers
 with support <code>[0,1]</code>;</p></li>
 <li><p><code>tau2</code>: The non-spatial variance. This parameter picks
 up any variance in values of <code>theta</code> for each group. It is a
-<code>vector</code> of length <code>num_group</code> of positive real
+<code>matrix</code> of size <code>num_group x 1</code> of positive real
 numbers; and</p></li>
 <li><p><code>Ag</code>: The general spatial covariance matrix. This
 parameter describes the overall relationship between groups across the
@@ -204,16 +204,17 @@ entire model and is used in the prior distribution for the matrices in
 <code>G</code>. <code>Ag</code> is a positive-definite symmetric matrix
 with dimensions <code>num_group x num_group</code>.</p></li>
 </ul>
-<p>Note that you don’t have to specify inits for <em>all</em> parameters
-if you only want to specify some of them - any undefined inits will be
-defined by the default values. For example, you can specify only the
-initial values for <code>theta</code> and all other values will be
-generated on their own. However, if one value is specified for a certain
-parameter in <code>inits</code>, all values must be specified for that
-parameter in <code>inits</code>: you cannot, for example, define initial
-values for just one year of <code>theta</code>. Finally, any values
-included in your <code>inits</code> list that aren’t aligned with the
-above names will be ignored.</p>
+<p>Note that you don’t have to specify <code>inits</code> for
+<em>all</em> parameters if you only want to specify some of them - any
+undefined <code>inits</code> will be defined by the default values. For
+example, you can specify only the initial values for <code>theta</code>
+and all other values will be generated on their own. However, if one
+value is specified for a certain parameter in <code>inits</code>, all
+values must be specified for that parameter in <code>inits</code>: you
+cannot, for example, define initial values for just one year of
+<code>theta</code>. Finally, any values included in your
+<code>inits</code> list that aren’t aligned with the above names will be
+ignored.</p>
 </div>
 <div class="section level3">
 <h3 id="the-priors-argument">The <code>priors</code> argument<a class="anchor" aria-label="anchor" href="#the-priors-argument"></a>
@@ -282,13 +283,13 @@ rates under approximately 1%.</p>
 the intensity of the smoothing of restricted CAR models. <code>m0</code>
 should be a positive scalar, and the size of <code>A</code> is dependent
 on the group/time structure of your data: <code>A</code> will be a
-positive scalar for UCAR models, a <code>vector</code> of size
-<code>num_group</code> for MCAR models, and a matrix of size
-<code>num_group</code> x <code>num_time</code> for MSTCAR models. Note,
-however, that these informativeness restriction measures are currently
-only developed for the UCAR model, and restrictions for more complex
-models will be added to the <code>RSTr</code> package as their
-respective methods are developed.</p>
+positive scalar for region-only models, a <code>vector</code> of size
+<code>num_group</code> for region-group models, and a matrix of size
+<code>num_group</code> x <code>num_time</code> for region-group-time
+models. Note, however, that these informativeness restriction measures
+are currently only developed for the UCAR model, and restrictions for
+more complex models will be added to the <code>RSTr</code> package as
+their respective methods are developed.</p>
 </div>
 <div class="section level3">
 <h3 id="the-rho_up-argument">The <code>rho_up</code> argument<a class="anchor" aria-label="anchor" href="#the-rho_up-argument"></a>
@@ -315,9 +316,8 @@ generating similar estimates, set by default to <code>1234</code>.</p>
 where the checks performed on the inputs of <code>initialize_*()</code>
 throw an error, even though you may be certain that all of your inputs
 are behaving as expected. To override the checks, you can use the
-<code>ignore_checks</code> argument. By default, this is marked as
-<code>FALSE</code>, but specifying <code>TRUE</code> will skip this
-step.</p>
+<code>ignore_checks</code> argument. Set this to <code>TRUE</code> to
+skip this step.</p>
 </div>
 </div>
 <div class="section level2">
