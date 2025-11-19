@@ -16,14 +16,16 @@ al. (2021)](https://doi.org/10.1016/j.sste.2021.100420):
 
 For models using `method = "binomial"`,
 
-\\ \begin{split} Y\_{i} &\sim \text{Binomial}(n\_{i}, \theta\_{i}) \\
-\theta\_{i} &\sim \text{LogitNormal}(\beta\_{j} + Z\_{i}, \tau^2), \\ i
-&=\\1,...,N_s\\, j =\\1,...,N\_{is}\\ \end{split} \\
+\\ \begin{split} Y\_{i} &\sim \text{Binomial}(n\_{i}, \pi\_{i}) \\
+\theta\_{i} = \text{Logit}(\pi\_{i}) \\ \theta\_{i} &\sim
+\text{LogitNormal}(\beta\_{j} + Z\_{i}, \tau^2), \\ i &=\\1,...,N_s\\, j
+=\\1,...,N\_{is}\\ \end{split} \\
 
 For models using `method = "poisson"`,
 
-\\ \begin{split} Y\_{i} &\sim \text{Poisson}(n\_{i} \theta\_{i}) \\
-\theta\_{i} &\sim \text{LogNormal}(\beta\_{j} + Z\_{i}, \tau^2), \\ i
+\\ \begin{split} Y\_{i} &\sim \text{Poisson}(n\_{i} \lambda\_{i}) \\
+\theta\_{i} = \text{Log}(\lambda\_{i}) \\ \theta\_{i} &\sim
+\text{LogNormal}(\beta\_{j} + Z\_{i}, \tau^2), \\ i
 &=\\1,...,N\_{s}\\,\\ j =\\1,...,N\_{is}\\ \end{split} \\
 
 For both models,
@@ -41,17 +43,17 @@ The MCAR model used by `RSTr` is based on the model developed by
 
 For models using `method = "binomial"`,
 
-\\ \begin{split} Y\_{ik} &\sim \text{Binomial}(n\_{ik}, \theta\_{ik}) \\
-\theta\_{ik} &\sim \text{LogitNormal}(\beta\_{jk} + Z\_{ik}, \tau_k^2),
-\\ i &=\\1,...,N_s\\, k =\\1,...,N\_{g}\\, j=\\1,...,N\_{is}\\
-\end{split} \\
+\\ \begin{split} Y\_{ik} &\sim \text{Binomial}(n\_{ik}, \pi\_{ik}) \\
+\theta\_{ik} = \text{Logit}(\pi\_{ik}) \\ \theta\_{ik} &\sim
+\text{LogitNormal}(\beta\_{jk} + Z\_{ik}, \tau_k^2), \\ i
+&=\\1,...,N_s\\, k =\\1,...,N\_{g}\\, j=\\1,...,N\_{is}\\ \end{split} \\
 
 For models using `method = "poisson"`,
 
-\\ \begin{split} Y\_{ik} &\sim \text{Poisson}(n\_{ik}, \theta\_{ik}) \\
-\theta\_{ik} &\sim \text{LogNormal}(\beta\_{jk} + Z\_{ik}, \tau_k^2), \\
-i &=\\1,...,N_s\\, k =\\1,...,N\_{g}\\, j=\\1,...,N\_{is}\\ \end{split}
-\\
+\\ \begin{split} Y\_{ik} &\sim \text{Poisson}(n\_{ik}, \lambda\_{ik}) \\
+\theta\_{ik} = \text{Log}(\lambda\_{ik}) \\ \theta\_{ik} &\sim
+\text{LogNormal}(\beta\_{jk} + Z\_{ik}, \tau_k^2), \\ i &=\\1,...,N_s\\,
+k =\\1,...,N\_{g}\\, j=\\1,...,N\_{is}\\ \end{split} \\
 
 For both models,
 
@@ -67,17 +69,19 @@ The MSTCAR model used by `RSTr` is based on the model developed by
 
 For models using `method = "binomial"`,
 
-\\ \begin{split} Y\_{ikt} &\sim \text{Binomial}(n\_{ikt}, \theta\_{ikt})
-\\ \theta\_{ikt} &\sim \text{LogitNormal}(\beta\_{jkt} + Z\_{ikt},
-\tau_k^2), \\ i &=\\1,...,N_s\\,\\ k =\\1,...,N_g\\,\\
-t=\\1,...,N_t\\,\\ j=\\1,...,N\_{is}\\ \end{split} \\
+\\ \begin{split} Y\_{ikt} &\sim \text{Binomial}(n\_{ikt}, \pi\_{ikt}) \\
+\theta\_{ikt} = \text{Logit}(\pi\_{ikt}) \\ \theta\_{ikt} &\sim
+\text{LogitNormal}(\beta\_{jkt} + Z\_{ikt}, \tau_k^2), \\ i
+&=\\1,...,N_s\\,\\ k =\\1,...,N_g\\,\\ t=\\1,...,N_t\\,\\
+j=\\1,...,N\_{is}\\ \end{split} \\
 
 For models using `method = "poisson"`,
 
-\\ \begin{split} Y\_{ikt} &\sim \text{Poisson}(n\_{ikt} \theta\_{ikt})
-\\ \theta\_{ikt} &\sim \text{LogNormal}(\beta\_{jkt} + Z\_{ikt},
-\tau_k^2), \\ t &=\\1,...,N_t\\,\\ i =\\1,...,N_s\\,\\
-k=\\1,...,N_g\\,\\ j=\\1,...,N\_{is}\\ \end{split} \\
+\\ \begin{split} Y\_{ikt} &\sim \text{Poisson}(n\_{ikt} \lambda\_{ikt})
+\\ \theta\_{ikt} = \text{Log}(\lambda\_{ikt}) \\ \theta\_{ikt} &\sim
+\text{LogNormal}(\beta\_{jkt} + Z\_{ikt}, \tau_k^2), \\ t
+&=\\1,...,N_t\\,\\ i =\\1,...,N_s\\,\\ k=\\1,...,N_g\\,\\
+j=\\1,...,N\_{is}\\ \end{split} \\
 
 For both models,
 
