@@ -101,9 +101,9 @@ medians, we simply put our samples into <code><a href="../reference/get_medians.
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">std_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">113154</span>, <span class="fl">100640</span>, <span class="fl">95799</span><span class="op">)</span></span>
 <span><span class="va">margin_age</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_samples.html">load_samples</a></span><span class="op">(</span><span class="st">"my_test_model"</span><span class="op">)</span> <span class="op">*</span> <span class="fl">1e5</span></span>
-<span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/age_standardize.html">age_standardize</a></span><span class="op">(</span><span class="va">theta</span>, <span class="va">std_pop</span>, <span class="va">margin_age</span>, groups <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, bind_new <span class="op">=</span> <span class="cn">TRUE</span>, new_name <span class="op">=</span> <span class="st">"35-64"</span><span class="op">)</span></span>
-<span><span class="va">medians</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_medians</a></span><span class="op">(</span><span class="va">theta</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_samples.html">load_samples</a></span><span class="op">(</span><span class="st">"my_test_model"</span><span class="op">)</span> <span class="op">*</span> <span class="fl">1e5</span></span>
+<span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/age_standardize.html">age_standardize</a></span><span class="op">(</span><span class="va">samples</span>, <span class="va">std_pop</span>, <span class="va">margin_age</span>, groups <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, bind_new <span class="op">=</span> <span class="cn">TRUE</span>, new_name <span class="op">=</span> <span class="st">"35-64"</span><span class="op">)</span></span>
+<span><span class="va">medians</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_medians</a></span><span class="op">(</span><span class="va">samples</span><span class="op">)</span></span></code></pre></div>
 <p>From here, we can map our estimates:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -155,7 +155,7 @@ generate our relative precisions at 95% credibility using the
 <code>logical</code> <code>array</code> that tells us which estimates
 are unreliable:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_credible_interval</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">theta</span>, perc_ci <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_credible_interval</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">samples</span>, perc_ci <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
 <span><span class="va">rel_prec</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_relative_precision</a></span><span class="op">(</span><span class="va">medians</span>, <span class="va">ci</span><span class="op">)</span></span>
 <span><span class="va">low_rel_prec</span> <span class="op">&lt;-</span> <span class="va">rel_prec</span> <span class="op">&lt;</span> <span class="fl">1</span></span></code></pre></div>
 <p>Now, let’s generate a similar <code>logical</code> <code>array</code>
@@ -192,10 +192,11 @@ what changed:</p>
 running the model both helps to bolster our relative precisions and to
 increase the total population in our groups, increasing values for both
 suppression criteria. If we suppress our estimates in our more granular,
-non-age-standardized <code>theta</code> samples, we will see that, even
-with a small credible interval, many more counties are suppressed:</p>
+non-age-standardized <code>samples</code> samples, we will see that,
+even with a small credible interval, many more counties are
+suppressed:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rel_prec50</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_relative_precision</a></span><span class="op">(</span><span class="va">medians</span>, ci <span class="op">=</span> <span class="fu"><a href="../reference/get_medians.html">get_credible_interval</a></span><span class="op">(</span><span class="va">theta</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">rel_prec50</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_relative_precision</a></span><span class="op">(</span><span class="va">medians</span>, ci <span class="op">=</span> <span class="fu"><a href="../reference/get_medians.html">get_credible_interval</a></span><span class="op">(</span><span class="va">samples</span>, <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">low_rel_prec</span> <span class="op">&lt;-</span> <span class="va">rel_prec50</span> <span class="op">&lt;</span> <span class="fl">1</span></span>
 <span><span class="va">medians_supp</span> <span class="op">&lt;-</span> <span class="va">medians</span></span>
 <span><span class="va">medians_supp</span><span class="op">[</span><span class="va">low_rel_prec</span> <span class="op">|</span> <span class="va">low_population</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
@@ -214,7 +215,7 @@ with a small credible interval, many more counties are suppressed:</p>
 <p>As we widen our credible interval, the reliability criteria will
 become more conservative and suppress more counties:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">rel_prec995</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_relative_precision</a></span><span class="op">(</span><span class="va">medians</span>, <span class="fu"><a href="../reference/get_medians.html">get_credible_interval</a></span><span class="op">(</span><span class="va">theta</span>, <span class="fl">0.995</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">rel_prec995</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_relative_precision</a></span><span class="op">(</span><span class="va">medians</span>, <span class="fu"><a href="../reference/get_medians.html">get_credible_interval</a></span><span class="op">(</span><span class="va">samples</span>, <span class="fl">0.995</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">low_rel_prec</span> <span class="op">&lt;-</span> <span class="va">rel_prec995</span> <span class="op">&lt;</span> <span class="fl">1</span></span>
 <span><span class="va">medians_supp</span> <span class="op">&lt;-</span> <span class="va">medians</span></span>
 <span><span class="va">medians_supp</span><span class="op">[</span><span class="va">low_rel_prec</span> <span class="op">|</span> <span class="va">low_population</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>

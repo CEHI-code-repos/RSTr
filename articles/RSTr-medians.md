@@ -20,9 +20,9 @@ our samples into [`get_medians()`](../reference/get_medians.md):
 ``` r
 std_pop <- c(113154, 100640, 95799)
 margin_age <- 2
-theta <- load_samples("my_test_model") * 1e5
-theta <- age_standardize(theta, std_pop, margin_age, groups = 1:3, bind_new = TRUE, new_name = "35-64")
-medians <- get_medians(theta)
+samples <- load_samples("my_test_model") * 1e5
+samples <- age_standardize(samples, std_pop, margin_age, groups = 1:3, bind_new = TRUE, new_name = "35-64")
+medians <- get_medians(samples)
 ```
 
 From here, we can map our estimates:
@@ -80,7 +80,7 @@ then create a `logical` `array` that tells us which estimates are
 unreliable:
 
 ``` r
-ci <- get_credible_interval(sample = theta, perc_ci = 0.95)
+ci <- get_credible_interval(sample = samples, perc_ci = 0.95)
 rel_prec <- get_relative_precision(medians, ci)
 low_rel_prec <- rel_prec < 1
 ```
@@ -126,11 +126,11 @@ In this group in 1979, it seems only one region has been suppressed
 running the model both helps to bolster our relative precisions and to
 increase the total population in our groups, increasing values for both
 suppression criteria. If we suppress our estimates in our more granular,
-non-age-standardized `theta` samples, we will see that, even with a
+non-age-standardized `samples` samples, we will see that, even with a
 small credible interval, many more counties are suppressed:
 
 ``` r
-rel_prec50 <- get_relative_precision(medians, ci = get_credible_interval(theta, 0.5))
+rel_prec50 <- get_relative_precision(medians, ci = get_credible_interval(samples, 0.5))
 low_rel_prec <- rel_prec50 < 1
 medians_supp <- medians
 medians_supp[low_rel_prec | low_population] <- NA
@@ -153,7 +153,7 @@ As we widen our credible interval, the reliability criteria will become
 more conservative and suppress more counties:
 
 ``` r
-rel_prec995 <- get_relative_precision(medians, get_credible_interval(theta, 0.995))
+rel_prec995 <- get_relative_precision(medians, get_credible_interval(samples, 0.995))
 low_rel_prec <- rel_prec995 < 1
 medians_supp <- medians
 medians_supp[low_rel_prec | low_population] <- NA

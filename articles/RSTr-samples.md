@@ -45,12 +45,12 @@ initialize_mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 
 ``` r
 run_sampler("my_test_model", dir = tempdir())
-#> Starting sampler on Batch 1 at Wed Nov 19 20:47:01
+#> Starting sampler on Batch 1 at Wed Nov 19 22:38:54
 ```
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Wed Nov 19 20:47:26
+    #> Model finished at Wed Nov 19 22:39:19
 
 ## The `load_samples()` function
 
@@ -79,7 +79,7 @@ default arguments). We also multiply by 100,000 as it is common to
 display mortality rates per 100,000 individuals:
 
 ``` r
-theta <- load_samples("my_test_model") * 1e5
+samples <- load_samples("my_test_model") * 1e5
 ```
 
 ### Group aggregation
@@ -93,14 +93,14 @@ need to check which margin contains our year information using the
 [`dim()`](https://rdrr.io/r/base/dim.html) function:
 
 ``` r
-dim(theta)
+dim(samples)
 #> [1]  83   6  10 400
 ```
 
-Our `theta` array has four margins with dimensions `83`, `6`, `10`, and
-`400`, representing the spatial regions, age groups, time periods, and
-iterations, respectively. Let’s set a variable `margin_time` to
-represent our time period margin and aggregate our `theta` estimates
+Our `samples` array has four margins with dimensions `83`, `6`, `10`,
+and `400`, representing the spatial regions, age groups, time periods,
+and iterations, respectively. Let’s set a variable `margin_time` to
+represent our time period margin and aggregate our `samples` estimates
 across 1979-1988 using the
 [`aggregate_groups()`](../reference/aggregate_groups.md) function. The
 population data needed to weight our samples can be pulled from the
@@ -110,17 +110,17 @@ function:
 ``` r
 margin_time <- 3
 pop <- load_pop("my_test_model")
-theta_7988 <- aggregate_groups(theta, pop, margin_time)
+theta_7988 <- aggregate_groups(samples, pop, margin_time)
 ```
 
 Now, we have a standalone sample array for our 1979-1988 samples. But
 what if we are interested in both the individual year data *and* the
 prevalence data? We can alternatively bind these new samples to our main
-`theta` array by adding in values for the `bind_new` and `new_name`
+`samples` array by adding in values for the `bind_new` and `new_name`
 arguments:
 
 ``` r
-theta <- aggregate_groups(theta, pop, margin_time, bind_new = TRUE, new_name = "1979-1988")
+samples <- aggregate_groups(samples, pop, margin_time, bind_new = TRUE, new_name = "1979-1988")
 ```
 
 ### Age-standardization
@@ -144,18 +144,18 @@ our age group information using the
 [`dim()`](https://rdrr.io/r/base/dim.html) function:
 
 ``` r
-dim(theta)
+dim(samples)
 #> [1]  83   6  11 400
 ```
 
 Our age groups lay along the second margin. Let’s set a variable
-`margin_age` and standardize our `theta` estimates across ages 35-64
+`margin_age` and standardize our `samples` estimates across ages 35-64
 using the [`age_standardize()`](../reference/age_standardize.md)
 function:
 
 ``` r
 margin_age <- 2
-theta_3564 <- age_standardize(theta, std_pop, margin_age, groups = c("35-44", "45-54", "55-64"))
+theta_3564 <- age_standardize(samples, std_pop, margin_age, groups = c("35-44", "45-54", "55-64"))
 ```
 
 Note that there may be times where you have groups stratified by both
@@ -168,12 +168,12 @@ conjunction with [`xtabs()`](https://rdrr.io/r/stats/xtabs.html).
 Now, we have a standalone array for our age-standardized 35-64 age
 group. Similarly to
 [`aggregate_groups()`](../reference/aggregate_groups.md), we can
-alternatively consolidate this into our main `theta` array by adding in
-values for the `bind_new` and `new_name` arguments:
+alternatively consolidate this into our main `samples` array by adding
+in values for the `bind_new` and `new_name` arguments:
 
 ``` r
-theta <- age_standardize(
-    theta,
+samples <- age_standardize(
+    samples,
     std_pop,
     margin_age,
     groups = c("35-44", "45-54", "55-64"),
@@ -182,7 +182,7 @@ theta <- age_standardize(
 )
 ```
 
-Now, our samples for `theta` are aggregated by year and
+Now, our samples for `samples` are aggregated by year and
 age-standardized, and we have matching array values for `pop`. Note that
 if you plan on doing a mix of non-age aggregation and
 age-standardization, do age-standardization *after* aggregation, as
@@ -200,9 +200,9 @@ counties <- c(
   which.max(miheart$n[, "55-64", "1979"]),
   which.min(miheart$n[, "55-64", "1979"])
 )
-x <- dimnames(theta)[[4]]
-yhigh <- theta[counties[1], "35-64", "1979", ]
-ylow <- theta[counties[2], "35-64", "1979", ]
+x <- dimnames(samples)[[4]]
+yhigh <- samples[counties[1], "35-64", "1979", ]
+ylow <- samples[counties[2], "35-64", "1979", ]
 raw_high <- sum(miheart$Y[counties[1], 1:3, "1979"]) /
   sum(miheart$n[counties[1], 1:3, "1979"]) *
   1e5
