@@ -37,20 +37,20 @@ initialize_mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 ![](RSTr-samples_files/figure-html/unnamed-chunk-1-1.png)
 
     #> Checking spatial data...
-    #> Checking inits...
-    #> The following objects were created using defaults in 'inits': beta theta Z tau2 G rho Ag
+    #> Checking initial_values...
+    #> The following objects were created using defaults in 'initial_values': beta theta Z tau2 G rho Ag
     #> Checking priors...
     #> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
     #> Model ready!
 
 ``` r
 run_sampler("my_test_model", dir = tempdir())
-#> Starting sampler on Batch 1 at Wed Nov 19 15:24:17
+#> Starting sampler on Batch 1 at Wed Nov 19 19:31:18
 ```
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Wed Nov 19 15:24:42
+    #> Model finished at Wed Nov 19 19:31:42
 
 ## The `load_samples()` function
 

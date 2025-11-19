@@ -95,7 +95,7 @@ the length of `rho_sd` must match `num_group`, where `num_group` is the
 number of groups in the model according to `dim(Y)[2]`. As with
 `theta_sd`, all values must be postive and finite.
 
-## Errors and warnings with list `inits`
+## Errors and warnings with list `initial_values`
 
 ### `theta` and `z`
 

@@ -19,7 +19,7 @@ initialize_ucar(
   impute_lb = 1,
   impute_ub = 9,
   seed = 1234,
-  inits = NULL,
+  initial_values = NULL,
   priors = NULL
 )
 
@@ -36,7 +36,7 @@ initialize_ucar_restricted(
   impute_lb = 1,
   impute_ub = 9,
   seed = 1234,
-  inits = NULL,
+  initial_values = NULL,
   priors = NULL
 )
 
@@ -51,7 +51,7 @@ initialize_mcar(
   impute_lb = 1,
   impute_ub = 9,
   seed = 1234,
-  inits = NULL,
+  initial_values = NULL,
   priors = NULL
 )
 
@@ -66,7 +66,7 @@ initialize_mstcar(
   impute_lb = 1,
   impute_ub = 9,
   seed = 1234,
-  inits = NULL,
+  initial_values = NULL,
   priors = NULL,
   rho_up = FALSE
 )
@@ -118,7 +118,7 @@ initialize_mstcar(
 
   Set of random seeds to use for data replication
 
-- inits:
+- initial_values:
 
   Optional list of initial conditions for each parameter
 
@@ -152,8 +152,8 @@ initialize_mstcar(name = "test", data = miheart, adjacency = miadj, dir = tempdi
 #> Checking data...
 
 #> Checking spatial data...
-#> Checking inits...
-#> The following objects were created using defaults in 'inits': beta theta Z tau2 G rho Ag
+#> Checking initial_values...
+#> The following objects were created using defaults in 'initial_values': beta theta Z tau2 G rho Ag
 #> Checking priors...
 #> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
 #> Model ready!
@@ -162,8 +162,8 @@ data_m <- lapply(miheart, \(x) x[, , "1979"])
 initialize_mcar("test", data_m, miadj, tempdir())
 #> Checking data...
 #> Checking spatial data...
-#> Checking inits...
-#> The following objects were created using defaults in 'inits': beta theta Z tau2 G
+#> Checking initial_values...
+#> The following objects were created using defaults in 'initial_values': beta theta Z tau2 G
 #> Checking priors...
 #> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale
 #> Model ready!
@@ -171,8 +171,8 @@ initialize_mcar("test", data_m, miadj, tempdir())
 initialize_mcar("test", data_m, miadj, tempdir(), method = "poisson")
 #> Checking data...
 #> Checking spatial data...
-#> Checking inits...
-#> The following objects were created using defaults in 'inits': beta theta Z tau2 G
+#> Checking initial_values...
+#> The following objects were created using defaults in 'initial_values': beta theta Z tau2 G
 #> Checking priors...
 #> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale
 #> Model ready!
@@ -181,8 +181,8 @@ data_u <- lapply(miheart, \(x) x[, "65-74", "1979"])
 initialize_ucar_restricted("test", data_u, miadj, tempdir(), A = 6)
 #> Checking data...
 #> Checking spatial data...
-#> Checking inits...
-#> The following objects were created using defaults in 'inits': beta theta Z tau2 sig2
+#> Checking initial_values...
+#> The following objects were created using defaults in 'initial_values': beta theta Z tau2 sig2
 #> Checking priors...
 #> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b sig_a sig_b
 #> Model ready!

@@ -119,8 +119,8 @@ initialize_mstcar(
 ![](RSTr_files/figure-html/unnamed-chunk-1-1.png)
 
     #> Checking spatial data...
-    #> Checking inits...
-    #> The following objects were created using defaults in 'inits': beta theta Z tau2 G rho Ag
+    #> Checking initial_values...
+    #> The following objects were created using defaults in 'initial_values': beta theta Z tau2 G rho Ag
     #> Checking priors...
     #> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
     #> Model ready!
@@ -180,12 +180,12 @@ the model and the directory:
 
 ``` r
 run_sampler(name = "my_test_model")
-#> Starting sampler on Batch 1 at Wed Nov 19 15:24:49
+#> Starting sampler on Batch 1 at Wed Nov 19 19:31:49
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Wed Nov 19 15:25:14
+    #> Model finished at Wed Nov 19 19:32:13
 
 [`run_sampler()`](../reference/run_sampler.md) takes information saved
 in `my_test_model` and uses it to run the `RSTr` Gibbs sampler. The
