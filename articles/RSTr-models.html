@@ -99,7 +99,7 @@ al. (2021)</a>:</p>
 <p><span class="math display">\[
 \begin{split}
 Y_{i} &amp;\sim \text{Binomial}(n_{i}, \pi_{i}) \\
-\theta_{i} = \text{Logit}(\pi_{i}) \\
+\theta_{i} &amp;= \text{Logit}(\pi_{i}) \\
 \theta_{i} &amp;\sim \text{LogitNormal}(\beta_{j} + Z_{i}, \tau^2), \\
 i &amp;=\{1,...,N_s\}, j =\{1,...,N_{is}\}
 \end{split}
@@ -108,7 +108,7 @@ i &amp;=\{1,...,N_s\}, j =\{1,...,N_{is}\}
 <p><span class="math display">\[  
 \begin{split}
 Y_{i} &amp;\sim \text{Poisson}(n_{i} \lambda_{i}) \\
-\theta_{i} = \text{Log}(\lambda_{i}) \\
+\theta_{i} &amp;= \text{Log}(\lambda_{i}) \\
 \theta_{i} &amp;\sim \text{LogNormal}(\beta_{j} + Z_{i}, \tau^2), \\
 i &amp;=\{1,...,N_{s}\},\ j =\{1,...,N_{is}\}
 \end{split}
@@ -134,7 +134,7 @@ Vounatsou (2003)</a>:</p>
 <p><span class="math display">\[
 \begin{split}
 Y_{ik} &amp;\sim \text{Binomial}(n_{ik}, \pi_{ik}) \\
-\theta_{ik} = \text{Logit}(\pi_{ik}) \\
+\theta_{ik} &amp;= \text{Logit}(\pi_{ik}) \\
 \theta_{ik} &amp;\sim \text{LogitNormal}(\beta_{jk} + Z_{ik}, \tau_k^2),
 \\
 i &amp;=\{1,...,N_s\}, k =\{1,...,N_{g}\}, j=\{1,...,N_{is}\}
@@ -144,7 +144,7 @@ i &amp;=\{1,...,N_s\}, k =\{1,...,N_{g}\}, j=\{1,...,N_{is}\}
 <p><span class="math display">\[
 \begin{split}
 Y_{ik} &amp;\sim \text{Poisson}(n_{ik}, \lambda_{ik}) \\
-\theta_{ik} = \text{Log}(\lambda_{ik}) \\
+\theta_{ik} &amp;= \text{Log}(\lambda_{ik}) \\
 \theta_{ik} &amp;\sim \text{LogNormal}(\beta_{jk} + Z_{ik}, \tau_k^2),
 \\
 i &amp;=\{1,...,N_s\}, k =\{1,...,N_{g}\}, j=\{1,...,N_{is}\}
@@ -171,7 +171,7 @@ al. (2017)</a>:</p>
 <p><span class="math display">\[
 \begin{split}
 Y_{ikt} &amp;\sim \text{Binomial}(n_{ikt}, \pi_{ikt}) \\
-\theta_{ikt} = \text{Logit}(\pi_{ikt}) \\
+\theta_{ikt} &amp;= \text{Logit}(\pi_{ikt}) \\
 \theta_{ikt} &amp;\sim \text{LogitNormal}(\beta_{jkt} + Z_{ikt},
 \tau_k^2), \\
 i &amp;=\{1,...,N_s\},\ k =\{1,...,N_g\},\ t=\{1,...,N_t\},\
@@ -182,7 +182,7 @@ j=\{1,...,N_{is}\}
 <p><span class="math display">\[
 \begin{split}
 Y_{ikt} &amp;\sim \text{Poisson}(n_{ikt} \lambda_{ikt}) \\
-\theta_{ikt} = \text{Log}(\lambda_{ikt}) \\
+\theta_{ikt} &amp;= \text{Log}(\lambda_{ikt}) \\
 \theta_{ikt} &amp;\sim \text{LogNormal}(\beta_{jkt} + Z_{ikt},
 \tau_k^2), \\
 t &amp;=\{1,...,N_t\},\ i =\{1,...,N_s\},\ k=\{1,...,N_g\},\
