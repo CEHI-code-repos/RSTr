@@ -140,8 +140,8 @@ them:</p>
 of the smoothing intensity between regions;</p></li>
 <li><p><code>m0</code>: In the restricted UCAR model, specifies the
 baseline neighbor count; and</p></li>
-<li><p><code>rho_up</code>: In the MSTCAR model, allows for updates of
-the temporal correlation parameter <code>rho</code>. By default,
+<li><p><code>update_rho</code>: In the MSTCAR model, allows for updates
+of the temporal correlation parameter <code>rho</code>. By default,
 <code>RSTr</code> does not update <code>rho</code>.</p></li>
 </ul>
 <p>If you run into errors when trying to initialize your model, read
@@ -244,7 +244,7 @@ updated at the start of each batch; and</p></li>
 the candidate standard deviation in the Metropolis update for the
 temporal correlation <code>rho</code>. These values will be adaptively
 updated at the start of each batch. Note that this is only used if
-<code>rho_up = TRUE</code>.</p></li>
+<code>update_rho = TRUE</code>.</p></li>
 </ul>
 <p>By default, most of these priors are relatively non-informative.
 Similar to <code>initial_values</code>, you don’t have to specify priors
@@ -286,11 +286,11 @@ more complex models will be added to the <code>RSTr</code> package as
 their respective methods are developed.</p>
 </div>
 <div class="section level3">
-<h3 id="the-rho_up-argument">The <code>rho_up</code> argument<a class="anchor" aria-label="anchor" href="#the-rho_up-argument"></a>
+<h3 id="the-update_rho-argument">The <code>update_rho</code> argument<a class="anchor" aria-label="anchor" href="#the-update_rho-argument"></a>
 </h3>
-<p>In the MSTCAR model, <code>rho_up</code> is a <code>logical</code>
-that specifies whether to calculate estimates for the temporal
-correlation <code>rho</code>. By default, it is set to
+<p>In the MSTCAR model, <code>update_rho</code> is a
+<code>logical</code> that specifies whether to calculate estimates for
+the temporal correlation <code>rho</code>. By default, it is set to
 <code>FALSE</code>. In empirical testing, this estimate was found to not
 be very sensitive to changes when specified prudently and also increases
 runtime by an order of magnitude due to its complexity.</p>

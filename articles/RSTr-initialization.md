@@ -66,7 +66,7 @@ arguments only used by them:
 - `m0`: In the restricted UCAR model, specifies the baseline neighbor
   count; and
 
-- `rho_up`: In the MSTCAR model, allows for updates of the temporal
+- `update_rho`: In the MSTCAR model, allows for updates of the temporal
   correlation parameter `rho`. By default, `RSTr` does not update `rho`.
 
 If you run into errors when trying to initialize your model, read
@@ -171,7 +171,8 @@ priors used in the MSTCAR model:
 - `rho_sd`: A vector of positive real numbers describing the candidate
   standard deviation in the Metropolis update for the temporal
   correlation `rho`. These values will be adaptively updated at the
-  start of each batch. Note that this is only used if `rho_up = TRUE`.
+  start of each batch. Note that this is only used if
+  `update_rho = TRUE`.
 
 By default, most of these priors are relatively non-informative. Similar
 to `initial_values`, you don’t have to specify priors for *all*
@@ -205,13 +206,13 @@ developed for the UCAR model, and restrictions for more complex models
 will be added to the `RSTr` package as their respective methods are
 developed.
 
-### The `rho_up` argument
+### The `update_rho` argument
 
-In the MSTCAR model, `rho_up` is a `logical` that specifies whether to
-calculate estimates for the temporal correlation `rho`. By default, it
-is set to `FALSE`. In empirical testing, this estimate was found to not
-be very sensitive to changes when specified prudently and also increases
-runtime by an order of magnitude due to its complexity.
+In the MSTCAR model, `update_rho` is a `logical` that specifies whether
+to calculate estimates for the temporal correlation `rho`. By default,
+it is set to `FALSE`. In empirical testing, this estimate was found to
+not be very sensitive to changes when specified prudently and also
+increases runtime by an order of magnitude due to its complexity.
 
 ### The `seed` argument
 

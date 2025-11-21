@@ -68,7 +68,7 @@ initialize_mstcar(
   seed = NULL,
   initial_values = NULL,
   priors = NULL,
-  rho_up = FALSE
+  update_rho = FALSE
 )
 ```
 
@@ -135,7 +135,7 @@ initialize_mstcar(
 
   For restricted UCAR models, baseline neighbor count by region
 
-- rho_up:
+- update_rho:
 
   For MSTCAR models, controls whether rho update is performed for MSTCAR
   models
