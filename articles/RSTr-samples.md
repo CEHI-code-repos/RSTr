@@ -36,21 +36,24 @@ initialize_mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-1-1.png)
 
+    #> Warning in initialize_model(name = name, data = data, adjacency = adjacency, :
+    #> Seed is not set using `seed` arg in `initialize_*()`; samples may not be
+    #> replicable.
     #> Checking spatial data...
     #> Checking initial_values...
-    #> The following objects were created using defaults in 'initial_values': beta theta Z tau2 G rho Ag
+    #> The following objects were created using defaults in 'initial_values': beta lambda Z tau2 G rho Ag
     #> Checking priors...
-    #> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
+    #> The following objects were created using defaults in 'priors': lambda_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
     #> Model ready!
 
 ``` r
 run_sampler("my_test_model", dir = tempdir())
-#> Starting sampler on Batch 1 at Wed Nov 19 22:57:54
+#> Starting sampler on Batch 1 at Fri Nov 21 14:52:07
 ```
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Wed Nov 19 22:58:19
+    #> Model finished at Fri Nov 21 14:52:32
 
 ## The `load_samples()` function
 
@@ -64,16 +67,14 @@ arguments:
 
 - `dir`: Directory of the model;
 
-- `param`: The parameter to import samples for. By default, imports
-  `theta`. Values for `theta` and `beta` are expit- or exp-transformed,
-  depending on the `method` chosen in `initialize_*()`; and
+- `param`: The parameter to import samples for; and
 
 - `burn`: Specifies a burn-in period for samples. This allows the model
   time to stabilize before using samples to generate estimates. By
   default, has a burn-in period of 2000 samples.
 
 Any `dimnames` that were saved to `data` will be applied to the samples
-as appropriate. Here, we pull in the `theta` samples for our test
+as appropriate. Here, we pull in the `lambda` samples for our test
 Michigan dataset with a 2000-sample burn-in period (as specified by the
 default arguments). We also multiply by 100,000 as it is common to
 display mortality rates per 100,000 individuals:
@@ -110,7 +111,7 @@ function:
 ``` r
 margin_time <- 3
 pop <- load_pop("my_test_model")
-theta_7988 <- aggregate_groups(samples, pop, margin_time)
+samples_7988 <- aggregate_groups(samples, pop, margin_time)
 ```
 
 Now, we have a standalone sample array for our 1979-1988 samples. But
@@ -155,7 +156,7 @@ function:
 
 ``` r
 margin_age <- 2
-theta_3564 <- age_standardize(samples, std_pop, margin_age, groups = c("35-44", "45-54", "55-64"))
+samples_3564 <- age_standardize(samples, std_pop, margin_age, groups = c("35-44", "45-54", "55-64"))
 ```
 
 Note that there may be times where you have groups stratified by both

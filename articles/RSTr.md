@@ -111,7 +111,8 @@ initialize_mstcar(
   name = "my_test_model",
   data = miheart,
   adjacency = miadj,
-  dir = tempdir()
+  dir = tempdir(),
+  seed = 1234
 )
 #> Checking data...
 ```
@@ -120,9 +121,9 @@ initialize_mstcar(
 
     #> Checking spatial data...
     #> Checking initial_values...
-    #> The following objects were created using defaults in 'initial_values': beta theta Z tau2 G rho Ag
+    #> The following objects were created using defaults in 'initial_values': beta lambda Z tau2 G rho Ag
     #> Checking priors...
-    #> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
+    #> The following objects were created using defaults in 'priors': lambda_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
     #> Model ready!
 
 Here, we use the
@@ -180,12 +181,12 @@ the model and the directory:
 
 ``` r
 run_sampler(name = "my_test_model")
-#> Starting sampler on Batch 1 at Wed Nov 19 22:58:26
+#> Starting sampler on Batch 1 at Fri Nov 21 14:52:39
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Wed Nov 19 22:58:51
+    #> Model finished at Fri Nov 21 14:53:04
 
 [`run_sampler()`](../reference/run_sampler.md) takes information saved
 in `my_test_model` and uses it to run the `RSTr` Gibbs sampler. The
@@ -196,7 +197,7 @@ tuning of the underlying MCMC algorithm and helps avoid computational
 burden by only holding a fraction of the total samples in memory at any
 given time. `RSTr` runs 6,000 iterations split into 60 batches of size
 100 each. All batches are thinned for every 10 iterations by default, as
-the `thetas` (a.k.a., the rate estimates) tend to exhibit
+the `lambdas` (a.k.a., the rate estimates) tend to exhibit
 autocorrelation. Moreover, thinning saves space when writing samples to
 the hard drive, as batches from larger models can balloon to gigabytes
 of size before thinning. Console outputs will show the current batch
@@ -219,10 +220,10 @@ After [`run_sampler()`](../reference/run_sampler.md) is done running
 `mod_test`, you can bring the samples into R using the
 [`load_samples()`](../reference/load_samples.md) function. We can pull
 in samples from any of our available parameters, but let’s pull in the
-outputs for `theta`, our rate estimates:
+outputs for `lambda`, our rate estimates:
 
 ``` r
-samples <- load_samples(name = "my_test_model", param = "theta", burn = 2000)
+samples <- load_samples(name = "my_test_model", burn = 2000)
 ```
 
 Here, the [`load_samples()`](../reference/load_samples.md) function
@@ -245,7 +246,7 @@ putting our `samples` object into the
 medians <- get_medians(samples)
 ```
 
-This creates an `array` object with median estimates for `theta` along
+This creates an `array` object with median estimates for `lambda` along
 each region, group, and year:
 
 ``` r

@@ -81,26 +81,20 @@ parameter of the model. Each parameter can have an initial value
 specified. Here are the possible initial value parameters for the MSTCAR
 model:
 
-- `theta`: The estimated spatially smoothed rate for each
-  region-group-time, transformed to a `(-∞, ∞)` scale. `theta` is an
-  `array` of real numbers with dimensions
-  `num_region x num_group x num_time`. Note that to facilitate the
-  Metropolis update done by `theta`, all values are either logit- or
-  log-transformed, depending on which `method` you choose, so be sure to
-  use [`log()`](https://rdrr.io/r/base/Log.html) or `logit()` to
-  transform your data accordingly. `method = "binomial"` is associated
-  with `logit()` and `method = "poisson"` is associated with
-  [`log()`](https://rdrr.io/r/base/Log.html);
+- `lambda`: The estimated spatially smoothed rate for each
+  region-group-time. `lambda` is an `array` of real numbers with
+  dimensions `num_region x num_group x num_time`. Has support `(0, 1)`
+  for `method = "binomial"` and support `(0, Inf)` for \`method =
+  “poisson”;
 
-- `beta`: The mean rate for each island-group-year on the transformed
-  scale. Islands are sets of regions that exclusively share adjacency
-  information. For example, in `miadj`, there are two islands that
-  represent the counties of the Upper Peninsula and the Lower Peninsula.
-  These islands don’t touch each other, and thus don’t share adjacency
-  information. Therefore, each island is assigned its own `beta`. `beta`
-  is an `array` of real numbers with dimensions
-  `num_island x num_group x num_time`. Note that this is also logit- or
-  log-transformed, similar to `theta`;
+- `beta`: The mean rate for each island-group-year on a logit- or
+  log-transformed scale. Islands are sets of regions that exclusively
+  share adjacency information. For example, in `miadj`, there are two
+  islands that represent the counties of the Upper Peninsula and the
+  Lower Peninsula. These islands don’t touch each other, and thus don’t
+  share adjacency information. Therefore, each island is assigned its
+  own `beta`. `beta` is an `array` of real numbers with dimensions
+  `num_island x num_group x num_time`;
 
 - `Z`: The spatiotemporal random effects. These are the parameters that
   induce smoothing on the counties, with the intensity of the smoothing
@@ -119,7 +113,7 @@ model:
   numbers with support `[0,1]`;
 
 - `tau2`: The non-spatial variance. This parameter picks up any variance
-  in values of `theta` for each group. It is a `matrix` of size
+  in values of `lambda` for each group. It is a `matrix` of size
   `num_group x 1` of positive real numbers; and
 
 - `Ag`: The general spatial covariance matrix. This parameter describes
@@ -131,11 +125,11 @@ model:
 Note that you don’t have to specify `initial_values` for *all*
 parameters if you only want to specify some of them - any undefined
 `initial_values` will be defined by the default values. For example, you
-can specify only the initial values for `theta` and all other values
+can specify only the initial values for `lambda` and all other values
 will be generated on their own. However, if one value is specified for a
 certain parameter in `initial_values`, all values must be specified for
 that parameter in `initial_values`: you cannot, for example, define
-initial values for just one year of `theta`. Finally, any values
+initial values for just one year of `lambda`. Finally, any values
 included in your `initial_values` list that aren’t aligned with the
 above names will be ignored.
 
@@ -169,10 +163,10 @@ priors used in the MSTCAR model:
   random variable `rho`. `rho_a` and `rho_b` must both be positive real
   numbers;
 
-- `theta_sd`: An array of positive real numbers describing the candidate
-  standard deviation in the Metropolis update for the estimated rates
-  `theta`. These values will be adaptively updated at the start of each
-  batch; and
+- `lambda_sd`: An array of positive real numbers describing the
+  candidate standard deviation in the Metropolis update for the
+  estimated rates `lambda`. These values will be adaptively updated at
+  the start of each batch; and
 
 - `rho_sd`: A vector of positive real numbers describing the candidate
   standard deviation in the Metropolis update for the temporal
@@ -188,7 +182,7 @@ priors will be defined by the default values. Any values included in
 ### The `method` argument
 
 `method` offers two values: `"binomial"` and `"poisson"`. These values
-determine how the data is transformed and how the `theta` Metropolis
+determine how the data is transformed and how the `lambda` Metropolis
 update is performed: `"binomial"` treats the event data as
 Binomial-distributed and `"poisson"` treats the event data as
 Poisson-distributed. Depending on your use case, you’ll want to choose

@@ -13,7 +13,7 @@ this process is identical for all types of models.
 
 ## The `get_medians()` function
 
-In `RSTr-samples`, we generated age-standardized estimates for `theta`
+In `RSTr-samples`, we generated age-standardized estimates for `lambda`
 based on our example Michigan dataset. To get the medians, we simply put
 our samples into [`get_medians()`](../reference/get_medians.md):
 

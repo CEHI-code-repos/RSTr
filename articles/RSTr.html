@@ -204,15 +204,16 @@ run out-of-the-box:</p>
 <span>  name <span class="op">=</span> <span class="st">"my_test_model"</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">miheart</span>,</span>
 <span>  adjacency <span class="op">=</span> <span class="va">miadj</span>,</span>
-<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">1234</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Checking data...</span></span></code></pre></div>
 <p><img src="RSTr_files/figure-html/unnamed-chunk-1-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Checking spatial data...</span></span>
 <span><span class="co">#&gt; Checking initial_values...</span></span>
-<span><span class="co">#&gt; The following objects were created using defaults in 'initial_values': beta theta Z tau2 G rho Ag</span></span>
+<span><span class="co">#&gt; The following objects were created using defaults in 'initial_values': beta lambda Z tau2 G rho Ag</span></span>
 <span><span class="co">#&gt; Checking priors...</span></span>
-<span><span class="co">#&gt; The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd</span></span>
+<span><span class="co">#&gt; The following objects were created using defaults in 'priors': lambda_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd</span></span>
 <span><span class="co">#&gt; Model ready!</span></span></code></pre>
 <p>Here, we use the <code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code> function to specify
 our model. <code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code> accepts a few different
@@ -267,9 +268,9 @@ gather our final rate estimates. To get your samples, simply specify the
 name of the model and the directory:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/run_sampler.html">run_sampler</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Nov 19 22:58:26</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Fri Nov 21 14:52:39</span></span></code></pre></div>
 <p><img src="RSTr_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
-<pre><code><span><span class="co">#&gt; Model finished at Wed Nov 19 22:58:51</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Model finished at Fri Nov 21 14:53:04</span></span></code></pre>
 <p><code><a href="../reference/run_sampler.html">run_sampler()</a></code> takes information saved in
 <code>my_test_model</code> and uses it to run the <code>RSTr</code>
 Gibbs sampler. The <code>RSTr</code> package works by generating samples
@@ -280,8 +281,8 @@ the underlying MCMC algorithm and helps avoid computational burden by
 only holding a fraction of the total samples in memory at any given
 time. <code>RSTr</code> runs 6,000 iterations split into 60 batches of
 size 100 each. All batches are thinned for every 10 iterations by
-default, as the <code>thetas</code> (a.k.a., the rate estimates) tend to
-exhibit autocorrelation. Moreover, thinning saves space when writing
+default, as the <code>lambdas</code> (a.k.a., the rate estimates) tend
+to exhibit autocorrelation. Moreover, thinning saves space when writing
 samples to the hard drive, as batches from larger models can balloon to
 gigabytes of size before thinning. Console outputs will show the current
 batch number, the progress within that batch, and the elapsed time. The
@@ -303,9 +304,9 @@ function, read <code><a href="../articles/RSTr-samples.html">vignette("RSTr-samp
 <code>mod_test</code>, you can bring the samples into R using the
 <code><a href="../reference/load_samples.html">load_samples()</a></code> function. We can pull in samples from any of
 our available parameters, but let’s pull in the outputs for
-<code>theta</code>, our rate estimates:</p>
+<code>lambda</code>, our rate estimates:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_samples.html">load_samples</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, param <span class="op">=</span> <span class="st">"theta"</span>, burn <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_samples.html">load_samples</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, burn <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
 <p>Here, the <code><a href="../reference/load_samples.html">load_samples()</a></code> function brings in samples from
 the model <code>my_test_model</code> in R’s temporary directory, only
 loading in iterations after <code>burn</code>. The <code>burn</code>
@@ -326,7 +327,7 @@ putting our <code>samples</code> object into the
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">medians</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_medians.html">get_medians</a></span><span class="op">(</span><span class="va">samples</span><span class="op">)</span></span></code></pre></div>
 <p>This creates an <code>array</code> object with median estimates for
-<code>theta</code> along each region, group, and year:</p>
+<code>lambda</code> along each region, group, and year:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">medians</span><span class="op">)</span></span></code></pre></div>
 <p>For this type of mortality data, it is common to observe the rates

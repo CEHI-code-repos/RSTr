@@ -55,13 +55,14 @@ adj_min <- list(2, 1)
 initialize_mstcar("test", data_min, adj_min, tempdir())
 #> Checking data...
 
+#> Warning: Seed is not set using `seed` arg in `initialize_*()`; samples may not be replicable.
 #> Checking spatial data...
 #> Checking initial_values...
-#> The following objects were created using defaults in 'initial_values': beta theta Z tau2 G rho Ag
+#> The following objects were created using defaults in 'initial_values': beta lambda Z tau2 G rho Ag
 #> Checking priors...
-#> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
+#> The following objects were created using defaults in 'priors': lambda_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
 #> Model ready!
 run_sampler("test", show_plots = FALSE, show_progress = FALSE)
-#> Starting sampler on Batch 1 at Wed Nov 19 22:56:56
-#> Model finished at Wed Nov 19 22:56:57
+#> Starting sampler on Batch 1 at Fri Nov 21 14:51:09
+#> Model finished at Fri Nov 21 14:51:10
 ```

@@ -177,12 +177,12 @@ must be greater than or equal to <code>num_group</code>, where
 <code>dim(Y)[2]</code>.</p>
 </div>
 <div class="section level3">
-<h3 id="theta_sd">
-<code>theta_sd</code><a class="anchor" aria-label="anchor" href="#theta_sd"></a>
+<h3 id="lambda_sd">
+<code>lambda_sd</code><a class="anchor" aria-label="anchor" href="#lambda_sd"></a>
 </h3>
-<p><code>theta_sd</code> is an array of variances used in the
-<code>theta</code> parameter update. Therefore, the dimension of
-<code>theta_sd</code> must match that of <code>data</code> and all
+<p><code>lambda_sd</code> is an array of variances used in the
+<code>lambda</code> parameter update. Therefore, the dimension of
+<code>lambda_sd</code> must match that of <code>data</code> and all
 values must be positive and finite.</p>
 </div>
 <div class="section level3">
@@ -193,22 +193,29 @@ values must be positive and finite.</p>
 <code>rho</code> update. Therefore, the length of <code>rho_sd</code>
 must match <code>num_group</code>, where <code>num_group</code> is the
 number of groups in the model according to <code>dim(Y)[2]</code>. As
-with <code>theta_sd</code>, all values must be postive and finite.</p>
+with <code>lambda_sd</code>, all values must be postive and finite.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="errors-and-warnings-with-list-initial_values">Errors and warnings with list <code>initial_values</code><a class="anchor" aria-label="anchor" href="#errors-and-warnings-with-list-initial_values"></a>
 </h2>
 <div class="section level3">
-<h3 id="theta-and-z">
-<code>theta</code> and <code>z</code><a class="anchor" aria-label="anchor" href="#theta-and-z"></a>
+<h3 id="lambda">
+<code>lambda</code><a class="anchor" aria-label="anchor" href="#lambda"></a>
 </h3>
-<p><code>theta</code> and <code>z</code> are arrays with sizes identical
-to <code>dim(Y)</code>, with all finite values. Check for potential
-infinite values in either of these by using the <code><a href="https://rdrr.io/r/base/which.html" class="external-link">which()</a></code> and
-<code>!is.finite()</code> functions. Note that <code>theta</code> may be
-comprised of <code>log</code> or <code>logit</code>-transformed values,
-depending on your model choice.</p>
+<p><code>lambda</code> is an array with sizes identical to
+<code>dim(Y)</code>, with values containing support from
+<code>(0, 1)</code> for Binomially-distributed data and
+<code>(0, Inf)</code> for Poisson-distributed data.</p>
+</div>
+<div class="section level3">
+<h3 id="z">
+<code>z</code><a class="anchor" aria-label="anchor" href="#z"></a>
+</h3>
+<p><code>z</code> is an array with sizes identical to
+<code>dim(Y)</code>, with all finite values. Check for potential
+infinite values by using the <code><a href="https://rdrr.io/r/base/which.html" class="external-link">which()</a></code> and
+<code>!is.finite()</code> functions.</p>
 </div>
 <div class="section level3">
 <h3 id="beta">

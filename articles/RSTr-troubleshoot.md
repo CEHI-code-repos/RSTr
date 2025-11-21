@@ -82,28 +82,33 @@ to remove these datasets from the model to prevent unnecessary clutter.
 equal to `num_group`, where `num_group` is the number of groups in the
 model according to `dim(Y)[2]`.
 
-### `theta_sd`
+### `lambda_sd`
 
-`theta_sd` is an array of variances used in the `theta` parameter
-update. Therefore, the dimension of `theta_sd` must match that of `data`
-and all values must be positive and finite.
+`lambda_sd` is an array of variances used in the `lambda` parameter
+update. Therefore, the dimension of `lambda_sd` must match that of
+`data` and all values must be positive and finite.
 
 ### `rho_sd`
 
 `rho_sd` is a vector of variances used in the `rho` update. Therefore,
 the length of `rho_sd` must match `num_group`, where `num_group` is the
 number of groups in the model according to `dim(Y)[2]`. As with
-`theta_sd`, all values must be postive and finite.
+`lambda_sd`, all values must be postive and finite.
 
 ## Errors and warnings with list `initial_values`
 
-### `theta` and `z`
+### `lambda`
 
-`theta` and `z` are arrays with sizes identical to `dim(Y)`, with all
-finite values. Check for potential infinite values in either of these by
-using the [`which()`](https://rdrr.io/r/base/which.html) and
-`!is.finite()` functions. Note that `theta` may be comprised of `log` or
-`logit`-transformed values, depending on your model choice.
+`lambda` is an array with sizes identical to `dim(Y)`, with values
+containing support from `(0, 1)` for Binomially-distributed data and
+`(0, Inf)` for Poisson-distributed data.
+
+### `z`
+
+`z` is an array with sizes identical to `dim(Y)`, with all finite
+values. Check for potential infinite values by using the
+[`which()`](https://rdrr.io/r/base/which.html) and `!is.finite()`
+functions.
 
 ### `beta`
 

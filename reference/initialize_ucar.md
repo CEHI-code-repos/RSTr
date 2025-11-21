@@ -18,7 +18,7 @@ initialize_ucar(
   method = c("binomial", "poisson"),
   impute_lb = 1,
   impute_ub = 9,
-  seed = 1234,
+  seed = NULL,
   initial_values = NULL,
   priors = NULL
 )
@@ -35,7 +35,7 @@ initialize_ucar_restricted(
   method = c("binomial", "poisson"),
   impute_lb = 1,
   impute_ub = 9,
-  seed = 1234,
+  seed = NULL,
   initial_values = NULL,
   priors = NULL
 )
@@ -50,7 +50,7 @@ initialize_mcar(
   method = c("binomial", "poisson"),
   impute_lb = 1,
   impute_ub = 9,
-  seed = 1234,
+  seed = NULL,
   initial_values = NULL,
   priors = NULL
 )
@@ -65,7 +65,7 @@ initialize_mstcar(
   method = c("binomial", "poisson"),
   impute_lb = 1,
   impute_ub = 9,
-  seed = 1234,
+  seed = NULL,
   initial_values = NULL,
   priors = NULL,
   rho_up = FALSE
@@ -151,39 +151,43 @@ No output, only sets up model and saves files to directory
 initialize_mstcar(name = "test", data = miheart, adjacency = miadj, dir = tempdir())
 #> Checking data...
 
+#> Warning: Seed is not set using `seed` arg in `initialize_*()`; samples may not be replicable.
 #> Checking spatial data...
 #> Checking initial_values...
-#> The following objects were created using defaults in 'initial_values': beta theta Z tau2 G rho Ag
+#> The following objects were created using defaults in 'initial_values': beta lambda Z tau2 G rho Ag
 #> Checking priors...
-#> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
+#> The following objects were created using defaults in 'priors': lambda_sd tau_a tau_b G_df G_scale Ag_scale Ag_df rho_a rho_b rho_sd
 #> Model ready!
 # Initialize an MCAR model
 data_m <- lapply(miheart, \(x) x[, , "1979"])
 initialize_mcar("test", data_m, miadj, tempdir())
 #> Checking data...
+#> Warning: Seed is not set using `seed` arg in `initialize_*()`; samples may not be replicable.
 #> Checking spatial data...
 #> Checking initial_values...
-#> The following objects were created using defaults in 'initial_values': beta theta Z tau2 G
+#> The following objects were created using defaults in 'initial_values': beta lambda Z tau2 G
 #> Checking priors...
-#> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale
+#> The following objects were created using defaults in 'priors': lambda_sd tau_a tau_b G_df G_scale
 #> Model ready!
 # Initialize an MCAR model with Poisson-distributed event data
 initialize_mcar("test", data_m, miadj, tempdir(), method = "poisson")
 #> Checking data...
+#> Warning: Seed is not set using `seed` arg in `initialize_*()`; samples may not be replicable.
 #> Checking spatial data...
 #> Checking initial_values...
-#> The following objects were created using defaults in 'initial_values': beta theta Z tau2 G
+#> The following objects were created using defaults in 'initial_values': beta lambda Z tau2 G
 #> Checking priors...
-#> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b G_df G_scale
+#> The following objects were created using defaults in 'priors': lambda_sd tau_a tau_b G_df G_scale
 #> Model ready!
 # Initialize a restricted UCAR model
 data_u <- lapply(miheart, \(x) x[, "65-74", "1979"])
 initialize_ucar_restricted("test", data_u, miadj, tempdir(), A = 6)
 #> Checking data...
+#> Warning: Seed is not set using `seed` arg in `initialize_*()`; samples may not be replicable.
 #> Checking spatial data...
 #> Checking initial_values...
-#> The following objects were created using defaults in 'initial_values': beta theta Z tau2 sig2
+#> The following objects were created using defaults in 'initial_values': beta lambda Z tau2 sig2
 #> Checking priors...
-#> The following objects were created using defaults in 'priors': theta_sd tau_a tau_b sig_a sig_b
+#> The following objects were created using defaults in 'priors': lambda_sd tau_a tau_b sig_a sig_b
 #> Model ready!
 ```
