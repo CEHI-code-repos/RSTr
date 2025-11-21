@@ -223,9 +223,11 @@ arguments in this case:</p>
 data lives;</li>
 <li>The <code>data</code> argument specifies event/population data;</li>
 <li>The <code>adjacency</code> argument specifies our adjacency
-structure; and</li>
+structure;</li>
 <li>The <code>dir</code> argument specifies the directory where to save
-the folder.</li>
+the folder; and</li>
+<li>The <code>seed</code> argument specifies a random seed for
+replicability purposes.</li>
 </ul>
 <p><code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code> creates a folder named
 <code>my_test_model</code> in R’s temporary directory containing folders
@@ -268,9 +270,9 @@ gather our final rate estimates. To get your samples, simply specify the
 name of the model and the directory:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/run_sampler.html">run_sampler</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Fri Nov 21 14:52:39</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Fri Nov 21 15:16:28</span></span></code></pre></div>
 <p><img src="RSTr_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
-<pre><code><span><span class="co">#&gt; Model finished at Fri Nov 21 14:53:04</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Model finished at Fri Nov 21 15:16:53</span></span></code></pre>
 <p><code><a href="../reference/run_sampler.html">run_sampler()</a></code> takes information saved in
 <code>my_test_model</code> and uses it to run the <code>RSTr</code>
 Gibbs sampler. The <code>RSTr</code> package works by generating samples

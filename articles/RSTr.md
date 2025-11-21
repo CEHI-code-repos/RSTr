@@ -134,8 +134,11 @@ different arguments in this case:
 
 - The `name` argument specifies the folder where the model data lives;
 - The `data` argument specifies event/population data;
-- The `adjacency` argument specifies our adjacency structure; and
-- The `dir` argument specifies the directory where to save the folder.
+- The `adjacency` argument specifies our adjacency structure;
+- The `dir` argument specifies the directory where to save the folder;
+  and
+- The `seed` argument specifies a random seed for replicability
+  purposes.
 
 [`initialize_mstcar()`](../reference/initialize_ucar.md) creates a
 folder named `my_test_model` in R’s temporary directory containing
@@ -181,12 +184,12 @@ the model and the directory:
 
 ``` r
 run_sampler(name = "my_test_model")
-#> Starting sampler on Batch 1 at Fri Nov 21 14:52:39
+#> Starting sampler on Batch 1 at Fri Nov 21 15:16:28
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Fri Nov 21 14:53:04
+    #> Model finished at Fri Nov 21 15:16:53
 
 [`run_sampler()`](../reference/run_sampler.md) takes information saved
 in `my_test_model` and uses it to run the `RSTr` Gibbs sampler. The
