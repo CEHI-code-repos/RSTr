@@ -46,8 +46,8 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/RSTr-event.html">01: Understanding and Preparing Your Event Data</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-adj.html">02: Understanding and Preparing Your Adjacency Structure</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-init.html">03: Initializing Your Model</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-adjacency.html">02: Understanding and Preparing Your Adjacency Structure</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-initialization.html">03: Initializing Your Model</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-samples.html">04: Gathering and Loading Samples</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-medians.html">05: Calculating Parameter Medians</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-models.html">Appendix A: The CAR Hierarchical Models</a></li>
@@ -150,7 +150,7 @@ tells <code>RSTr</code> which regions are neighbors of one other.
 indices represent the neighbors of each region. Reference
 <code>miadj</code> for an example adjacency structure list. For more
 information on preparing your adjacency data, read
-<code><a href="../articles/RSTr-adj.html">vignette("RSTr-adj")</a></code>.</p></li>
+<code><a href="../articles/RSTr-adjacency.html">vignette("RSTr-adjacency")</a></code>.</p></li>
 </ul>
 <p>Some quick notes about data setup:</p>
 <ul>
@@ -258,7 +258,7 @@ values over time don’t entirely make sense, you may need to double-check
 your data input.</p>
 <p>If you want to learn more about <code><a href="../reference/initialize_ucar.html">initialize_mstcar()</a></code> and
 the other initialization functions, read
-<code><a href="../articles/RSTr-init.html">vignette("RSTr-init")</a></code>.</p>
+<code><a href="../articles/RSTr-initialization.html">vignette("RSTr-initialization")</a></code>.</p>
 </div>
 <div class="section level3">
 <h3 id="sec-samples">
@@ -270,9 +270,9 @@ gather our final rate estimates. To get your samples, simply specify the
 name of the model and the directory:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/run_sampler.html">run_sampler</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Fri Nov 21 15:16:28</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Fri Nov 21 16:07:53</span></span></code></pre></div>
 <p><img src="RSTr_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
-<pre><code><span><span class="co">#&gt; Model finished at Fri Nov 21 15:16:53</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; Model finished at Fri Nov 21 16:08:18</span></span></code></pre>
 <p><code><a href="../reference/run_sampler.html">run_sampler()</a></code> takes information saved in
 <code>my_test_model</code> and uses it to run the <code>RSTr</code>
 Gibbs sampler. The <code>RSTr</code> package works by generating samples

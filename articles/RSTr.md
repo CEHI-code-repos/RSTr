@@ -64,7 +64,7 @@ an MSTCAR model, two components are necessary:
   `list` of vectors whose indices represent the neighbors of each
   region. Reference `miadj` for an example adjacency structure list. For
   more information on preparing your adjacency data, read
-  [`vignette("RSTr-adj")`](../articles/RSTr-adj.md).
+  [`vignette("RSTr-adjacency")`](../articles/RSTr-adjacency.md).
 
 Some quick notes about data setup:
 
@@ -173,7 +173,7 @@ your data input.
 If you want to learn more about
 [`initialize_mstcar()`](../reference/initialize_ucar.md) and the other
 initialization functions, read
-[`vignette("RSTr-init")`](../articles/RSTr-init.md).
+[`vignette("RSTr-initialization")`](../articles/RSTr-initialization.md).
 
 ### `run_sampler()`
 
@@ -184,12 +184,12 @@ the model and the directory:
 
 ``` r
 run_sampler(name = "my_test_model")
-#> Starting sampler on Batch 1 at Fri Nov 21 15:16:28
+#> Starting sampler on Batch 1 at Fri Nov 21 16:07:53
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Model finished at Fri Nov 21 15:16:53
+    #> Model finished at Fri Nov 21 16:08:18
 
 [`run_sampler()`](../reference/run_sampler.md) takes information saved
 in `my_test_model` and uses it to run the `RSTr` Gibbs sampler. The

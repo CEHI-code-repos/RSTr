@@ -50,7 +50,8 @@ to remove these datasets from the model to prevent unnecessary clutter.
   regions have no neighbors by running
   `which(lapply(adjacency, \(x) all(x == 0)))` and then fixing the
   regions accordingly. For assistance with fixing the adjacency
-  information, read [`vignette("RSTr-adj")`](../articles/RSTr-adj.md).
+  information, read
+  [`vignette("RSTr-adjacency")`](../articles/RSTr-adjacency.md).
 
 ## Errors and warnings with list `priors`
 
