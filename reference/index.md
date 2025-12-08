@@ -1,30 +1,37 @@
 # Package index
 
+## Preparing data
+
+- [`generate_data()`](generate_data.md) : Generate count data for RSTr
+  object
+- [`add_neighbors()`](add_neighbors.md) : Add neighbors to adjacency
+  information
+
 ## Modeling
 
-- [`initialize_ucar()`](initialize_ucar.md)
-  [`initialize_ucar_restricted()`](initialize_ucar.md)
-  [`initialize_mcar()`](initialize_ucar.md)
-  [`initialize_mstcar()`](initialize_ucar.md) : Initialize CAR model
-- [`run_sampler()`](run_sampler.md) : Run Gibbs sampler
+- [`ucar()`](ucar.md) [`eucar()`](ucar.md) [`mcar()`](ucar.md)
+  [`mstcar()`](ucar.md) : Create CAR model
+- [`update_model()`](update_model.md) : Update model
+- [`load_model()`](load_model.md) : Load model
+
+## Estimates
+
+- [`get_estimates()`](get_estimates.md) : Extract estimates from RSTr
+  model object
+- [`age_standardize()`](age_standardize.md) : Age-standardize samples
+- [`suppress_estimates()`](suppress_estimates.md) : Suppress estimates
+  based on reliability criteria
+
+## Sample/array processing
+
+- [`load_samples()`](load_samples.md) : Load MCMC samples
+- [`aggregate_count()`](aggregate_count.md) : Aggregate count arrays
+- [`aggregate_samples()`](aggregate_samples.md) : Aggregate samples by
+  non-age group
 - [`get_medians()`](get_medians.md)
   [`get_credible_interval()`](get_medians.md)
   [`get_relative_precision()`](get_medians.md) : Generate medians,
   credible intervals, and relative precisions
-
-## Aggregation
-
-- [`age_standardize()`](age_standardize.md) : Age-standardize samples
-- [`aggregate_groups()`](aggregate_groups.md) : Aggregate samples by
-  non-age group
-- [`aggregate_pop()`](aggregate_pop.md) : Aggregate population arrays
-
-## Loading and preparing data
-
-- [`load_samples()`](load_samples.md) : Load MCMC samples
-- [`load_pop()`](load_pop.md) : Load population array
-- [`add_neighbors()`](add_neighbors.md) : Add neighbors to adjacency
-  information
 
 ## Example data
 

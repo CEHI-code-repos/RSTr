@@ -47,11 +47,15 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/RSTr-event.html">01: Understanding and Preparing Your Event Data</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-adjacency.html">02: Understanding and Preparing Your Adjacency Structure</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-initialization.html">03: Initializing Your Model</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-samples.html">04: Gathering and Loading Samples</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-medians.html">05: Calculating Parameter Medians</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-car.html">03: The CAR Models</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-informativeness.html">04: Model Informativeness</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-agestandardize.html">05: Generating Estimates: Age-standardization</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-reliability.html">06: Generating Estimates: Reliability and Suppression</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-samples.html">07: Sample Processing</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-initialvalues.html">08: Initial Values</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-priors.html">09: Priors</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-models.html">Appendix A: The CAR Hierarchical Models</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-troubleshoot.html">Appendix B: Troubleshooting Error Messages</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-troubleshoot.html">Appendix B: Troubleshooting</a></li>
   </ul>
 </li>
       </ul>
@@ -83,11 +87,11 @@
 <div class="section level2">
 <h2 id="sec-overview">Overview<a class="anchor" aria-label="anchor" href="#sec-overview"></a>
 </h2>
-<p>The event and population data are at the core of the
-<code>RSTr</code> model. They work alongside the adjacency information
-to generate smoothed estimates. In this vignette, we’ll discuss
-requirements for event and population data and walk through an example
-with a <code>data.frame</code>.</p>
+<p>The event and population data are at the core of the BYM-based models
+used in the <code>RSTr</code> package. They work alongside the adjacency
+information to generate smoothed estimates. In this vignette, we’ll
+discuss requirements for event and population data and walk through an
+example with a <code>data.frame</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="sec-requirements">Requirements<a class="anchor" aria-label="anchor" href="#sec-requirements"></a>
@@ -113,17 +117,10 @@ total event. The CAR model will not be able to smooth information if
 there is no event data present. For a UCAR model, this includes any set
 of all regions; for an MCAR model, this is any set of all regions and
 groups; and for the MSTCAR model, this is the entire dataset;</p></li>
-<li><p>For the MSTCAR model, <code>Y</code> and <code>n</code> must be a
+<li><p><code>Y</code> and <code>n</code> can be up to a
 three-dimensional array: the first margin (rows) specifies the region,
 the second margin (columns) specifies the groups of interest, and the
-third margin (matrix slices) specifies the time period. Other models
-will follow this same order of margins: for example, data for the MCAR
-model will be at minimum a two-dimensional array (matrix) with regions
-along the rows and groups along the columns. Data for the UCAR model can
-simply be a vector. However, both the UCAR and MCAR model can be used
-with higher-dimensional arrays as long as it follows the same
-conventions as the MSTCAR model (i.e., regions on margin 1, groups on
-margin 2, and time periods on margin 3);</p></li>
+third margin (matrix slices) specifies the time period;</p></li>
 <li><p>Time periods, regions, and groups must be consistent. If your
 data contains counts for all regions in a specified set of groups for
 1979 and 1981, for example, it must also include counts for all regions
@@ -148,8 +145,7 @@ final <code>array</code> <code>list</code>, we will use data generated
 by CDC WONDER’s Underlying Cause of Death Compressed Mortality, ICD-9
 database, found at <a href="https://wonder.cdc.gov/cmf-icd9.html" class="external-link uri">https://wonder.cdc.gov/cmf-icd9.html</a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cehi-code-repos.github.io/RSTr/" class="external-link">RSTr</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">maexample</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">maexample</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Notes Year Year.Code                County County.Code    Sex Sex.Code Deaths</span></span>
 <span><span class="co">#&gt; 1       1979      1979 Barnstable County, MA       25001 Female        F     15</span></span>
 <span><span class="co">#&gt; 2       1979      1979 Barnstable County, MA       25001   Male        M     57</span></span>
@@ -213,28 +209,27 @@ how our data is listed out:</p>
 <span><span class="co">#&gt; 4      22465             280.4</span></span>
 <span><span class="co">#&gt; 5      80171              64.9</span></span>
 <span><span class="co">#&gt; 6      71943             265.5</span></span></code></pre></div>
-<p>We can use the <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code> function to transform our
-<code>data.frame</code> into mortality and population arrays with
+<p>RSTr offers a <code><a href="../reference/generate_data.html">generate_data()</a></code> function which can
+transform this dataset into mortality and population arrays with
 properly oriented margins:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Deaths</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span> <span class="op">+</span> <span class="va">Year.Code</span>, data <span class="op">=</span> <span class="va">ma_mort</span><span class="op">)</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Population</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span> <span class="op">+</span> <span class="va">Year.Code</span>, data <span class="op">=</span> <span class="va">ma_mort</span><span class="op">)</span></span></code></pre></div>
-<p>When preparing data for a CAR model, make sure that the variables in
-your <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code> expression follow the order listed above:
-geographic regions, sociodemographic groups, and time periods. If you
-have multiple types of groups, such as race and sex, it can take a
-little finessing to set up your group data, such as creating a combined
-race-sex group variable, but data setup will follow the same principles
-as above.</p>
-<p>Now that our arrays are set up, organized, and properly named, we can
-finally consolidate them into a <code>list</code> to be used with the
-model:</p>
+<code class="sourceCode R"><span><span class="va">ma_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_data.html">generate_data</a></span><span class="op">(</span><span class="va">ma_mort</span>, <span class="va">Deaths</span>, <span class="va">Population</span>, <span class="va">County.Code</span>, <span class="va">Sex.Code</span>, <span class="va">Year.Code</span><span class="op">)</span></span></code></pre></div>
+<p>If you want to manually set up the data, you can create
+<code>Y</code> and <code>n</code> arrays using the <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code>
+function and consolidate them into a <code>list</code> to be used with
+the model:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Y</span>, n <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Deaths</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span> <span class="op">+</span> <span class="va">Year.Code</span>, data <span class="op">=</span> <span class="va">ma_mort</span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Population</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span> <span class="op">+</span> <span class="va">Year.Code</span>, data <span class="op">=</span> <span class="va">ma_mort</span><span class="op">)</span></span>
+<span><span class="va">ma_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Y</span>, n <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span></code></pre></div>
 <p>Note that you must specify the names of each array element as above,
 as creating a list with just the objects will not name each element, and
 the names <code>Y</code> and <code>n</code> are necessary for
 <code>RSTr</code> to know how to use the data.</p>
+<p>If you have multiple types of groups, such as race and sex, it can
+take a little finessing to set up your group data, such as creating a
+combined race-sex group variable, but data setup will follow the same
+principles as above.</p>
 </div>
 <div class="section level2">
 <h2 id="data-setup-for-other-models">Data setup for other models<a class="anchor" aria-label="anchor" href="#data-setup-for-other-models"></a>
@@ -246,27 +241,7 @@ our data for the MCAR model:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ma_mort_mcar</span> <span class="op">&lt;-</span> <span class="va">maexample</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">maexample</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span>
 <span><span class="va">ma_mort_mcar</span> <span class="op">&lt;-</span> <span class="va">ma_mort_mcar</span><span class="op">[</span><span class="va">ma_mort_mcar</span><span class="op">$</span><span class="va">Year</span> <span class="op">==</span> <span class="fl">1979</span>, <span class="op">]</span> <span class="co"># filter dataset to only show 1979 data</span></span>
-<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Deaths</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span>, data <span class="op">=</span> <span class="va">ma_mort_mcar</span><span class="op">)</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Population</span> <span class="op">~</span> <span class="va">County.Code</span> <span class="op">+</span> <span class="va">Sex.Code</span>, data <span class="op">=</span> <span class="va">ma_mort_mcar</span><span class="op">)</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Y</span>, n <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
-<span><span class="co">#&gt;            Sex.Code</span></span>
-<span><span class="co">#&gt; County.Code   F   M</span></span>
-<span><span class="co">#&gt;       25001  15  57</span></span>
-<span><span class="co">#&gt;       25003  11  63</span></span>
-<span><span class="co">#&gt;       25005  52 191</span></span>
-<span><span class="co">#&gt;       25007   4   1</span></span>
-<span><span class="co">#&gt;       25009  70 239</span></span>
-<span><span class="co">#&gt;       25011   6  27</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">n</span><span class="op">)</span></span>
-<span><span class="co">#&gt;            Sex.Code</span></span>
-<span><span class="co">#&gt; County.Code      F      M</span></span>
-<span><span class="co">#&gt;       25001  25239  21261</span></span>
-<span><span class="co">#&gt;       25003  24884  22465</span></span>
-<span><span class="co">#&gt;       25005  80171  71943</span></span>
-<span><span class="co">#&gt;       25007   1498   1361</span></span>
-<span><span class="co">#&gt;       25009 108762  98222</span></span>
-<span><span class="co">#&gt;       25011  10188   9669</span></span></code></pre></div>
+<span><span class="va">ma_data_mcar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_data.html">generate_data</a></span><span class="op">(</span><span class="va">ma_mort_mcar</span>, <span class="va">Deaths</span>, <span class="va">Population</span>, <span class="va">County.Code</span>, <span class="va">Sex.Code</span><span class="op">)</span></span></code></pre></div>
 <p>Note that <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code> works by aggregating data along the
 specified variables in the expression argument. In the case of the MCAR
 model, we filter down to the year we want because otherwise, it would
@@ -275,30 +250,18 @@ instead of just for 1979.</p>
 <p>For the UCAR model, setup is similar:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ma_mort_ucar</span> <span class="op">&lt;-</span> <span class="va">maexample</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">maexample</span><span class="op">$</span><span class="va">Year</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="va">ma_mort_ucar</span> <span class="op">&lt;-</span> <span class="va">ma_mort_ucar</span><span class="op">[</span></span>
-<span>  <span class="va">ma_mort_ucar</span><span class="op">$</span><span class="va">Year</span> <span class="op">==</span> <span class="fl">1979</span> <span class="op">&amp;</span> <span class="va">ma_mort_ucar</span><span class="op">$</span><span class="va">Sex</span> <span class="op">==</span> <span class="st">"Male"</span>, <span class="co"># filter dataset to only show 1979 data for men</span></span>
-<span><span class="op">]</span> <span class="co"># filter dataset to only show 1979 data for men</span></span>
-<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Deaths</span> <span class="op">~</span> <span class="va">County.Code</span>, data <span class="op">=</span> <span class="va">ma_mort_ucar</span><span class="op">)</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs</a></span><span class="op">(</span><span class="va">Population</span> <span class="op">~</span> <span class="va">County.Code</span>, data <span class="op">=</span> <span class="va">ma_mort_ucar</span><span class="op">)</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Y</span>, n <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
-<span><span class="co">#&gt; County.Code</span></span>
-<span><span class="co">#&gt; 25001 25003 25005 25007 25009 25011 </span></span>
-<span><span class="co">#&gt;    57    63   191     1   239    27</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">n</span><span class="op">)</span></span>
-<span><span class="co">#&gt; County.Code</span></span>
-<span><span class="co">#&gt; 25001 25003 25005 25007 25009 25011 </span></span>
-<span><span class="co">#&gt; 21261 22465 71943  1361 98222  9669</span></span></code></pre></div>
+<span><span class="va">ma_mort_ucar</span> <span class="op">&lt;-</span> <span class="va">ma_mort_ucar</span><span class="op">[</span><span class="va">ma_mort_ucar</span><span class="op">$</span><span class="va">Year</span> <span class="op">==</span> <span class="fl">1979</span> <span class="op">&amp;</span> <span class="va">ma_mort_ucar</span><span class="op">$</span><span class="va">Sex</span> <span class="op">==</span> <span class="st">"Male"</span>, <span class="op">]</span> <span class="co"># filter dataset to only show 1979 data for men</span></span>
+<span><span class="va">ma_data_ucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_data.html">generate_data</a></span><span class="op">(</span><span class="va">ma_mort_ucar</span>, <span class="va">Deaths</span>, <span class="va">Population</span>, <span class="va">County.Code</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="closing-thoughts">Closing Thoughts<a class="anchor" aria-label="anchor" href="#closing-thoughts"></a>
 </h2>
 <p>In this vignette, we used data generated from CDC WONDER to construct
 our event and population counts, remove unnecessary rows using
-<code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>, and construct our arrays using
-<code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code>. Setting up the data for <code>RSTr</code> can seem
-daunting at first, but with a few quick tricks in R, it can be easy to
-have your data organized for analysis.</p>
+<code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter()</a></code>, and construct our list using
+<code><a href="../reference/generate_data.html">generate_data()</a></code>. Setting up the data for <code>RSTr</code>
+can seem daunting at first, but with a few quick tricks in R, it can be
+easy to have your data organized for analysis.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

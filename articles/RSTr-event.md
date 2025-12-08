@@ -2,10 +2,11 @@
 
 ## Overview
 
-The event and population data are at the core of the `RSTr` model. They
-work alongside the adjacency information to generate smoothed estimates.
-In this vignette, we’ll discuss requirements for event and population
-data and walk through an example with a `data.frame`.
+The event and population data are at the core of the BYM-based models
+used in the `RSTr` package. They work alongside the adjacency
+information to generate smoothed estimates. In this vignette, we’ll
+discuss requirements for event and population data and walk through an
+example with a `data.frame`.
 
 ## Requirements
 
@@ -30,17 +31,10 @@ data and walk through an example with a `data.frame`.
   an MCAR model, this is any set of all regions and groups; and for the
   MSTCAR model, this is the entire dataset;
 
-- For the MSTCAR model, `Y` and `n` must be a three-dimensional array:
-  the first margin (rows) specifies the region, the second margin
-  (columns) specifies the groups of interest, and the third margin
-  (matrix slices) specifies the time period. Other models will follow
-  this same order of margins: for example, data for the MCAR model will
-  be at minimum a two-dimensional array (matrix) with regions along the
-  rows and groups along the columns. Data for the UCAR model can simply
-  be a vector. However, both the UCAR and MCAR model can be used with
-  higher-dimensional arrays as long as it follows the same conventions
-  as the MSTCAR model (i.e., regions on margin 1, groups on margin 2,
-  and time periods on margin 3);
+- `Y` and `n` can be up to a three-dimensional array: the first margin
+  (rows) specifies the region, the second margin (columns) specifies the
+  groups of interest, and the third margin (matrix slices) specifies the
+  time period;
 
 - Time periods, regions, and groups must be consistent. If your data
   contains counts for all regions in a specified set of groups for 1979
@@ -65,7 +59,6 @@ Death Compressed Mortality, ICD-9 database, found at
 <https://wonder.cdc.gov/cmf-icd9.html>:
 
 ``` r
-library(RSTr)
 head(maexample)
 #>   Notes Year Year.Code                County County.Code    Sex Sex.Code Deaths
 #> 1       1979      1979 Barnstable County, MA       25001 Female        F     15
@@ -138,34 +131,33 @@ head(ma_mort)
 #> 6      71943             265.5
 ```
 
-We can use the [`xtabs()`](https://rdrr.io/r/stats/xtabs.html) function
-to transform our `data.frame` into mortality and population arrays with
-properly oriented margins:
+RSTr offers a [`generate_data()`](../reference/generate_data.md)
+function which can transform this dataset into mortality and population
+arrays with properly oriented margins:
+
+``` r
+ma_data <- generate_data(ma_mort, Deaths, Population, County.Code, Sex.Code, Year.Code)
+```
+
+If you want to manually set up the data, you can create `Y` and `n`
+arrays using the [`xtabs()`](https://rdrr.io/r/stats/xtabs.html)
+function and consolidate them into a `list` to be used with the model:
 
 ``` r
 Y <- xtabs(Deaths ~ County.Code + Sex.Code + Year.Code, data = ma_mort)
 n <- xtabs(Population ~ County.Code + Sex.Code + Year.Code, data = ma_mort)
-```
-
-When preparing data for a CAR model, make sure that the variables in
-your [`xtabs()`](https://rdrr.io/r/stats/xtabs.html) expression follow
-the order listed above: geographic regions, sociodemographic groups, and
-time periods. If you have multiple types of groups, such as race and
-sex, it can take a little finessing to set up your group data, such as
-creating a combined race-sex group variable, but data setup will follow
-the same principles as above.
-
-Now that our arrays are set up, organized, and properly named, we can
-finally consolidate them into a `list` to be used with the model:
-
-``` r
-data <- list(Y = Y, n = n)
+ma_data <- list(Y = Y, n = n)
 ```
 
 Note that you must specify the names of each array element as above, as
 creating a list with just the objects will not name each element, and
 the names `Y` and `n` are necessary for `RSTr` to know how to use the
 data.
+
+If you have multiple types of groups, such as race and sex, it can take
+a little finessing to set up your group data, such as creating a
+combined race-sex group variable, but data setup will follow the same
+principles as above.
 
 ## Data setup for other models
 
@@ -177,27 +169,7 @@ our data for the MCAR model:
 ``` r
 ma_mort_mcar <- maexample[which(!is.na(maexample$Year)), ]
 ma_mort_mcar <- ma_mort_mcar[ma_mort_mcar$Year == 1979, ] # filter dataset to only show 1979 data
-Y <- xtabs(Deaths ~ County.Code + Sex.Code, data = ma_mort_mcar)
-n <- xtabs(Population ~ County.Code + Sex.Code, data = ma_mort_mcar)
-data <- list(Y = Y, n = n)
-head(data$Y)
-#>            Sex.Code
-#> County.Code   F   M
-#>       25001  15  57
-#>       25003  11  63
-#>       25005  52 191
-#>       25007   4   1
-#>       25009  70 239
-#>       25011   6  27
-head(data$n)
-#>            Sex.Code
-#> County.Code      F      M
-#>       25001  25239  21261
-#>       25003  24884  22465
-#>       25005  80171  71943
-#>       25007   1498   1361
-#>       25009 108762  98222
-#>       25011  10188   9669
+ma_data_mcar <- generate_data(ma_mort_mcar, Deaths, Population, County.Code, Sex.Code)
 ```
 
 Note that [`xtabs()`](https://rdrr.io/r/stats/xtabs.html) works by
@@ -210,20 +182,8 @@ For the UCAR model, setup is similar:
 
 ``` r
 ma_mort_ucar <- maexample[which(!is.na(maexample$Year)), ]
-ma_mort_ucar <- ma_mort_ucar[
-  ma_mort_ucar$Year == 1979 & ma_mort_ucar$Sex == "Male", # filter dataset to only show 1979 data for men
-] # filter dataset to only show 1979 data for men
-Y <- xtabs(Deaths ~ County.Code, data = ma_mort_ucar)
-n <- xtabs(Population ~ County.Code, data = ma_mort_ucar)
-data <- list(Y = Y, n = n)
-head(data$Y)
-#> County.Code
-#> 25001 25003 25005 25007 25009 25011 
-#>    57    63   191     1   239    27
-head(data$n)
-#> County.Code
-#> 25001 25003 25005 25007 25009 25011 
-#> 21261 22465 71943  1361 98222  9669
+ma_mort_ucar <- ma_mort_ucar[ma_mort_ucar$Year == 1979 & ma_mort_ucar$Sex == "Male", ] # filter dataset to only show 1979 data for men
+ma_data_ucar <- generate_data(ma_mort_ucar, Deaths, Population, County.Code)
 ```
 
 ## Closing Thoughts
@@ -231,7 +191,7 @@ head(data$n)
 In this vignette, we used data generated from CDC WONDER to construct
 our event and population counts, remove unnecessary rows using
 [`filter()`](https://dplyr.tidyverse.org/reference/filter.html), and
-construct our arrays using
-[`xtabs()`](https://rdrr.io/r/stats/xtabs.html). Setting up the data for
-`RSTr` can seem daunting at first, but with a few quick tricks in R, it
-can be easy to have your data organized for analysis.
+construct our list using
+[`generate_data()`](../reference/generate_data.md). Setting up the data
+for `RSTr` can seem daunting at first, but with a few quick tricks in R,
+it can be easy to have your data organized for analysis.

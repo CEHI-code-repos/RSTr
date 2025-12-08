@@ -4,10 +4,14 @@
 <url><loc>/LICENSE-text.html</loc></url>
 <url><loc>/LICENSE.html</loc></url>
 <url><loc>/articles/RSTr-adjacency.html</loc></url>
+<url><loc>/articles/RSTr-agestandardize.html</loc></url>
+<url><loc>/articles/RSTr-car.html</loc></url>
 <url><loc>/articles/RSTr-event.html</loc></url>
-<url><loc>/articles/RSTr-initialization.html</loc></url>
-<url><loc>/articles/RSTr-medians.html</loc></url>
+<url><loc>/articles/RSTr-informativeness.html</loc></url>
+<url><loc>/articles/RSTr-initialvalues.html</loc></url>
 <url><loc>/articles/RSTr-models.html</loc></url>
+<url><loc>/articles/RSTr-priors.html</loc></url>
+<url><loc>/articles/RSTr-reliability.html</loc></url>
 <url><loc>/articles/RSTr-samples.html</loc></url>
 <url><loc>/articles/RSTr-troubleshoot.html</loc></url>
 <url><loc>/articles/RSTr.html</loc></url>
@@ -17,12 +21,13 @@
 <url><loc>/reference/RSTr-package.html</loc></url>
 <url><loc>/reference/add_neighbors.html</loc></url>
 <url><loc>/reference/age_standardize.html</loc></url>
-<url><loc>/reference/aggregate_groups.html</loc></url>
-<url><loc>/reference/aggregate_pop.html</loc></url>
+<url><loc>/reference/aggregate_count.html</loc></url>
+<url><loc>/reference/aggregate_samples.html</loc></url>
+<url><loc>/reference/generate_data.html</loc></url>
+<url><loc>/reference/get_estimates.html</loc></url>
 <url><loc>/reference/get_medians.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
-<url><loc>/reference/initialize_ucar.html</loc></url>
-<url><loc>/reference/load_pop.html</loc></url>
+<url><loc>/reference/load_model.html</loc></url>
 <url><loc>/reference/load_samples.html</loc></url>
 <url><loc>/reference/maexample.html</loc></url>
 <url><loc>/reference/mamap.html</loc></url>
@@ -30,6 +35,8 @@
 <url><loc>/reference/miheart.html</loc></url>
 <url><loc>/reference/minsample.html</loc></url>
 <url><loc>/reference/mishp.html</loc></url>
-<url><loc>/reference/run_sampler.html</loc></url>
+<url><loc>/reference/suppress_estimates.html</loc></url>
+<url><loc>/reference/ucar.html</loc></url>
+<url><loc>/reference/update_model.html</loc></url>
 </urlset>
 

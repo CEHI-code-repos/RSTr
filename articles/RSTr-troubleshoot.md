@@ -1,9 +1,9 @@
-# Appendix B: Troubleshooting Error Messages
+# Appendix B: Troubleshooting
 
 ## Overview
 
-The `initialize_*()` functions include checks to ensure that all data is
-set up in a way that the model can use. If the checks notice something
+The `*car()` functions include checks to ensure that all data is set up
+in a way that the model can use. If the checks notice something
 incompatible with the model, an error will be displayed in the console.
 Here, we list each possible error for the MSTCAR model, including its
 reasoning and ways to check and fix your inputs.
@@ -53,104 +53,12 @@ to remove these datasets from the model to prevent unnecessary clutter.
   information, read
   [`vignette("RSTr-adjacency")`](../articles/RSTr-adjacency.md).
 
-## Errors and warnings with list `priors`
+## `initial_values` and `priors`
 
-### `Ag_scale`
-
-`Ag_scale` is a positive-definite covariance matrix with size
-`num_group x num_group`. This means that `Ag_scale`:
-
-- Must have positive values along its diagonal. Check for zero or
-  negative values along the diagonal with `summary(diag(Ag_scale))`.
-
-- Must be symmetric. Check that `Ag_scale` is symmetric using
-  `isSymmetric(Ag_scale)`, and if not, you can force symmetry by
-  defining `Ag_scale` as `(Ag_scale + t(Ag_scale)) / 2`.
-
-- Must not contain infinite values. Check using
-  `which(!is.finite(Ag_scale))`.
-
-- Must have size `num_group x num_group`, where `num_group` is the
-  number of groups in the model according to the third margin of `Y` and
-  `n`. If `nrow(Ag_scale)` is different than `dim(Y)[2]`, then force
-  `Ag_scale` into the appropriate size using either the
-  [`matrix()`](https://rdrr.io/r/base/matrix.html) or
-  [`array()`](https://rdrr.io/r/base/array.html) functions.
-
-### `G_df`, `Ag_df`
-
-`G_df` and `Ag_df` are positive integers that must be greater than or
-equal to `num_group`, where `num_group` is the number of groups in the
-model according to `dim(Y)[2]`.
-
-### `lambda_sd`
-
-`lambda_sd` is an array of variances used in the `lambda` parameter
-update. Therefore, the dimension of `lambda_sd` must match that of
-`data` and all values must be positive and finite.
-
-### `rho_sd`
-
-`rho_sd` is a vector of variances used in the `rho` update. Therefore,
-the length of `rho_sd` must match `num_group`, where `num_group` is the
-number of groups in the model according to `dim(Y)[2]`. As with
-`lambda_sd`, all values must be postive and finite.
-
-## Errors and warnings with list `initial_values`
-
-### `lambda`
-
-`lambda` is an array with sizes identical to `dim(Y)`, with values
-containing support from `(0, 1)` for Binomially-distributed data and
-`(0, Inf)` for Poisson-distributed data.
-
-### `z`
-
-`z` is an array with sizes identical to `dim(Y)`, with all finite
-values. Check for potential infinite values by using the
-[`which()`](https://rdrr.io/r/base/which.html) and `!is.finite()`
-functions.
-
-### `beta`
-
-`beta` is an array of size `num_island x num_group x num_time`, where
-`num_island` is the number of contiguous regions known as “islands” in
-the model, `num_group` is the number of groups in the model according to
-`dim(Y)[2]`, and `num_time` is the number of time periods in the model
-according to `dim(Y)[3]`. All values must be finite, which can be
-checked using the [`which()`](https://rdrr.io/r/base/which.html) and
-`!is.finite()` functions. Note that `beta` must be comprised of `log` or
-`logit`-transformed values, depending on your model choice.
-
-### `G`
-
-`G` is a covariance matrix array of size
-`num_group x num_group x num_time`, where `num_group` is the number of
-groups in the model according to `dim(Y)[2]` and `num_time` is the
-number of time periods in the model according to `dim(Y)[3]`. Every
-matrix slice of `G` must be positive definite, following the same rules
-as the `Ag_scale` prior.
-
-### `tau2`
-
-`tau2` is a postive vector of variances of length `num_group`, where
-`num_group` is the number of groups in the model according to
-`dim(Y)[2]`. Check for negative or infinite values by using
-`which(tau2 <= 0)` and `which(is.finite(tau2))`.
-
-### `rho`
-
-`rho` is a vector of correlations with support `[0,1]` of length
-`num_group`, where `num_group` is the number of groups in the model
-according to `dim(Y)[2]`. Check for values outside of this range by
-using `which(rho < 0)` and `which(rho > 1)`.
-
-### `Ag`
-
-`Ag` is a covariance matrix of size `num_group x num_group`, where
-`num_group` is the number of groups in the model according to
-`dim(Y)[2]`. `Ag` is positive definite, and must follow the same rules
-as the `Ag_scale` prior.
+For troubleshooting inputs with `initial_values` and `priors`, reference
+[`vignette("RSTr-initialvalues")`](../articles/RSTr-initialvalues.md)
+and [`vignette("RSTr-priors")`](../articles/RSTr-priors.md),
+respectively.
 
 ## `ignore_checks`
 

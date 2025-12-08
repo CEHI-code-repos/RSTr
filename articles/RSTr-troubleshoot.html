@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Appendix B: Troubleshooting Error Messages • RSTr</title>
+<title>Appendix B: Troubleshooting • RSTr</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -21,7 +21,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Appendix B: Troubleshooting Error Messages">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Appendix B: Troubleshooting">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -47,11 +47,15 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/RSTr-event.html">01: Understanding and Preparing Your Event Data</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-adjacency.html">02: Understanding and Preparing Your Adjacency Structure</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-initialization.html">03: Initializing Your Model</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-samples.html">04: Gathering and Loading Samples</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-medians.html">05: Calculating Parameter Medians</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-car.html">03: The CAR Models</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-informativeness.html">04: Model Informativeness</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-agestandardize.html">05: Generating Estimates: Age-standardization</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-reliability.html">06: Generating Estimates: Reliability and Suppression</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-samples.html">07: Sample Processing</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-initialvalues.html">08: Initial Values</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-priors.html">09: Priors</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-models.html">Appendix A: The CAR Hierarchical Models</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-troubleshoot.html">Appendix B: Troubleshooting Error Messages</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-troubleshoot.html">Appendix B: Troubleshooting</a></li>
   </ul>
 </li>
       </ul>
@@ -71,7 +75,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Appendix B: Troubleshooting Error Messages</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Appendix B: Troubleshooting</h1>
             
       
 
@@ -83,10 +87,10 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>The <code>initialize_*()</code> functions include checks to ensure
-that all data is set up in a way that the model can use. If the checks
-notice something incompatible with the model, an error will be displayed
-in the console. Here, we list each possible error for the MSTCAR model,
+<p>The <code>*car()</code> functions include checks to ensure that all
+data is set up in a way that the model can use. If the checks notice
+something incompatible with the model, an error will be displayed in the
+console. Here, we list each possible error for the MSTCAR model,
 including its reasoning and ways to check and fix your inputs.</p>
 </div>
 <div class="section level2">
@@ -140,141 +144,13 @@ information, read <code><a href="../articles/RSTr-adjacency.html">vignette("RSTr
 </ul>
 </div>
 <div class="section level2">
-<h2 id="errors-and-warnings-with-list-priors">Errors and warnings with list <code>priors</code><a class="anchor" aria-label="anchor" href="#errors-and-warnings-with-list-priors"></a>
+<h2 id="initial_values-and-priors">
+<code>initial_values</code> and <code>priors</code><a class="anchor" aria-label="anchor" href="#initial_values-and-priors"></a>
 </h2>
-<div class="section level3">
-<h3 id="ag_scale">
-<code>Ag_scale</code><a class="anchor" aria-label="anchor" href="#ag_scale"></a>
-</h3>
-<p><code>Ag_scale</code> is a positive-definite covariance matrix with
-size <code>num_group x num_group</code>. This means that
-<code>Ag_scale</code>:</p>
-<ul>
-<li><p>Must have positive values along its diagonal. Check for zero or
-negative values along the diagonal with
-<code>summary(diag(Ag_scale))</code>.</p></li>
-<li><p>Must be symmetric. Check that <code>Ag_scale</code> is symmetric
-using <code>isSymmetric(Ag_scale)</code>, and if not, you can force
-symmetry by defining <code>Ag_scale</code> as
-<code>(Ag_scale + t(Ag_scale)) / 2</code>.</p></li>
-<li><p>Must not contain infinite values. Check using
-<code>which(!is.finite(Ag_scale))</code>.</p></li>
-<li><p>Must have size <code>num_group x num_group</code>, where
-<code>num_group</code> is the number of groups in the model according to
-the third margin of <code>Y</code> and <code>n</code>. If
-<code>nrow(Ag_scale)</code> is different than <code>dim(Y)[2]</code>,
-then force <code>Ag_scale</code> into the appropriate size using either
-the <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix()</a></code> or <code><a href="https://rdrr.io/r/base/array.html" class="external-link">array()</a></code> functions.</p></li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="g_df-ag_df">
-<code>G_df</code>, <code>Ag_df</code><a class="anchor" aria-label="anchor" href="#g_df-ag_df"></a>
-</h3>
-<p><code>G_df</code> and <code>Ag_df</code> are positive integers that
-must be greater than or equal to <code>num_group</code>, where
-<code>num_group</code> is the number of groups in the model according to
-<code>dim(Y)[2]</code>.</p>
-</div>
-<div class="section level3">
-<h3 id="lambda_sd">
-<code>lambda_sd</code><a class="anchor" aria-label="anchor" href="#lambda_sd"></a>
-</h3>
-<p><code>lambda_sd</code> is an array of variances used in the
-<code>lambda</code> parameter update. Therefore, the dimension of
-<code>lambda_sd</code> must match that of <code>data</code> and all
-values must be positive and finite.</p>
-</div>
-<div class="section level3">
-<h3 id="rho_sd">
-<code>rho_sd</code><a class="anchor" aria-label="anchor" href="#rho_sd"></a>
-</h3>
-<p><code>rho_sd</code> is a vector of variances used in the
-<code>rho</code> update. Therefore, the length of <code>rho_sd</code>
-must match <code>num_group</code>, where <code>num_group</code> is the
-number of groups in the model according to <code>dim(Y)[2]</code>. As
-with <code>lambda_sd</code>, all values must be postive and finite.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="errors-and-warnings-with-list-initial_values">Errors and warnings with list <code>initial_values</code><a class="anchor" aria-label="anchor" href="#errors-and-warnings-with-list-initial_values"></a>
-</h2>
-<div class="section level3">
-<h3 id="lambda">
-<code>lambda</code><a class="anchor" aria-label="anchor" href="#lambda"></a>
-</h3>
-<p><code>lambda</code> is an array with sizes identical to
-<code>dim(Y)</code>, with values containing support from
-<code>(0, 1)</code> for Binomially-distributed data and
-<code>(0, Inf)</code> for Poisson-distributed data.</p>
-</div>
-<div class="section level3">
-<h3 id="z">
-<code>z</code><a class="anchor" aria-label="anchor" href="#z"></a>
-</h3>
-<p><code>z</code> is an array with sizes identical to
-<code>dim(Y)</code>, with all finite values. Check for potential
-infinite values by using the <code><a href="https://rdrr.io/r/base/which.html" class="external-link">which()</a></code> and
-<code>!is.finite()</code> functions.</p>
-</div>
-<div class="section level3">
-<h3 id="beta">
-<code>beta</code><a class="anchor" aria-label="anchor" href="#beta"></a>
-</h3>
-<p><code>beta</code> is an array of size
-<code>num_island x num_group x num_time</code>, where
-<code>num_island</code> is the number of contiguous regions known as
-“islands” in the model, <code>num_group</code> is the number of groups
-in the model according to <code>dim(Y)[2]</code>, and
-<code>num_time</code> is the number of time periods in the model
-according to <code>dim(Y)[3]</code>. All values must be finite, which
-can be checked using the <code><a href="https://rdrr.io/r/base/which.html" class="external-link">which()</a></code> and
-<code>!is.finite()</code> functions. Note that <code>beta</code> must be
-comprised of <code>log</code> or <code>logit</code>-transformed values,
-depending on your model choice.</p>
-</div>
-<div class="section level3">
-<h3 id="g">
-<code>G</code><a class="anchor" aria-label="anchor" href="#g"></a>
-</h3>
-<p><code>G</code> is a covariance matrix array of size
-<code>num_group x num_group x num_time</code>, where
-<code>num_group</code> is the number of groups in the model according to
-<code>dim(Y)[2]</code> and <code>num_time</code> is the number of time
-periods in the model according to <code>dim(Y)[3]</code>. Every matrix
-slice of <code>G</code> must be positive definite, following the same
-rules as the <code>Ag_scale</code> prior.</p>
-</div>
-<div class="section level3">
-<h3 id="tau2">
-<code>tau2</code><a class="anchor" aria-label="anchor" href="#tau2"></a>
-</h3>
-<p><code>tau2</code> is a postive vector of variances of length
-<code>num_group</code>, where <code>num_group</code> is the number of
-groups in the model according to <code>dim(Y)[2]</code>. Check for
-negative or infinite values by using <code>which(tau2 &lt;= 0)</code>
-and <code>which(is.finite(tau2))</code>.</p>
-</div>
-<div class="section level3">
-<h3 id="rho">
-<code>rho</code><a class="anchor" aria-label="anchor" href="#rho"></a>
-</h3>
-<p><code>rho</code> is a vector of correlations with support
-<code>[0,1]</code> of length <code>num_group</code>, where
-<code>num_group</code> is the number of groups in the model according to
-<code>dim(Y)[2]</code>. Check for values outside of this range by using
-<code>which(rho &lt; 0)</code> and <code>which(rho &gt; 1)</code>.</p>
-</div>
-<div class="section level3">
-<h3 id="ag">
-<code>Ag</code><a class="anchor" aria-label="anchor" href="#ag"></a>
-</h3>
-<p><code>Ag</code> is a covariance matrix of size
-<code>num_group x num_group</code>, where <code>num_group</code> is the
-number of groups in the model according to <code>dim(Y)[2]</code>.
-<code>Ag</code> is positive definite, and must follow the same rules as
-the <code>Ag_scale</code> prior.</p>
-</div>
+<p>For troubleshooting inputs with <code>initial_values</code> and
+<code>priors</code>, reference
+<code><a href="../articles/RSTr-initialvalues.html">vignette("RSTr-initialvalues")</a></code> and
+<code><a href="../articles/RSTr-priors.html">vignette("RSTr-priors")</a></code>, respectively.</p>
 </div>
 <div class="section level2">
 <h2 id="ignore_checks">
