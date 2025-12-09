@@ -58,7 +58,7 @@
 
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The RSTr package uses Bayesian spatiotemporal modeling to spatially smooths discrete small-area event rates using information from neighboring spatial regions. See `browseVignettes("RSTr")` for a series of tutorials on basic usage of the RSTr functions.</p>
+    <p>Takes Poisson or Binomial discrete spatial data and runs a Gibbs sampler for a variety of Spatiotemporal Conditional Autoregressive (CAR) models. Includes measures to prevent estimate over-smoothing through a restriction of model informativeness for select models. Also provides tools to load output and get median estimates. Implements methods from Besag, York, and Mollié (1991) "Bayesian image restoration, with two applications in spatial statistics" doi:10.1007/BF00116466, Gelfand and Vounatsou (2003) "Proper multivariate conditional autoregressive models for spatial data analysis" doi:10.1093/biostatistics/4.1.11, Quick et al. (2017) "Multivariate spatiotemporal modeling of age-specific stroke mortality" doi:10.1214/17-AOAS1068, and Quick et al. (2021) "Evaluating the informativeness of the Besag-York-Mollié CAR model" doi:10.1016/j.sste.2021.100420.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -70,10 +70,23 @@
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Besag, J., York, J. and Mollie, A. (1991) Bayesian Image Restoration with Two Applications in Spatial Statistics (with Discussion). Annals of the Institute of Statistical Mathematics, 43, 1-59. https://doi.org/10.1007/BF00116466
-Gelfand AE, Vounatsou P. (2003) Proper multivariate conditional autoregressive models for spatial data analysis. Biostatistics. 2003 Jan;4(1):11-25. https://doi.org/10.1093/biostatistics/4.1.11
-Multivariate spatiotemporal modeling of age-specific stroke mortality. (2017). Ann. Appl. Stat., 11(4), 2165–2177. https://doi.org/10.1214/17-AOAS1068
-Song, G. (n.d.). Estimating the Informativeness of the Conditional Autoregressive Model Framework with Applications. Drexel University Libraries. https://doi.org/10.17918/00001456</p>
+
+
+<p>Besag, J., York, J., and Mollié, A. (1991).
+Bayesian Image Restoration with Two Applications in Spatial Statistics (with Discussion).
+*Annals of the Institute of Statistical Mathematics*, **43**, 1–59.
+<a href="https://doi.org/10.1007/BF00116466" class="external-link">doi:10.1007/BF00116466</a></p>
+<p>Gelfand, A. E., &amp; Vounatsou, P. (2003).
+Proper multivariate conditional autoregressive models for spatial data analysis.
+*Biostatistics*, **4**(1), 11–25.
+<a href="https://doi.org/10.1093/biostatistics/4.1.11" class="external-link">doi:10.1093/biostatistics/4.1.11</a></p>
+<p>Multivariate spatiotemporal modeling of age-specific stroke mortality (2017).
+*Annals of Applied Statistics*, **11**(4), 2165–2177.
+<a href="https://doi.org/10.1214/17-AOAS1068" class="external-link">doi:10.1214/17-AOAS1068</a></p>
+<p>Song, G. (n.d.).
+*Estimating the Informativeness of the Conditional Autoregressive Model Framework with Applications*.
+Drexel University Libraries.
+<a href="https://doi.org/10.17918/00001456" class="external-link">doi:10.17918/00001456</a></p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
