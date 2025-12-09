@@ -29,7 +29,7 @@ aggregate_samples(
 
 - margin:
 
-  For \`array\`s, The margin on which the groups of interest are
+  For `array`s, The margin on which the groups of interest are
   stratified.
 
 - groups:
@@ -39,8 +39,8 @@ aggregate_samples(
 
 - bind_new:
 
-  If set to `TRUE`, will bind an \`array\` to the original sample
-  dataset. Otherwise, will generate a standalone array of samples.
+  If set to `TRUE`, will bind an `array` to the original sample dataset.
+  Otherwise, will generate a standalone array of samples.
 
 - new_name:
 
