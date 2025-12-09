@@ -127,28 +127,11 @@ use this to generate our adjacency information.</p></li>
 <code>maexample</code> data, then generate some adjacency information
 using the <code>spdep</code> package:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'dplyr'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     filter, lag</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/spdep/" class="external-link">spdep</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: spData</span></span>
-<span><span class="co">#&gt; To access larger datasets in this package, install the spDataLarge</span></span>
-<span><span class="co">#&gt; package with: `install.packages('spDataLarge',</span></span>
-<span><span class="co">#&gt; repos='https://nowosad.github.io/drat/', type='source')`</span></span>
-<span><span class="co">#&gt; Loading required package: sf</span></span>
-<span><span class="co">#&gt; Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE</span></span>
-<span></span>
-<span><span class="va">ma_shp</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">mamap</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">mamap</span><span class="op">$</span><span class="va">GEOID</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">ma_adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/spdep/reference/poly2nb.html" class="external-link">poly2nb</a></span><span class="op">(</span><span class="va">ma_shp</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in poly2nb(ma_shp): some observations have no neighbours;</span></span>
+<code class="sourceCode R"><span><span class="va">ma_shp</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">mamap</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">mamap</span><span class="op">$</span><span class="va">GEOID</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">ma_adj</span> <span class="op">&lt;-</span> <span class="fu">spdep</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/poly2nb.html" class="external-link">poly2nb</a></span><span class="op">(</span><span class="va">ma_shp</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in spdep::poly2nb(ma_shp): some observations have no neighbours;</span></span>
 <span><span class="co">#&gt; if this seems unexpected, try increasing the snap argument.</span></span>
-<span><span class="co">#&gt; Warning in poly2nb(ma_shp): neighbour object has 3 sub-graphs;</span></span>
+<span><span class="co">#&gt; Warning in spdep::poly2nb(ma_shp): neighbour object has 3 sub-graphs;</span></span>
 <span><span class="co">#&gt; if this sub-graph count seems unexpected, try increasing the snap argument.</span></span></code></pre></div>
 <p><code><a href="https://r-spatial.github.io/spdep/reference/poly2nb.html" class="external-link">spdep::poly2nb()</a></code> takes the information in
 <code>ma_shp$geometry</code> and looks for any regions with touching
@@ -178,7 +161,7 @@ neighbors. <code>ma_adj</code> tells us that regions 4 and 10 are our
 regions with no links, but we can also use <code><a href="https://r-spatial.github.io/spdep/reference/card.html" class="external-link">spdep::card()</a></code> to
 give us the indices of our no-link counties:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">no_neigh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/spdep/reference/card.html" class="external-link">card</a></span><span class="op">(</span><span class="va">ma_adj</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">no_neigh</span> <span class="op">&lt;-</span> <span class="fu">spdep</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/card.html" class="external-link">card</a></span><span class="op">(</span><span class="va">ma_adj</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span></span></code></pre></div>
 <p>We can now investigate <code>ma_shp</code> for the counties with no
 neighbors:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">

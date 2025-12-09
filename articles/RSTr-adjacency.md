@@ -41,28 +41,11 @@ are in the same order as our `maexample` data, then generate some
 adjacency information using the `spdep` package:
 
 ``` r
-library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-library(spdep)
-#> Loading required package: spData
-#> To access larger datasets in this package, install the spDataLarge
-#> package with: `install.packages('spDataLarge',
-#> repos='https://nowosad.github.io/drat/', type='source')`
-#> Loading required package: sf
-#> Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
-
 ma_shp <- sf::st_as_sf(mamap[order(mamap$GEOID), ])
-ma_adj <- poly2nb(ma_shp)
-#> Warning in poly2nb(ma_shp): some observations have no neighbours;
+ma_adj <- spdep::poly2nb(ma_shp)
+#> Warning in spdep::poly2nb(ma_shp): some observations have no neighbours;
 #> if this seems unexpected, try increasing the snap argument.
-#> Warning in poly2nb(ma_shp): neighbour object has 3 sub-graphs;
+#> Warning in spdep::poly2nb(ma_shp): neighbour object has 3 sub-graphs;
 #> if this sub-graph count seems unexpected, try increasing the snap argument.
 ```
 
@@ -98,7 +81,7 @@ no links, but we can also use
 to give us the indices of our no-link counties:
 
 ``` r
-no_neigh <- card(ma_adj) == 0
+no_neigh <- spdep::card(ma_adj) == 0
 ```
 
 We can now investigate `ma_shp` for the counties with no neighbors:

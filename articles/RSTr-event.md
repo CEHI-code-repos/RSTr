@@ -190,8 +190,7 @@ ma_data_ucar <- generate_data(ma_mort_ucar, Deaths, Population, County.Code)
 
 In this vignette, we used data generated from CDC WONDER to construct
 our event and population counts, remove unnecessary rows using
-[`filter()`](https://dplyr.tidyverse.org/reference/filter.html), and
-construct our list using
-[`generate_data()`](../reference/generate_data.md). Setting up the data
-for `RSTr` can seem daunting at first, but with a few quick tricks in R,
-it can be easy to have your data organized for analysis.
+[`filter()`](https://rdrr.io/r/stats/filter.html), and construct our
+list using [`generate_data()`](../reference/generate_data.md). Setting
+up the data for `RSTr` can seem daunting at first, but with a few quick
+tricks in R, it can be easy to have your data organized for analysis.
