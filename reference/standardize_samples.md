@@ -55,18 +55,15 @@ An `array` of age-standardized samples.
 std_pop <- c(113154, 100640, 95799)
 age_margin <- 2
 # age-standardize by all age groups
-samples_3564 <- age_standardize(minsample, std_pop, margin = age_margin)
-#> Error in age_standardize(minsample, std_pop, margin = age_margin): unused argument (margin = age_margin)
+samples_3564 <- standardize_samples(minsample, std_pop, age_margin)
 # age-standardize only by the first two age groups
-samples_3554 <- age_standardize(minsample, std_pop[1:2], age_margin, groups = 1:2)
-#> Error in `*tmp*`$params: $ operator is invalid for atomic vectors
+samples_3554 <- standardize_samples(minsample, std_pop[1:2], age_margin, groups = 1:2)
 # bind age-standardized samples to original samples
-samples_as <- age_standardize(
+samples_as <- standardize_samples(
   minsample,
   std_pop,
-  new_name = "35-64",
-  margin = age_margin,
-  bind_new = TRUE
+  age_margin,
+  bind_new = TRUE,
+  new_name = "35-64"
 )
-#> Error in age_standardize(minsample, std_pop, new_name = "35-64", margin = age_margin,     bind_new = TRUE): unused arguments (margin = age_margin, bind_new = TRUE)
 ```

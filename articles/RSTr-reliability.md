@@ -66,13 +66,13 @@ argument:
 
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234, perc_ci = 0.95)
-#> Starting sampler on Batch 1 at Wed Dec 10 23:31:00
+#> Starting sampler on Batch 1 at Wed Dec 10 23:54:09
 ```
 
 ![](RSTr-reliability_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 23:31:29
+    #> Model finished at Wed Dec 10 23:54:38
 
 Here, we specify `perc_ci = 0.95`, which means our relative precision
 estimates will be based on a 95% credible interval. If we want to

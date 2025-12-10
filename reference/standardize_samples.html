@@ -105,20 +105,17 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">std_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">113154</span>, <span class="fl">100640</span>, <span class="fl">95799</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">age_margin</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="co"># age-standardize by all age groups</span></span></span>
-<span class="r-in"><span><span class="va">samples_3564</span> <span class="op">&lt;-</span> <span class="fu"><a href="age_standardize.html">age_standardize</a></span><span class="op">(</span><span class="va">minsample</span>, <span class="va">std_pop</span>, margin <span class="op">=</span> <span class="va">age_margin</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in age_standardize(minsample, std_pop, margin = age_margin):</span> unused argument (margin = age_margin)</span>
+<span class="r-in"><span><span class="va">samples_3564</span> <span class="op">&lt;-</span> <span class="fu">standardize_samples</span><span class="op">(</span><span class="va">minsample</span>, <span class="va">std_pop</span>, <span class="va">age_margin</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># age-standardize only by the first two age groups</span></span></span>
-<span class="r-in"><span><span class="va">samples_3554</span> <span class="op">&lt;-</span> <span class="fu"><a href="age_standardize.html">age_standardize</a></span><span class="op">(</span><span class="va">minsample</span>, <span class="va">std_pop</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="va">age_margin</span>, groups <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in `*tmp*`$params:</span> $ operator is invalid for atomic vectors</span>
+<span class="r-in"><span><span class="va">samples_3554</span> <span class="op">&lt;-</span> <span class="fu">standardize_samples</span><span class="op">(</span><span class="va">minsample</span>, <span class="va">std_pop</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="va">age_margin</span>, groups <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># bind age-standardized samples to original samples</span></span></span>
-<span class="r-in"><span><span class="va">samples_as</span> <span class="op">&lt;-</span> <span class="fu"><a href="age_standardize.html">age_standardize</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">samples_as</span> <span class="op">&lt;-</span> <span class="fu">standardize_samples</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">minsample</span>,</span></span>
 <span class="r-in"><span>  <span class="va">std_pop</span>,</span></span>
-<span class="r-in"><span>  new_name <span class="op">=</span> <span class="st">"35-64"</span>,</span></span>
-<span class="r-in"><span>  margin <span class="op">=</span> <span class="va">age_margin</span>,</span></span>
-<span class="r-in"><span>  bind_new <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>  <span class="va">age_margin</span>,</span></span>
+<span class="r-in"><span>  bind_new <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  new_name <span class="op">=</span> <span class="st">"35-64"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in age_standardize(minsample, std_pop, new_name = "35-64", margin = age_margin,     bind_new = TRUE):</span> unused arguments (margin = age_margin, bind_new = TRUE)</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
