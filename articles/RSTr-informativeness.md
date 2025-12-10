@@ -34,27 +34,24 @@ MCAR and MSTCAR). We can investigate the traceplot of `sig2` in a UCAR
 model to see its interactions with the traceplot of `Z`:
 
 ``` r
-data_u <- lapply(miheart, \(x) x[, "75-84", "1988", drop = FALSE])
+data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_ucar <- ucar("my_test_model", data_u, miadj, tempdir(), seed = 1234)
-#> Starting sampler on Batch 1 at Wed Dec 10 22:01:46
+#> Starting sampler on Batch 1 at Wed Dec 10 22:31:37
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 22:01:53
+    #> Model finished at Wed Dec 10 22:31:43
 
-Note that the variability of `Z` is correlated with the magnitude of
-`sig2`: the two valleys in `sig2` at around 4000 iterations are
-correlated with the . The magnitude of `sig2` has further implications
-on the rate estimates `lambda`. Smaller `sig2` values mean that the
-variance between neighbors is also smaller. In short, the smaller the
-`sig2`, the closer in value an estimate and its neighbors will be. When
-combined with the comparatively intense smoothing applied to smaller
-event/population regions, these unrestricted CAR models will work too
-hard to fill in the gaps in information, not only pushing the estimate
-value too close to the mean `beta` but also artificially inflating its
-relative precision.
+The magnitude of `sig2` has further implications on the rate estimates
+`lambda`. Smaller `sig2` values mean that the variance between neighbors
+is also smaller. In short, the smaller the `sig2`, the closer in value
+an estimate and its neighbors will be. When combined with the
+comparatively intense smoothing applied to smaller event/population
+regions, these unrestricted CAR models will work too hard to fill in the
+gaps in information, not only pushing the estimate value too close to
+the mean `beta` but also artificially inflating its relative precision.
 
 In unrestricted CAR models, oversmoothing is partially addressed by
 imposing an additional reliability criterion of either a population or
@@ -131,13 +128,13 @@ function, setting an informativeness ceiling of `A = 6`:
 
 ``` r
 mod_eucar <- eucar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
-#> Starting sampler on Batch 1 at Wed Dec 10 22:01:53
+#> Starting sampler on Batch 1 at Wed Dec 10 22:31:44
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 22:02:00
+    #> Model finished at Wed Dec 10 22:31:50
 
 Notice that the traceplots for `tau2` and `sig2` in our enhanced (i.e.,
 restricted) UCAR model have significantly higher values than those in
@@ -196,54 +193,6 @@ decreased intensity of our spatial smoothing. Additionally, the spread
 of estimates for the EUCAR model is wider than that in the unrestricted
 UCAR model because of its increased spatial variance.
 
-## The EUCAR Model, Reliability, and Suppression
-
-Remember that for unrestricted CAR models, we have to impose an
-additional event/population threshold for reliability to capture
-high-precision estimates in low-event areas. As we saw in the
-event/relative precision plot, these thresholds are no longer necessary
-when we suppress our estimates with an EUCAR model:
-
-``` r
-mod_eucar <- suppress_estimates(mod_eucar)
-```
-
-Let’s compare our suppressed estimates to suppressed crude estimates on
-another map:
-
-``` r
-est_crude <- data_u$Y / data_u$n * 1e5
-est_crude[data_u$Y < 10] = NA # Suppression criteria for CDC WONDER 
-est_eucar <- get_estimates(mod_eucar)
-ggplot(mishp) +
-  geom_sf(aes(fill = est_crude)) +
-  labs(
-    title = "Crude Estimates",
-    fill = "Deaths per 100,000"
-  ) +
-  scale_fill_viridis_c() +
-  theme_void()
-```
-
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-8-1.png)
-
-``` r
-ggplot(mishp) +
-  geom_sf(aes(fill = est_eucar$medians_suppressed)) +
-  labs(
-    title = "Spatially Smoothed Estimates, EUCAR Model",
-    fill = "Deaths per 100,000"
-  ) +
-  scale_fill_viridis_c() +
-  theme_void()
-```
-
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-8-2.png)
-
-Not only are we able to see more estimates using the EUCAR model than
-with the crude data, we also get the benefit of spatially smoothing our
-estimates without oversmoothing.
-
 ## Enhanced models and age-standardization
 
 When age-standardizing across a CAR model, informativeness is
@@ -267,13 +216,13 @@ group’s `A` by their total events:
 data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FALSE])
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_eucar <- eucar("test_eucar", data_u, miadj, tempdir(), seed = 1234, A = A)
-#> Starting sampler on Batch 1 at Wed Dec 10 22:02:02
+#> Starting sampler on Batch 1 at Wed Dec 10 22:31:52
 ```
 
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-9-1.png)
+![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 22:02:10
+    #> Model finished at Wed Dec 10 22:31:59
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
@@ -282,10 +231,9 @@ effective smoothing power as our singular `A = 6` restricted model:
 ``` r
 std_pop <- c(68775, 34116, 9888)
 mod_eucar <- age_standardize(mod_eucar, std_pop, "65up")
-mod_eucar <- suppress_estimates(mod_eucar)
 est_eucar <- get_estimates(mod_eucar)
 ggplot(mishp) +
-  geom_sf(aes(fill = est_eucar$medians_suppressed)) +
+  geom_sf(aes(fill = est_eucar$medians)) +
   labs(
     title = "Age-Standardized Spatially Smoothed Estimates, EUCAR Model",
     fill = "Deaths per 100,000"
@@ -294,11 +242,38 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-10-1.png)
+![](RSTr-informativeness_files/figure-html/unnamed-chunk-8-1.png)
 
 With a combination of restricted models and age-standardization, we get
 the benefits of spatial smoothing from the CAR model without risk of
 oversmoothing.
+
+## The EUCAR Model, Reliability, and Suppression
+
+Remember that for unrestricted CAR models, we have to impose an
+additional event/population threshold for reliability to capture
+high-precision estimates in low-event areas. As we saw in the
+event/relative precision plot, these thresholds are no longer necessary
+when we suppress our estimates with an EUCAR model:
+
+``` r
+mod_eucar <- suppress_estimates(mod_eucar)
+est_eucar <- get_estimates(mod_eucar)
+ggplot(mishp) +
+  geom_sf(aes(fill = est_eucar$medians_suppressed)) +
+  labs(
+    title = "Spatially Smoothed Estimates, EUCAR Model",
+    fill = "Deaths per 100,000"
+  ) +
+  scale_fill_viridis_c() +
+  theme_void()
+```
+
+![](RSTr-informativeness_files/figure-html/unnamed-chunk-9-1.png)
+
+With the EUCAR model, we get the benefit of age-standardizing our
+spatially smoothed estimates without the compounded oversmoothing from
+unrestricted models.
 
 ## Choosing between enhanced vs unrestricted models
 
