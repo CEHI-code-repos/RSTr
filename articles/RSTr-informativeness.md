@@ -3,7 +3,8 @@
 ## Overview
 
 Up to this point, we’ve discussed preparing count/adjacency data, model
-setup, and age-standardization. In `vignette("reliability")`, we
+setup, and age-standardization. In
+[`vignette("RSTr-reliability")`](../articles/RSTr-reliability.md), we
 discussed how to suppress estimates based on reliability criteria,
 including population thresholds and relative precision. However, there
 are cases where the event or population counts are too low for RSTr to
@@ -36,13 +37,13 @@ model to see its interactions with the traceplot of `Z`:
 ``` r
 data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_ucar <- ucar("my_test_model", data_u, miadj, tempdir(), seed = 1234)
-#> Starting sampler on Batch 1 at Wed Dec 10 22:31:37
+#> Starting sampler on Batch 1 at Wed Dec 10 22:51:45
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 22:31:43
+    #> Model finished at Wed Dec 10 22:51:52
 
 The magnitude of `sig2` has further implications on the rate estimates
 `lambda`. Smaller `sig2` values mean that the variance between neighbors
@@ -128,13 +129,13 @@ function, setting an informativeness ceiling of `A = 6`:
 
 ``` r
 mod_eucar <- eucar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
-#> Starting sampler on Batch 1 at Wed Dec 10 22:31:44
+#> Starting sampler on Batch 1 at Wed Dec 10 22:51:52
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 22:31:50
+    #> Model finished at Wed Dec 10 22:51:58
 
 Notice that the traceplots for `tau2` and `sig2` in our enhanced (i.e.,
 restricted) UCAR model have significantly higher values than those in
@@ -216,13 +217,13 @@ group’s `A` by their total events:
 data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FALSE])
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_eucar <- eucar("test_eucar", data_u, miadj, tempdir(), seed = 1234, A = A)
-#> Starting sampler on Batch 1 at Wed Dec 10 22:31:52
+#> Starting sampler on Batch 1 at Wed Dec 10 22:52:00
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 22:31:59
+    #> Model finished at Wed Dec 10 22:52:07
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
