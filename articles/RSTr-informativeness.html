@@ -94,21 +94,11 @@ estimates based on reliability criteria, including population thresholds
 and relative precision. However, there are cases where the event or
 population counts are too low for RSTr to meaningfully gather
 information from neighboring regions; in these cases, the standard BYM
-models will apply excessive spatial smoothing to the estimates,
-artificially inflating the estimate’s relative precision. In this
-vignette, we will look under the hood of the CAR models and how they
-perform spatial smoothing, discuss model informativeness, and how to
-work with restricted models in your data.</p>
-<ul>
-<li>RSTr’s models help to smooth estimates with low event counts</li>
-<li>What if events are too low?</li>
-<li>Standard BYM models oversmooth in these regions</li>
-<li>Need to restrict the model informativeness</li>
-<li>Discuss how informativeness works</li>
-<li>How do estimates differ between unrestricted/restricted models</li>
-<li>When should you use one model over the other</li>
-<li>Developments in restricted models</li>
-</ul>
+models will apply excessive spatial smoothing, artificially inflating
+the estimate’s relative precision. In this vignette, we will look under
+the hood of the CAR models and how they perform spatial smoothing,
+discuss model informativeness, and how to work with restricted models in
+your data.</p>
 </div>
 <div class="section level2">
 <h2 id="how-does-spatial-smoothing-work">How does spatial smoothing work?<a class="anchor" aria-label="anchor" href="#how-does-spatial-smoothing-work"></a>
@@ -116,18 +106,18 @@ work with restricted models in your data.</p>
 <p>Spatial smoothing acts by way of a spatial random effects estimator
 <code>Z</code>; this is essentially the parameter that tells the model
 how much to either increase or decrease its corresponding estimated rate
-<code>lambda</code>. In CAR mdoels, the strength of <code>Z</code>
+<code>lambda</code>. In CAR models, the strength of <code>Z</code>
 itself is determined by a host of factors, most importantly the spatial
-variance <code>sig2</code> (for UCAR; <code>G</code> for MCAR and
-MSTCAR). We can investigate the traceplot of <code>sig2</code> in a UCAR
-model to see its interactions with the traceplot of <code>Z</code>:</p>
+variance (<code>sig2</code> for UCAR; <code>G</code> for MCAR and
+MSTCAR). We can investigate spatial smoothing further by running a UCAR
+model to see the evolution of <code>Z</code> over time:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_u</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">miheart</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">[</span>, <span class="st">"55-64"</span>, <span class="st">"1979"</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">mod_ucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">ucar</a></span><span class="op">(</span><span class="st">"my_test_model"</span>, <span class="va">data_u</span>, <span class="va">miadj</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Dec 10 22:51:45</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Dec 10 22:58:43</span></span></code></pre></div>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Wed Dec 10 22:51:52</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Wed Dec 10 22:58:49</span></span></code></pre>
 <p>The magnitude of <code>sig2</code> has further implications on the
 rate estimates <code>lambda</code>. Smaller <code>sig2</code> values
 mean that the variance between neighbors is also smaller. In short, the
@@ -143,8 +133,7 @@ imposing an additional reliability criterion of either a population or
 event threshold. If an estimate has a relative precision greater than 1,
 we can still mark it as unreliable if this threshold is too small. We
 can investigate this over all of our datapoints by comparing the event
-counts to their corresponding relative precisions. For the purposes of
-this example, we will omit counties with &gt; 10,000 population:</p>
+counts to their corresponding relative precisions:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_ucar</span><span class="op">)</span></span>
 <span><span class="va">estimates_supp</span> <span class="op">&lt;-</span> <span class="va">estimates</span><span class="op">[</span><span class="va">estimates</span><span class="op">$</span><span class="va">relative_precision</span> <span class="op">&gt;</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">estimates</span><span class="op">$</span><span class="va">events</span> <span class="op">&lt;</span> <span class="fl">10</span>, <span class="op">]</span></span>
@@ -162,8 +151,8 @@ threshold but above the relative precision threshold.</p>
 in small-event areas. Several regions with less than 10 events (25, or
 30% of our regions) have relative precisions well over the necessary
 threshold for reliability, despite having low event counts. Hence, we
-impose this event threshold to prevent these estimates from being marked
-as reliable. However, this only fixes part of the problem: relative
+impose a threshold to prevent these estimates from being marked as
+reliable. However, this only fixes part of the problem: relative
 precisions will still be artificially inflated throughout our
 non-suppressed estimates, even if to a lesser degree. To address this
 issue, we need to stop the oversmoothing in the first place by placing a
@@ -194,24 +183,27 @@ informativeness <code>a0</code> to a ceiling, <code>A</code>, by
 tweaking the estimation process of <code>sig2</code>, <code>tau2</code>,
 and <code>beta</code>. This will ensure that our spatial smoothing does
 not contribute more than <code>A</code> events to any estimate in our
-model. Consequently, our spatial/non-spatial variances will increase and
-our over-smoothing will be appropriately attenuated; this will permit
-the model to allow more pronounced differences between neighboring
-regions. Most importantly, this gives us a happy medium between no
-smoothing in our crude estimates and oversmoothing caused by
-unrestricted CAR models.</p>
+model. There is an additional <code>m0</code> parameter which defines a
+baseline number of neighbors per region. Consequently, our
+spatial/non-spatial variances will increase and our over-smoothing will
+be appropriately attenuated; this will permit the model to allow more
+pronounced differences between neighboring regions. Most importantly,
+this gives us a happy medium between no smoothing in our crude estimates
+and oversmoothing caused by unrestricted CAR models.</p>
 <p><a href="https://www.sciencedirect.com/science/article/pii/S1877584521000198" class="external-link">Quick
 et al. 2021</a> suggests an informativeness ceiling <code>A</code> of 6
-for UCAR models to ensure that regions with event counts less than 10
-will not erroneously generate precise estimates.</p>
+and an <code>m0</code> of 3 to ensure that regions with event counts
+less than 10 will not erroneously generate precise estimates.
+<code>RSTr</code> sets <code>A</code> to 6 and <code>m0</code> to 3 by
+default.</p>
 <p>Let’s run an EUCAR model using the <code><a href="../reference/ucar.html">eucar()</a></code> function,
 setting an informativeness ceiling of <code>A = 6</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_eucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">eucar</a></span><span class="op">(</span><span class="st">"my_test_model"</span>, <span class="va">data_u</span>, <span class="va">miadj</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1234</span>, A <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Dec 10 22:51:52</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Dec 10 22:58:49</span></span></code></pre></div>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Wed Dec 10 22:51:58</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Wed Dec 10 22:58:56</span></span></code></pre>
 <p>Notice that the traceplots for <code>tau2</code> and
 <code>sig2</code> in our enhanced (i.e., restricted) UCAR model have
 significantly higher values than those in the unrestricted UCAR model.
@@ -227,7 +219,7 @@ results with another relative precision plot:</p>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" width="700"></p>
 <p>Here, the estimates for the EUCAR are in purple and the estimates for
 the unrestricted UCAR are in black. Notice how the points on the purple
-curve stay below the black curve at low even counts and that no purple
+curve stay below the black curve at low event counts and that no purple
 points enter the high-precision, low-event quadrant. With
 <code>A = 6</code>, the points lie below 1 relative precision until
 events are greater than 10, meaning this informativeness ceiling is
@@ -257,7 +249,7 @@ compare the models:</p>
 <p>As expected, the gradient of estimates is much more sharp on the
 EUCAR model map in comparison to the unrestricted UCAR map. This is due
 to the decreased intensity of our spatial smoothing. Additionally, the
-spread of estimates for the EUCAR model is wider than that in the
+spread of estimates for the EUCAR model is wider than that of the
 unrestricted UCAR model because of its increased spatial variance.</p>
 </div>
 <div class="section level2">
@@ -267,14 +259,14 @@ unrestricted UCAR model because of its increased spatial variance.</p>
 cumulative: informativeness in individual rates when spatially smoothing
 will compound the informativeness in estimates age-standardized by
 spatially smoothed rates. Therefore, the EUCAR is an excellent choice
-for modelling with age-standardization. Not only will individual
+for modeling with age-standardization. Not only will individual
 estimates not be over-smoothed, the age-standardized estimates will
-benefit from enhanced reliability due to compounded event counts in the
+benefit from enhanced reliability due to increased event counts in the
 crude data.</p>
-<p>We can re-run both models with three age groups: 35-44, 45-54, and
-55-64. Since we are now running our models across multiple groups, we
-will need to extend our <code>A</code>s to match the number of groups.
-Additionally, since our informativeness meaures are cumulative when
+<p>We can re-run our model with three age groups: 65-74, 75-84, and 85+.
+Since we are now running our models across multiple groups, we will need
+to extend our <code>A</code>s to match the number of groups.
+Additionally, since our informativeness measures are cumulative when
 age-standardizing, we should split our <code>A = 6</code>
 informativeness ceiling among all of our groups of interest. If we want,
 we can weight each group’s <code>A</code> by their total events:</p>
@@ -282,10 +274,10 @@ we can weight each group’s <code>A</code> by their total events:</p>
 <code class="sourceCode R"><span><span class="va">data_u</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">miheart</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"65-74"</span>, <span class="st">"75-84"</span>, <span class="st">"85+"</span><span class="op">)</span>, <span class="st">"1988"</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fl">6</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="va">data_u</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">data_u</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
 <span><span class="va">mod_eucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">eucar</a></span><span class="op">(</span><span class="st">"test_eucar"</span>, <span class="va">data_u</span>, <span class="va">miadj</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1234</span>, A <span class="op">=</span> <span class="va">A</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Dec 10 22:52:00</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Dec 10 22:58:58</span></span></code></pre></div>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Wed Dec 10 22:52:07</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Wed Dec 10 22:59:05</span></span></code></pre>
 <p>While our individual groups will have lower relative precisions due
 to lower respective <code>A</code>s, when we age-standardize, we will
 have the same effective smoothing power as our singular
@@ -303,9 +295,6 @@ have the same effective smoothing power as our singular
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" width="700"></p>
-<p>With a combination of restricted models and age-standardization, we
-get the benefits of spatial smoothing from the CAR model without risk of
-oversmoothing.</p>
 </div>
 <div class="section level2">
 <h2 id="the-eucar-model-reliability-and-suppression">The EUCAR Model, Reliability, and Suppression<a class="anchor" aria-label="anchor" href="#the-eucar-model-reliability-and-suppression"></a>
@@ -348,10 +337,10 @@ data.</p></li>
 <em>linear</em> trends in temporal data or if you are specifically
 interested in interactions between sociodemographic groups across time.
 If your trends depict multiple behaviors, it is recommended to either
-run two MSTCAR models with separate time periods or to run concurrent
-EUCAR models. Note that all <code>*car()</code> functions accept up to
-three-dimensional arrays and will concurrently run models for different
-groups/time periods if necessary.</p></li>
+run two MSTCAR models with separate time periods for each trend or to
+run concurrent EUCAR models. Note that all <code>*car()</code> functions
+accept up to three-dimensional arrays and will concurrently run models
+for different groups/time periods if necessary.</p></li>
 </ul>
 </div>
 <div class="section level2">
@@ -366,16 +355,17 @@ models as they become available.</p>
 <h2 id="final-thoughts">Final thoughts<a class="anchor" aria-label="anchor" href="#final-thoughts"></a>
 </h2>
 <p>In this vignette, we investigated model informativeness and the
-tendency of unrestricted BYM models to oversmooth estimates. This
-vignette concludes the main sections on using the functions in the
-<code>RSTr</code> package. After reading these, you should be able to
-prepare your event and adjacency data, choose and configure your model
-as necessary, age-standardize estimates, and determine which estimates
-are reliable. If you are interested in the more advanced features of the
-<code>RSTr</code> involving sample processing, read
-<code><a href="../articles/RSTr-samples.html">vignette("RSTr-samples")</a></code>; if you’d like more information on
-defining custom <code>initial_values</code> and <code>priors</code>,
-check <code><a href="../articles/RSTr-initialvalues.html">vignette("RSTr-initialvalues")</a></code> and
+tendency of unrestricted BYM models to oversmooth estimates, along with
+some benefits of enhanced CAR models. This vignette concludes the main
+sections on using the functions in the <code>RSTr</code> package. After
+reading these, you should be able to prepare your event and adjacency
+data, choose and configure your model as necessary, age-standardize
+estimates, and determine which estimates are reliable. If you are
+interested in the more advanced features of the <code>RSTr</code>
+involving sample processing, read <code><a href="../articles/RSTr-samples.html">vignette("RSTr-samples")</a></code>;
+if you’d like more information on defining custom
+<code>initial_values</code> and <code>priors</code>, check
+<code><a href="../articles/RSTr-initialvalues.html">vignette("RSTr-initialvalues")</a></code> and
 <code><a href="../articles/RSTr-priors.html">vignette("RSTr-priors")</a></code>, respectively; if you are
 interested in learning more about how <code>RSTr</code>’s models work,
 read <code><a href="../articles/RSTr-models.html">vignette("RSTr-models")</a></code>.</p>

@@ -9,41 +9,32 @@ discussed how to suppress estimates based on reliability criteria,
 including population thresholds and relative precision. However, there
 are cases where the event or population counts are too low for RSTr to
 meaningfully gather information from neighboring regions; in these
-cases, the standard BYM models will apply excessive spatial smoothing to
-the estimates, artificially inflating the estimate’s relative precision.
-In this vignette, we will look under the hood of the CAR models and how
-they perform spatial smoothing, discuss model informativeness, and how
-to work with restricted models in your data.
-
-- RSTr’s models help to smooth estimates with low event counts
-- What if events are too low?
-- Standard BYM models oversmooth in these regions
-- Need to restrict the model informativeness
-- Discuss how informativeness works
-- How do estimates differ between unrestricted/restricted models
-- When should you use one model over the other
-- Developments in restricted models
+cases, the standard BYM models will apply excessive spatial smoothing,
+artificially inflating the estimate’s relative precision. In this
+vignette, we will look under the hood of the CAR models and how they
+perform spatial smoothing, discuss model informativeness, and how to
+work with restricted models in your data.
 
 ## How does spatial smoothing work?
 
 Spatial smoothing acts by way of a spatial random effects estimator `Z`;
 this is essentially the parameter that tells the model how much to
 either increase or decrease its corresponding estimated rate `lambda`.
-In CAR mdoels, the strength of `Z` itself is determined by a host of
-factors, most importantly the spatial variance `sig2` (for UCAR; `G` for
-MCAR and MSTCAR). We can investigate the traceplot of `sig2` in a UCAR
-model to see its interactions with the traceplot of `Z`:
+In CAR models, the strength of `Z` itself is determined by a host of
+factors, most importantly the spatial variance (`sig2` for UCAR; `G` for
+MCAR and MSTCAR). We can investigate spatial smoothing further by
+running a UCAR model to see the evolution of `Z` over time:
 
 ``` r
 data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_ucar <- ucar("my_test_model", data_u, miadj, tempdir(), seed = 1234)
-#> Starting sampler on Batch 1 at Wed Dec 10 22:51:45
+#> Starting sampler on Batch 1 at Wed Dec 10 22:58:43
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 22:51:52
+    #> Model finished at Wed Dec 10 22:58:49
 
 The magnitude of `sig2` has further implications on the rate estimates
 `lambda`. Smaller `sig2` values mean that the variance between neighbors
@@ -59,8 +50,7 @@ imposing an additional reliability criterion of either a population or
 event threshold. If an estimate has a relative precision greater than 1,
 we can still mark it as unreliable if this threshold is too small. We
 can investigate this over all of our datapoints by comparing the event
-counts to their corresponding relative precisions. For the purposes of
-this example, we will omit counties with \> 10,000 population:
+counts to their corresponding relative precisions:
 
 ``` r
 estimates <- get_estimates(mod_ucar)
@@ -83,8 +73,8 @@ This plot showcases the intense oversmoothing done by the UCAR model in
 small-event areas. Several regions with less than 10 events (25, or 30%
 of our regions) have relative precisions well over the necessary
 threshold for reliability, despite having low event counts. Hence, we
-impose this event threshold to prevent these estimates from being marked
-as reliable. However, this only fixes part of the problem: relative
+impose a threshold to prevent these estimates from being marked as
+reliable. However, this only fixes part of the problem: relative
 precisions will still be artificially inflated throughout our
 non-suppressed estimates, even if to a lesser degree. To address this
 issue, we need to stop the oversmoothing in the first place by placing a
@@ -111,31 +101,34 @@ an enhanced UCAR (EUCAR) model which incorporates measures to prevent
 oversmoothing. With the EUCAR model, we can limit our informativeness
 `a0` to a ceiling, `A`, by tweaking the estimation process of `sig2`,
 `tau2`, and `beta`. This will ensure that our spatial smoothing does not
-contribute more than `A` events to any estimate in our model.
-Consequently, our spatial/non-spatial variances will increase and our
-over-smoothing will be appropriately attenuated; this will permit the
-model to allow more pronounced differences between neighboring regions.
-Most importantly, this gives us a happy medium between no smoothing in
-our crude estimates and oversmoothing caused by unrestricted CAR models.
+contribute more than `A` events to any estimate in our model. There is
+an additional `m0` parameter which defines a baseline number of
+neighbors per region. Consequently, our spatial/non-spatial variances
+will increase and our over-smoothing will be appropriately attenuated;
+this will permit the model to allow more pronounced differences between
+neighboring regions. Most importantly, this gives us a happy medium
+between no smoothing in our crude estimates and oversmoothing caused by
+unrestricted CAR models.
 
 [Quick et
 al. 2021](https://www.sciencedirect.com/science/article/pii/S1877584521000198)
-suggests an informativeness ceiling `A` of 6 for UCAR models to ensure
+suggests an informativeness ceiling `A` of 6 and an `m0` of 3 to ensure
 that regions with event counts less than 10 will not erroneously
-generate precise estimates.
+generate precise estimates. `RSTr` sets `A` to 6 and `m0` to 3 by
+default.
 
 Let’s run an EUCAR model using the [`eucar()`](../reference/ucar.md)
 function, setting an informativeness ceiling of `A = 6`:
 
 ``` r
 mod_eucar <- eucar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
-#> Starting sampler on Batch 1 at Wed Dec 10 22:51:52
+#> Starting sampler on Batch 1 at Wed Dec 10 22:58:49
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 22:51:58
+    #> Model finished at Wed Dec 10 22:58:56
 
 Notice that the traceplots for `tau2` and `sig2` in our enhanced (i.e.,
 restricted) UCAR model have significantly higher values than those in
@@ -155,7 +148,7 @@ abline(v = 10, col = "blue")
 
 Here, the estimates for the EUCAR are in purple and the estimates for
 the unrestricted UCAR are in black. Notice how the points on the purple
-curve stay below the black curve at low even counts and that no purple
+curve stay below the black curve at low event counts and that no purple
 points enter the high-precision, low-event quadrant. With `A = 6`, the
 points lie below 1 relative precision until events are greater than 10,
 meaning this informativeness ceiling is smoothing an ideal amount. We
@@ -191,7 +184,7 @@ ggplot(mishp) +
 As expected, the gradient of estimates is much more sharp on the EUCAR
 model map in comparison to the unrestricted UCAR map. This is due to the
 decreased intensity of our spatial smoothing. Additionally, the spread
-of estimates for the EUCAR model is wider than that in the unrestricted
+of estimates for the EUCAR model is wider than that of the unrestricted
 UCAR model because of its increased spatial variance.
 
 ## Enhanced models and age-standardization
@@ -200,30 +193,30 @@ When age-standardizing across a CAR model, informativeness is
 cumulative: informativeness in individual rates when spatially smoothing
 will compound the informativeness in estimates age-standardized by
 spatially smoothed rates. Therefore, the EUCAR is an excellent choice
-for modelling with age-standardization. Not only will individual
+for modeling with age-standardization. Not only will individual
 estimates not be over-smoothed, the age-standardized estimates will
-benefit from enhanced reliability due to compounded event counts in the
+benefit from enhanced reliability due to increased event counts in the
 crude data.
 
-We can re-run both models with three age groups: 35-44, 45-54, and
-55-64. Since we are now running our models across multiple groups, we
-will need to extend our `A`s to match the number of groups.
-Additionally, since our informativeness meaures are cumulative when
-age-standardizing, we should split our `A = 6` informativeness ceiling
-among all of our groups of interest. If we want, we can weight each
-group’s `A` by their total events:
+We can re-run our model with three age groups: 65-74, 75-84, and 85+.
+Since we are now running our models across multiple groups, we will need
+to extend our `A`s to match the number of groups. Additionally, since
+our informativeness measures are cumulative when age-standardizing, we
+should split our `A = 6` informativeness ceiling among all of our groups
+of interest. If we want, we can weight each group’s `A` by their total
+events:
 
 ``` r
 data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FALSE])
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_eucar <- eucar("test_eucar", data_u, miadj, tempdir(), seed = 1234, A = A)
-#> Starting sampler on Batch 1 at Wed Dec 10 22:52:00
+#> Starting sampler on Batch 1 at Wed Dec 10 22:58:58
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 22:52:07
+    #> Model finished at Wed Dec 10 22:59:05
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
@@ -244,10 +237,6 @@ ggplot(mishp) +
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-8-1.png)
-
-With a combination of restricted models and age-standardization, we get
-the benefits of spatial smoothing from the CAR model without risk of
-oversmoothing.
 
 ## The EUCAR Model, Reliability, and Suppression
 
@@ -294,10 +283,10 @@ work through the most appropriate use case for each model:
   in temporal data or if you are specifically interested in interactions
   between sociodemographic groups across time. If your trends depict
   multiple behaviors, it is recommended to either run two MSTCAR models
-  with separate time periods or to run concurrent EUCAR models. Note
-  that all `*car()` functions accept up to three-dimensional arrays and
-  will concurrently run models for different groups/time periods if
-  necessary.
+  with separate time periods for each trend or to run concurrent EUCAR
+  models. Note that all `*car()` functions accept up to
+  three-dimensional arrays and will concurrently run models for
+  different groups/time periods if necessary.
 
 ## Future developments
 
@@ -309,13 +298,13 @@ become available.
 ## Final thoughts
 
 In this vignette, we investigated model informativeness and the tendency
-of unrestricted BYM models to oversmooth estimates. This vignette
-concludes the main sections on using the functions in the `RSTr`
-package. After reading these, you should be able to prepare your event
-and adjacency data, choose and configure your model as necessary,
-age-standardize estimates, and determine which estimates are reliable.
-If you are interested in the more advanced features of the `RSTr`
-involving sample processing, read
+of unrestricted BYM models to oversmooth estimates, along with some
+benefits of enhanced CAR models. This vignette concludes the main
+sections on using the functions in the `RSTr` package. After reading
+these, you should be able to prepare your event and adjacency data,
+choose and configure your model as necessary, age-standardize estimates,
+and determine which estimates are reliable. If you are interested in the
+more advanced features of the `RSTr` involving sample processing, read
 [`vignette("RSTr-samples")`](../articles/RSTr-samples.md); if you’d like
 more information on defining custom `initial_values` and `priors`, check
 [`vignette("RSTr-initialvalues")`](../articles/RSTr-initialvalues.md)
