@@ -22,13 +22,13 @@ To begin, let’s generate samples for a new model:
 
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234)
-#> Starting sampler on Batch 1 at Wed Dec 10 22:59:45
+#> Starting sampler on Batch 1 at Wed Dec 10 23:31:35
 ```
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 23:00:14
+    #> Model finished at Wed Dec 10 23:32:04
 
 ## The `load_samples()` function
 
@@ -93,11 +93,11 @@ prevalence data? We can alternatively bind these new samples to our main
 arguments:
 
 ``` r
-samples <- aggregate_samples(samples, pop, margin_time, bind_new = TRUE, new_name = "1988-1988")
+samples <- aggregate_samples(samples, pop, margin_time, bind_new = TRUE, new_name = "1979-1988")
 ```
 
-Note that group-aggregation is a feature unique to only samples;
-group-aggregation cannot be performed on model objects.
+Group-aggregation is a feature unique to only samples; group-aggregation
+cannot be performed on model objects.
 
 ### Age-standardization
 
@@ -125,12 +125,13 @@ dim(samples)
 
 Our age groups lay along the second margin. Let’s set a variable
 `margin_age` and standardize our `samples` estimates across ages 35-64
-using the [`age_standardize()`](../reference/age_standardize.md)
+using the [`standardize_samples()`](../reference/standardize_samples.md)
 function:
 
 ``` r
 margin_age <- 2
-samples_3564 <- age_standardize(samples, std_pop, groups = c("35-44", "45-54", "55-64"), margin = margin_age)
+groups <- c("35-44", "45-54", "55-64")
+samples_3564 <- standardize_samples(samples, std_pop, margin_age, groups)
 ```
 
 Note that there may be times where you have groups stratified by both
@@ -147,13 +148,13 @@ alternatively consolidate this into our main `samples` array by adding
 in values for the `bind_new` and `new_name` arguments:
 
 ``` r
-samples <- age_standardize(
-    samples,
-    std_pop,
-    new_name = "35-64",
-    groups = c("35-44", "45-54", "55-64"),
-    margin = margin_age,
-    bind_new = TRUE
+samples <- standardize_samples(
+  samples,
+  std_pop,
+  margin_age,
+  groups,
+  bind_new = TRUE,
+  new_name = "35-64"
 )
 ```
 
@@ -266,10 +267,10 @@ ggplot(mishp) +
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-16-1.png)
 
-In this graph, we can see that much of the northern Lower Peninsula is
-significantly higher than the state rate, whereas the southern portion
-of the LP has many places with significantly lower rates. The western
-Upper Peninsula also shows areas of significantly lower rates.
+On this map, we can see that much of the northern Lower Peninsula is
+significantly lower than the state rate, whereas the southern portion of
+the LP has many places with significantly higher rates. The western
+Upper Peninsula also shows areas of significantly higher rates.
 
 ## Closing Thoughts
 

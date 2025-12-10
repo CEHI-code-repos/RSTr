@@ -105,10 +105,10 @@ of the convenience afforded to us by these wrapper functions.</p>
 <p>To begin, let’s generate samples for a new model:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_mst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">mstcar</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, data <span class="op">=</span> <span class="va">miheart</span>, adjacency <span class="op">=</span> <span class="va">miadj</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Dec 10 22:59:45</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Dec 10 23:31:35</span></span></code></pre></div>
 <p><img src="RSTr-samples_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Wed Dec 10 23:00:14</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Wed Dec 10 23:32:04</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="the-load_samples-function-1">The <code>load_samples()</code> function<a class="anchor" aria-label="anchor" href="#the-load_samples-function-1"></a>
@@ -166,8 +166,8 @@ the prevalence data? We can alternatively bind these new samples to our
 main <code>samples</code> array by adding in values for the
 <code>bind_new</code> and <code>new_name</code> arguments:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aggregate_samples.html">aggregate_samples</a></span><span class="op">(</span><span class="va">samples</span>, <span class="va">pop</span>, <span class="va">margin_time</span>, bind_new <span class="op">=</span> <span class="cn">TRUE</span>, new_name <span class="op">=</span> <span class="st">"1988-1988"</span><span class="op">)</span></span></code></pre></div>
-<p>Note that group-aggregation is a feature unique to only samples;
+<code class="sourceCode R"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/aggregate_samples.html">aggregate_samples</a></span><span class="op">(</span><span class="va">samples</span>, <span class="va">pop</span>, <span class="va">margin_time</span>, bind_new <span class="op">=</span> <span class="cn">TRUE</span>, new_name <span class="op">=</span> <span class="st">"1979-1988"</span><span class="op">)</span></span></code></pre></div>
+<p>Group-aggregation is a feature unique to only samples;
 group-aggregation cannot be performed on model objects.</p>
 </div>
 <div class="section level3">
@@ -190,11 +190,12 @@ function:</p>
 <span><span class="co">#&gt; [1]  83   6  11 400</span></span></code></pre></div>
 <p>Our age groups lay along the second margin. Let’s set a variable
 <code>margin_age</code> and standardize our <code>samples</code>
-estimates across ages 35-64 using the <code><a href="../reference/age_standardize.html">age_standardize()</a></code>
+estimates across ages 35-64 using the <code><a href="../reference/standardize_samples.html">standardize_samples()</a></code>
 function:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">margin_age</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span><span class="va">samples_3564</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/age_standardize.html">age_standardize</a></span><span class="op">(</span><span class="va">samples</span>, <span class="va">std_pop</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span><span class="op">)</span>, margin <span class="op">=</span> <span class="va">margin_age</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span><span class="op">)</span></span>
+<span><span class="va">samples_3564</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/standardize_samples.html">standardize_samples</a></span><span class="op">(</span><span class="va">samples</span>, <span class="va">std_pop</span>, <span class="va">margin_age</span>, <span class="va">groups</span><span class="op">)</span></span></code></pre></div>
 <p>Note that there may be times where you have groups stratified by both
 age and other sociodemographic groups. In these cases, you’ll have to
 refactor your sample array so that the age groups are separated from
@@ -207,13 +208,13 @@ alternatively consolidate this into our main <code>samples</code> array
 by adding in values for the <code>bind_new</code> and
 <code>new_name</code> arguments:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/age_standardize.html">age_standardize</a></span><span class="op">(</span></span>
-<span>    <span class="va">samples</span>,</span>
-<span>    <span class="va">std_pop</span>,</span>
-<span>    new_name <span class="op">=</span> <span class="st">"35-64"</span>,</span>
-<span>    groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span><span class="op">)</span>,</span>
-<span>    margin <span class="op">=</span> <span class="va">margin_age</span>,</span>
-<span>    bind_new <span class="op">=</span> <span class="cn">TRUE</span></span>
+<code class="sourceCode R"><span><span class="va">samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/standardize_samples.html">standardize_samples</a></span><span class="op">(</span></span>
+<span>  <span class="va">samples</span>,</span>
+<span>  <span class="va">std_pop</span>,</span>
+<span>  <span class="va">margin_age</span>,</span>
+<span>  <span class="va">groups</span>,</span>
+<span>  bind_new <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  new_name <span class="op">=</span> <span class="st">"35-64"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Now, our samples for <code>samples</code> are aggregated by year and
 age-standardized, and we have matching array values for
@@ -305,11 +306,10 @@ comparisons, even if our rates are unreliable:</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_colour_continuous.html" class="external-link">scale_fill_continuous</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"RdBu"</span>, trans <span class="op">=</span> <span class="st">"reverse"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="RSTr-samples_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" width="700"></p>
-<p>In this graph, we can see that much of the northern Lower Peninsula
-is significantly higher than the state rate, whereas the southern
-portion of the LP has many places with significantly lower rates. The
-western Upper Peninsula also shows areas of significantly lower
-rates.</p>
+<p>On this map, we can see that much of the northern Lower Peninsula is
+significantly lower than the state rate, whereas the southern portion of
+the LP has many places with significantly higher rates. The western
+Upper Peninsula also shows areas of significantly higher rates.</p>
 </div>
 <div class="section level2">
 <h2 id="closing-thoughts">Closing Thoughts<a class="anchor" aria-label="anchor" href="#closing-thoughts"></a>

@@ -18,7 +18,8 @@
 
 - [`get_estimates()`](get_estimates.md) : Extract estimates from RSTr
   model object
-- [`age_standardize()`](age_standardize.md) : Age-standardize samples
+- [`age_standardize()`](age_standardize.md) : Age-standardize model
+  objects
 - [`suppress_estimates()`](suppress_estimates.md) : Suppress estimates
   based on reliability criteria
 
@@ -28,6 +29,8 @@
 - [`aggregate_count()`](aggregate_count.md) : Aggregate count arrays
 - [`aggregate_samples()`](aggregate_samples.md) : Aggregate samples by
   non-age group
+- [`standardize_samples()`](standardize_samples.md) : Age-standardize
+  samples
 - [`get_medians()`](get_medians.md)
   [`get_credible_interval()`](get_medians.md)
   [`get_relative_precision()`](get_medians.md) : Generate medians,

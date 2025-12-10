@@ -68,12 +68,12 @@ time_margin <- 3
 # calculate prevalence by aggregating over time periods
 samples_3564 <- aggregate_samples(minsample, pop, margin = time_margin)
 # calculate prevalence of only the first two time periods
-samples_3554 <- aggregate_samples(minsample, pop, margin = time_margin, groups = 1:2)
+samples_3554 <- aggregate_samples(minsample, pop, time_margin, groups = 1:2)
 # bind prevalence samples to original samples
 samples_prev <- aggregate_samples(
   minsample,
   pop,
-  margin = time_margin,
+  time_margin,
   bind_new = TRUE,
   new_name = "1979-1981"
 )
