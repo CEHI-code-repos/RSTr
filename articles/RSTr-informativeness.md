@@ -36,13 +36,13 @@ model to see its interactions with the traceplot of `Z`:
 ``` r
 data_u <- lapply(miheart, \(x) x[, "75-84", "1988", drop = FALSE])
 mod_ucar <- ucar("my_test_model", data_u, miadj, tempdir(), seed = 1234)
-#> Starting sampler on Batch 1 at Wed Dec 10 21:46:53
+#> Starting sampler on Batch 1 at Wed Dec 10 22:01:46
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 21:47:00
+    #> Model finished at Wed Dec 10 22:01:53
 
 Note that the variability of `Z` is correlated with the magnitude of
 `sig2`: the two valleys in `sig2` at around 4000 iterations are
@@ -131,13 +131,13 @@ function, setting an informativeness ceiling of `A = 6`:
 
 ``` r
 mod_eucar <- eucar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
-#> Starting sampler on Batch 1 at Wed Dec 10 21:47:00
+#> Starting sampler on Batch 1 at Wed Dec 10 22:01:53
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 21:47:07
+    #> Model finished at Wed Dec 10 22:02:00
 
 Notice that the traceplots for `tau2` and `sig2` in our enhanced (i.e.,
 restricted) UCAR model have significantly higher values than those in
@@ -267,13 +267,13 @@ group’s `A` by their total events:
 data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FALSE])
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_eucar <- eucar("test_eucar", data_u, miadj, tempdir(), seed = 1234, A = A)
-#> Starting sampler on Batch 1 at Wed Dec 10 21:47:09
+#> Starting sampler on Batch 1 at Wed Dec 10 22:02:02
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-9-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 10 21:47:16
+    #> Model finished at Wed Dec 10 22:02:10
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
