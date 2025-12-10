@@ -6,7 +6,7 @@ relative precision and population/event threshold.
 ## Usage
 
 ``` r
-suppress_estimates(RSTr_obj, threshold = Inf, type = c("population", "event"))
+suppress_estimates(RSTr_obj, threshold = 0, type = c("population", "event"))
 ```
 
 ## Arguments

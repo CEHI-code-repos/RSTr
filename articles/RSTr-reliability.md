@@ -1,4 +1,4 @@
-# 06: Generating Estimates: Reliability and Suppression
+# 05: Generating Estimates: Reliability and Suppression
 
 ## Overview
 
@@ -66,13 +66,13 @@ argument:
 
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234, perc_ci = 0.95)
-#> Starting sampler on Batch 1 at Tue Dec 09 16:43:01
+#> Starting sampler on Batch 1 at Wed Dec 10 21:25:11
 ```
 
 ![](RSTr-reliability_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 09 16:43:30
+    #> Model finished at Wed Dec 10 21:25:40
 
 Here, we specify `perc_ci = 0.95`, which means our relative precision
 estimates will be based on a 95% credible interval. If we want to
@@ -90,6 +90,7 @@ mod_mst
 #> Model name: my_test_model 
 #> Model type: MSTCAR 
 #> Data likelihood: binomial 
+#> Estimate Credible Interval: 95% 
 #> Number of geographic units: 83 
 #> Number of samples: 6000 
 #> Estimates age-standardized: No 

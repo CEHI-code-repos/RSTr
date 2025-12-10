@@ -113,13 +113,13 @@ mod_mst <- mstcar(
   dir = tempdir(),
   seed = 1234
 )
-#> Starting sampler on Batch 1 at Tue Dec 09 16:44:22
+#> Starting sampler on Batch 1 at Wed Dec 10 21:26:32
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 09 16:44:51
+    #> Model finished at Wed Dec 10 21:27:01
 
 Here, we use the [`mstcar()`](../reference/ucar.md) function to specify
 our model. [`mstcar()`](../reference/ucar.md) accepts a few different
@@ -193,6 +193,7 @@ mod_mst
 #> Model name: my_test_model 
 #> Model type: MSTCAR 
 #> Data likelihood: binomial 
+#> Estimate Credible Interval: 95% 
 #> Number of geographic units: 83 
 #> Number of samples: 6000 
 #> Estimates age-standardized: No 
@@ -246,7 +247,7 @@ from 1979-1988, we can use 1980 standard populations from
 generate a `std_pop` standard population vector:
 
 ``` r
-std_pop <- c(113154, 100640, 95799)
+std_pop <- c(68775, 34116, 9888)
 mod_mst <- age_standardize(mod_mst, std_pop, new_name = "35-64", groups = c("35-44", "45-54", "55-64"))
 mod_mst
 #> RSTr object:
@@ -254,6 +255,7 @@ mod_mst
 #> Model name: my_test_model 
 #> Model type: MSTCAR 
 #> Data likelihood: binomial 
+#> Estimate Credible Interval: 95% 
 #> Number of geographic units: 83 
 #> Number of samples: 6000 
 #> Estimates age-standardized: Yes 
@@ -267,20 +269,20 @@ our estimates and the names of our age-standardized groups.
 ``` r
 mst_estimates_as <- get_estimates(mod_mst)
 head(mst_estimates_as)
-#>   county group year  medians credible_interval_lower credible_interval_upper
-#> 1  26001 35-64 1979 189.4408                156.3133                222.5236
-#> 2  26003 35-64 1979 290.4592                244.0066                352.4287
-#> 3  26005 35-64 1979 132.2793                110.0099                148.6511
-#> 4  26007 35-64 1979 162.5257                136.5911                195.8888
-#> 5  26009 35-64 1979 161.9046                138.4052                193.5766
-#> 6  26011 35-64 1979 207.7445                170.4865                248.2034
+#>   county group year   medians credible_interval_lower credible_interval_upper
+#> 1  26001 35-64 1979 107.15247                87.92325               127.88946
+#> 2  26003 35-64 1979 146.65258               119.93045               195.45817
+#> 3  26005 35-64 1979  71.08941                57.78063                81.64427
+#> 4  26007 35-64 1979  87.54041                73.16101               109.51904
+#> 5  26009 35-64 1979  88.98631                74.88835               107.03585
+#> 6  26011 35-64 1979 112.27379                92.11683               145.85171
 #>   relative_precision events population
-#> 1           2.861201      7       3353
-#> 2           2.678967     12       3105
-#> 3           3.423268     27      23926
-#> 4           2.740843     15      10000
-#> 5           2.934577     11       5152
-#> 6           2.673091      8       4517
+#> 1           2.681076      7       3353
+#> 2           1.941706     12       3105
+#> 3           2.978984     27      23926
+#> 4           2.407732     15      10000
+#> 5           2.768063     11       5152
+#> 6           2.089402      8       4517
 ```
 
 Now, `get_estimates(mod_mst)` shows the age-standardized estimates.
@@ -310,28 +312,29 @@ mod_mst
 #> Model name: my_test_model 
 #> Model type: MSTCAR 
 #> Data likelihood: binomial 
+#> Estimate Credible Interval: 95% 
 #> Number of geographic units: 83 
 #> Number of samples: 6000 
 #> Estimates age-standardized: Yes 
 #> Age-standardized groups: 35-64 
 #> Estimates suppressed: Yes 
-#> Number of reliable age-standardized rates: 820 / 830 (98.8%)
+#> Number of reliable age-standardized rates: 819 / 830 (98.7%)
 mst_estimates_as <- get_estimates(mod_mst)
 head(mst_estimates_as)
-#>   county group year  medians medians_suppressed credible_interval_lower
-#> 1  26001 35-64 1979 189.4408           189.4408                156.3133
-#> 2  26003 35-64 1979 290.4592           290.4592                244.0066
-#> 3  26005 35-64 1979 132.2793           132.2793                110.0099
-#> 4  26007 35-64 1979 162.5257           162.5257                136.5911
-#> 5  26009 35-64 1979 161.9046           161.9046                138.4052
-#> 6  26011 35-64 1979 207.7445           207.7445                170.4865
+#>   county group year   medians medians_suppressed credible_interval_lower
+#> 1  26001 35-64 1979 107.15247          107.15247                87.92325
+#> 2  26003 35-64 1979 146.65258          146.65258               119.93045
+#> 3  26005 35-64 1979  71.08941           71.08941                57.78063
+#> 4  26007 35-64 1979  87.54041           87.54041                73.16101
+#> 5  26009 35-64 1979  88.98631           88.98631                74.88835
+#> 6  26011 35-64 1979 112.27379          112.27379                92.11683
 #>   credible_interval_upper relative_precision events population
-#> 1                222.5236           2.861201      7       3353
-#> 2                352.4287           2.678967     12       3105
-#> 3                148.6511           3.423268     27      23926
-#> 4                195.8888           2.740843     15      10000
-#> 5                193.5766           2.934577     11       5152
-#> 6                248.2034           2.673091      8       4517
+#> 1               127.88946           2.681076      7       3353
+#> 2               195.45817           1.941706     12       3105
+#> 3                81.64427           2.978984     27      23926
+#> 4               109.51904           2.407732     15      10000
+#> 5               107.03585           2.768063     11       5152
+#> 6               145.85171           2.089402      8       4517
 ```
 
 `mod_mst` now shows us that our estimates are suppressed and indicates

@@ -48,9 +48,9 @@
 <li><a class="dropdown-item" href="../articles/RSTr-event.html">01: Understanding and Preparing Your Event Data</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-adjacency.html">02: Understanding and Preparing Your Adjacency Structure</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-car.html">03: The CAR Models</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-informativeness.html">04: Model Informativeness</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-agestandardize.html">05: Generating Estimates: Age-standardization</a></li>
-    <li><a class="dropdown-item" href="../articles/RSTr-reliability.html">06: Generating Estimates: Reliability and Suppression</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-agestandardize.html">04: Generating Estimates: Age-standardization</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-reliability.html">05: Generating Estimates: Reliability and Suppression</a></li>
+    <li><a class="dropdown-item" href="../articles/RSTr-informativeness.html">06: Model Informativeness</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-samples.html">07: Sample Processing</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-initialvalues.html">08: Initial Values</a></li>
     <li><a class="dropdown-item" href="../articles/RSTr-priors.html">09: Priors</a></li>
@@ -210,10 +210,10 @@ run out-of-the-box:</p>
 <span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">1234</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Tue Dec 09 16:44:22</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Dec 10 21:26:32</span></span></code></pre></div>
 <p><img src="RSTr_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Tue Dec 09 16:44:51</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Wed Dec 10 21:27:01</span></span></code></pre>
 <p>Here, we use the <code><a href="../reference/ucar.html">mstcar()</a></code> function to specify our model.
 <code><a href="../reference/ucar.html">mstcar()</a></code> accepts a few different arguments in this
 case:</p>
@@ -285,6 +285,7 @@ can get an overview of our model:</p>
 <span><span class="co">#&gt; Model name: my_test_model </span></span>
 <span><span class="co">#&gt; Model type: MSTCAR </span></span>
 <span><span class="co">#&gt; Data likelihood: binomial </span></span>
+<span><span class="co">#&gt; Estimate Credible Interval: 95% </span></span>
 <span><span class="co">#&gt; Number of geographic units: 83 </span></span>
 <span><span class="co">#&gt; Number of samples: 6000 </span></span>
 <span><span class="co">#&gt; Estimates age-standardized: No </span></span>
@@ -332,7 +333,7 @@ and the name we want to give them. Since we are using data from
 1979-1988, we can use 1980 standard populations from <a href="https://seer.cancer.gov/stdpopulations/stdpop.19ages.html" class="external-link">NIH</a>
 to generate a <code>std_pop</code> standard population vector:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">std_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">113154</span>, <span class="fl">100640</span>, <span class="fl">95799</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">std_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">68775</span>, <span class="fl">34116</span>, <span class="fl">9888</span><span class="op">)</span></span>
 <span><span class="va">mod_mst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/age_standardize.html">age_standardize</a></span><span class="op">(</span><span class="va">mod_mst</span>, <span class="va">std_pop</span>, new_name <span class="op">=</span> <span class="st">"35-64"</span>, groups <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"35-44"</span>, <span class="st">"45-54"</span>, <span class="st">"55-64"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">mod_mst</span></span>
 <span><span class="co">#&gt; RSTr object:</span></span>
@@ -340,6 +341,7 @@ to generate a <code>std_pop</code> standard population vector:</p>
 <span><span class="co">#&gt; Model name: my_test_model </span></span>
 <span><span class="co">#&gt; Model type: MSTCAR </span></span>
 <span><span class="co">#&gt; Data likelihood: binomial </span></span>
+<span><span class="co">#&gt; Estimate Credible Interval: 95% </span></span>
 <span><span class="co">#&gt; Number of geographic units: 83 </span></span>
 <span><span class="co">#&gt; Number of samples: 6000 </span></span>
 <span><span class="co">#&gt; Estimates age-standardized: Yes </span></span>
@@ -351,20 +353,20 @@ groups.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mst_estimates_as</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mst_estimates_as</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   county group year  medians credible_interval_lower credible_interval_upper</span></span>
-<span><span class="co">#&gt; 1  26001 35-64 1979 189.4408                156.3133                222.5236</span></span>
-<span><span class="co">#&gt; 2  26003 35-64 1979 290.4592                244.0066                352.4287</span></span>
-<span><span class="co">#&gt; 3  26005 35-64 1979 132.2793                110.0099                148.6511</span></span>
-<span><span class="co">#&gt; 4  26007 35-64 1979 162.5257                136.5911                195.8888</span></span>
-<span><span class="co">#&gt; 5  26009 35-64 1979 161.9046                138.4052                193.5766</span></span>
-<span><span class="co">#&gt; 6  26011 35-64 1979 207.7445                170.4865                248.2034</span></span>
+<span><span class="co">#&gt;   county group year   medians credible_interval_lower credible_interval_upper</span></span>
+<span><span class="co">#&gt; 1  26001 35-64 1979 107.15247                87.92325               127.88946</span></span>
+<span><span class="co">#&gt; 2  26003 35-64 1979 146.65258               119.93045               195.45817</span></span>
+<span><span class="co">#&gt; 3  26005 35-64 1979  71.08941                57.78063                81.64427</span></span>
+<span><span class="co">#&gt; 4  26007 35-64 1979  87.54041                73.16101               109.51904</span></span>
+<span><span class="co">#&gt; 5  26009 35-64 1979  88.98631                74.88835               107.03585</span></span>
+<span><span class="co">#&gt; 6  26011 35-64 1979 112.27379                92.11683               145.85171</span></span>
 <span><span class="co">#&gt;   relative_precision events population</span></span>
-<span><span class="co">#&gt; 1           2.861201      7       3353</span></span>
-<span><span class="co">#&gt; 2           2.678967     12       3105</span></span>
-<span><span class="co">#&gt; 3           3.423268     27      23926</span></span>
-<span><span class="co">#&gt; 4           2.740843     15      10000</span></span>
-<span><span class="co">#&gt; 5           2.934577     11       5152</span></span>
-<span><span class="co">#&gt; 6           2.673091      8       4517</span></span></code></pre></div>
+<span><span class="co">#&gt; 1           2.681076      7       3353</span></span>
+<span><span class="co">#&gt; 2           1.941706     12       3105</span></span>
+<span><span class="co">#&gt; 3           2.978984     27      23926</span></span>
+<span><span class="co">#&gt; 4           2.407732     15      10000</span></span>
+<span><span class="co">#&gt; 5           2.768063     11       5152</span></span>
+<span><span class="co">#&gt; 6           2.089402      8       4517</span></span></code></pre></div>
 <p>Now, <code>get_estimates(mod_mst)</code> shows the age-standardized
 estimates. Should you want to see those instead, you can set the
 argument <code>standardized = FALSE</code>.</p>
@@ -393,28 +395,29 @@ can generate suppressed estimates for our age-standardized rates:</p>
 <span><span class="co">#&gt; Model name: my_test_model </span></span>
 <span><span class="co">#&gt; Model type: MSTCAR </span></span>
 <span><span class="co">#&gt; Data likelihood: binomial </span></span>
+<span><span class="co">#&gt; Estimate Credible Interval: 95% </span></span>
 <span><span class="co">#&gt; Number of geographic units: 83 </span></span>
 <span><span class="co">#&gt; Number of samples: 6000 </span></span>
 <span><span class="co">#&gt; Estimates age-standardized: Yes </span></span>
 <span><span class="co">#&gt; Age-standardized groups: 35-64 </span></span>
 <span><span class="co">#&gt; Estimates suppressed: Yes </span></span>
-<span><span class="co">#&gt; Number of reliable age-standardized rates: 820 / 830 (98.8%)</span></span>
+<span><span class="co">#&gt; Number of reliable age-standardized rates: 819 / 830 (98.7%)</span></span>
 <span><span class="va">mst_estimates_as</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mst_estimates_as</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   county group year  medians medians_suppressed credible_interval_lower</span></span>
-<span><span class="co">#&gt; 1  26001 35-64 1979 189.4408           189.4408                156.3133</span></span>
-<span><span class="co">#&gt; 2  26003 35-64 1979 290.4592           290.4592                244.0066</span></span>
-<span><span class="co">#&gt; 3  26005 35-64 1979 132.2793           132.2793                110.0099</span></span>
-<span><span class="co">#&gt; 4  26007 35-64 1979 162.5257           162.5257                136.5911</span></span>
-<span><span class="co">#&gt; 5  26009 35-64 1979 161.9046           161.9046                138.4052</span></span>
-<span><span class="co">#&gt; 6  26011 35-64 1979 207.7445           207.7445                170.4865</span></span>
+<span><span class="co">#&gt;   county group year   medians medians_suppressed credible_interval_lower</span></span>
+<span><span class="co">#&gt; 1  26001 35-64 1979 107.15247          107.15247                87.92325</span></span>
+<span><span class="co">#&gt; 2  26003 35-64 1979 146.65258          146.65258               119.93045</span></span>
+<span><span class="co">#&gt; 3  26005 35-64 1979  71.08941           71.08941                57.78063</span></span>
+<span><span class="co">#&gt; 4  26007 35-64 1979  87.54041           87.54041                73.16101</span></span>
+<span><span class="co">#&gt; 5  26009 35-64 1979  88.98631           88.98631                74.88835</span></span>
+<span><span class="co">#&gt; 6  26011 35-64 1979 112.27379          112.27379                92.11683</span></span>
 <span><span class="co">#&gt;   credible_interval_upper relative_precision events population</span></span>
-<span><span class="co">#&gt; 1                222.5236           2.861201      7       3353</span></span>
-<span><span class="co">#&gt; 2                352.4287           2.678967     12       3105</span></span>
-<span><span class="co">#&gt; 3                148.6511           3.423268     27      23926</span></span>
-<span><span class="co">#&gt; 4                195.8888           2.740843     15      10000</span></span>
-<span><span class="co">#&gt; 5                193.5766           2.934577     11       5152</span></span>
-<span><span class="co">#&gt; 6                248.2034           2.673091      8       4517</span></span></code></pre></div>
+<span><span class="co">#&gt; 1               127.88946           2.681076      7       3353</span></span>
+<span><span class="co">#&gt; 2               195.45817           1.941706     12       3105</span></span>
+<span><span class="co">#&gt; 3                81.64427           2.978984     27      23926</span></span>
+<span><span class="co">#&gt; 4               109.51904           2.407732     15      10000</span></span>
+<span><span class="co">#&gt; 5               107.03585           2.768063     11       5152</span></span>
+<span><span class="co">#&gt; 6               145.85171           2.089402      8       4517</span></span></code></pre></div>
 <p><code>mod_mst</code> now shows us that our estimates are suppressed
 and indicates the number of reliable rates.</p>
 <p>If you want to learn more about <code><a href="../reference/get_estimates.html">get_estimates()</a></code>,
