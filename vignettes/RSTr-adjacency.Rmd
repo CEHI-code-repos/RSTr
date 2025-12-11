@@ -92,8 +92,6 @@ ma_adj <- add_neighbors(ma_adj, c(1, 4, 10))
 
 Now if we look at `ma_adj`, the message about no-link regions is gone.
 
-Note that if you run a model in `RSTr` and load in the adjacency information saved in your model object, the indices will have changed. This is because adjacency information is only used within Rcpp, which uses a 0-indexing system as opposed to the 1-indexing system used by R. When inputting data into `*car()`, only use a 1-indexed adjacency structure.
-
 Finally, even though we connected the two island counties to the mainland counties of MA, as long as each region has at least one neighbor, it is usable within `RSTr`. This means that, theoretically, we could have made just Dukes and Nantucket neighbors of each other, creating two separate islands with no related neighbors. In this case, every region on both islands still has at least one neighbor.
 
 ## Closing Thoughts
