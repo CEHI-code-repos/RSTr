@@ -69,8 +69,7 @@
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ignore_checks <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"binomial"</span>, <span class="st">"poisson"</span><span class="op">)</span>,</span>
-<span>  impute_lb <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  impute_ub <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  impute_bounds <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  initial_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  priors <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
@@ -89,8 +88,7 @@
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ignore_checks <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"binomial"</span>, <span class="st">"poisson"</span><span class="op">)</span>,</span>
-<span>  impute_lb <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  impute_ub <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  impute_bounds <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  initial_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  priors <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
@@ -107,8 +105,7 @@
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ignore_checks <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"binomial"</span>, <span class="st">"poisson"</span><span class="op">)</span>,</span>
-<span>  impute_lb <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  impute_ub <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  impute_bounds <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  initial_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  priors <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span>
@@ -125,8 +122,7 @@
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ignore_checks <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"binomial"</span>, <span class="st">"poisson"</span><span class="op">)</span>,</span>
-<span>  impute_lb <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  impute_ub <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  impute_bounds <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  initial_values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  priors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  update_rho <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -181,12 +177,8 @@
 <dd><p>Run model with either Binomial data or Poisson data.</p></dd>
 
 
-<dt id="arg-impute-lb">impute_lb<a class="anchor" aria-label="anchor" href="#arg-impute-lb"></a></dt>
-<dd><p>If counts are suppressed for privacy reasons, <code>impute_lb</code> is lower bound of suppression, typically 0 or 1.</p></dd>
-
-
-<dt id="arg-impute-ub">impute_ub<a class="anchor" aria-label="anchor" href="#arg-impute-ub"></a></dt>
-<dd><p>If counts are suppressed for privacy reasons, <code>impute_ub</code> is upper bound of suppression, typically 10.</p></dd>
+<dt id="arg-impute-bounds">impute_bounds<a class="anchor" aria-label="anchor" href="#arg-impute-bounds"></a></dt>
+<dd><p>If counts are suppressed for privacy reasons, <code>impute_bounds</code> is the lower/upper bound of suppression, typically 0 or 1 and 10, respectively.</p></dd>
 
 
 <dt id="arg-initial-values">initial_values<a class="anchor" aria-label="anchor" href="#arg-initial-values"></a></dt>
