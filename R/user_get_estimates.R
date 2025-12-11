@@ -21,8 +21,8 @@
 get_estimates <- function(RSTr_obj, rates_per = 1e5, standardized = TRUE) {
   marnames <- names(RSTr_obj$params$dimnames)
   if (is.null(marnames)) marnames <- c("region", "group", "time")
-  marnames[marnames == ""] <- c("region", "group", "time")[marnames == ""]
-  if (RSTr_obj$params$age_standardized & standardized) {
+  marnames[!nzchar(marnames)] <- c("region", "group", "time")[!nzchar(marnames)]
+  if (RSTr_obj$params$age_standardized && standardized) {
     est_table <- stats::setNames(as.data.frame.table(RSTr_obj$medians_as * rates_per), c(marnames, "medians"))
     if (RSTr_obj$params$suppressed) est_table$medians_suppressed <- c(RSTr_obj$medians_suppressed_as * rates_per)
     est_table$credible_interval_lower <- c(RSTr_obj$credible_interval_as$lower * rates_per)

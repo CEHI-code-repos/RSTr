@@ -23,7 +23,7 @@
 age_standardize <- function(RSTr_obj, std_pop, new_name, groups = NULL) {
   RSTr_obj$params$age_standardized <- TRUE
   samples <- load_samples(RSTr_obj)
-  if (is.null(groups)) groups <- 1:dim(samples)[2]
+  if (is.null(groups)) groups <- seq_len(dim(samples)[2])
   data <- lapply(RSTr_obj$data, aggregate_count, 2, groups, TRUE, new_name)
   data <- lapply(data, \(x) x[, new_name, , drop = FALSE])
   samples <- subset_array(samples, 2, groups)

@@ -1,5 +1,3 @@
-#' Get initial values
-#' @noRd
 get_initial_values <- function(RSTr_obj, initial_values, method) {
   UseMethod("get_initial_values")
 }
@@ -9,7 +7,6 @@ get_initial_values.ucar <- function(RSTr_obj, initial_values, method) {
   Y <- RSTr_obj$data$Y
   n <- RSTr_obj$data$n
   island_id <- RSTr_obj$spatial_data$island_id
-  num_region <- dim(Y)[[1]]
   num_group <- dim(Y)[[2]]
   num_time <- dim(Y)[[3]]
   num_island <- length(unique(island_id))
@@ -40,7 +37,6 @@ get_initial_values.mcar <- function(RSTr_obj, initial_values, method) {
   Y <- RSTr_obj$data$Y
   n <- RSTr_obj$data$n
   island_id <- RSTr_obj$spatial_data$island_id
-  num_region <- dim(Y)[[1]]
   num_group <- dim(Y)[[2]]
   num_time <- dim(Y)[[3]]
   num_island <- length(unique(island_id))
@@ -71,7 +67,6 @@ get_initial_values.mstcar <- function(RSTr_obj, initial_values, method) {
   Y <- RSTr_obj$data$Y
   n <- RSTr_obj$data$n
   island_id <- RSTr_obj$spatial_data$island_id
-  num_region <- dim(Y)[[1]]
   num_group <- dim(Y)[[2]]
   num_time <- dim(Y)[[3]]
   num_island <- length(unique(island_id))
@@ -105,7 +100,6 @@ get_initial_values.mstcar <- function(RSTr_obj, initial_values, method) {
   initial_values
 }
 
-#' @noRd
 get_initial_values_beta <- function(Y, n, num_group, num_time, num_island, method) {
   beta <- apply(Y, 2:3, sum, na.rm = TRUE) / apply(n, 2:3, sum)
   beta <- array(log_logit(beta, method), dim = c(num_group, num_time, num_island))
@@ -114,7 +108,6 @@ get_initial_values_beta <- function(Y, n, num_group, num_time, num_island, metho
   beta
 }
 
-#' @noRd
 get_initial_values_lambda <- function(initial_values, Y, n, method, island_id) {
   lower_limit <- 0
   upper_limit <- ifelse(method == "binomial", 1, Inf)

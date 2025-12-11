@@ -1,13 +1,18 @@
-#' @noRd
 validate_model <- function(RSTr_obj) {
-  errout <- NULL
-  errout <- check_data(RSTr_obj, errout)
-  errout <- check_initial_values(RSTr_obj, errout)
-  errout <- check_priors(RSTr_obj, errout)
+  errout <- c(
+    check_data(RSTr_obj),
+    check_initial_values(RSTr_obj),
+    check_priors(RSTr_obj)
+  )
   display_errors(errout)
 }
 
-#' @noRd
+display_errors <- function(errout) {
+  if (length(errout)) {
+    stop(paste0(length(errout), "error(s) found:\n", paste(errout, collapse = "\n ")))
+  }
+}
+
 prepare_data <- function(data) {
   if (is.null(dim(data$Y))) {
     data <- lapply(data, \(x) array(x, dim = c(length(x), 1, 1), dimnames = list(names(x))))
@@ -17,7 +22,6 @@ prepare_data <- function(data) {
   data
 }
 
-#' @noRd
 post_sampler_output <- function(RSTr_obj) {
   samples <- load_samples(RSTr_obj)
   medians <- get_medians(samples)

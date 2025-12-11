@@ -15,7 +15,7 @@
 #' }
 #' @export
 load_model <- function(name, dir = tempdir()) {
-  RSTr_obj <- readRDS(paste0(dir, "/", name, "/", name, ".Rds"))
+  RSTr_obj <- readRDS(file.path(dir, name, paste0(name, ".Rds")))
   RSTr_obj$params$name <- name
   RSTr_obj$params$dir <- dir
   RSTr_obj

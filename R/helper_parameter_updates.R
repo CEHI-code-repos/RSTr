@@ -1,5 +1,3 @@
-#' Update beta
-#' @noRd
 update_beta <- function(RSTr_obj) {
   UseMethod("update_beta")
 }
@@ -19,8 +17,6 @@ update_beta.mstcar <- function(RSTr_obj) {
   update_beta_mstcar(RSTr_obj)
 }
 
-#' Update G
-#' @noRd
 update_G <- function(RSTr_obj) {
   UseMethod("update_G")
 }
@@ -35,8 +31,6 @@ update_G.mstcar <- function(RSTr_obj) {
   update_G_mstcar(RSTr_obj)
 }
 
-#' Update sig2
-#' @noRd
 update_sig2 <- function(RSTr_obj) {
   UseMethod("update_sig2")
 }
@@ -51,8 +45,6 @@ update_sig2.eucar <- function(RSTr_obj) {
   update_sig2_ucar_restricted(RSTr_obj)
 }
 
-#' Update tau2
-#' @noRd
 update_tau2 <- function(RSTr_obj) {
   UseMethod("update_tau2")
 }
@@ -72,8 +64,6 @@ update_tau2.mstcar <- function(RSTr_obj) {
   update_tau2_mstcar(RSTr_obj)
 }
 
-#' Update Z
-#' @noRd
 update_Z <- function(RSTr_obj) {
   UseMethod("update_Z")
 }

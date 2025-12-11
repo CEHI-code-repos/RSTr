@@ -5,8 +5,6 @@ extract_last_margin <- function(arr) {
   do.call(`[`, c(list(arr), idx))
 }
 
-#' Subset array
-#' @noRd
 subset_array <- function(array, margin, groups) {
   index_list <- lapply(dim(array), \(x) 1:x)
   index_list[[margin]] <- groups

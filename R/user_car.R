@@ -215,7 +215,6 @@ mstcar <- function(
   RSTr_obj
 }
 
-#' @noRd
 initialize_model <- function(
   name,
   data,

@@ -1,5 +1,3 @@
-#' Impute event values
-#' @noRd
 impute_missing_data <- function(RSTr_obj) {
   lambda <- RSTr_obj$current_sample$lambda
   params <- RSTr_obj$params

@@ -32,7 +32,7 @@ standardize_samples <- function(sample, std_pop, margin, groups = NULL, bind_new
   if (!is.null(groups)) {
     sub_sample <- subset_array(sample, margin, groups)
   }
-  if (bind_new == TRUE) {
+  if (bind_new) {
     new_dim <- dim(sample)
     new_dim[margin] <- 1
     agg_sample <- array(

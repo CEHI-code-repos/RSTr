@@ -19,16 +19,16 @@ load_samples <- function(RSTr_obj, param = "lambda", burn = 2000) {
   params <- RSTr_obj$params
   name <- RSTr_obj$params$name
   dir <- RSTr_obj$params$dir
-  mar <- c("lambda" = 4, "beta" = 4, "Z" = 4, "G" = 4, "Ag" = 3, "tau2" = 3, "sig2" = 3, "rho" = 2)
-  if (params$model == "mstcar") mar["tau2"] = 2
-  batch <- which(1:params$batch * 100 > burn)
+  mar <- c(lambda = 4, beta = 4, Z = 4, G = 4, Ag = 3, tau2 = 3, sig2 = 3, rho = 2)
+  if (params$model == "mstcar") mar["tau2"] <- 2
+  batch <- which(seq_len(params$batch) * 100 > burn)
   files <- paste0(dir, "/", name, "/", param, "/", param, "_out_", batch, ".Rds")
   output <- abind::abind(lapply(files, readRDS), along = mar[param])
   dims <- params$dimnames
   its <- seq(burn + 10, max(batch) * 100, by = 10)
   if (param == "beta") {
     num_island <- readRDS(paste0(dir, name, "/spatial_data.Rds"))$num_island
-    dimnames(output) <- list(island = 1:num_island, group = dims[[2]], time = dims[[3]], its = its)
+    dimnames(output) <- list(island = seq_len(num_island), group = dims[[2]], time = dims[[3]], its = its)
   } else if (param %in% c("Z", "lambda")) {
     dimnames(output) <- c(dims, list(its = its))
   } else if (param == "rho") {

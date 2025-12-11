@@ -1,5 +1,3 @@
-#' Get params
-#' @noRd
 get_params <- function(data, seed, method, model, name, dir, perc_ci, restricted, A, m0, update_rho, impute_lb, impute_ub) {
   params <- list(
     batch = 0,
@@ -14,7 +12,7 @@ get_params <- function(data, seed, method, model, name, dir, perc_ci, restricted
     age_standardized = FALSE,
     suppressed = FALSE
   )
-  if (any(!is.finite(data$Y))) {
+  if (!all(is.finite(data$Y))) {
     params$missing_Y <- TRUE
     params$impute_lb <- impute_lb
     params$impute_ub <- impute_ub
