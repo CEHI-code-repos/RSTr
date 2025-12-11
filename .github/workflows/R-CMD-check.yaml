@@ -46,7 +46,6 @@ jobs:
           extra-packages: |
             any::rcmdcheck
             r-lib/Rcpp
-            rcppcore/RcppArmadillo
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
