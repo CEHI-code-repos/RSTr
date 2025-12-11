@@ -58,7 +58,7 @@ check_priors.mstcar <- function(RSTr_obj) {
 }
 
 #' @export
-check_priors.mstcar_update_rho <- function(RSTr_obj, errout) {
+check_priors.mstcar_update_rho <- function(RSTr_obj) {
   priors <- RSTr_obj$priors
   num_group <- dim(RSTr_obj$data$Y)[2]
   chk <- c("tau_a", "tau_b", "lambda_sd", "lambda_accept", "G_scale", "G_df", "Ag_scale", "Ag_df", "rho_a", "rho_b", "rho_sd", "rho_accept")
