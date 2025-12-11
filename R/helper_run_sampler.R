@@ -18,12 +18,14 @@ run_sampler <- function(RSTr_obj, iterations = 6000, show_plots = TRUE, verbose 
     if (verbose) display_progress(batch, max(batches), total, 0, sampler_start)
     output <- stats::setNames(vector("list", length(RSTr_obj$current_sample)), names(RSTr_obj$current_sample))
     RSTr_obj$current_sample$lambda <- log_logit(RSTr_obj$current_sample$lambda, method)
+    RSTr_obj <- convert_index(RSTr_obj, "zero")
     for (it in 1:100) {
       if (missing_Y) RSTr_obj <- impute_missing_data(RSTr_obj)
       RSTr_obj <- update_current_sample(RSTr_obj)
       if (it %% 10 == 0) output <- append_to_output(output, RSTr_obj)
       if (verbose) display_progress(batch, max(batches), total, it, sampler_start)
     }
+    RSTr_obj <- convert_index(RSTr_obj, "one")
     output <- prepare_output(output, method)
     RSTr_obj$current_sample$lambda <- exp_expit(RSTr_obj$current_sample$lambda, method)
     RSTr_obj <- update_priors_sd(RSTr_obj)

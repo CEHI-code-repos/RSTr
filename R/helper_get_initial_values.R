@@ -20,7 +20,7 @@ get_initial_values.ucar <- function(RSTr_obj, initial_values, method) {
   }
   # Z
   if (is.null(initial_values$Z)) {
-    initial_values$Z <- log_logit(initial_values$lambda, method) - initial_values$beta[island_id + 1, , , drop = FALSE]
+    initial_values$Z <- log_logit(initial_values$lambda, method) - initial_values$beta[island_id, , , drop = FALSE]
   }
   # tau2
   if (is.null(initial_values$tau2)) {
@@ -50,7 +50,7 @@ get_initial_values.mcar <- function(RSTr_obj, initial_values, method) {
   }
   # Z
   if (is.null(initial_values$Z)) {
-    initial_values$Z <- log_logit(initial_values$lambda, method) - initial_values$beta[island_id + 1, , , drop = FALSE]
+    initial_values$Z <- log_logit(initial_values$lambda, method) - initial_values$beta[island_id, , , drop = FALSE]
   }
   # tau2
   if (is.null(initial_values$tau2)) {
@@ -80,7 +80,7 @@ get_initial_values.mstcar <- function(RSTr_obj, initial_values, method) {
   }
   # Z
   if (is.null(initial_values$Z)) {
-    initial_values$Z <- log_logit(initial_values$lambda, method) - initial_values$beta[island_id + 1, , , drop = FALSE]
+    initial_values$Z <- log_logit(initial_values$lambda, method) - initial_values$beta[island_id, , , drop = FALSE]
   }
   # tau2
   if (is.null(initial_values$tau2)) {
@@ -114,7 +114,7 @@ get_initial_values_lambda <- function(initial_values, Y, n, method, island_id) {
   lambda <- Y / n
   lambda_unsupported <- (lambda <= lower_limit) | (lambda >= upper_limit) | (is.na(lambda))
   if (any(lambda_unsupported)) {
-    lambda[lambda_unsupported] <- exp_expit(initial_values$beta, method)[island_id + 1, , ][lambda_unsupported]
+    lambda[lambda_unsupported] <- exp_expit(initial_values$beta, method)[island_id, , ][lambda_unsupported]
   }
   lambda
 }

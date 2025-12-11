@@ -32,7 +32,7 @@ add_neighbors <- function(adjacency, neighs) {
   if (any(neighs < 1 | neighs > length(adjacency))) {
     stop("Not all indices in `neigh` are within `adjacency`. check `neighs %in% seq_along(adjacency)` for FALSE values.")
   }
-
+  adjacency <- as_nb(adjacency)
   adjacency_card <- spdep::card(adjacency)
   for (neighbor in neighs) {
     if (adjacency_card[neighbor] == 0) {
@@ -40,5 +40,11 @@ add_neighbors <- function(adjacency, neighs) {
     }
     adjacency[[neighbor]] <- union(adjacency[[neighbor]], neighs[-neighbor])
   }
+  as_nb(adjacency)
+}
+
+as_nb <- function(adjacency) {
+  adjacency <- lapply(adjacency, as.integer)
+  class(adjacency) <- "nb"
   adjacency
 }

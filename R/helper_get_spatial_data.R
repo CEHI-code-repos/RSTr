@@ -4,15 +4,12 @@ get_spatial_data <- function(adjacency) {
     class(adjacency) <- c("nb")
   }
   check_regions_unlinked(adjacency)
+  comp <- spdep::n.comp.nb(adjacency)
   num_adj <- spdep::card(adjacency)
-  island_region <- lapply(get_islands(adjacency), \(x) x - 1)
+  num_island <- comp$nc
+  island_id <- comp$comp.id
+  island_region <- lapply(1:num_island, \(isl) which(island_id == isl))
   num_island_region <- lengths(island_region)
-  adjacency <- lapply(adjacency, \(x) x - 1)
-  num_island <- length(island_region)
-  island_id <- rep(NA, length(adjacency))
-  for (isl in 1:num_island) {
-    island_id[island_region[[isl]] + 1] <- isl - 1
-  }
   list(
     adjacency = adjacency,
     num_adj = num_adj,
@@ -23,25 +20,19 @@ get_spatial_data <- function(adjacency) {
   )
 }
 
-get_islands <- function(adjacency) {
-  f <- seq_along(adjacency)
-  island_region <- list()
-  group <- 0
-  while (length(f) > 0) {
-    active_list <- f[1]
-    inactive_list <- NULL
-    while (length(active_list) > 0) {
-      Na <- adjacency[[active_list[1]]]
-      active_list <- unique(c(active_list, Na[which(!(Na %in% inactive_list))]))
-      inactive_list <- c(inactive_list, active_list[1])
-      active_list <- active_list[-1]
-    }
-    group <- group + 1
-    inactive_list <- sort(inactive_list)
-    island_region[[group]] <- inactive_list
-    f <- setdiff(f, inactive_list)
+convert_index <- function(RSTr_obj, index = c("zero", "one")) {
+  if (index == "zero") {
+    RSTr_obj$spatial_data$adjacency <- lapply(RSTr_obj$spatial_data$adjacency, \(x) x - 1)
+    RSTr_obj$spatial_data$island_region <- lapply(RSTr_obj$spatial_data$island_region, \(x) x - 1)
+    RSTr_obj$spatial_data$island_id <- RSTr_obj$spatial_data$island_id - 1
   }
-  island_region
+  if (index == "one") {
+    RSTr_obj$spatial_data$adjacency <- lapply(RSTr_obj$spatial_data$adjacency, \(x) x + 1)
+    RSTr_obj$spatial_data$island_region <- lapply(RSTr_obj$spatial_data$island_region, \(x) x + 1)
+    RSTr_obj$spatial_data$island_id <- RSTr_obj$spatial_data$island_id + 1
+    as_nb(RSTr_obj$spatial_data$adjacency)
+  }
+  RSTr_obj
 }
 
 check_regions_unlinked <- function(adjacency) {

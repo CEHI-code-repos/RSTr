@@ -9,7 +9,7 @@ validate_model <- function(RSTr_obj) {
 
 display_errors <- function(errout) {
   if (length(errout)) {
-    stop(paste0(length(errout), "error(s) found:\n", paste(errout, collapse = "\n ")))
+    stop(paste0(length(errout), " error(s) found:\n", paste(errout, collapse = "\n ")))
   }
 }
 
