@@ -215,12 +215,6 @@ neighbors:</p>
 <code class="sourceCode R"><span><span class="va">ma_adj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_neighbors.html">add_neighbors</a></span><span class="op">(</span><span class="va">ma_adj</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Now if we look at <code>ma_adj</code>, the message about no-link
 regions is gone.</p>
-<p>Note that if you run a model in <code>RSTr</code> and load in the
-adjacency information saved in your model object, the indices will have
-changed. This is because adjacency information is only used within Rcpp,
-which uses a 0-indexing system as opposed to the 1-indexing system used
-by R. When inputting data into <code>*car()</code>, only use a 1-indexed
-adjacency structure.</p>
 <p>Finally, even though we connected the two island counties to the
 mainland counties of MA, as long as each region has at least one
 neighbor, it is usable within <code>RSTr</code>. This means that,

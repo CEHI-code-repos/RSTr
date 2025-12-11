@@ -56,5 +56,4 @@ ma_adj <- add_neighbors(ma_adj, neighs = c("25001", "25007", "25019"))
 ma_adj <- suppressWarnings(spdep::poly2nb(mamap))
 ma_adj <- add_neighbors(ma_adj, c(1, 4)) # only attach 1 and 4
 ma_adj <- add_neighbors(ma_adj, c(4, 10)) # only attach 4 and 10
-#> Error in spdep::card(adjacency): INTEGER() can only be applied to a 'integer', not a 'double'
 ```

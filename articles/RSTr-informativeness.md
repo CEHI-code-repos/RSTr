@@ -29,13 +29,13 @@ running a UCAR model to see the evolution of `Z` over time:
 data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_ucar <- ucar("my_test_model", data_u, miadj, tempdir(), seed = 1234)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Thu Dec 11 16:17:18
+#> Starting sampler on Batch 1 at Thu Dec 11 17:16:12
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 11 16:17:25
+    #> Model finished at Thu Dec 11 17:16:19
 
 The magnitude of `sig2` has further implications on the rate estimates
 `lambda`. Smaller `sig2` values mean that the variance between neighbors
@@ -124,13 +124,13 @@ function, setting an informativeness ceiling of `A = 6`:
 ``` r
 mod_eucar <- eucar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Thu Dec 11 16:17:25
+#> Starting sampler on Batch 1 at Thu Dec 11 17:16:19
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 11 16:17:32
+    #> Model finished at Thu Dec 11 17:16:25
 
 Notice that the traceplots for `tau2` and `sig2` in our enhanced (i.e.,
 restricted) UCAR model have significantly higher values than those in
@@ -213,13 +213,13 @@ data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FA
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_eucar <- eucar("test_eucar", data_u, miadj, tempdir(), seed = 1234, A = A)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Thu Dec 11 16:17:34
+#> Starting sampler on Batch 1 at Thu Dec 11 17:16:27
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 11 16:17:42
+    #> Model finished at Thu Dec 11 17:16:34
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
