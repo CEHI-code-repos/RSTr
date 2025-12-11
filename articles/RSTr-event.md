@@ -131,12 +131,13 @@ head(ma_mort)
 #> 6      71943             265.5
 ```
 
-RSTr offers a [`generate_data()`](../reference/generate_data.md)
-function which can transform this dataset into mortality and population
-arrays with properly oriented margins:
+RSTr offers a
+[`long_to_list_matrix()`](../reference/long_to_list_matrix.md) function
+which can transform this dataset into mortality and population arrays
+with properly oriented margins:
 
 ``` r
-ma_data <- generate_data(ma_mort, Deaths, Population, County.Code, Sex.Code, Year.Code)
+ma_data <- long_to_list_matrix(ma_mort, Deaths, Population, County.Code, Sex.Code, Year.Code)
 ```
 
 If you want to manually set up the data, you can create `Y` and `n`
@@ -168,7 +169,7 @@ our data for the MCAR model:
 
 ``` r
 ma_mort_mcar <- ma_mort[ma_mort$Year == 1979, ] # filter dataset to only show 1979 data
-ma_data_mcar <- generate_data(ma_mort_mcar, Deaths, Population, County.Code, Sex.Code)
+ma_data_mcar <- long_to_list_matrix(ma_mort_mcar, Deaths, Population, County.Code, Sex.Code)
 ```
 
 Note that [`xtabs()`](https://rdrr.io/r/stats/xtabs.html) works by
@@ -181,7 +182,7 @@ For the UCAR model, setup is similar:
 
 ``` r
 ma_mort_ucar <- ma_mort[ma_mort$Year == 1979 & ma_mort$Sex == "Male", ] # filter dataset to only show 1979 data for men
-ma_data_ucar <- generate_data(ma_mort_ucar, Deaths, Population, County.Code)
+ma_data_ucar <- long_to_list_matrix(ma_mort_ucar, Deaths, Population, County.Code)
 ```
 
 ## Closing Thoughts
@@ -189,6 +190,7 @@ ma_data_ucar <- generate_data(ma_mort_ucar, Deaths, Population, County.Code)
 In this vignette, we used data generated from CDC WONDER to construct
 our event and population counts, remove unnecessary rows using
 [`filter()`](https://rdrr.io/r/stats/filter.html), and construct our
-list using [`generate_data()`](../reference/generate_data.md). Setting
+list using
+[`long_to_list_matrix()`](../reference/long_to_list_matrix.md). Setting
 up the data for `RSTr` can seem daunting at first, but with a few quick
 tricks in R, it can be easy to have your data organized for analysis.

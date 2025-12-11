@@ -209,11 +209,11 @@ how our data is listed out:</p>
 <span><span class="co">#&gt; 4      22465             280.4</span></span>
 <span><span class="co">#&gt; 5      80171              64.9</span></span>
 <span><span class="co">#&gt; 6      71943             265.5</span></span></code></pre></div>
-<p>RSTr offers a <code><a href="../reference/generate_data.html">generate_data()</a></code> function which can
+<p>RSTr offers a <code><a href="../reference/long_to_list_matrix.html">long_to_list_matrix()</a></code> function which can
 transform this dataset into mortality and population arrays with
 properly oriented margins:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ma_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_data.html">generate_data</a></span><span class="op">(</span><span class="va">ma_mort</span>, <span class="va">Deaths</span>, <span class="va">Population</span>, <span class="va">County.Code</span>, <span class="va">Sex.Code</span>, <span class="va">Year.Code</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ma_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/long_to_list_matrix.html">long_to_list_matrix</a></span><span class="op">(</span><span class="va">ma_mort</span>, <span class="va">Deaths</span>, <span class="va">Population</span>, <span class="va">County.Code</span>, <span class="va">Sex.Code</span>, <span class="va">Year.Code</span><span class="op">)</span></span></code></pre></div>
 <p>If you want to manually set up the data, you can create
 <code>Y</code> and <code>n</code> arrays using the <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code>
 function and consolidate them into a <code>list</code> to be used with
@@ -240,7 +240,7 @@ filter the original dataset and follow a similar procedure to prepare
 our data for the MCAR model:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ma_mort_mcar</span> <span class="op">&lt;-</span> <span class="va">ma_mort</span><span class="op">[</span><span class="va">ma_mort</span><span class="op">$</span><span class="va">Year</span> <span class="op">==</span> <span class="fl">1979</span>, <span class="op">]</span> <span class="co"># filter dataset to only show 1979 data</span></span>
-<span><span class="va">ma_data_mcar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_data.html">generate_data</a></span><span class="op">(</span><span class="va">ma_mort_mcar</span>, <span class="va">Deaths</span>, <span class="va">Population</span>, <span class="va">County.Code</span>, <span class="va">Sex.Code</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">ma_data_mcar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/long_to_list_matrix.html">long_to_list_matrix</a></span><span class="op">(</span><span class="va">ma_mort_mcar</span>, <span class="va">Deaths</span>, <span class="va">Population</span>, <span class="va">County.Code</span>, <span class="va">Sex.Code</span><span class="op">)</span></span></code></pre></div>
 <p>Note that <code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code> works by aggregating data along the
 specified variables in the expression argument. In the case of the MCAR
 model, we filter down to the year we want because otherwise, it would
@@ -249,7 +249,7 @@ instead of just for 1979.</p>
 <p>For the UCAR model, setup is similar:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ma_mort_ucar</span> <span class="op">&lt;-</span> <span class="va">ma_mort</span><span class="op">[</span><span class="va">ma_mort</span><span class="op">$</span><span class="va">Year</span> <span class="op">==</span> <span class="fl">1979</span> <span class="op">&amp;</span> <span class="va">ma_mort</span><span class="op">$</span><span class="va">Sex</span> <span class="op">==</span> <span class="st">"Male"</span>, <span class="op">]</span> <span class="co"># filter dataset to only show 1979 data for men</span></span>
-<span><span class="va">ma_data_ucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_data.html">generate_data</a></span><span class="op">(</span><span class="va">ma_mort_ucar</span>, <span class="va">Deaths</span>, <span class="va">Population</span>, <span class="va">County.Code</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">ma_data_ucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/long_to_list_matrix.html">long_to_list_matrix</a></span><span class="op">(</span><span class="va">ma_mort_ucar</span>, <span class="va">Deaths</span>, <span class="va">Population</span>, <span class="va">County.Code</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="closing-thoughts">Closing Thoughts<a class="anchor" aria-label="anchor" href="#closing-thoughts"></a>
@@ -257,9 +257,10 @@ instead of just for 1979.</p>
 <p>In this vignette, we used data generated from CDC WONDER to construct
 our event and population counts, remove unnecessary rows using
 <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>, and construct our list using
-<code><a href="../reference/generate_data.html">generate_data()</a></code>. Setting up the data for <code>RSTr</code>
-can seem daunting at first, but with a few quick tricks in R, it can be
-easy to have your data organized for analysis.</p>
+<code><a href="../reference/long_to_list_matrix.html">long_to_list_matrix()</a></code>. Setting up the data for
+<code>RSTr</code> can seem daunting at first, but with a few quick
+tricks in R, it can be easy to have your data organized for
+analysis.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

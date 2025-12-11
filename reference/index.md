@@ -2,8 +2,8 @@
 
 ## Preparing data
 
-- [`generate_data()`](generate_data.md) : Generate count data for RSTr
-  object
+- [`long_to_list_matrix()`](long_to_list_matrix.md) : Generate count
+  data for RSTr object
 - [`add_neighbors()`](add_neighbors.md) : Add neighbors to adjacency
   information
 
