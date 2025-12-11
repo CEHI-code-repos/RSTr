@@ -20,7 +20,7 @@ articles:
 reference:
 - title: Preparing data
   contents:
-  - generate_data
+  - long_to_list_matrix
   - add_neighbors
 - title: Modeling
   contents:

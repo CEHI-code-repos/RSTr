@@ -75,10 +75,10 @@ The above code searches for values in `maexample$Year` that aren't `NA` and crea
 head(ma_mort)
 ```
 
-RSTr offers a `generate_data()` function which can transform this dataset into mortality and population arrays with properly oriented margins:
+RSTr offers a `long_to_list_matrix()` function which can transform this dataset into mortality and population arrays with properly oriented margins:
 
 ```{r}
-ma_data <- generate_data(ma_mort, Deaths, Population, County.Code, Sex.Code, Year.Code)
+ma_data <- long_to_list_matrix(ma_mort, Deaths, Population, County.Code, Sex.Code, Year.Code)
 ```
 
 If you want to manually set up the data, you can create `Y` and `n` arrays using the `xtabs()` function and consolidate them into a `list` to be used with the model:
@@ -99,7 +99,7 @@ The above dataset is prepared specifically for an MSTCAR model. But what if we w
 
 ```{r}
 ma_mort_mcar <- ma_mort[ma_mort$Year == 1979, ] # filter dataset to only show 1979 data
-ma_data_mcar <- generate_data(ma_mort_mcar, Deaths, Population, County.Code, Sex.Code)
+ma_data_mcar <- long_to_list_matrix(ma_mort_mcar, Deaths, Population, County.Code, Sex.Code)
 ```
 
 Note that `xtabs()` works by aggregating data along the specified variables in the expression argument. In the case of the MCAR model, we filter down to the year we want because otherwise, it would give us the mortality and population counts for all years in our dataset instead of just for 1979.
@@ -108,9 +108,9 @@ For the UCAR model, setup is similar:
 
 ```{r}
 ma_mort_ucar <- ma_mort[ma_mort$Year == 1979 & ma_mort$Sex == "Male", ] # filter dataset to only show 1979 data for men
-ma_data_ucar <- generate_data(ma_mort_ucar, Deaths, Population, County.Code)
+ma_data_ucar <- long_to_list_matrix(ma_mort_ucar, Deaths, Population, County.Code)
 ```
 
 ## Closing Thoughts
 
-In this vignette, we used data generated from CDC WONDER to construct our event and population counts, remove unnecessary rows using `filter()`, and construct our list using `generate_data()`. Setting up the data for `RSTr` can seem daunting at first, but with a few quick tricks in R, it can be easy to have your data organized for analysis.
+In this vignette, we used data generated from CDC WONDER to construct our event and population counts, remove unnecessary rows using `filter()`, and construct our list using `long_to_list_matrix()`. Setting up the data for `RSTr` can seem daunting at first, but with a few quick tricks in R, it can be easy to have your data organized for analysis.
