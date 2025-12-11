@@ -67,13 +67,13 @@ argument:
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234, perc_ci = 0.95)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Thu Dec 11 18:47:29
+#> Starting sampler on Batch 1 at Thu Dec 11 18:54:59
 ```
 
 ![](RSTr-reliability_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 11 18:47:58
+    #> Model finished at Thu Dec 11 18:55:28
 
 Here, we specify `perc_ci = 0.95`, which means our relative precision
 estimates will be based on a 95% credible interval. If we want to
