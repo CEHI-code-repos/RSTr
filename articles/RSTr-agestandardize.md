@@ -19,13 +19,13 @@ rates from an `RSTr` object, we can simply run
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Thu Dec 11 20:11:33
+#> Starting sampler on Batch 1 at Thu Dec 11 20:19:26
 ```
 
 ![](RSTr-agestandardize_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 11 20:12:03
+    #> Model finished at Thu Dec 11 20:19:56
 
 ``` r
 estimates <- get_estimates(mod_mst, rates_per = 1e5)
