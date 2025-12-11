@@ -45,7 +45,8 @@ jobs:
         with:
           extra-packages: |
             any::rcmdcheck
-            ${{ matrix.config.r == 'devel' && 'r-lib/Rcpp rcppcore/RcppArmadillo' || '' }}
+            r-lib/Rcpp
+            rcppcore/RcppArmadillo
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
