@@ -41,17 +41,10 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
           
-      - name: Disable pak cache on macOS
-        if: runner.os == 'macOS'
-        run: |
-          echo "PREFER_PAK_CACHE=false" >> $GITHUB_ENV
-          echo "R_PAK_CACHE_EXTRA=off" >> $GITHUB_ENV
-
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
-          use-cache: false
 
       - uses: r-lib/actions/check-r-package@v2
         with:
