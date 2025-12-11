@@ -11,20 +11,11 @@ ArcGIS Python Toolbox, visit the [Rate Stabilizing Toolbox
 
 ## Installation
 
-Windows users must first install
-[RTools](https://cran.r-project.org/bin/windows/Rtools/) before
-installing any package from source. You may find it useful to use the
-`installr` package to install RTools like below:
+Install the development version via
+[r-universe](https://cehi-code-repos.r-universe.dev/RSTr).
 
 ``` r
-install.packages("installr")
-installr::install.Rtools()
-```
-
-You can install the development version of `RSTr`.
-
-``` r
-devtools::install_github("CEHI-code-repos/RSTr", build_vignettes = TRUE)
+install.packages('RSTr', repos = c('https://cehi-code-repos.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
 If this is your first time using RSTr, check out

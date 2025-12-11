@@ -167,8 +167,7 @@ filter the original dataset and follow a similar procedure to prepare
 our data for the MCAR model:
 
 ``` r
-ma_mort_mcar <- maexample[which(!is.na(maexample$Year)), ]
-ma_mort_mcar <- ma_mort_mcar[ma_mort_mcar$Year == 1979, ] # filter dataset to only show 1979 data
+ma_mort_mcar <- ma_mort[ma_mort$Year == 1979, ] # filter dataset to only show 1979 data
 ma_data_mcar <- generate_data(ma_mort_mcar, Deaths, Population, County.Code, Sex.Code)
 ```
 
@@ -181,8 +180,7 @@ counts for all years in our dataset instead of just for 1979.
 For the UCAR model, setup is similar:
 
 ``` r
-ma_mort_ucar <- maexample[which(!is.na(maexample$Year)), ]
-ma_mort_ucar <- ma_mort_ucar[ma_mort_ucar$Year == 1979 & ma_mort_ucar$Sex == "Male", ] # filter dataset to only show 1979 data for men
+ma_mort_ucar <- ma_mort[ma_mort$Year == 1979 & ma_mort$Sex == "Male", ] # filter dataset to only show 1979 data for men
 ma_data_ucar <- generate_data(ma_mort_ucar, Deaths, Population, County.Code)
 ```
 
