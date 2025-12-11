@@ -12,7 +12,7 @@ run_sampler <- function(RSTr_obj, iterations = 6000, show_plots = TRUE, verbose 
   total <- RSTr_obj$params$total
   method <- RSTr_obj$params$method
   batches <- seq(start_batch + 1, start_batch + iterations / 100)
-
+  if (verbose) message("NAs detected in Y. Events will be imputed for missing values")
   if (verbose) message("Starting sampler on Batch ", start_batch + 1, " at ", format(Sys.time(), "%a %b %d %X"))
   for (batch in batches) {
     if (verbose) display_progress(batch, max(batches), total, 0, sampler_start)

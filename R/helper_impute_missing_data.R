@@ -3,8 +3,9 @@ impute_missing_data <- function(RSTr_obj) {
   params <- RSTr_obj$params
   method <- params$method
   miss <- params$miss
-  impute_lb <- params$impute_lb
-  impute_ub <- params$impute_ub
+  impute_bounds <- params$impute_bounds
+  impute_lb <- impute_bounds[1]
+  impute_ub <- impute_bounds[2]
   data <- RSTr_obj$data
   Y <- data$Y
   n <- data$n

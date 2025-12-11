@@ -35,14 +35,14 @@ check_mismatched_dimensions <- function(data) {
 }
 
 check_invalid_Y <- function(Y) {
-  Ychk <- Y[(!is.na(Y)) & (!is.null(Y))]
-  if (any((Ychk < 0) | is.infinite(Ychk))) {
-    "Invalid Y values. Check that all Y's are at least 0 and finite"
+  Ychk <- Y[!is.na(Y)]
+  if (any((Ychk < 0) | is.infinite(Ychk) | is.nan(Ychk))) {
+    "Invalid Y values. Check that all Y's are at least 0 and finite and that missing values are specified with NA"
   }
 }
 
 check_invalid_n <- function(n) {
-  if (any((n < 0) | is.infinite(n))) {
+  if (any((n < 0) | is.infinite(n) | is.na(n) | is.nan(n))) {
     "Invalid n values. Check that all n's are at least 0 and finite"
   }
 }
@@ -67,7 +67,7 @@ check_zero_events.mcar <- function(RSTr_obj) {
 
 #' @export
 check_zero_events.mstcar <- function(RSTr_obj) {
-  if (sum(RSTr_obj$data$Y) == 0) {
+  if (sum(RSTr_obj$data$Y, na.rm = TRUE) == 0) {
     "No events in Y. Ensure that Y has at least one event"
   }
 }

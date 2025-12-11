@@ -13,8 +13,7 @@
 #' @param verbose If set to \code{FALSE}, suppresses model progress messages.
 #' @param ignore_checks If set to \code{TRUE}, skips model validation.
 #' @param method Run model with either Binomial data or Poisson data.
-#' @param impute_lb If counts are suppressed for privacy reasons, \code{impute_lb} is lower bound of suppression, typically 0 or 1.
-#' @param impute_ub If counts are suppressed for privacy reasons, \code{impute_ub} is upper bound of suppression, typically 10.
+#' @param impute_bounds If counts are suppressed for privacy reasons, \code{impute_bounds} is the lower/upper bound of suppression, typically 0 or 1 and 10, respectively.
 #' @param initial_values Optional list of initial conditions for each parameter.
 #' @param priors Optional list of priors for updates.
 #' @param m0 For EUCAR models, baseline neighbor count by region.
@@ -49,8 +48,7 @@ ucar <- function(
   verbose = TRUE,
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
-  impute_lb = NULL,
-  impute_ub = NULL,
+  impute_bounds = NULL,
   initial_values = NULL,
   priors = NULL
 ) {
@@ -66,8 +64,7 @@ ucar <- function(
     show_plots = show_plots,
     ignore_checks = ignore_checks,
     method = method,
-    impute_lb = impute_lb,
-    impute_ub = impute_ub,
+    impute_bounds = impute_bounds,
     initial_values = initial_values,
     priors = priors,
     model = "ucar",
@@ -95,8 +92,7 @@ eucar <- function(
   verbose = TRUE,
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
-  impute_lb = NULL,
-  impute_ub = NULL,
+  impute_bounds = NULL,
   initial_values = NULL,
   priors = NULL
 ) {
@@ -112,8 +108,7 @@ eucar <- function(
     show_plots = show_plots,
     ignore_checks = ignore_checks,
     method = method,
-    impute_lb = impute_lb,
-    impute_ub = impute_ub,
+    impute_bounds = impute_bounds,
     initial_values = initial_values,
     priors = priors,
     model = "eucar",
@@ -141,8 +136,7 @@ mcar <- function(
   verbose = TRUE,
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
-  impute_lb = NULL,
-  impute_ub = NULL,
+  impute_bounds = NULL,
   initial_values = NULL,
   priors = NULL
 ) {
@@ -158,8 +152,7 @@ mcar <- function(
     show_plots = show_plots,
     ignore_checks = ignore_checks,
     method = method,
-    impute_lb = impute_lb,
-    impute_ub = impute_ub,
+    impute_bounds = impute_bounds,
     initial_values = initial_values,
     priors = priors,
     model = "mcar",
@@ -184,8 +177,7 @@ mstcar <- function(
   verbose = TRUE,
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
-  impute_lb = NULL,
-  impute_ub = NULL,
+  impute_bounds = NULL,
   initial_values = NULL,
   priors = NULL,
   update_rho = FALSE
@@ -203,8 +195,7 @@ mstcar <- function(
     show_plots = show_plots,
     ignore_checks = ignore_checks,
     method = method,
-    impute_lb = impute_lb,
-    impute_ub = impute_ub,
+    impute_bounds = impute_bounds,
     initial_values = initial_values,
     priors = priors,
     model = "mstcar",
@@ -225,8 +216,7 @@ initialize_model <- function(
   show_plots = TRUE,
   ignore_checks = FALSE,
   method = "binomial",
-  impute_lb = 0,
-  impute_ub = 10,
+  impute_bounds = NULL,
   initial_values = NULL,
   priors = NULL,
   model = c("mstcar", "ucar", "mcar"),
@@ -237,7 +227,7 @@ initialize_model <- function(
   update_rho = NULL
 ) {
   RSTr_obj <- create_new_model(model, data, restricted, update_rho)
-  RSTr_obj$params <- get_params(RSTr_obj$data, seed, method, model, name, dir, perc_ci, restricted, A, m0, update_rho, impute_lb, impute_ub)
+  RSTr_obj$params <- get_params(RSTr_obj$data, seed, method, model, name, dir, perc_ci, restricted, A, m0, update_rho, impute_bounds)
   RSTr_obj$spatial_data <- get_spatial_data(adjacency)
   RSTr_obj <- get_priors(RSTr_obj, priors)
   RSTr_obj$initial_values <- get_initial_values(RSTr_obj, initial_values, method)

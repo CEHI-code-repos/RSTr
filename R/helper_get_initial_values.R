@@ -112,7 +112,7 @@ get_initial_values_lambda <- function(initial_values, Y, n, method, island_id) {
   lower_limit <- 0
   upper_limit <- ifelse(method == "binomial", 1, Inf)
   lambda <- Y / n
-  lambda_unsupported <- (lambda <= lower_limit) | (lambda >= upper_limit)
+  lambda_unsupported <- (lambda <= lower_limit) | (lambda >= upper_limit) | (is.na(lambda))
   if (any(lambda_unsupported)) {
     lambda[lambda_unsupported] <- exp_expit(initial_values$beta, method)[island_id + 1, , ][lambda_unsupported]
   }

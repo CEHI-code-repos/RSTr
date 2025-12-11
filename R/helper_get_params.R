@@ -1,4 +1,4 @@
-get_params <- function(data, seed, method, model, name, dir, perc_ci, restricted, A, m0, update_rho, impute_lb, impute_ub) {
+get_params <- function(data, seed, method, model, name, dir, perc_ci, restricted, A, m0, update_rho, impute_bounds) {
   params <- list(
     batch = 0,
     total = 0,
@@ -14,8 +14,7 @@ get_params <- function(data, seed, method, model, name, dir, perc_ci, restricted
   )
   if (!all(is.finite(data$Y))) {
     params$missing_Y <- TRUE
-    params$impute_lb <- impute_lb
-    params$impute_ub <- impute_ub
+    params$impute_bounds <- impute_bounds %||% c(0, 10)
     params$miss <- which(!is.finite(data$Y))
   }
   if (!is.null(seed)) {

@@ -19,8 +19,7 @@ ucar(
   verbose = TRUE,
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
-  impute_lb = NULL,
-  impute_ub = NULL,
+  impute_bounds = NULL,
   initial_values = NULL,
   priors = NULL
 )
@@ -39,8 +38,7 @@ eucar(
   verbose = TRUE,
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
-  impute_lb = NULL,
-  impute_ub = NULL,
+  impute_bounds = NULL,
   initial_values = NULL,
   priors = NULL
 )
@@ -57,8 +55,7 @@ mcar(
   verbose = TRUE,
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
-  impute_lb = NULL,
-  impute_ub = NULL,
+  impute_bounds = NULL,
   initial_values = NULL,
   priors = NULL
 )
@@ -75,8 +72,7 @@ mstcar(
   verbose = TRUE,
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
-  impute_lb = NULL,
-  impute_ub = NULL,
+  impute_bounds = NULL,
   initial_values = NULL,
   priors = NULL,
   update_rho = FALSE
@@ -105,9 +101,7 @@ mstcar(
 
 \item{method}{Run model with either Binomial data or Poisson data.}
 
-\item{impute_lb}{If counts are suppressed for privacy reasons, \code{impute_lb} is lower bound of suppression, typically 0 or 1.}
-
-\item{impute_ub}{If counts are suppressed for privacy reasons, \code{impute_ub} is upper bound of suppression, typically 10.}
+\item{impute_bounds}{If counts are suppressed for privacy reasons, \code{impute_bounds} is the lower/upper bound of suppression, typically 0 or 1 and 10, respectively.}
 
 \item{initial_values}{Optional list of initial conditions for each parameter.}
 
