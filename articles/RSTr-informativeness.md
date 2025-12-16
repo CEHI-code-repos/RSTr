@@ -29,13 +29,13 @@ running a UCAR model to see the evolution of `Z` over time:
 data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_ucar <- ucar("my_test_model", data_u, miadj, tempdir(), seed = 1234)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 19:10:57
+#> Starting sampler on Batch 1 at Tue Dec 16 20:34:55
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 19:11:03
+    #> Model finished at Tue Dec 16 20:35:01
 
 The magnitude of `sig2` has further implications on the rate estimates
 `lambda`. Smaller `sig2` values mean that the variance between neighbors
@@ -97,7 +97,7 @@ informativeness.
 
 ## The Enhanced UCAR (EUCAR) model
 
-`RSTr` features unrestricted UCAR/MCAR/MSTCAR models, but also features
+{RSTr} features unrestricted UCAR/MCAR/MSTCAR models, but also features
 an enhanced UCAR (EUCAR) model which incorporates measures to prevent
 oversmoothing. With the EUCAR model, we can limit our informativeness
 `a0` to a ceiling, `A`, by tweaking the estimation process of `sig2`,
@@ -115,7 +115,7 @@ unrestricted CAR models.
 al. 2021](https://www.sciencedirect.com/science/article/pii/S1877584521000198)
 suggests an informativeness ceiling `A` of 6 and an `m0` of 3 to ensure
 that regions with event counts less than 10 will not erroneously
-generate precise estimates. `RSTr` sets `A` to 6 and `m0` to 3 by
+generate precise estimates. {RSTr} sets `A` to 6 and `m0` to 3 by
 default.
 
 Let’s run an EUCAR model using the [`eucar()`](../reference/ucar.md)
@@ -124,13 +124,13 @@ function, setting an informativeness ceiling of `A = 6`:
 ``` r
 mod_eucar <- eucar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 19:11:04
+#> Starting sampler on Batch 1 at Tue Dec 16 20:35:01
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 19:11:10
+    #> Model finished at Tue Dec 16 20:35:08
 
 Notice that the traceplots for `tau2` and `sig2` in our enhanced (i.e.,
 restricted) UCAR model have significantly higher values than those in
@@ -213,13 +213,13 @@ data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FA
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_eucar <- eucar("test_eucar", data_u, miadj, tempdir(), seed = 1234, A = A)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 19:11:12
+#> Starting sampler on Batch 1 at Tue Dec 16 20:35:09
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 19:11:19
+    #> Model finished at Tue Dec 16 20:35:16
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
@@ -295,7 +295,7 @@ work through the most appropriate use case for each model:
 
 Enhanced models for MCAR and MSTCAR continue to be under development.
 Development for an enhanced Univariate Spatiotemporal CAR (USTCAR) model
-is also underway. `RSTr` will incorporate these enhanced models as they
+is also underway. {RSTr} will incorporate these enhanced models as they
 become available.
 
 ## Final thoughts
@@ -303,15 +303,15 @@ become available.
 In this vignette, we investigated model informativeness and the tendency
 of unrestricted BYM models to oversmooth estimates, along with some
 benefits of enhanced CAR models. This vignette concludes the main
-sections on using the functions in the `RSTr` package. After reading
+sections on using the functions in the RSTr package. After reading
 these, you should be able to prepare your event and adjacency data,
 choose and configure your model as necessary, age-standardize estimates,
 and determine which estimates are reliable. If you are interested in the
-more advanced features of the `RSTr` involving sample processing, read
+more advanced features of the {RSTr} involving sample processing, read
 [`vignette("RSTr-samples")`](../articles/RSTr-samples.md); if you’d like
 more information on defining custom `initial_values` and `priors`, check
 [`vignette("RSTr-initialvalues")`](../articles/RSTr-initialvalues.md)
 and [`vignette("RSTr-priors")`](../articles/RSTr-priors.md),
-respectively; if you are interested in learning more about how `RSTr`’s
+respectively; if you are interested in learning more about how {RSTr}’s
 models work, read
 [`vignette("RSTr-models")`](../articles/RSTr-models.md).

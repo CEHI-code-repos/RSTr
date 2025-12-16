@@ -4,7 +4,7 @@
 
 `priors` is a `list` specifying the priors for various hyperparameters
 and auxiliary values in the model. By default, all of these values are
-specified according to the literature, but `RSTr` allows the capability
+specified according to the literature, but {RSTr} allows the capability
 of specifying your own priors. If you wish to provide priors, note that
 you don’t have to specify `priors` for *all* parameters if you only want
 to specify some of them - any undefined `priors` will be defined by the
@@ -18,7 +18,7 @@ above names will be ignored.
 
 ## Prior specifications
 
-The models in `RSTr` share many `priors`, but a couple of models have
+The models in {RSTr} share many `priors`, but a couple of models have
 `initial_values` that are unique to them. All potential priors are
 presented here.
 

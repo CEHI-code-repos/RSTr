@@ -3,10 +3,10 @@
 ## Overview
 
 The adjacency structure is a set of instructions that show the spatial
-relationship between each region and informs `RSTr` which counties to
-pull information from when spatially smoothing. In this vignette, we
-will cover the requirements for the `adjacency` object along with
-walking through the setup of the adjacency information.
+relationship between each region and informs RSTr which counties to pull
+information from when spatially smoothing. In this vignette, we will
+cover the requirements for the `adjacency` object along with walking
+through the setup of the adjacency information.
 
 ## Requirements
 
@@ -69,7 +69,7 @@ ma_adj
 
 `ma_adj` tells that there are 14 regions linked in 38 unique ways.
 However, it also notes that there are two regions with no links. Regions
-with no links are problematic for `RSTr` because it has no information
+with no links are problematic for RSTr because it has no information
 with which to spatially smooth, causing the model to crash. Because our
 data is in this incomplete format, we will have to do some investigation
 and fixing to get it ready for use.
@@ -151,7 +151,7 @@ Now if we look at `ma_adj`, the message about no-link regions is gone.
 
 Finally, even though we connected the two island counties to the
 mainland counties of MA, as long as each region has at least one
-neighbor, it is usable within `RSTr`. This means that, theoretically, we
+neighbor, it is usable within RSTr. This means that, theoretically, we
 could have made just Dukes and Nantucket neighbors of each other,
 creating two separate islands with no related neighbors. In this case,
 every region on both islands still has at least one neighbor.
@@ -163,5 +163,5 @@ In this vignette, we used
 to generate our adjacency structure. We then fixed issues with counties
 without neighbors and applied a naming scheme to the adjacency
 information consistent with the `data` object created in section 2. From
-here, the `RSTr` model is ready to be run with our `data` and
-`adjacency` information!
+here, the model is ready to be run with our `data` and `adjacency`
+information!

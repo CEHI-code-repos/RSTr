@@ -8,7 +8,7 @@ functions like [`age_standardize()`](../reference/age_standardize.md),
 [`get_estimates()`](../reference/get_estimates.md). In this vignette, we
 will be working with the functions that underlie these wrappers and
 manually generating our estimates, unlocking the more powerful
-capabilities of `RSTr`.
+capabilities of {RSTr}.
 
 Before we begin, note that the above functions make direct changes to
 our `RSTr` model object. We can manually save our estimates to the model
@@ -23,13 +23,13 @@ To begin, let’s generate samples for a new model:
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 19:12:01
+#> Starting sampler on Batch 1 at Tue Dec 16 20:35:56
 ```
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 19:12:31
+    #> Model finished at Tue Dec 16 20:36:25
 
 ## The `load_samples()` function
 

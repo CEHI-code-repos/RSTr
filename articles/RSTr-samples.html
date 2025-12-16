@@ -93,7 +93,7 @@ functions like <code><a href="../reference/age_standardize.html">age_standardize
 <code><a href="../reference/suppress_estimates.html">suppress_estimates()</a></code>, and <code><a href="../reference/get_estimates.html">get_estimates()</a></code>. In
 this vignette, we will be working with the functions that underlie these
 wrappers and manually generating our estimates, unlocking the more
-powerful capabilities of <code>RSTr</code>.</p>
+powerful capabilities of {RSTr}.</p>
 <p>Before we begin, note that the above functions make direct changes to
 our <code>RSTr</code> model object. We can manually save our estimates
 to the model object, but these estimates will not be automatically
@@ -107,10 +107,10 @@ of the convenience afforded to us by these wrapper functions.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_mst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">mstcar</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, data <span class="op">=</span> <span class="va">miheart</span>, adjacency <span class="op">=</span> <span class="va">miadj</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
 <span><span class="co">#&gt; NAs detected in Y. Events will be imputed for missing values</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Tue Dec 16 19:12:01</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Tue Dec 16 20:35:56</span></span></code></pre></div>
 <p><img src="RSTr-samples_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Tue Dec 16 19:12:31</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Tue Dec 16 20:36:25</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="the-load_samples-function-1">The <code>load_samples()</code> function<a class="anchor" aria-label="anchor" href="#the-load_samples-function-1"></a>

@@ -2,16 +2,16 @@
 
 ## Overview
 
-The `RSTr` package is a tool that provides a host of Bayesian
+The RSTr package is a tool that provides a host of Bayesian
 spatiotemporal models in conjunction with C++ to quickly and easily
 generate spatially-smoothed age-standardized estimates for your spatial
-data. This vignette introduces you to the basics of the `RSTr` package
-and shows you how to apply the basic functions to the included example
-data to get small area estimates.
+data. This vignette introduces you to the basics of the RSTr package and
+shows you how to apply the basic functions to the included example data
+to get small area estimates.
 
 ## Models
 
-The models provided in the `RSTr` package are based on the [Besag, York,
+The models provided in the RSTr package are based on the [Besag, York,
 and Mollié (1991)](https://link.springer.com/article/10.1007/bf00116466)
 Conditional Autoregressive (CAR) model (heretofore referred to as the
 “Univariate CAR” or “UCAR” model), which spatially smooths data by
@@ -32,24 +32,24 @@ complexity, depending on the input data:
 - Multivariate Spatiotemporal CAR (MSTCAR): Spatially smooths across
   geographies, sociodemographic groups, and time periods.
 
-For this vignette, we will demonstrate `RSTr`’s functionality with an
+For this vignette, we will demonstrate {RSTr}’s functionality with an
 MSTCAR model.
 
 ### Enhanced models to prevent over-smoothing
 
 A problem with CAR models pointed out by [Quick, et
 al. (2021)](https://pubmed.ncbi.nlm.nih.gov/33980402/) is that of
-over-smoothing due to the informativeness of the BYM model. The `RSTr`
+over-smoothing due to the informativeness of the BYM model. The RSTr
 package provides enhancements to the UCAR models for both Poisson- and
 binomial-distributed data that prevent over-smoothing by restricting
 model informativeness through the [`eucar()`](../reference/ucar.md)
 function. Enhancements for the MCAR and MSTCAR models are under
-progress, and will be incorporated into the `RSTr` package as they are
+progress, and will be incorporated into the RSTr package as they are
 developed.
 
 ## Datasets
 
-`RSTr` comes with three main datasets: `miheart`, `miadj`, and `mishp`.
+{RSTr} comes with three main datasets: `miheart`, `miadj`, and `mishp`.
 `miheart` and `miadj` are related to the necessary components of our
 models, and `mishp` is a shapefile that helps map your results. To run
 an MSTCAR model, two components are necessary:
@@ -64,7 +64,7 @@ an MSTCAR model, two components are necessary:
   [`vignette("RSTr-event")`](../articles/RSTr-event.md).
 
 - An adjacency structure for your data. This is a `list` that tells
-  `RSTr` which regions are neighbors of one other based on their region
+  {RSTr} which regions are neighbors of one other based on their region
   index (i.e., the order they appear in the dataset). Reference `miadj`
   for an example adjacency structure list. For more information on
   preparing your adjacency data, read
@@ -73,7 +73,7 @@ an MSTCAR model, two components are necessary:
 Some quick notes about data setup:
 
 - Event/population data must be organized in a very specific manner.
-  `RSTr`’s models can accept up to three-dimensional arrays: in the
+  {RSTr}’s models can accept up to three-dimensional arrays: in the
   MSTCAR model, for example, spatial regions must be on the rows,
   socio/demographic groups must be on the columns, and time periods must
   be on the matrix slices. Additionally, your event data’s regions
@@ -84,7 +84,7 @@ Some quick notes about data setup:
 
 ## Functions
 
-`RSTr` comes with a set of functions to generate small area estimates
+{RSTr} comes with a set of functions to generate small area estimates
 from your dataset. Here is a brief overview of the basic functions and
 their purpose:
 
@@ -114,13 +114,13 @@ mod_mst <- mstcar(
   seed = 1234
 )
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 19:12:49
+#> Starting sampler on Batch 1 at Tue Dec 16 20:36:43
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 19:13:18
+    #> Model finished at Tue Dec 16 20:37:12
 
 Here, we use the [`mstcar()`](../reference/ucar.md) function to specify
 our model. [`mstcar()`](../reference/ucar.md) accepts a few different
@@ -154,17 +154,17 @@ on the input data: if something is wrong, warnings and error messages
 will tell you what is wrong and how to fix it. For a list of diagnostic
 errors and what they mean, read `vignette("RSTr-troubleshooting")`.
 
-The `RSTr` package works by generating samples in batches and saving
-them locally inside of the model directory to be retrieved once the
-model is finished running. Generating samples in batches helps
-facilitate the tuning of the underlying MCMC algorithm and helps avoid
-computational burden by only holding a fraction of the total samples in
-memory at any given time. `RSTr` runs 6,000 iterations split into 60
-batches of size 100 each. All batches are thinned for every 10
-iterations by default, as the `lambdas` (a.k.a., the rate estimates)
-tend to exhibit autocorrelation. Moreover, thinning saves space when
-writing samples to the hard drive, as batches from larger models can
-balloon to gigabytes of size before thinning.
+The RSTr package works by generating samples in batches and saving them
+locally inside of the model directory to be retrieved once the model is
+finished running. Generating samples in batches helps facilitate the
+tuning of the underlying MCMC algorithm and helps avoid computational
+burden by only holding a fraction of the total samples in memory at any
+given time. {RSTr} runs 6,000 iterations split into 60 batches of size
+100 each. All batches are thinned for every 10 iterations by default, as
+the `lambdas` (a.k.a., the rate estimates) tend to exhibit
+autocorrelation. Moreover, thinning saves space when writing samples to
+the hard drive, as batches from larger models can balloon to gigabytes
+of size before thinning.
 
 Console outputs will show the current batch number, the progress within
 that batch, and the elapsed time. The model `Rds` file will be updated
@@ -237,8 +237,8 @@ period columns are also provided.
 
 ### `age_standardize()`
 
-One of the most important features of the `RSTr` package is the ability
-to easily generate age-standardized estimates. Let’s say we want to get
+One of the most important features of the RSTr package is the ability to
+easily generate age-standardized estimates. Let’s say we want to get
 age-standardized estimates for the 35-64 age group; for our model, we
 use the [`age_standardize()`](../reference/age_standardize.md) function,
 then specify the groups of interest, their associated standard
@@ -292,7 +292,7 @@ Should you want to see those instead, you can set the argument
 
 ### `suppress_estimates()`
 
-While the main benefit of `RSTr` is generating reliable estimates from
+While the main benefit of {RSTr} is generating reliable estimates from
 small-population areas, we cannot guarantee that all estimates generated
 by [`mstcar()`](../reference/ucar.md) will be reliable. Therefore, it is
 prudent to suppress estimates that are deemed unreliable. For MSTCAR
@@ -386,9 +386,9 @@ ggplot(mishp) +
 
 ![](RSTr_files/figure-html/unnamed-chunk-8-2.png)
 
-This map helps us see how `RSTr` smooths rates. First, notice how the
+This map helps us see how {RSTr} smooths rates. First, notice how the
 range of the two plots are different: the smoothed map has a smaller
-range because `RSTr` stabilizes high and low extreme values which are
+range because {RSTr} stabilizes high and low extreme values which are
 usually caused by low population counts. Also, notice how the
 transitions between high-rate and low-rate regions are more gradual on
 the smoothed map. This is a consequence of using neighboring regions to
@@ -403,7 +403,7 @@ we can see on the smoothed map that the highest rate in the state is in
 the UP. The higher-rate areas on the LP are focused around counties on
 Saginaw Bay in the east, indicating that these areas may require more
 attention than previously thought. These are the kinds of inferences
-that can be made using estimates generated by the `RSTr` package and the
+that can be made using estimates generated by the RSTr package and the
 main motivation for running this spatiotemporal model.
 
 ## Closing Thoughts
@@ -417,7 +417,7 @@ suppressing estimates with the
 [`suppress_estimates()`](../reference/suppress_estimates.md) function,
 and finally making a map with estimates gathered from
 [`get_estimates()`](../reference/get_estimates.md) function. What we’ve
-discussed here is just scratching the surface of the `RSTr` package.
-Other package vignettes will dive deeper into the intricacies of each
+discussed here is just scratching the surface of the RSTr package. Other
+package vignettes will dive deeper into the intricacies of each
 component of the package. All of these things together will ensure you
-get the most out of using `RSTr`.
+get the most out of using {RSTr}.

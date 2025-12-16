@@ -89,11 +89,10 @@
 <h2 id="sec-overview">Overview<a class="anchor" aria-label="anchor" href="#sec-overview"></a>
 </h2>
 <p>The adjacency structure is a set of instructions that show the
-spatial relationship between each region and informs <code>RSTr</code>
-which counties to pull information from when spatially smoothing. In
-this vignette, we will cover the requirements for the
-<code>adjacency</code> object along with walking through the setup of
-the adjacency information.</p>
+spatial relationship between each region and informs RSTr which counties
+to pull information from when spatially smoothing. In this vignette, we
+will cover the requirements for the <code>adjacency</code> object along
+with walking through the setup of the adjacency information.</p>
 </div>
 <div class="section level2">
 <h2 id="requirements">Requirements<a class="anchor" aria-label="anchor" href="#requirements"></a>
@@ -152,11 +151,10 @@ information:</p>
 <span><span class="co">#&gt; 3 disjoint connected subgraphs</span></span></code></pre></div>
 <p><code>ma_adj</code> tells that there are 14 regions linked in 38
 unique ways. However, it also notes that there are two regions with no
-links. Regions with no links are problematic for <code>RSTr</code>
-because it has no information with which to spatially smooth, causing
-the model to crash. Because our data is in this incomplete format, we
-will have to do some investigation and fixing to get it ready for
-use.</p>
+links. Regions with no links are problematic for RSTr because it has no
+information with which to spatially smooth, causing the model to crash.
+Because our data is in this incomplete format, we will have to do some
+investigation and fixing to get it ready for use.</p>
 <p>Let us first look at the dataset to see which counties have no
 neighbors. <code>ma_adj</code> tells us that regions 4 and 10 are our
 regions with no links, but we can also use <code><a href="https://r-spatial.github.io/spdep/reference/card.html" class="external-link">spdep::card()</a></code> to
@@ -218,11 +216,10 @@ neighbors:</p>
 regions is gone.</p>
 <p>Finally, even though we connected the two island counties to the
 mainland counties of MA, as long as each region has at least one
-neighbor, it is usable within <code>RSTr</code>. This means that,
-theoretically, we could have made just Dukes and Nantucket neighbors of
-each other, creating two separate islands with no related neighbors. In
-this case, every region on both islands still has at least one
-neighbor.</p>
+neighbor, it is usable within RSTr. This means that, theoretically, we
+could have made just Dukes and Nantucket neighbors of each other,
+creating two separate islands with no related neighbors. In this case,
+every region on both islands still has at least one neighbor.</p>
 </div>
 <div class="section level2">
 <h2 id="closing-thoughts">Closing Thoughts<a class="anchor" aria-label="anchor" href="#closing-thoughts"></a>
@@ -231,8 +228,8 @@ neighbor.</p>
 our adjacency structure. We then fixed issues with counties without
 neighbors and applied a naming scheme to the adjacency information
 consistent with the <code>data</code> object created in section 2. From
-here, the <code>RSTr</code> model is ready to be run with our
-<code>data</code> and <code>adjacency</code> information!</p>
+here, the model is ready to be run with our <code>data</code> and
+<code>adjacency</code> information!</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

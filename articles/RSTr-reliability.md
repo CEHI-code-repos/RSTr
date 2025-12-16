@@ -2,7 +2,7 @@
 
 ## Overview
 
-Though `RSTr` is designed to stabilize low-population regions, there is
+Though {RSTr} is designed to stabilize low-population regions, there is
 a limit to the amount of information the model can gather, and estimates
 from exceedingly low-population regions may be over-smoothed. To address
 these issues, we can establish criteria that indicate whether our
@@ -33,7 +33,7 @@ bit less favorable: the value doesn’t seem to want to stabilize and
 jumps between values over the course of the model. However, the rate
 itself is naturally high, so the intensity of the fluctuation isn’t
 shocking. Smaller counties like the one shown here demonstrate the
-limits of `RSTr`: while the samples do hover around a single value for
+limits of {RSTr}: while the samples do hover around a single value for
 some iterations, the estimated values we would get for the
 county-group-year on the right will not be as reliable as estimates on
 the left due to the large variability of the samples gathered. Estimates
@@ -48,7 +48,7 @@ Reliability can be easily tested in CAR models using two criteria:
   considered unreliable at that level of credibility. Effectively, this
   means that unreliable estimates have a spread of samples larger than
   the value of the estimate itself; and
-- Population counts: Because of the limitations of `RSTr`’s models to
+- Population counts: Because of the limitations of {RSTr}’s models to
   gather information from low-population areas, estimates from any
   region that fall below a specified threshold will be considered
   unreliable, regardless of relative precision. Use your judgment when
@@ -67,13 +67,13 @@ argument:
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234, perc_ci = 0.95)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 19:11:26
+#> Starting sampler on Batch 1 at Tue Dec 16 20:35:22
 ```
 
 ![](RSTr-reliability_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 19:11:55
+    #> Model finished at Tue Dec 16 20:35:51
 
 Here, we specify `perc_ci = 0.95`, which means our relative precision
 estimates will be based on a 95% credible interval. If we want to
@@ -180,11 +180,11 @@ credible interval of 95% provides a happy medium of these two factors.
 
 In this vignette, we investigated measures of reliability and observed
 how reliability measures change which data are suppressed. This vignette
-concludes the main sections on using the functions in the `RSTr`
-package. After reading these, you should be able to prepare your event
-and adjacency data, configure your model as necessary, age-standardize
+concludes the main sections on using the functions in the RSTr package.
+After reading these, you should be able to prepare your event and
+adjacency data, configure your model as necessary, age-standardize
 estimates, and determine which estimates are reliable. If you are
-interested in more advanced features of the `RSTr` involving sample
+interested in more advanced features of the {RSTr} involving sample
 processing, read
 [`vignette("RSTr-samples")`](../articles/RSTr-samples.md); if you’d like
 more information on defining custom `initial_values` and `priors`, check

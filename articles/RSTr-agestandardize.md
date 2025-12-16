@@ -11,7 +11,7 @@ age-standardize those estimates with
 
 ## The `get_estimates()` function
 
-In the `RSTr` introductory vignette, we generated age-standardized
+In the RSTr introductory vignette, we generated age-standardized
 estimates for `lambda` based on our example Michigan dataset. To extract
 rates from an `RSTr` object, we can simply run
 [`get_estimates()`](../reference/get_estimates.md):
@@ -19,13 +19,13 @@ rates from an `RSTr` object, we can simply run
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 19:10:17
+#> Starting sampler on Batch 1 at Tue Dec 16 20:34:16
 ```
 
 ![](RSTr-agestandardize_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 19:10:47
+    #> Model finished at Tue Dec 16 20:34:45
 
 ``` r
 estimates <- get_estimates(mod_mst, rates_per = 1e5)
@@ -158,6 +158,6 @@ In this vignette, we explored the
 [`get_estimates()`](../reference/get_estimates.md) function and
 investigated age-standardization with the
 [`age_standardize()`](../reference/age_standardize.md) function.
-Age-standardization is one of the most important features of the `RSTr`
+Age-standardization is one of the most important features of the RSTr
 package; using just a few arguments, we can easily generate estimates
 across our population groups.

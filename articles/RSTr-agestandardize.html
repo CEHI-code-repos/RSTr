@@ -97,17 +97,17 @@ age-standardize those estimates with <code><a href="../reference/age_standardize
 <div class="section level2">
 <h2 id="the-get_estimates-function">The <code>get_estimates()</code> function<a class="anchor" aria-label="anchor" href="#the-get_estimates-function"></a>
 </h2>
-<p>In the <code>RSTr</code> introductory vignette, we generated
-age-standardized estimates for <code>lambda</code> based on our example
-Michigan dataset. To extract rates from an <code>RSTr</code> object, we
-can simply run <code><a href="../reference/get_estimates.html">get_estimates()</a></code>:</p>
+<p>In the RSTr introductory vignette, we generated age-standardized
+estimates for <code>lambda</code> based on our example Michigan dataset.
+To extract rates from an <code>RSTr</code> object, we can simply run
+<code><a href="../reference/get_estimates.html">get_estimates()</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_mst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">mstcar</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, data <span class="op">=</span> <span class="va">miheart</span>, adjacency <span class="op">=</span> <span class="va">miadj</span><span class="op">)</span></span>
 <span><span class="co">#&gt; NAs detected in Y. Events will be imputed for missing values</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Tue Dec 16 19:10:17</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Tue Dec 16 20:34:16</span></span></code></pre></div>
 <p><img src="RSTr-agestandardize_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Tue Dec 16 19:10:47</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Tue Dec 16 20:34:45</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span>, rates_per <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></span>
@@ -230,8 +230,8 @@ to see the non-standardized estimates instead, you can set the argument
 <p>In this vignette, we explored the <code><a href="../reference/get_estimates.html">get_estimates()</a></code>
 function and investigated age-standardization with the
 <code><a href="../reference/age_standardize.html">age_standardize()</a></code> function. Age-standardization is one of
-the most important features of the <code>RSTr</code> package; using just
-a few arguments, we can easily generate estimates across our population
+the most important features of the RSTr package; using just a few
+arguments, we can easily generate estimates across our population
 groups.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
