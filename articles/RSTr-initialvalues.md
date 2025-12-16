@@ -4,7 +4,7 @@
 
 `initial_values` is a `list` specifying the starting values for
 parameters in the model. By default, all of these values are specified
-according to the literature, but {RSTr} allows the capability of
+according to the literature, but RSTr allows the capability of
 specifying your own initial values. If you wish to provide initial
 values, note that you don’t have to specify `initial_values` for *all*
 parameters if you only want to specify some of them - any undefined
@@ -19,7 +19,7 @@ above names will be ignored.
 
 ## Initial value specifications
 
-The models in {RSTr} share many `initial_values`, but a couple of models
+The models in RSTr share many `initial_values`, but a couple of models
 have `initial_values` that are unique to them. All potential initial
 values are presented here.
 

@@ -88,12 +88,12 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p>Though {RSTr} is designed to stabilize low-population regions, there
-is a limit to the amount of information the model can gather, and
-estimates from exceedingly low-population regions may be over-smoothed.
-To address these issues, we can establish criteria that indicate whether
-our estimates are reliable enough to display. In this vignette, we will
-take a deep dive into estimate reliability and showcase how we can use
+<p>Though RSTr is designed to stabilize low-population regions, there is
+a limit to the amount of information the model can gather, and estimates
+from exceedingly low-population regions may be over-smoothed. To address
+these issues, we can establish criteria that indicate whether our
+estimates are reliable enough to display. In this vignette, we will take
+a deep dive into estimate reliability and showcase how we can use
 reliability criteria to suppress our estimates with
 <code><a href="../reference/suppress_estimates.html">suppress_estimates()</a></code>.</p>
 <div class="section level3">
@@ -116,7 +116,7 @@ however, is a bit less favorable: the value doesn’t seem to want to
 stabilize and jumps between values over the course of the model.
 However, the rate itself is naturally high, so the intensity of the
 fluctuation isn’t shocking. Smaller counties like the one shown here
-demonstrate the limits of {RSTr}: while the samples do hover around a
+demonstrate the limits of RSTr: while the samples do hover around a
 single value for some iterations, the estimated values we would get for
 the county-group-year on the right will not be as reliable as estimates
 on the left due to the large variability of the samples gathered.
@@ -131,7 +131,7 @@ credible interval. If an estimate’s ratio is less than 1, then that
 estimate is considered unreliable at that level of credibility.
 Effectively, this means that unreliable estimates have a spread of
 samples larger than the value of the estimate itself; and</li>
-<li>Population counts: Because of the limitations of {RSTr}’s models to
+<li>Population counts: Because of the limitations of RSTr’s models to
 gather information from low-population areas, estimates from any region
 that fall below a specified threshold will be considered unreliable,
 regardless of relative precision. Use your judgment when setting this
@@ -149,10 +149,10 @@ argument:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_mst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">mstcar</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, data <span class="op">=</span> <span class="va">miheart</span>, adjacency <span class="op">=</span> <span class="va">miadj</span>, seed <span class="op">=</span> <span class="fl">1234</span>, perc_ci <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
 <span><span class="co">#&gt; NAs detected in Y. Events will be imputed for missing values</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Tue Dec 16 20:35:22</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Tue Dec 16 20:47:31</span></span></code></pre></div>
 <p><img src="RSTr-reliability_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Tue Dec 16 20:35:51</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Tue Dec 16 20:47:59</span></span></code></pre>
 <p>Here, we specify <code>perc_ci = 0.95</code>, which means our
 relative precision estimates will be based on a 95% credible interval.
 If we want to generate our suppressed estimates, we can simply input our
@@ -250,7 +250,7 @@ vignette concludes the main sections on using the functions in the RSTr
 package. After reading these, you should be able to prepare your event
 and adjacency data, configure your model as necessary, age-standardize
 estimates, and determine which estimates are reliable. If you are
-interested in more advanced features of the {RSTr} involving sample
+interested in more advanced features of the RSTr involving sample
 processing, read <code><a href="../articles/RSTr-samples.html">vignette("RSTr-samples")</a></code>; if you’d like
 more information on defining custom <code>initial_values</code> and
 <code>priors</code>, check <code><a href="../articles/RSTr-initialvalues.html">vignette("RSTr-initialvalues")</a></code>

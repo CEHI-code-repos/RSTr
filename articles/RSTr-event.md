@@ -14,8 +14,8 @@ with a `data.frame`.
   counts and for the population counts, respectively;
 
 - `Y` and `n` are intended to be entire-population data. While it is
-  possible to use {RSTr} to analyze survey data or datasets that don’t
-  include all members of a population of interest, {RSTr} does not
+  possible to use RSTr to analyze survey data or datasets that don’t
+  include all members of a population of interest, RSTr does not
   currently allow for the inclusion of survey weights and thus assumes
   that each `Y / n` is an unbiased estimate of the underlying event
   rate;
@@ -49,7 +49,7 @@ with a `data.frame`.
 - Finally, `Y` and `n` must have dimension names associated with them.
   This makes for easy identification of counties, groups, and time
   periods, and is necessary should you want to age-standardize data
-  using {RSTr}’s additional functionality.
+  using RSTr’s additional functionality.
 
 ## Example: CDC WONDER dataset
 
@@ -152,7 +152,7 @@ ma_data <- list(Y = Y, n = n)
 
 Note that you must specify the names of each array element as above, as
 creating a list with just the objects will not name each element, and
-the names `Y` and `n` are necessary for {RSTr} to know how to use the
+the names `Y` and `n` are necessary for RSTr to know how to use the
 data.
 
 If you have multiple types of groups, such as race and sex, it can take
@@ -192,5 +192,5 @@ our event and population counts, remove unnecessary rows using
 [`filter()`](https://rdrr.io/r/stats/filter.html), and construct our
 list using
 [`long_to_list_matrix()`](../reference/long_to_list_matrix.md). Setting
-up the data for {RSTr} can seem daunting at first, but with a few quick
+up the data for RSTr can seem daunting at first, but with a few quick
 tricks in R, it can be easy to have your data organized for analysis.

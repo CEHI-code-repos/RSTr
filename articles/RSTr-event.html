@@ -102,9 +102,9 @@ with a <code>data.frame</code>.</p>
 and <code>n</code> for the event counts and for the population counts,
 respectively;</p></li>
 <li><p><code>Y</code> and <code>n</code> are intended to be
-entire-population data. While it is possible to use {RSTr} to analyze
+entire-population data. While it is possible to use RSTr to analyze
 survey data or datasets that don’t include all members of a population
-of interest, {RSTr} does not currently allow for the inclusion of survey
+of interest, RSTr does not currently allow for the inclusion of survey
 weights and thus assumes that each <code>Y / n</code> is an unbiased
 estimate of the underlying event rate;</p></li>
 <li><p><code>Y</code> and <code>n</code> must contain real numbers.
@@ -133,7 +133,7 @@ of age-race-sex groups;</p></li>
 <li><p>Finally, <code>Y</code> and <code>n</code> must have dimension
 names associated with them. This makes for easy identification of
 counties, groups, and time periods, and is necessary should you want to
-age-standardize data using {RSTr}’s additional functionality.</p></li>
+age-standardize data using RSTr’s additional functionality.</p></li>
 </ul>
 </div>
 <div class="section level2">
@@ -223,7 +223,7 @@ the model:</p>
 <span><span class="va">ma_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Y</span>, n <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span></code></pre></div>
 <p>Note that you must specify the names of each array element as above,
 as creating a list with just the objects will not name each element, and
-the names <code>Y</code> and <code>n</code> are necessary for {RSTr} to
+the names <code>Y</code> and <code>n</code> are necessary for RSTr to
 know how to use the data.</p>
 <p>If you have multiple types of groups, such as race and sex, it can
 take a little finessing to set up your group data, such as creating a
@@ -256,7 +256,7 @@ instead of just for 1979.</p>
 <p>In this vignette, we used data generated from CDC WONDER to construct
 our event and population counts, remove unnecessary rows using
 <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>, and construct our list using
-<code><a href="../reference/long_to_list_matrix.html">long_to_list_matrix()</a></code>. Setting up the data for {RSTr} can
+<code><a href="../reference/long_to_list_matrix.html">long_to_list_matrix()</a></code>. Setting up the data for RSTr can
 seem daunting at first, but with a few quick tricks in R, it can be easy
 to have your data organized for analysis.</p>
 </div>

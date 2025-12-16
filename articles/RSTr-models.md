@@ -8,7 +8,7 @@ update.
 
 ## The UCAR Hierarchical Model
 
-The UCAR model used by {RSTr} is based on the model developed by [Besag,
+The UCAR model used by RSTr is based on the model developed by [Besag,
 York, and Mollié (1991)](https://doi.org/10.1007/BF00116466) with
 modifications using inverse transform sampling for restricted
 informativeness based on [Quick, et
@@ -33,9 +33,8 @@ p(\beta\_{j}) &\propto 1 \\ Z &\sim \text{CAR}(\sigma^2) \\ \sigma^2
 
 ## The MCAR Hierarchical Model
 
-The MCAR model used by {RSTr} is based on the model developed by
-[Gelfand and Vounatsou
-(2003)](https://doi.org/10.1093/biostatistics/4.1.11):
+The MCAR model used by RSTr is based on the model developed by [Gelfand
+and Vounatsou (2003)](https://doi.org/10.1093/biostatistics/4.1.11):
 
 For models using `method = "binomial"`,
 
@@ -57,8 +56,8 @@ j=\\1,...,N\_{is}\\ \\ p(\beta\_{jk}) &\propto 1 \\ Z &\sim
 
 ## The MSTCAR Hierarchical Model
 
-The MSTCAR model used by {RSTr} is based on the model developed by
-[Quick, et al. (2017)](https://doi.org/10.1214/17-AOAS1068):
+The MSTCAR model used by RSTr is based on the model developed by [Quick,
+et al. (2017)](https://doi.org/10.1214/17-AOAS1068):
 
 For models using `method = "binomial"`,
 

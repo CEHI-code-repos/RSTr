@@ -32,7 +32,7 @@ complexity, depending on the input data:
 - Multivariate Spatiotemporal CAR (MSTCAR): Spatially smooths across
   geographies, sociodemographic groups, and time periods.
 
-For this vignette, we will demonstrate {RSTr}’s functionality with an
+For this vignette, we will demonstrate RSTr’s functionality with an
 MSTCAR model.
 
 ### Enhanced models to prevent over-smoothing
@@ -49,7 +49,7 @@ developed.
 
 ## Datasets
 
-{RSTr} comes with three main datasets: `miheart`, `miadj`, and `mishp`.
+RSTr comes with three main datasets: `miheart`, `miadj`, and `mishp`.
 `miheart` and `miadj` are related to the necessary components of our
 models, and `mishp` is a shapefile that helps map your results. To run
 an MSTCAR model, two components are necessary:
@@ -63,18 +63,18 @@ an MSTCAR model, two components are necessary:
   the dataset. For more information on preparing your event data, read
   [`vignette("RSTr-event")`](../articles/RSTr-event.md).
 
-- An adjacency structure for your data. This is a `list` that tells
-  {RSTr} which regions are neighbors of one other based on their region
-  index (i.e., the order they appear in the dataset). Reference `miadj`
-  for an example adjacency structure list. For more information on
-  preparing your adjacency data, read
+- An adjacency structure for your data. This is a `list` that tells RSTr
+  which regions are neighbors of one other based on their region index
+  (i.e., the order they appear in the dataset). Reference `miadj` for an
+  example adjacency structure list. For more information on preparing
+  your adjacency data, read
   [`vignette("RSTr-adjacency")`](../articles/RSTr-adjacency.md).
 
 Some quick notes about data setup:
 
 - Event/population data must be organized in a very specific manner.
-  {RSTr}’s models can accept up to three-dimensional arrays: in the
-  MSTCAR model, for example, spatial regions must be on the rows,
+  RSTr’s models can accept up to three-dimensional arrays: in the MSTCAR
+  model, for example, spatial regions must be on the rows,
   socio/demographic groups must be on the columns, and time periods must
   be on the matrix slices. Additionally, your event data’s regions
   should be listed in the same order in your adjacency structure data.
@@ -84,9 +84,9 @@ Some quick notes about data setup:
 
 ## Functions
 
-{RSTr} comes with a set of functions to generate small area estimates
-from your dataset. Here is a brief overview of the basic functions and
-their purpose:
+RSTr comes with a set of functions to generate small area estimates from
+your dataset. Here is a brief overview of the basic functions and their
+purpose:
 
 - `*car()`: Inputs data and model specifics and creates a local folder
   with all associated files to prepare for sample generation;
@@ -114,13 +114,13 @@ mod_mst <- mstcar(
   seed = 1234
 )
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 20:36:43
+#> Starting sampler on Batch 1 at Tue Dec 16 20:48:48
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 20:37:12
+    #> Model finished at Tue Dec 16 20:49:16
 
 Here, we use the [`mstcar()`](../reference/ucar.md) function to specify
 our model. [`mstcar()`](../reference/ucar.md) accepts a few different
@@ -159,12 +159,12 @@ locally inside of the model directory to be retrieved once the model is
 finished running. Generating samples in batches helps facilitate the
 tuning of the underlying MCMC algorithm and helps avoid computational
 burden by only holding a fraction of the total samples in memory at any
-given time. {RSTr} runs 6,000 iterations split into 60 batches of size
-100 each. All batches are thinned for every 10 iterations by default, as
-the `lambdas` (a.k.a., the rate estimates) tend to exhibit
-autocorrelation. Moreover, thinning saves space when writing samples to
-the hard drive, as batches from larger models can balloon to gigabytes
-of size before thinning.
+given time. RSTr runs 6,000 iterations split into 60 batches of size 100
+each. All batches are thinned for every 10 iterations by default, as the
+`lambdas` (a.k.a., the rate estimates) tend to exhibit autocorrelation.
+Moreover, thinning saves space when writing samples to the hard drive,
+as batches from larger models can balloon to gigabytes of size before
+thinning.
 
 Console outputs will show the current batch number, the progress within
 that batch, and the elapsed time. The model `Rds` file will be updated
@@ -292,7 +292,7 @@ Should you want to see those instead, you can set the argument
 
 ### `suppress_estimates()`
 
-While the main benefit of {RSTr} is generating reliable estimates from
+While the main benefit of RSTr is generating reliable estimates from
 small-population areas, we cannot guarantee that all estimates generated
 by [`mstcar()`](../reference/ucar.md) will be reliable. Therefore, it is
 prudent to suppress estimates that are deemed unreliable. For MSTCAR
@@ -386,9 +386,9 @@ ggplot(mishp) +
 
 ![](RSTr_files/figure-html/unnamed-chunk-8-2.png)
 
-This map helps us see how {RSTr} smooths rates. First, notice how the
+This map helps us see how RSTr smooths rates. First, notice how the
 range of the two plots are different: the smoothed map has a smaller
-range because {RSTr} stabilizes high and low extreme values which are
+range because RSTr stabilizes high and low extreme values which are
 usually caused by low population counts. Also, notice how the
 transitions between high-rate and low-rate regions are more gradual on
 the smoothed map. This is a consequence of using neighboring regions to
@@ -420,4 +420,4 @@ and finally making a map with estimates gathered from
 discussed here is just scratching the surface of the RSTr package. Other
 package vignettes will dive deeper into the intricacies of each
 component of the package. All of these things together will ensure you
-get the most out of using {RSTr}.
+get the most out of using RSTr.

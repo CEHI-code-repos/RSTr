@@ -90,24 +90,24 @@
 </h2>
 <p><code>priors</code> is a <code>list</code> specifying the priors for
 various hyperparameters and auxiliary values in the model. By default,
-all of these values are specified according to the literature, but
-{RSTr} allows the capability of specifying your own priors. If you wish
-to provide priors, note that you don’t have to specify
-<code>priors</code> for <em>all</em> parameters if you only want to
-specify some of them - any undefined <code>priors</code> will be defined
-by the default values. For example, you can specify only the priors for
-<code>lambda_sd</code> and all other values will be generated on their
-own. However, if one value is specified for a certain parameter in
-<code>priors</code>, all values must be specified for that parameter in
-<code>priors</code>: you cannot, for example, define priors for just one
-year of <code>lambda_sd</code>. Finally, any values included in your
+all of these values are specified according to the literature, but RSTr
+allows the capability of specifying your own priors. If you wish to
+provide priors, note that you don’t have to specify <code>priors</code>
+for <em>all</em> parameters if you only want to specify some of them -
+any undefined <code>priors</code> will be defined by the default values.
+For example, you can specify only the priors for <code>lambda_sd</code>
+and all other values will be generated on their own. However, if one
+value is specified for a certain parameter in <code>priors</code>, all
+values must be specified for that parameter in <code>priors</code>: you
+cannot, for example, define priors for just one year of
+<code>lambda_sd</code>. Finally, any values included in your
 <code>priors</code> list that aren’t aligned with the above names will
 be ignored.</p>
 </div>
 <div class="section level2">
 <h2 id="prior-specifications">Prior specifications<a class="anchor" aria-label="anchor" href="#prior-specifications"></a>
 </h2>
-<p>The models in {RSTr} share many <code>priors</code>, but a couple of
+<p>The models in RSTr share many <code>priors</code>, but a couple of
 models have <code>initial_values</code> that are unique to them. All
 potential priors are presented here.</p>
 <div class="section level3">
