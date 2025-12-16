@@ -1,4 +1,4 @@
-# Rate Stabilizing Tool: Gibbs Samplers for Bayesian Spatiotemporal CAR Models
+# Gibbs Samplers for Discrete Bayesian Spatiotemporal Models
 
 Takes Poisson or Binomial discrete spatial data and runs a Gibbs sampler
 for a variety of Spatiotemporal Conditional Autoregressive (CAR) models.
@@ -25,7 +25,7 @@ series of tutorials on basic usage of the RSTr functions.
 
 David DeLara \[aut, cre\] (ORCID:
 \<https://orcid.org/0000-0003-0485-7549\>), Centers for Disease Control
-and Prevention \[aut\] (https://ror.org/042twtr12)
+and Prevention \[aut, cph\] (https://ror.org/042twtr12)
 
 Maintainer: David DeLara \<sfq1@cdc.gov\>
 

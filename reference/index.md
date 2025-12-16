@@ -48,6 +48,5 @@
 
 ## Package details
 
-- [`RSTr-package`](RSTr-package.md) [`RSTr`](RSTr-package.md) : Rate
-  Stabilizing Tool: Gibbs Samplers for Bayesian Spatiotemporal CAR
-  Models
+- [`RSTr-package`](RSTr-package.md) [`RSTr`](RSTr-package.md) : Gibbs
+  Samplers for Discrete Bayesian Spatiotemporal Models
