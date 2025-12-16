@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ## Overview {#sec-overview}
 
-The event and population data are at the core of the BYM-based models used in the `RSTr` package. They work alongside the adjacency information to generate smoothed estimates. In this vignette, we'll discuss requirements for event and population data and walk through an example with a `data.frame`.
+The event and population data are at the core of the BYM-based models used in the RSTr package. They work alongside the adjacency information to generate smoothed estimates. In this vignette, we'll discuss requirements for event and population data and walk through an example with a `data.frame`.
 
 ## Requirements {#sec-requirements}
 ```{r, include = FALSE}
@@ -25,7 +25,7 @@ library(RSTr)
 
 -   Data must be a `list` object with names `Y` and `n` for the event counts and for the population counts, respectively;
 
--   `Y` and `n` are intended to be entire-population data. While it is possible to use `RSTr` to analyze survey data or datasets that don't include all members of a population of interest, `RSTr` does not currently allow for the inclusion of survey weights and thus assumes that each `Y / n` is an unbiased estimate of the underlying event rate;
+-   `Y` and `n` are intended to be entire-population data. While it is possible to use {RSTr} to analyze survey data or datasets that don't include all members of a population of interest, {RSTr} does not currently allow for the inclusion of survey weights and thus assumes that each `Y / n` is an unbiased estimate of the underlying event rate;
 
 -   `Y` and `n` must contain real numbers. Negative and infinite counts are not allowed, but suppressed data containing `NA`'s is acceptable for the `Y` values. Note, however, that `n` must have all population counts;
 
@@ -37,7 +37,7 @@ library(RSTr)
 
 -   Groups of many types are allowed as long as your sociodemographic groups are combined in the appropriate margin. For example, your groups may include just age groups, a mixture of age-sex groups, or even a mix of age-race-sex groups;
 
--   Finally, `Y` and `n` must have dimension names associated with them. This makes for easy identification of counties, groups, and time periods, and is necessary should you want to age-standardize data using `RSTr`'s additional functionality.
+-   Finally, `Y` and `n` must have dimension names associated with them. This makes for easy identification of counties, groups, and time periods, and is necessary should you want to age-standardize data using {RSTr}'s additional functionality.
 
 ## Example: CDC WONDER dataset {#sec-example}
 
@@ -89,7 +89,7 @@ n <- xtabs(Population ~ County.Code + Sex.Code + Year.Code, data = ma_mort)
 ma_data <- list(Y = Y, n = n)
 ```
 
-Note that you must specify the names of each array element as above, as creating a list with just the objects will not name each element, and the names `Y` and `n` are necessary for `RSTr` to know how to use the data.
+Note that you must specify the names of each array element as above, as creating a list with just the objects will not name each element, and the names `Y` and `n` are necessary for {RSTr} to know how to use the data.
 
 If you have multiple types of groups, such as race and sex, it can take a little finessing to set up your group data, such as creating a combined race-sex group variable, but data setup will follow the same principles as above.
 
@@ -113,4 +113,4 @@ ma_data_ucar <- long_to_list_matrix(ma_mort_ucar, Deaths, Population, County.Cod
 
 ## Closing Thoughts
 
-In this vignette, we used data generated from CDC WONDER to construct our event and population counts, remove unnecessary rows using `filter()`, and construct our list using `long_to_list_matrix()`. Setting up the data for `RSTr` can seem daunting at first, but with a few quick tricks in R, it can be easy to have your data organized for analysis.
+In this vignette, we used data generated from CDC WONDER to construct our event and population counts, remove unnecessary rows using `filter()`, and construct our list using `long_to_list_matrix()`. Setting up the data for {RSTr} can seem daunting at first, but with a few quick tricks in R, it can be easy to have your data organized for analysis.

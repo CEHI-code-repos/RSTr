@@ -23,7 +23,7 @@ In the previous vignette, we discussed the model setup process in-depth. But how
 library(RSTr)
 ```
 
-In the `RSTr` introductory vignette, we generated age-standardized estimates for `lambda` based on our example Michigan dataset. To extract rates from an `RSTr` object, we can simply run `get_estimates()`:
+In the RSTr introductory vignette, we generated age-standardized estimates for `lambda` based on our example Michigan dataset. To extract rates from an `RSTr` object, we can simply run `get_estimates()`:
 
 ```{r, results = "hide", fig.keep = "last"}
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
@@ -76,4 +76,4 @@ Now, `get_estimates(mod_mst)` shows the age-standardized estimates as opposed to
 
 ## Final thoughts
 
-In this vignette, we explored the `get_estimates()` function and investigated age-standardization with the `age_standardize()` function. Age-standardization is one of the most important features of the `RSTr` package; using just a few arguments, we can easily generate estimates across our population groups.
+In this vignette, we explored the `get_estimates()` function and investigated age-standardization with the `age_standardize()` function. Age-standardization is one of the most important features of the RSTr package; using just a few arguments, we can easily generate estimates across our population groups.

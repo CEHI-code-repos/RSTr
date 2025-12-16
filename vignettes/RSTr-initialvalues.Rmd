@@ -16,11 +16,11 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-`initial_values` is a `list` specifying the starting values for parameters in the model. By default, all of these values are specified according to the literature, but `RSTr` allows the capability of specifying your own initial values. If you wish to provide initial values, note that you don't have to specify `initial_values` for *all* parameters if you only want to specify some of them - any undefined `initial_values` will be defined by the default values. For example, you can specify only the initial values for `lambda` and all other values will be generated on their own. However, if one value is specified for a certain parameter in `initial_values`, all values must be specified for that parameter in `initial_values`: you cannot, for example, define initial values for just one year of `lambda`. Finally, any values included in your `initial_values` list that aren't aligned with the above names will be ignored.
+`initial_values` is a `list` specifying the starting values for parameters in the model. By default, all of these values are specified according to the literature, but {RSTr} allows the capability of specifying your own initial values. If you wish to provide initial values, note that you don't have to specify `initial_values` for *all* parameters if you only want to specify some of them - any undefined `initial_values` will be defined by the default values. For example, you can specify only the initial values for `lambda` and all other values will be generated on their own. However, if one value is specified for a certain parameter in `initial_values`, all values must be specified for that parameter in `initial_values`: you cannot, for example, define initial values for just one year of `lambda`. Finally, any values included in your `initial_values` list that aren't aligned with the above names will be ignored.
 
 ## Initial value specifications
 
-The models in `RSTr` share many `initial_values`, but a couple of models have `initial_values` that are unique to them. All potential initial values are presented here.
+The models in {RSTr} share many `initial_values`, but a couple of models have `initial_values` that are unique to them. All potential initial values are presented here.
 
 ### Initial values for the MSTCAR model
 

@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-In the first series of vignettes, we worked with high-level wrapper functions like `age_standardize()`, `suppress_estimates()`, and `get_estimates()`. In this vignette, we will be working with the functions that underlie these wrappers and manually generating our estimates, unlocking the more powerful capabilities of `RSTr`.
+In the first series of vignettes, we worked with high-level wrapper functions like `age_standardize()`, `suppress_estimates()`, and `get_estimates()`. In this vignette, we will be working with the functions that underlie these wrappers and manually generating our estimates, unlocking the more powerful capabilities of {RSTr}.
 
 Before we begin, note that the above functions make direct changes to our `RSTr` model object. We can manually save our estimates to the model object, but these estimates will not be automatically added. In exchange for more power with sample processing, we lose some of the convenience afforded to us by these wrapper functions.
 
