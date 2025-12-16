@@ -5,8 +5,6 @@ tune_metropolis_sd <- function(sd, accept) {
   sd
 }
 
-#' Update metropolis SD inside of priors
-#' @noRd
 update_priors_sd <- function(RSTr_obj) {
   UseMethod("update_priors_sd")
 }

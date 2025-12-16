@@ -34,5 +34,3 @@ long_to_list_matrix <- function(table, event, population, region, group = NULL, 
     n = stats::xtabs(formula_population, table)
   )
 }
-
-stats::ts

@@ -44,7 +44,6 @@ age_standardize <- function(RSTr_obj, std_pop, new_name, groups = NULL) {
   RSTr_obj
 }
 
-#' @noRd
 erase_duplicates <- function(arr) {
   arr_groups <- which(!duplicated(dimnames(arr)[[2]], fromLast = TRUE))
   arr[, arr_groups, , drop = FALSE]

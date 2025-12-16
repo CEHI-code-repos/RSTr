@@ -1,5 +1,3 @@
-#' Update current_sample
-#' @noRd
 update_current_sample <- function(RSTr_obj) {
   UseMethod("update_current_sample")
 }
