@@ -20,7 +20,7 @@ The `*car()` functions include checks to ensure that all data is set up in a way
 
 ## Generic errors and warnings
 
-All checks that are run on the data check for general information, such as extraneous list objects which cannot be used by the model. In these cases, {RSTr} will not use these parts of the dataset. It is recommended to remove these datasets from the model to prevent unnecessary clutter.
+All checks that are run on the data check for general information, such as extraneous list objects which cannot be used by the model. In these cases, RSTr will not use these parts of the dataset. It is recommended to remove these datasets from the model to prevent unnecessary clutter.
 
 ## Errors and warnings with list `data`
 
@@ -42,4 +42,4 @@ For troubleshooting inputs with `initial_values` and `priors`, reference `vignet
 
 ## `ignore_checks`
 
-If you have input data that you are certain is correct, yet are receiving error messages anyway, set the `ignore_checks` argument to `TRUE` when setting up your model to skip data checks. This is *not* recommended as it is easy to break {RSTr} when data isn't properly checked, and should only be used as a last resort when using {RSTr}.
+If you have input data that you are certain is correct, yet are receiving error messages anyway, set the `ignore_checks` argument to `TRUE` when setting up your model to skip data checks. This is *not* recommended as it is easy to break RSTr when data isn't properly checked, and should only be used as a last resort when using RSTr.
