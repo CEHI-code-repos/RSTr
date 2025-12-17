@@ -1,9 +1,9 @@
 #' Generate count data for RSTr object
-#' 
+#'
 #' \code{long_to_list_matrix()} converts a long \code{table} featuring event counts across regions and other optional margins into a \code{list} that is readable by \code{*car()}.
-#' 
+#'
 #' \code{long_to_list_matrix()} will sum along any group/time stratifications that aren't specified; for example, if your dataset contains time periods and time is not specified in \code{long_to_list_matrix()}, the output will be a sum of all time periods. Filter data by desired groups and time periods before running \code{long_to_list_matrix()}.
-#' 
+#'
 #' @param table A \code{table} containing event and mortality counts stratified by group/region/time.
 #' @param event The column containing event counts.
 #' @param population The column containing population counts.
@@ -21,7 +21,14 @@
 #' # Generates 1979 data summarized for all sexes
 #' ma_data_u <- long_to_list_matrix(ma_data_79, Deaths, Population, County.Code)
 #' @export
-long_to_list_matrix <- function(table, event, population, region, group = NULL, time = NULL) {
+long_to_list_matrix <- function(
+  table,
+  event,
+  population,
+  region,
+  group = NULL,
+  time = NULL
+) {
   ev <- deparse(substitute(event))
   po <- deparse(substitute(population))
   re <- deparse(substitute(region))

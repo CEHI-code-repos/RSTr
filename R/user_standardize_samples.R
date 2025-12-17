@@ -1,7 +1,7 @@
 #' Age-standardize samples
-#' 
+#'
 #' Age-standardizes samples using a standard population.
-#' 
+#'
 #' @param sample an \code{array} of samples imported with \code{load_samples()}
 #' @param std_pop A vector of standard populations.
 #' @param margin For \code{array}s, The margin on which the groups of interest are stratified.
@@ -25,7 +25,14 @@
 #'   new_name = "35-64"
 #' )
 #' @export
-standardize_samples <- function(sample, std_pop, margin, groups = NULL, bind_new = FALSE, new_name = NULL) {
+standardize_samples <- function(
+  sample,
+  std_pop,
+  margin,
+  groups = NULL,
+  bind_new = FALSE,
+  new_name = NULL
+) {
   mar <- seq_along(dim(sample))[-margin]
   wts <- std_pop / sum(std_pop)
   sub_sample <- sample
@@ -43,7 +50,12 @@ standardize_samples <- function(sample, std_pop, margin, groups = NULL, bind_new
     newnames <- c(dimnames(sample)[[margin]], new_name)
     dimnames(array_new)[[margin]] <- newnames
   } else {
-    array_new <- apply(sweep(sub_sample, margin, wts, "*"), mar, sum, na.rm = TRUE)
+    array_new <- apply(
+      sweep(sub_sample, margin, wts, "*"),
+      mar,
+      sum,
+      na.rm = TRUE
+    )
   }
   array_new
 }

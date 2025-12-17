@@ -65,8 +65,8 @@ update_beta_default <- function(RSTr_obj) {
     invisible(.Call(`_RSTr_update_beta_default`, RSTr_obj))
 }
 
-update_beta_ucar_restricted <- function(RSTr_obj) {
-    invisible(.Call(`_RSTr_update_beta_ucar_restricted`, RSTr_obj))
+update_beta_eucar <- function(RSTr_obj) {
+    invisible(.Call(`_RSTr_update_beta_eucar`, RSTr_obj))
 }
 
 update_beta_mstcar <- function(RSTr_obj) {
@@ -85,16 +85,16 @@ update_sig2_default <- function(RSTr_obj) {
     invisible(.Call(`_RSTr_update_sig2_default`, RSTr_obj))
 }
 
-update_sig2_ucar_restricted <- function(RSTr_obj) {
-    invisible(.Call(`_RSTr_update_sig2_ucar_restricted`, RSTr_obj))
+update_sig2_eucar <- function(RSTr_obj) {
+    invisible(.Call(`_RSTr_update_sig2_eucar`, RSTr_obj))
 }
 
 update_tau2_default <- function(RSTr_obj) {
     invisible(.Call(`_RSTr_update_tau2_default`, RSTr_obj))
 }
 
-update_tau2_ucar_restricted <- function(RSTr_obj) {
-    invisible(.Call(`_RSTr_update_tau2_ucar_restricted`, RSTr_obj))
+update_tau2_eucar <- function(RSTr_obj) {
+    invisible(.Call(`_RSTr_update_tau2_eucar`, RSTr_obj))
 }
 
 update_tau2_mstcar <- function(RSTr_obj) {

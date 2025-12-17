@@ -12,8 +12,11 @@ update_priors_sd <- function(RSTr_obj) {
 #' @export
 update_priors_sd.default <- function(RSTr_obj) {
   priors <- RSTr_obj$priors
-  priors$lambda_sd <- tune_metropolis_sd(priors$lambda_sd, priors$lambda_accept / 100)
-  priors$lambda_accept[] <- 0
+  priors$lambda_sd <- tune_metropolis_sd(
+    priors$lambda_sd,
+    priors$lambda_acpt / 100
+  )
+  priors$lambda_acpt[] <- 0
   RSTr_obj$priors <- priors
   RSTr_obj
 }
@@ -21,10 +24,13 @@ update_priors_sd.default <- function(RSTr_obj) {
 #' @export
 update_priors_sd.mstcar_update_rho <- function(RSTr_obj) {
   priors <- RSTr_obj$priors
-  priors$lambda_sd <- tune_metropolis_sd(priors$lambda_sd, priors$lambda_accept / 100)
-  priors$lambda_accept[] <- 0
-  priors$rho_sd <- tune_metropolis_sd(priors$rho_sd, priors$rho_accept / 100)
-  priors$rho_accept[] <- 0
+  priors$lambda_sd <- tune_metropolis_sd(
+    priors$lambda_sd,
+    priors$lambda_acpt / 100
+  )
+  priors$lambda_acpt[] <- 0
+  priors$rho_sd <- tune_metropolis_sd(priors$rho_sd, priors$rho_acpt / 100)
+  priors$rho_acpt[] <- 0
   RSTr_obj$priors <- priors
   RSTr_obj
 }

@@ -192,13 +192,13 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// update_beta_ucar_restricted
-void update_beta_ucar_restricted(List& RSTr_obj);
-RcppExport SEXP _RSTr_update_beta_ucar_restricted(SEXP RSTr_objSEXP) {
+// update_beta_eucar
+void update_beta_eucar(List& RSTr_obj);
+RcppExport SEXP _RSTr_update_beta_eucar(SEXP RSTr_objSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List& >::type RSTr_obj(RSTr_objSEXP);
-    update_beta_ucar_restricted(RSTr_obj);
+    update_beta_eucar(RSTr_obj);
     return R_NilValue;
 END_RCPP
 }
@@ -242,13 +242,13 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// update_sig2_ucar_restricted
-void update_sig2_ucar_restricted(List& RSTr_obj);
-RcppExport SEXP _RSTr_update_sig2_ucar_restricted(SEXP RSTr_objSEXP) {
+// update_sig2_eucar
+void update_sig2_eucar(List& RSTr_obj);
+RcppExport SEXP _RSTr_update_sig2_eucar(SEXP RSTr_objSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List& >::type RSTr_obj(RSTr_objSEXP);
-    update_sig2_ucar_restricted(RSTr_obj);
+    update_sig2_eucar(RSTr_obj);
     return R_NilValue;
 END_RCPP
 }
@@ -262,13 +262,13 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// update_tau2_ucar_restricted
-void update_tau2_ucar_restricted(List& RSTr_obj);
-RcppExport SEXP _RSTr_update_tau2_ucar_restricted(SEXP RSTr_objSEXP) {
+// update_tau2_eucar
+void update_tau2_eucar(List& RSTr_obj);
+RcppExport SEXP _RSTr_update_tau2_eucar(SEXP RSTr_objSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List& >::type RSTr_obj(RSTr_objSEXP);
-    update_tau2_ucar_restricted(RSTr_obj);
+    update_tau2_eucar(RSTr_obj);
     return R_NilValue;
 END_RCPP
 }
@@ -300,14 +300,14 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RSTr_update_Z_mcar", (DL_FUNC) &_RSTr_update_Z_mcar, 1},
     {"_RSTr_update_Z_mstcar", (DL_FUNC) &_RSTr_update_Z_mstcar, 1},
     {"_RSTr_update_beta_default", (DL_FUNC) &_RSTr_update_beta_default, 1},
-    {"_RSTr_update_beta_ucar_restricted", (DL_FUNC) &_RSTr_update_beta_ucar_restricted, 1},
+    {"_RSTr_update_beta_eucar", (DL_FUNC) &_RSTr_update_beta_eucar, 1},
     {"_RSTr_update_beta_mstcar", (DL_FUNC) &_RSTr_update_beta_mstcar, 1},
     {"_RSTr_update_lambda", (DL_FUNC) &_RSTr_update_lambda, 1},
     {"_RSTr_update_rho", (DL_FUNC) &_RSTr_update_rho, 1},
     {"_RSTr_update_sig2_default", (DL_FUNC) &_RSTr_update_sig2_default, 1},
-    {"_RSTr_update_sig2_ucar_restricted", (DL_FUNC) &_RSTr_update_sig2_ucar_restricted, 1},
+    {"_RSTr_update_sig2_eucar", (DL_FUNC) &_RSTr_update_sig2_eucar, 1},
     {"_RSTr_update_tau2_default", (DL_FUNC) &_RSTr_update_tau2_default, 1},
-    {"_RSTr_update_tau2_ucar_restricted", (DL_FUNC) &_RSTr_update_tau2_ucar_restricted, 1},
+    {"_RSTr_update_tau2_eucar", (DL_FUNC) &_RSTr_update_tau2_eucar, 1},
     {"_RSTr_update_tau2_mstcar", (DL_FUNC) &_RSTr_update_tau2_mstcar, 1},
     {NULL, NULL, 0}
 };

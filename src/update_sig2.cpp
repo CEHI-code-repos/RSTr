@@ -6,47 +6,47 @@ using namespace arma;
 
 //[[Rcpp::export]]
 void update_sig2_default(List& RSTr_obj) {
-  List current_sample = RSTr_obj["current_sample"];
-  mat sig2 = current_sample["sig2"];
-  cube Z = current_sample["Z"];
-  List spatial_data = RSTr_obj["spatial_data"];
-  field<uvec> adjacency = spatial_data["adjacency"];
-  vec num_adj = spatial_data["num_adj"];
-  field<uvec> island_region = spatial_data["island_region"];
+  List sample = RSTr_obj["sample"];
+  mat sig2 = sample["sig2"];
+  cube Z = sample["Z"];
+  List sp_data = RSTr_obj["sp_data"];
+  field<uvec> adjacency = sp_data["adjacency"];
+  vec n_adj = sp_data["n_adj"];
+  field<uvec> isl_region = sp_data["isl_region"];
   List priors = RSTr_obj["priors"];
   double sig_a = priors["sig_a"];
   double sig_b = priors["sig_b"];
-  uword num_region = Z.n_rows;
-  uword num_group = Z.n_cols;
-  uword num_time = Z.n_slices;
-  uword num_island = island_region.n_elem;
-  for (uword grp = 0; grp < num_group; grp++) {
-    for (uword time = 0; time < num_time; time++) {
+  uword n_region = Z.n_rows;
+  uword n_group = Z.n_cols;
+  uword n_time = Z.n_slices;
+  uword n_island = isl_region.n_elem;
+  for (uword grp = 0; grp < n_group; grp++) {
+    for (uword time = 0; time < n_time; time++) {
       double sum_adj = 0;
-      for (uword reg = 0; reg < num_region; reg++) {
+      for (uword reg = 0; reg < n_region; reg++) {
         sum_adj += Z(reg, grp, time) * sum(get_subregs(Z, adjacency(reg), grp, time));
       }
-      double sig_shape = (num_region - num_island) / 2 + sig_a;
-      double sig_scale = 1 / ((sum(pow(get_row(Z, grp, time), 2) % num_adj) - sum_adj) / 2 + sig_b);
+      double sig_shape = (n_region - n_island) / 2 + sig_a;
+      double sig_scale = 1 / ((sum(pow(get_row(Z, grp, time), 2) % n_adj) - sum_adj) / 2 + sig_b);
       sig2(grp, time) = 1 / R::rgamma(sig_shape, sig_scale);
     }
   }
-  current_sample["sig2"] = sig2;
-  RSTr_obj["current_sample"] = current_sample;
+  sample["sig2"] = sig2;
+  RSTr_obj["sample"] = sample;
 }
 
 //[[Rcpp::export]]
-void update_sig2_ucar_restricted(List& RSTr_obj) {
-  List current_sample = RSTr_obj["current_sample"];
-  mat sig2 = current_sample["sig2"];
-  cube Z = current_sample["Z"];
-  cube beta = current_sample["beta"];
-  mat tau2 = current_sample["tau2"];
-  List spatial_data = RSTr_obj["spatial_data"];
-  field<uvec> adjacency = spatial_data["adjacency"];
-  vec num_adj = spatial_data["num_adj"];
-  field<uvec> island_region = spatial_data["island_region"];
-  uvec num_island_region = spatial_data["num_island_region"];
+void update_sig2_eucar(List& RSTr_obj) {
+  List sample = RSTr_obj["sample"];
+  mat sig2 = sample["sig2"];
+  cube Z = sample["Z"];
+  cube beta = sample["beta"];
+  mat tau2 = sample["tau2"];
+  List sp_data = RSTr_obj["sp_data"];
+  field<uvec> adjacency = sp_data["adjacency"];
+  vec n_adj = sp_data["n_adj"];
+  field<uvec> isl_region = sp_data["isl_region"];
+  uvec n_isl_region = sp_data["n_isl_region"];
   List params = RSTr_obj["params"];
   mat A = params["A"];
   double m0 = params["m0"];
@@ -54,21 +54,21 @@ void update_sig2_ucar_restricted(List& RSTr_obj) {
   List priors = RSTr_obj["priors"];
   double sig_a = priors["sig_a"];
   double sig_b = priors["sig_b"];
-  uword num_region = Z.n_rows;
-  uword num_group = Z.n_cols;
-  uword num_time = Z.n_slices;
-  uword num_island = island_region.n_elem;
-  for (uword grp = 0; grp < num_group; grp++) {
-    for (uword time = 0; time < num_time; time++) {
+  uword n_region = Z.n_rows;
+  uword n_group = Z.n_cols;
+  uword n_time = Z.n_slices;
+  uword n_island = isl_region.n_elem;
+  for (uword grp = 0; grp < n_group; grp++) {
+    for (uword time = 0; time < n_time; time++) {
       double sum_adj = 0;
-      for (uword reg = 0; reg < num_region; reg++) {
+      for (uword reg = 0; reg < n_region; reg++) {
         sum_adj += Z(reg, grp, time) * sum(get_subregs(Z, adjacency(reg), grp, time));
       }
-      double sig_shape = (num_region - num_island) / 2 + sig_a;
-      double sig_scale = 1 / ((sum(pow(get_row(Z, grp, time), 2) % num_adj) - sum_adj) / 2 + sig_b);
+      double sig_shape = (n_region - n_island) / 2 + sig_a;
+      double sig_scale = 1 / ((sum(pow(get_row(Z, grp, time), 2) % n_adj) - sum_adj) / 2 + sig_b);
       double sig_thres = 0;
       if (method == "binomial") {
-        double pi = sum(get_row(beta, grp, time) % num_island_region / num_region);
+        double pi = sum(get_row(beta, grp, time) % n_isl_region / n_region);
         pi = exp(pi) / (1 + exp(pi));
         sig_thres = (1 / ((A(grp, time) + pi) * (1 - pi)) - tau2(grp, time) * (1 + 1 / m0)) * m0;
       } else if (method == "poisson") {
@@ -79,6 +79,6 @@ void update_sig2_ucar_restricted(List& RSTr_obj) {
       sig2(grp, time) = 1 / R::qgamma(u, sig_shape, sig_scale, true, false);
     }
   }
-  current_sample["sig2"] = sig2;
-  RSTr_obj["current_sample"] = current_sample;
+  sample["sig2"] = sig2;
+  RSTr_obj["sample"] = sample;
 }

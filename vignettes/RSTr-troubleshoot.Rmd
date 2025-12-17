@@ -30,15 +30,15 @@ All checks that are run on the data check for general information, such as extra
 
 -   `Invalid Y/n values. Check that all Y's/n's are at least 0 and finite`: While `NA` and `NULL` are accepted values in `Y`, both `Y` and `n` must be comprised of positive finite values. Check your data with `summary()` for a quick look at your minimum values.
 
-## Errors and warnings with list `spatial_data`
+## Errors and warnings with list `sp_data`
 
 -   `Adjacency different length than data. Ensure length(adjacency) == dim(Y)[1]`: Adjacency information must be present for all regions. Look at the length of your adjacency information: it should line up with the number of rows in your `Y` and `n` arrays.
 
 -   `Some regions have no neighbors. Ensure all regions have at least one neighbor`: If a region does not have a neighbor, the model will not run. If working with `list` adjacency information, you can first check which regions have no neighbors by running `which(lapply(adjacency, \(x) all(x == 0)))` and then fixing the regions accordingly. For assistance with fixing the adjacency information, read `vignette("RSTr-adjacency")`.
 
-## `initial_values` and `priors`
+## `inits` and `priors`
 
-For troubleshooting inputs with `initial_values` and `priors`, reference `vignette("RSTr-initialvalues")` and `vignette("RSTr-priors")`, respectively.
+For troubleshooting inputs with `inits` and `priors`, reference `vignette("RSTr-initialvalues")` and `vignette("RSTr-priors")`, respectively.
 
 ## `ignore_checks`
 

@@ -1,7 +1,7 @@
 #' Aggregate samples by non-age group
-#' 
+#'
 #' Consolidates a set of samples over non-age groups using a population array to create weighted-average samples.
-#' 
+#'
 #' \code{aggregate_samples()} is only meant for non-age group data, such as spatial regions, time periods, or other sociodemographic groups (race, sex, etc.). If you are interested in consolidating samples by age group, use \code{age_standardize()} instead. Additionally, if you plan on doing age-standardization along with aggregating by other groups, always aggregate groups first before doing age-standardization to ensure that the samples are properly standardized.
 #' @inheritParams standardize_samples
 #' @param pop The population array to be used for weighted averages.
@@ -22,7 +22,14 @@
 #'   new_name = "1979-1981"
 #' )
 #' @export
-aggregate_samples <- function(sample, pop, margin, groups = NULL, bind_new = FALSE, new_name = NULL) {
+aggregate_samples <- function(
+  sample,
+  pop,
+  margin,
+  groups = NULL,
+  bind_new = FALSE,
+  new_name = NULL
+) {
   mar <- seq_along(dim(sample))[-margin]
   pop_arr <- array(pop, dim = c(dim(pop), rev(dim(sample))[1]))
   sub_sample <- sample
@@ -35,14 +42,16 @@ aggregate_samples <- function(sample, pop, margin, groups = NULL, bind_new = FAL
     new_dim <- dim(sample)
     new_dim[margin] <- 1
     agg_sample <- array(
-      apply(sub_sample * sub_pop_arr, mar, sum, na.rm = TRUE) / apply(sub_pop_arr, mar, sum, na.rm = TRUE),
+      apply(sub_sample * sub_pop_arr, mar, sum, na.rm = TRUE) /
+        apply(sub_pop_arr, mar, sum, na.rm = TRUE),
       dim <- new_dim
     )
     array_new <- abind::abind(sample, agg_sample, along = margin)
     newnames <- c(dimnames(sample)[[margin]], new_name)
     dimnames(array_new)[[margin]] <- newnames
   } else {
-    array_new <- apply(sub_sample * sub_pop_arr, mar, sum, na.rm = TRUE) / apply(sub_pop_arr, mar, sum, na.rm = TRUE)
+    array_new <- apply(sub_sample * sub_pop_arr, mar, sum, na.rm = TRUE) /
+      apply(sub_pop_arr, mar, sum, na.rm = TRUE)
   }
   array_new
 }

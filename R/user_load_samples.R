@@ -1,7 +1,7 @@
 #' Load MCMC samples
 #'
 #' \code{load_samples()} gathers samples saved for model \code{RSTr_obj}. By default, loads the rate estimate samples \code{lambda}, but any model parameters can be loaded. Users can also specify a burn-in period.
-#' 
+#'
 #' @param RSTr_obj \code{RSTr} model object to load in samples from.
 #' @param param Which parameter samples to load.
 #' @param burn Number of burn-in samples to discard.
@@ -19,16 +19,33 @@ load_samples <- function(RSTr_obj, param = "lambda", burn = 2000) {
   params <- RSTr_obj$params
   name <- RSTr_obj$params$name
   dir <- RSTr_obj$params$dir
-  mar <- c(lambda = 4, beta = 4, Z = 4, G = 4, Ag = 3, tau2 = 3, sig2 = 3, rho = 2)
-  if (params$model == "mstcar") mar["tau2"] <- 2
+  mar <- c(
+    lambda = 4,
+    beta = 4,
+    Z = 4,
+    G = 4,
+    Ag = 3,
+    tau2 = 3,
+    sig2 = 3,
+    rho = 2
+  )
+  if (params$model == "mstcar") {
+    mar["tau2"] <- 2
+  }
   batch <- which(seq_len(params$batch) * 100 > burn)
-  files <- paste0(dir, "/", name, "/", param, "/", param, "_out_", batch, ".Rds")
+  par_batch <- paste0(param, "_out_", batch, ".Rds")
+  files <- file.path(dir, name, param, par_batch)
   output <- abind::abind(lapply(files, readRDS), along = mar[param])
   dims <- params$dimnames
   its <- seq(burn + 10, max(batch) * 100, by = 10)
   if (param == "beta") {
-    num_island <- readRDS(paste0(dir, name, "/spatial_data.Rds"))$num_island
-    dimnames(output) <- list(island = seq_len(num_island), group = dims[[2]], time = dims[[3]], its = its)
+    n_island <- readRDS(paste0(dir, name, "/sp_data.Rds"))$n_island
+    dimnames(output) <- list(
+      island = seq_len(n_island),
+      group = dims[[2]],
+      time = dims[[3]],
+      its = its
+    )
   } else if (param %in% c("Z", "lambda")) {
     dimnames(output) <- c(dims, list(its = its))
   } else if (param == "rho") {
@@ -42,7 +59,12 @@ load_samples <- function(RSTr_obj, param = "lambda", burn = 2000) {
   } else if (param == "Ag") {
     dimnames(output) <- list(group1 = dims[[2]], group2 = dims[[2]], its = its)
   } else if (param == "G") {
-    dimnames(output) <- list(group1 = dims[[2]], group2 = dims[[2]], time = dims[[3]], its = its)
+    dimnames(output) <- list(
+      group1 = dims[[2]],
+      group2 = dims[[2]],
+      time = dims[[3]],
+      its = its
+    )
   } else if (param == "sig2") {
     dimnames(output) <- list(group = dims[[2]], time = dims[[3]], its = its)
   }

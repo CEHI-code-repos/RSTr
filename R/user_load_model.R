@@ -1,7 +1,7 @@
 #' Load model
-#' 
+#'
 #' \code{load_model()} imports an \code{RSTr} object with name \code{name} in directory \code{dir}.
-#' 
+#'
 #' @param name The name of the model to load.
 #' @param dir The directory in which the model lives.
 #' @returns An \code{RSTr} model object.

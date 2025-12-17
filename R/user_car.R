@@ -1,7 +1,7 @@
 #' Create CAR model
-#' 
+#'
 #' \code{*car()} generates an \code{RSTr} model object, samples, and estimates for either an MSTCAR, MCAR, EUCAR, or UCAR model.
-#' 
+#'
 #' @param name Name of model and corresponding folder.
 #' @param data Dataset including mortality (Y) and population (n) information.
 #' @param adjacency Dataset including adjacency information.
@@ -14,7 +14,7 @@
 #' @param ignore_checks If set to \code{TRUE}, skips model validation.
 #' @param method Run model with either Binomial data or Poisson data.
 #' @param impute_bounds If counts are suppressed for privacy reasons, \code{impute_bounds} is the lower/upper bound of suppression, typically 0 or 1 and 10, respectively.
-#' @param initial_values Optional list of initial conditions for each parameter.
+#' @param inits Optional list of initial conditions for each parameter.
 #' @param priors Optional list of priors for updates.
 #' @param m0 For EUCAR models, baseline neighbor count by region.
 #' @param A For EUCAR models, describes maximum intensity of smoothing between regions.
@@ -49,7 +49,7 @@ ucar <- function(
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
   impute_bounds = NULL,
-  initial_values = NULL,
+  inits = NULL,
   priors = NULL
 ) {
   method <- match.arg(method)
@@ -65,7 +65,7 @@ ucar <- function(
     ignore_checks = ignore_checks,
     method = method,
     impute_bounds = impute_bounds,
-    initial_values = initial_values,
+    inits = inits,
     priors = priors,
     model = "ucar",
     pars = pars,
@@ -93,7 +93,7 @@ eucar <- function(
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
   impute_bounds = NULL,
-  initial_values = NULL,
+  inits = NULL,
   priors = NULL
 ) {
   method <- match.arg(method)
@@ -109,7 +109,7 @@ eucar <- function(
     ignore_checks = ignore_checks,
     method = method,
     impute_bounds = impute_bounds,
-    initial_values = initial_values,
+    inits = inits,
     priors = priors,
     model = "eucar",
     pars = pars,
@@ -137,7 +137,7 @@ mcar <- function(
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
   impute_bounds = NULL,
-  initial_values = NULL,
+  inits = NULL,
   priors = NULL
 ) {
   method <- match.arg(method)
@@ -153,7 +153,7 @@ mcar <- function(
     ignore_checks = ignore_checks,
     method = method,
     impute_bounds = impute_bounds,
-    initial_values = initial_values,
+    inits = inits,
     priors = priors,
     model = "mcar",
     pars = pars
@@ -178,13 +178,15 @@ mstcar <- function(
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
   impute_bounds = NULL,
-  initial_values = NULL,
+  inits = NULL,
   priors = NULL,
   update_rho = FALSE
 ) {
   method <- match.arg(method)
   pars <- c("lambda", "beta", "Z", "G", "Ag", "tau2")
-  if (update_rho) pars <- c(pars, "rho")
+  if (update_rho) {
+    pars <- c(pars, "rho")
+  }
   RSTr_obj <- initialize_model(
     name = name,
     data = data,
@@ -196,7 +198,7 @@ mstcar <- function(
     ignore_checks = ignore_checks,
     method = method,
     impute_bounds = impute_bounds,
-    initial_values = initial_values,
+    inits = inits,
     priors = priors,
     model = "mstcar",
     pars = pars,
@@ -217,7 +219,7 @@ initialize_model <- function(
   ignore_checks = FALSE,
   method = "binomial",
   impute_bounds = NULL,
-  initial_values = NULL,
+  inits = NULL,
   priors = NULL,
   model = c("mstcar", "ucar", "mcar"),
   pars,
@@ -226,13 +228,32 @@ initialize_model <- function(
   m0 = NULL,
   update_rho = NULL
 ) {
-  RSTr_obj <- create_new_model(model, data, restricted, update_rho)
-  RSTr_obj$params <- get_params(RSTr_obj$data, seed, method, model, name, dir, perc_ci, restricted, A, m0, update_rho, impute_bounds)
-  RSTr_obj$spatial_data <- get_spatial_data(adjacency)
+  RSTr_obj <- new_model(model, data, restricted, update_rho)
+  RSTr_obj$params <- get_params(
+    RSTr_obj$data,
+    seed,
+    method,
+    model,
+    name,
+    dir,
+    perc_ci,
+    restricted,
+    A,
+    m0,
+    update_rho,
+    impute_bounds
+  )
+  RSTr_obj$sp_data <- get_sp_data(adjacency)
   RSTr_obj <- get_priors(RSTr_obj, priors)
-  RSTr_obj$initial_values <- get_initial_values(RSTr_obj, initial_values, method)
-  RSTr_obj$current_sample <- RSTr_obj$initial_values
-  if (!ignore_checks) validate_model(RSTr_obj)
+  RSTr_obj$inits <- get_inits(
+    RSTr_obj,
+    inits,
+    method
+  )
+  RSTr_obj$sample <- RSTr_obj$inits
+  if (!ignore_checks) {
+    validate_model(RSTr_obj)
+  }
   create_model_directory(name, dir, pars)
   save_model(RSTr_obj)
   RSTr_obj

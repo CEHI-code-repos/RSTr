@@ -1,5 +1,5 @@
 impute_missing_data <- function(RSTr_obj) {
-  lambda <- RSTr_obj$current_sample$lambda
+  lambda <- RSTr_obj$sample$lambda
   params <- RSTr_obj$params
   method <- params$method
   miss <- params$miss

@@ -1,7 +1,7 @@
 #' Update model
-#' 
+#'
 #' \code{update_model()} generates additional samples for model \code{RSTr_obj}.
-#' 
+#'
 #' @param RSTr_obj The \code{RSTr} model object to generate samples for.
 #' @param iterations Number of iterations to run.
 #' @param show_plots If set to \code{FALSE}, hides traceplots.
@@ -16,7 +16,12 @@
 #' unlink(paste0(tempdir(), "\\test"), recursive = TRUE)
 #' }
 #' @export
-update_model <- function(RSTr_obj, iterations = 6000, show_plots = TRUE, verbose = TRUE) {
+update_model <- function(
+  RSTr_obj,
+  iterations = 6000,
+  show_plots = TRUE,
+  verbose = TRUE
+) {
   RSTr_obj <- run_sampler(RSTr_obj, iterations, show_plots, verbose)
   if (verbose) {
     if (RSTr_obj$params$age_standardized) {
@@ -33,19 +38,26 @@ update_model <- function(RSTr_obj, iterations = 6000, show_plots = TRUE, verbose
     old_class <- class(RSTr_obj)
     RSTr_obj <- RSTr_obj[-grep(".*_as", names(RSTr_obj))]
     class(RSTr_obj) <- old_class
-    for (agegroup in RSTr_obj$age_metadata$names) {
-      RSTr_obj <- age_standardize(RSTr_obj, RSTr_obj$age_metadata$std_pop[[agegroup]], agegroup, RSTr_obj$age_metadata$groups[[agegroup]])
+    for (age in RSTr_obj$as_data$names) {
+      RSTr_obj <- age_standardize(
+        RSTr_obj,
+        RSTr_obj$as_data$std_pop[[age]],
+        age,
+        RSTr_obj$as_data$groups[[age]]
+      )
     }
     if (RSTr_obj$params$suppressed) {
-      RSTr_obj <- suppress_estimates(RSTr_obj, RSTr_obj$params$suppress_threshold)
+      RSTr_obj <- suppress_estimates(RSTr_obj, RSTr_obj$params$supp_thres)
     }
   } else if (RSTr_obj$params$suppressed) {
     old_class <- class(RSTr_obj)
     RSTr_obj <- RSTr_obj[-grep(".*_suppressed", names(RSTr_obj))]
     class(RSTr_obj) <- old_class
-    RSTr_obj <- suppress_estimates(RSTr_obj, RSTr_obj$params$suppress_threshold)
+    RSTr_obj <- suppress_estimates(RSTr_obj, RSTr_obj$params$supp_thres)
   }
   save_model(RSTr_obj)
-  if (verbose) message("Model finished at ", format(Sys.time(), "%a %b %d %X"))
+  if (verbose) {
+    message("Model finished at ", format(Sys.time(), "%a %b %d %X"))
+  }
   RSTr_obj
 }

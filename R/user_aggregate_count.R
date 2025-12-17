@@ -1,7 +1,7 @@
 #' Aggregate count arrays
-#' 
+#'
 #' Sums counts over event/population arrays. Useful when manually generating group-aggregated/age-standardized estimates and a population threshold is needed for suppression.
-#' 
+#'
 #' @inheritParams standardize_samples
 #' @param count The \code{array} to aggregate.
 #' @returns An \code{array} of aggregated count data.
@@ -14,7 +14,13 @@
 #' # bind aggregated pop from all years to population data
 #' pop_agg <- aggregate_count(miheart$n, margin_time, bind_new = TRUE, new_name = "1979-1988")
 #' @export
-aggregate_count <- function(count, margin, groups = NULL, bind_new = FALSE, new_name = NULL) {
+aggregate_count <- function(
+  count,
+  margin,
+  groups = NULL,
+  bind_new = FALSE,
+  new_name = NULL
+) {
   mar <- seq_along(dim(count))[-margin]
   sub_count <- count
   if (!is.null(groups)) {

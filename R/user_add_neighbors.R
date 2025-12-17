@@ -25,18 +25,22 @@
 add_neighbors <- function(adjacency, neighs) {
   if (is.character(neighs)) {
     if (!all(neighs %in% names(adjacency))) {
-      stop("Not all `neighs` match names in `adjacency`. Check `neighs %in% names(adjacency)` for FALSE values.")
+      stop(
+        "Not all `neighs` match names in `adjacency`. Check `neighs %in% names(adjacency)` for FALSE values."
+      )
     }
     neighs <- match(neighs, names(adjacency))
   }
   if (any(neighs < 1 | neighs > length(adjacency))) {
-    stop("Not all indices in `neigh` are within `adjacency`. check `neighs %in% seq_along(adjacency)` for FALSE values.")
+    stop(
+      "Not all indices in `neigh` are within `adjacency`. check `neighs %in% seq_along(adjacency)` for FALSE values."
+    )
   }
   adjacency <- as_nb(adjacency)
   adjacency_card <- spdep::card(adjacency)
   for (neighbor in neighs) {
     if (adjacency_card[neighbor] == 0) {
-       adjacency[[neighbor]] <- integer(length = 0)     
+      adjacency[[neighbor]] <- integer(length = 0)
     }
     adjacency[[neighbor]] <- union(adjacency[[neighbor]], neighs[-neighbor])
   }

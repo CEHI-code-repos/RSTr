@@ -20,7 +20,7 @@ ucar(
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
   impute_bounds = NULL,
-  initial_values = NULL,
+  inits = NULL,
   priors = NULL
 )
 
@@ -39,7 +39,7 @@ eucar(
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
   impute_bounds = NULL,
-  initial_values = NULL,
+  inits = NULL,
   priors = NULL
 )
 
@@ -56,7 +56,7 @@ mcar(
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
   impute_bounds = NULL,
-  initial_values = NULL,
+  inits = NULL,
   priors = NULL
 )
 
@@ -73,7 +73,7 @@ mstcar(
   ignore_checks = FALSE,
   method = c("binomial", "poisson"),
   impute_bounds = NULL,
-  initial_values = NULL,
+  inits = NULL,
   priors = NULL,
   update_rho = FALSE
 )
@@ -103,7 +103,7 @@ mstcar(
 
 \item{impute_bounds}{If counts are suppressed for privacy reasons, \code{impute_bounds} is the lower/upper bound of suppression, typically 0 or 1 and 10, respectively.}
 
-\item{initial_values}{Optional list of initial conditions for each parameter.}
+\item{inits}{Optional list of initial conditions for each parameter.}
 
 \item{priors}{Optional list of priors for updates.}
 

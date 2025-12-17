@@ -1,94 +1,102 @@
-check_initial_values <- function(RSTr_obj) {
-  UseMethod("check_initial_values")
+check_inits <- function(RSTr_obj) {
+  UseMethod("check_inits")
 }
 
 #' @export
-check_initial_values.ucar <- function(RSTr_obj) {
+check_inits.ucar <- function(RSTr_obj) {
   Y <- RSTr_obj$data$Y
   method <- RSTr_obj$params$method
-  num_group <- dim(Y)[[2]]
-  num_time <- dim(Y)[[3]]
-  num_island <- RSTr_obj$spatial_data$num_island
+  n_group <- dim(Y)[[2]]
+  n_time <- dim(Y)[[3]]
+  n_island <- RSTr_obj$sp_data$n_island
   chk <- c("beta", "tau2", "lambda", "Z", "sig2")
-  check_missing_initial_values(RSTr_obj, chk)
+  check_missing_inits(RSTr_obj, chk)
   # Check for warnings
-  check_unused_initial_values(RSTr_obj, chk)
+  check_unused_inits(RSTr_obj, chk)
   # Check for errors
   c(
-    check_beta(RSTr_obj$initial_values$beta, num_island, num_group, num_time),
-    check_lambda(RSTr_obj$initial_values$lambda, Y, method),
-    check_sig2(RSTr_obj$initial_values$sig2),
-    check_tau2(RSTr_obj$initial_values$tau2),
-    check_Z(RSTr_obj$initial_values$Z, Y)
+    check_beta(RSTr_obj$inits$beta, n_island, n_group, n_time),
+    check_lambda(RSTr_obj$inits$lambda, Y, method),
+    check_sig2(RSTr_obj$inits$sig2),
+    check_tau2(RSTr_obj$inits$tau2),
+    check_Z(RSTr_obj$inits$Z, Y)
   )
 }
 
 #' @export
-check_initial_values.mcar <- function(RSTr_obj) {
+check_inits.mcar <- function(RSTr_obj) {
   Y <- RSTr_obj$data$Y
   method <- RSTr_obj$params$method
-  num_group <- dim(Y)[[2]]
-  num_time <- dim(Y)[[3]]
-  num_island <- RSTr_obj$spatial_data$num_island
+  n_group <- dim(Y)[[2]]
+  n_time <- dim(Y)[[3]]
+  n_island <- RSTr_obj$sp_data$n_island
   chk <- c("beta", "tau2", "lambda", "Z", "G")
-  check_missing_initial_values(RSTr_obj, chk)
+  check_missing_inits(RSTr_obj, chk)
   # Check for warnings
-  check_unused_initial_values(RSTr_obj, chk)
+  check_unused_inits(RSTr_obj, chk)
 
   # Check for errors
   c(
-    check_beta(RSTr_obj$initial_values$beta, num_island, num_group, num_time),
-    check_lambda(RSTr_obj$initial_values$lambda, Y, method),
-    check_G(RSTr_obj$initial_values$G),
-    check_tau2(RSTr_obj$initial_values$tau2),
-    check_Z(RSTr_obj$initial_values$Z, Y)
+    check_beta(RSTr_obj$inits$beta, n_island, n_group, n_time),
+    check_lambda(RSTr_obj$inits$lambda, Y, method),
+    check_G(RSTr_obj$inits$G),
+    check_tau2(RSTr_obj$inits$tau2),
+    check_Z(RSTr_obj$inits$Z, Y)
   )
 }
 
 #' @export
-check_initial_values.mstcar <- function(RSTr_obj) {
+check_inits.mstcar <- function(RSTr_obj) {
   Y <- RSTr_obj$data$Y
   method <- RSTr_obj$params$method
-  num_group <- dim(Y)[[2]]
-  num_time <- dim(Y)[[3]]
-  num_island <- RSTr_obj$spatial_data$num_island
+  n_group <- dim(Y)[[2]]
+  n_time <- dim(Y)[[3]]
+  n_island <- RSTr_obj$sp_data$n_island
   chk <- c("beta", "tau2", "lambda", "Z", "G", "rho", "Ag")
-  check_missing_initial_values(RSTr_obj, chk)
+  check_missing_inits(RSTr_obj, chk)
   # Check for warnings
-  check_unused_initial_values(RSTr_obj, chk)
+  check_unused_inits(RSTr_obj, chk)
   # Check for errors
   c(
-    check_beta(RSTr_obj$initial_values$beta, num_island, num_group, num_time),
-    check_lambda(RSTr_obj$initial_values$lambda, Y, method),
-    check_G(RSTr_obj$initial_values$G),
-    check_rho(RSTr_obj$initial_values$rho),
-    check_tau2(RSTr_obj$initial_values$tau2),
-    check_Z(RSTr_obj$initial_values$Z, Y),
-    check_Ag(RSTr_obj$initial_values$Ag)
+    check_beta(RSTr_obj$inits$beta, n_island, n_group, n_time),
+    check_lambda(RSTr_obj$inits$lambda, Y, method),
+    check_G(RSTr_obj$inits$G),
+    check_rho(RSTr_obj$inits$rho),
+    check_tau2(RSTr_obj$inits$tau2),
+    check_Z(RSTr_obj$inits$Z, Y),
+    check_Ag(RSTr_obj$inits$Ag)
   )
 }
 
-check_missing_initial_values <- function(RSTr_obj, chk) {
-  miss <- sapply(seq_along(chk), \(x) !any(names(RSTr_obj$initial_values) == chk[x]))
+check_missing_inits <- function(RSTr_obj, chk) {
+  miss <- sapply(seq_along(chk), \(x) {
+    !any(names(RSTr_obj$inits) == chk[x])
+  })
   if (sum(miss)) {
-    stop("One or more objects missing from list 'initial_values': ", toString(chk[miss]))
+    stop(
+      "One or more objects missing from list 'inits': ",
+      toString(chk[miss])
+    )
   }
 }
 
-check_unused_initial_values <- function(RSTr_obj, chk) {
-  chk_elem <- which(!(names(RSTr_obj$initial_values) %in% chk))
+check_unused_inits <- function(RSTr_obj, chk) {
+  chk_elem <- which(!(names(RSTr_obj$inits) %in% chk))
   if (length(chk_elem)) {
-    warning(paste("Unused elements of list 'initial_values':", toString(names(RSTr_obj$initial_values)[chk_elem])))
+    warning(paste(
+      "Unused elements of list 'inits':",
+      toString(names(RSTr_obj$inits)[chk_elem])
+    ))
   }
 }
 
-check_beta <- function(beta, num_island, num_group, num_time) {
+check_beta <- function(beta, n_island, n_group, n_time) {
   err_messages <- character()
-  # dimensions don't match num_island num_group num_time
-  if (!all(dim(beta) == c(num_island, num_group, num_time))) {
+  # dimensions don't match n_island n_group n_time
+  if (!all(dim(beta) == c(n_island, n_group, n_time))) {
     err_messages <- c(
       err_messages,
-      "beta is not an num_island x num_group x num_time array. Ensure dim(beta) == num_island x num_group x num_time or use default value"
+      "beta is not an n_island x n_group x n_time array. Ensure dim(beta) == n_island x n_group x n_time or use default value"
     )
   }
   # values are infinite
@@ -103,11 +111,11 @@ check_beta <- function(beta, num_island, num_group, num_time) {
 
 check_lambda <- function(lambda, Y, method) {
   err_messages <- character()
-  # dimensions don't match num_region num_group num_time
+  # dimensions don't match n_region n_group n_time
   if (!all(dim(lambda) == dim(Y))) {
     err_messages <- c(
       err_messages,
-      "lambda is not a num_region x num_group x num_time array. Ensure dim(lambda) == dim(Y) or use default value"
+      "lambda is not a n_region x n_group x n_time array. Ensure dim(lambda) == dim(Y) or use default value"
     )
   }
   # values are unsupported
@@ -125,7 +133,7 @@ check_lambda <- function(lambda, Y, method) {
 check_sig2 <- function(sig2) {
   # is non-positive or infinite
   if (any(sig2 <= 0) || !all(is.finite(sig2))) {
-      "sig2 contains non-positive or infinite values. Ensure all sig2 > 0 and not infinite or use default value"
+    "sig2 contains non-positive or infinite values. Ensure all sig2 > 0 and not infinite or use default value"
   }
 }
 
@@ -138,11 +146,11 @@ check_tau2 <- function(tau2) {
 
 check_Z <- function(Z, Y) {
   err_messages <- character()
-  # dimensions don't match num_region num_group num_time
+  # dimensions don't match n_region n_group n_time
   if (!all(dim(Z) == dim(Y))) {
     err_messages <- c(
       err_messages,
-      "Z is not an num_region x num_group x num_time array. Ensure dim(Z) == dim(Y) or use default value"
+      "Z is not an n_region x n_group x n_time array. Ensure dim(Z) == dim(Y) or use default value"
     )
   }
   # values are infinite

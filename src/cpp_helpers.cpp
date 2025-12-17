@@ -20,7 +20,8 @@ arma::mat get_subgrp(const arma::cube& arr, const arma::uvec& ind, const arma::u
   return arr_sub;
 }
 
-arma::vec get_subregs(const arma::cube& arr, const arma::uvec& ind, const arma::uword& grp, const arma::uword& time) {
+arma::vec get_subregs(const arma::cube& arr, const arma::uvec& ind, 
+                      const arma::uword& grp, const arma::uword& time) {
   arma::vec arr_sub(arr.n_rows);
   for (uword reg = 0; reg < ind.n_elem; reg++) {
     arr_sub(reg) = arr(ind[reg], grp, time);
@@ -28,7 +29,8 @@ arma::vec get_subregs(const arma::cube& arr, const arma::uvec& ind, const arma::
   return arr_sub;
 }
 
-arma::vec get_grp(const arma::cube& arr, const arma::uword& reg, const arma::uword& time) {
+arma::vec get_grp(const arma::cube& arr, const arma::uword& reg,
+                  const arma::uword& time) {
   arma::vec arr_sub(arr.n_cols);
   for (uword grp = 0; grp < arr.n_cols; grp++) {
     arr_sub(grp) = arr(reg, grp, time);
@@ -36,7 +38,8 @@ arma::vec get_grp(const arma::cube& arr, const arma::uword& reg, const arma::uwo
   return arr_sub;
 }
 
-arma::vec get_row(const arma::cube& arr, const arma::uword& grp, const arma::uword& time) {
+arma::vec get_row(const arma::cube& arr, const arma::uword& grp,
+                  const arma::uword& time) {
   arma::vec arr_sub(arr.n_rows);
   for (uword row = 0; row < arr.n_rows; row++) {
     arr_sub(row) = arr(row, grp, time);
@@ -45,13 +48,13 @@ arma::vec get_row(const arma::cube& arr, const arma::uword& grp, const arma::uwo
 }
 
 arma::field<arma::mat> Sig_eta_i(const arma::cube& G, const arma::vec& rho) {
-  uword num_group = rho.n_elem;
-  uword num_time  = G.n_slices;
-  mat r  = repmat(rho, 1, num_group);
+  uword n_group = rho.n_elem;
+  uword n_time  = G.n_slices;
+  mat r  = repmat(rho, 1, n_group);
   mat sr = sqrt(1 - pow(r, 2));
-  field<mat> Sei(num_time, num_time);
+  field<mat> Sei(n_time, n_time);
   Sei(0, 0) = inv(G.slice(0));
-  for (uword time = 1; time < num_time; time++) {
+  for (uword time = 1; time < n_time; time++) {
     mat Gi = inv(G.slice(time));
     Sei(time - 1, time - 1) += ( r / sr).t() % (r / sr % Gi);
     Sei(time    , time    )  = ( 1 / sr).t() % (1 / sr % Gi);
@@ -62,13 +65,13 @@ arma::field<arma::mat> Sig_eta_i(const arma::cube& G, const arma::vec& rho) {
 }
 
 arma::field<arma::mat> Sig_eta(const arma::field<arma::mat>& Sein) {
-  uword num_time = Sein.n_rows;
-  field<mat> SeSein(num_time, num_time);
-  for (uword time = 0; time < num_time; time++) {
+  uword n_time = Sein.n_rows;
+  field<mat> SeSein(n_time, n_time);
+  for (uword time = 0; time < n_time; time++) {
     if (time > 0) {
       SeSein(time, time - 1) = inv(Sein(time, time)) * Sein(time, time - 1);
     }
-    if (time < num_time - 1) {
+    if (time < n_time - 1) {
       SeSein(time, time + 1) = inv(Sein(time, time)) * Sein(time, time + 1);
     }
   }
