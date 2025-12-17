@@ -6,13 +6,13 @@ using namespace arma;
 
 //[[Rcpp::export]]
 void update_G_default(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   cube G = sample["G"];
   cube Z = sample["Z"];
-  List priors = RSTr_obj["priors"];
+  Rcpp::List priors = RSTr_obj["priors"];
   double G_df = priors["G_df"];
   mat G_scale = priors["G_scale"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   field<uvec> adjacency = sp_data["adjacency"];
   uword n_island = sp_data["n_island"];
   uword n_region = Z.n_rows;
@@ -33,20 +33,20 @@ void update_G_default(List& RSTr_obj) {
 
 //[[Rcpp::export]]
 void update_G_mstcar(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   cube G = sample["G"];
   cube Z = sample["Z"];
   mat Ag = sample["Ag"];
   vec rho = sample["rho"];
-  List priors = RSTr_obj["priors"];
+  Rcpp::List priors = RSTr_obj["priors"];
   double G_df = priors["G_df"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   field<uvec> adjacency = sp_data["adjacency"];
   uword n_island = sp_data["n_island"];
   uword n_region = Z.n_rows;
   uword n_group = Z.n_cols;
   uword n_time = Z.n_slices;
-  cube Ags(n_group, n_group, n_time, fill::zeros);
+  cube Ags(n_group, n_group, n_time, arma::fill::zeros);
   Ags.each_slice() += Ag;
   vec r  = rho;
   vec sr = sqrt(1 - pow(rho, 2));

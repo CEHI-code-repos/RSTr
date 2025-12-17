@@ -1,61 +1,47 @@
 #include <RcppArmadillo.h>
-using namespace Rcpp;
-using namespace arma;
+using arma::vec;
+using arma::mat;
+using arma::cube;
+using arma::uword;
+using arma::field;
+using arma::uvec;
 
-arma::cube get_regs(const arma::cube& arr, const arma::uvec& ind) {
-  arma::cube arr_sub(ind.n_elem, arr.n_cols, arr.n_slices);
-  for (uword reg = 0; reg < ind.n_elem; reg++) {
-    arr_sub.row(reg) = arr.row(ind[reg]);
+cube get_regs(const cube& arr, const uvec& ind) {
+  cube out(ind.n_elem, arr.n_cols, arr.n_slices);
+  for (uword reg = 0; reg < arr.n_slices; ++reg) {
+    out.slice(reg) = arr.slice(reg).rows(ind);
   }
-  return arr_sub;
+  return out;
 }
 
-arma::mat get_subgrp(const arma::cube& arr, const arma::uvec& ind, const arma::uword& time) {
-  arma::mat arr_sub(ind.n_elem, arr.n_cols);
-  for (uword reg = 0; reg < ind.n_elem; reg++) {
-    for (uword grp = 0; grp < arr.n_cols; grp++) {
-      arr_sub(reg, grp) = arr(ind[reg], grp, time);
-    }
-  }
-  return arr_sub;
+mat get_subgrp(const cube& arr, const uvec& ind, const uword& time) {
+  return arr.slice(time).rows(ind);
 }
 
-arma::vec get_subregs(const arma::cube& arr, const arma::uvec& ind, 
-                      const arma::uword& grp, const arma::uword& time) {
-  arma::vec arr_sub(arr.n_rows);
-  for (uword reg = 0; reg < ind.n_elem; reg++) {
-    arr_sub(reg) = arr(ind[reg], grp, time);
-  }
-  return arr_sub;
+vec get_subregs(const cube& arr, const uvec& ind, const uword& grp,
+                const uword& time) {
+  vec col = arr.slice(time).col(grp);
+  return col.elem(ind);
 }
 
-arma::vec get_grp(const arma::cube& arr, const arma::uword& reg,
-                  const arma::uword& time) {
-  arma::vec arr_sub(arr.n_cols);
-  for (uword grp = 0; grp < arr.n_cols; grp++) {
-    arr_sub(grp) = arr(reg, grp, time);
-  }
-  return arr_sub;
+vec get_grp(const cube& arr, const uword& reg, const uword& time) {
+  return arr.slice(time).row(reg).t();
 }
 
-arma::vec get_row(const arma::cube& arr, const arma::uword& grp,
-                  const arma::uword& time) {
-  arma::vec arr_sub(arr.n_rows);
-  for (uword row = 0; row < arr.n_rows; row++) {
-    arr_sub(row) = arr(row, grp, time);
-  }
-  return arr_sub;
+vec get_row(const cube& arr, const uword& grp,
+                  const uword& time) {
+  return arr.slice(time).col(grp);
 }
 
-arma::field<arma::mat> Sig_eta_i(const arma::cube& G, const arma::vec& rho) {
+field<mat> Sig_eta_i(const cube& G, const vec& rho) {
   uword n_group = rho.n_elem;
   uword n_time  = G.n_slices;
-  mat r  = repmat(rho, 1, n_group);
-  mat sr = sqrt(1 - pow(r, 2));
+  mat r  = arma::repmat(rho, 1, n_group);
+  mat sr = arma::sqrt(1 - pow(r, 2));
   field<mat> Sei(n_time, n_time);
-  Sei(0, 0) = inv(G.slice(0));
+  Sei(0, 0) = arma::inv_sympd(G.slice(0));
   for (uword time = 1; time < n_time; time++) {
-    mat Gi = inv(G.slice(time));
+    mat Gi = arma::inv_sympd(G.slice(time));
     Sei(time - 1, time - 1) += ( r / sr).t() % (r / sr % Gi);
     Sei(time    , time    )  = ( 1 / sr).t() % (1 / sr % Gi);
     Sei(time - 1, time    )  = (-r / sr)     % (1 / sr % Gi).t();
@@ -64,31 +50,31 @@ arma::field<arma::mat> Sig_eta_i(const arma::cube& G, const arma::vec& rho) {
   return Sei;
 }
 
-arma::field<arma::mat> Sig_eta(const arma::field<arma::mat>& Sein) {
+field<mat> Sig_eta(const field<mat>& Sein) {
   uword n_time = Sein.n_rows;
-  field<mat> SeSein(n_time, n_time);
+  field<mat> Se(n_time, n_time);
   for (uword time = 0; time < n_time; time++) {
     if (time > 0) {
-      SeSein(time, time - 1) = inv(Sein(time, time)) * Sein(time, time - 1);
+      Se(time, time - 1) = arma::inv_sympd(Sein(time, time)) * Sein(time, time - 1);
     }
     if (time < n_time - 1) {
-      SeSein(time, time + 1) = inv(Sein(time, time)) * Sein(time, time + 1);
+      Se(time, time + 1) = arma::inv_sympd(Sein(time, time)) * Sein(time, time + 1);
     }
   }
-  return SeSein;
+  return Se;
 }
 
-arma::mat cpp_rmvnorm(const arma::vec& mean, const arma::mat& covar) {
+mat cpp_rmvnorm(const vec& mean, const mat& covar) {
   vec out  = mean;
   vec rand = Rcpp::rnorm(covar.n_cols, 0, 1);
   out += covar * rand;
   return out;
 }
 
-arma::mat geteig(const arma::mat& covar) {
+mat geteig(const mat& covar) {
   vec eigval;
   mat eigvec;
-  eig_sym(eigval, eigvec, covar);
-  eigvec *= eigvec.t() % repmat(sqrt(eigval), 1, covar.n_cols);
+  arma::eig_sym(eigval, eigvec, covar);
+  eigvec *= eigvec.t() % arma::repmat(sqrt(eigval), 1, covar.n_cols);
   return eigvec.t();
 }

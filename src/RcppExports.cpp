@@ -123,11 +123,11 @@ BEGIN_RCPP
 END_RCPP
 }
 // update_Ag
-void update_Ag(List& RSTr_obj);
+void update_Ag(Rcpp::List& RSTr_obj);
 RcppExport SEXP _RSTr_update_Ag(SEXP RSTr_objSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List& >::type RSTr_obj(RSTr_objSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List& >::type RSTr_obj(RSTr_objSEXP);
     update_Ag(RSTr_obj);
     return R_NilValue;
 END_RCPP

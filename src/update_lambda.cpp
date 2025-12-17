@@ -6,20 +6,20 @@ using namespace arma;
 
 //[[Rcpp::export]]
 void update_lambda(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   cube lambda = sample["lambda"];
   cube Z = sample["Z"];
   cube beta = sample["beta"];
   mat tau2 = sample["tau2"];
-  List data = RSTr_obj["data"];
+  Rcpp::List data = RSTr_obj["data"];
   cube Y = data["Y"];
   cube n = data["n"];
-  List priors = RSTr_obj["priors"];
+  Rcpp::List priors = RSTr_obj["priors"];
   cube lambda_sd = priors["lambda_sd"];
   cube lambda_acpt = priors["lambda_acpt"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   uvec isl_id = sp_data["isl_id"];
-  List params = RSTr_obj["params"];
+  Rcpp::List params = RSTr_obj["params"];
   String method = params["method"];
   uword n_region = Z.n_rows;
   uword n_group = Z.n_cols;

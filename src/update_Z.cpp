@@ -6,13 +6,13 @@ using namespace arma;
 
 //[[Rcpp::export]]
 void update_Z_ucar(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   cube Z = sample["Z"];
   mat sig2 = sample["sig2"];
   cube lambda = sample["lambda"];
   cube beta = sample["beta"];
   mat tau2 = sample["tau2"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   field<uvec> adjacency = sp_data["adjacency"];
   vec n_adj = sp_data["n_adj"];
   field<uvec> isl_region = sp_data["isl_region"];
@@ -43,13 +43,13 @@ void update_Z_ucar(List& RSTr_obj) {
 
 //[[Rcpp::export]]
 void update_Z_mcar(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   cube Z = sample["Z"];
   cube G = sample["G"];
   cube lambda = sample["lambda"];
   cube beta = sample["beta"];
   mat tau2 = sample["tau2"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   field<uvec> adjacency = sp_data["adjacency"];
   vec n_adj = sp_data["n_adj"];
   field<uvec> isl_region = sp_data["isl_region"];
@@ -66,7 +66,7 @@ void update_Z_mcar(List& RSTr_obj) {
     vec taut = tau2.col(time);
     mat Gt = G.slice(time);
     for (uword count : unique_n_adj) {
-      Z_cov(count, time) = inv(diagmat(1 / taut) + count * Gt);
+      Z_cov(count, time) = inv_sympd(diagmat(1 / taut) + count * Gt);
       Z_coveig(count, time) = geteig(Z_cov(count, time));
     }
     for (uword reg = 0; reg < n_region; reg++) {
@@ -89,14 +89,14 @@ void update_Z_mcar(List& RSTr_obj) {
 
 //[[Rcpp::export]]
 void update_Z_mstcar(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   cube Z = sample["Z"];
   cube G = sample["G"];
   cube lambda = sample["lambda"];
   cube beta = sample["beta"];
   vec rho = sample["rho"];
   vec tau2 = sample["tau2"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   field<uvec> adjacency = sp_data["adjacency"];
   vec n_adj = sp_data["n_adj"];
   field<uvec> isl_region = sp_data["isl_region"];
@@ -112,7 +112,7 @@ void update_Z_mstcar(List& RSTr_obj) {
   vec unique_n_adj = unique(n_adj);
   for (uword time = 0; time < n_time; time++) {
     for (uword count : unique_n_adj) {
-      Z_cov   (time, count) = inv(diagmat(1 / tau2) + count * Sein(time, time));
+      Z_cov   (time, count) = inv_sympd(diagmat(1 / tau2) + count * Sein(time, time));
       Z_coveig(time, count) = geteig(Z_cov(time, count));
     }
   }

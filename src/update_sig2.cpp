@@ -6,14 +6,14 @@ using namespace arma;
 
 //[[Rcpp::export]]
 void update_sig2_default(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   mat sig2 = sample["sig2"];
   cube Z = sample["Z"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   field<uvec> adjacency = sp_data["adjacency"];
   vec n_adj = sp_data["n_adj"];
   field<uvec> isl_region = sp_data["isl_region"];
-  List priors = RSTr_obj["priors"];
+  Rcpp::List priors = RSTr_obj["priors"];
   double sig_a = priors["sig_a"];
   double sig_b = priors["sig_b"];
   uword n_region = Z.n_rows;
@@ -37,21 +37,21 @@ void update_sig2_default(List& RSTr_obj) {
 
 //[[Rcpp::export]]
 void update_sig2_eucar(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   mat sig2 = sample["sig2"];
   cube Z = sample["Z"];
   cube beta = sample["beta"];
   mat tau2 = sample["tau2"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   field<uvec> adjacency = sp_data["adjacency"];
   vec n_adj = sp_data["n_adj"];
   field<uvec> isl_region = sp_data["isl_region"];
   uvec n_isl_region = sp_data["n_isl_region"];
-  List params = RSTr_obj["params"];
+  Rcpp::List params = RSTr_obj["params"];
   mat A = params["A"];
   double m0 = params["m0"];
   String method = params["method"];
-  List priors = RSTr_obj["priors"];
+  Rcpp::List priors = RSTr_obj["priors"];
   double sig_a = priors["sig_a"];
   double sig_b = priors["sig_b"];
   uword n_region = Z.n_rows;

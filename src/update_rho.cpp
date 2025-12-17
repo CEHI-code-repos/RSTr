@@ -6,16 +6,16 @@ using namespace arma;
 
 //[[Rcpp::export]]
 void update_rho(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   vec rho = sample["rho"];
   cube G = sample["G"];
   cube Z = sample["Z"];
-  List priors = RSTr_obj["priors"];
+  Rcpp::List priors = RSTr_obj["priors"];
   double rho_a = priors["rho_a"];
   double rho_b = priors["rho_b"];
   vec rho_sd = priors["rho_sd"];
   vec rho_acpt = priors["rho_acpt"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   field<uvec> adjacency = sp_data["adjacency"];
   uword n_island = sp_data["n_island"];
   uword n_region = Z.n_rows;
@@ -25,10 +25,10 @@ void update_rho(List& RSTr_obj) {
   vec rand = Rcpp::rnorm(n_group, 0, 1);
   vec expit_rho = rand % rho_sd + logit_rho;
   vec rho_star_0 = 1 / (1 + exp(-expit_rho));
-  vec r(n_group, fill::zeros);
-  vec ra(n_group, fill::zeros);
-  vec rb(n_group, fill::zeros);
-  vec rc(n_group, fill::zeros);
+  vec r(n_group, arma::fill::zeros);
+  vec ra(n_group, arma::fill::zeros);
+  vec rb(n_group, arma::fill::zeros);
+  vec rc(n_group, arma::fill::zeros);
   cube Zm(n_region, n_group, n_time);
   for (uword reg = 0; reg < n_region; reg++) {
     Zm.row(reg) = Z.row(reg) - mean(get_regs(Z, adjacency[reg]), 0);

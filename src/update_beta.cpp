@@ -6,12 +6,12 @@ using namespace arma;
 
 //[[Rcpp::export]]
 void update_beta_default(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   cube beta = sample["beta"];
   cube lambda = sample["lambda"];
   cube Z = sample["Z"];
   mat tau2 = sample["tau2"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   field<uvec> isl_region = sp_data["isl_region"];
   uword n_group = Z.n_cols;
   uword n_time = Z.n_slices;
@@ -21,7 +21,7 @@ void update_beta_default(List& RSTr_obj) {
     mat var_beta = sqrt(tau2 / n_isl_region);
     mat mean_beta = mean(get_regs(lambda, isl_region[isl]) - get_regs(Z, isl_region[isl]), 0);
     if (n_time == 1) mean_beta = mean_beta.t();
-    beta.row(isl) = mat(n_group, n_time, fill::randn) % var_beta + mean_beta;
+    beta.row(isl) = mat(n_group, n_time, arma::fill::randn) % var_beta + mean_beta;
   }
   sample["beta"] = beta;
   RSTr_obj["sample"] = sample;
@@ -29,15 +29,15 @@ void update_beta_default(List& RSTr_obj) {
 
 //[[Rcpp::export]]
 void update_beta_eucar(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   cube beta = sample["beta"];
   cube lambda = sample["lambda"];
   cube Z = sample["Z"];
   mat tau2 = sample["tau2"];
   mat sig2 = sample["sig2"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   field<uvec> isl_region = sp_data["isl_region"];
-  List params = RSTr_obj["params"];
+  Rcpp::List params = RSTr_obj["params"];
   mat A = params["A"];
   double m0 = params["m0"];
   String method = params["method"];
@@ -75,12 +75,12 @@ void update_beta_eucar(List& RSTr_obj) {
 
 //[[Rcpp::export]]
 void update_beta_mstcar(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   cube beta = sample["beta"];
   cube lambda = sample["lambda"];
   cube Z = sample["Z"];
   vec tau2 = sample["tau2"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   field<uvec> isl_region = sp_data["isl_region"];
   uword n_group = Z.n_cols;
   uword n_time = Z.n_slices;
@@ -90,7 +90,7 @@ void update_beta_mstcar(List& RSTr_obj) {
     mat var_beta = repmat(sqrt(tau2 / n_isl_region), 1, n_time);
     mat mean_beta = mean(get_regs(lambda, isl_region[isl]) - get_regs(Z, isl_region[isl]), 0);
     if (n_time == 1) mean_beta = mean_beta.t();
-    beta.row(isl) = mat(n_group, n_time, fill::randn) % var_beta + mean_beta;
+    beta.row(isl) = mat(n_group, n_time, arma::fill::randn) % var_beta + mean_beta;
   }
   sample["beta"] = beta;
   RSTr_obj["sample"] = sample;

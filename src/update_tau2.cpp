@@ -6,14 +6,14 @@ using namespace arma;
 
 //[[Rcpp::export]]
 void update_tau2_default(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   mat tau2 = sample["tau2"];
   cube lambda = sample["lambda"];
   cube beta = sample["beta"];
   cube Z = sample["Z"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   uvec isl_id = sp_data["isl_id"];
-  List priors = RSTr_obj["priors"];
+  Rcpp::List priors = RSTr_obj["priors"];
   double tau_a = priors["tau_a"];
   double tau_b = priors["tau_b"];
   uword n_region = Z.n_rows;
@@ -33,20 +33,20 @@ void update_tau2_default(List& RSTr_obj) {
 
 //[[Rcpp::export]]
 void update_tau2_eucar(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   mat tau2 = sample["tau2"];
   cube lambda = sample["lambda"];
   cube beta = sample["beta"];
   cube Z = sample["Z"];
   mat sig2 = sample["sig2"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   uvec n_isl_region = sp_data["n_isl_region"];
   uvec isl_id = sp_data["isl_id"];
-  List params = RSTr_obj["params"];
+  Rcpp::List params = RSTr_obj["params"];
   mat A = params["A"];
   double m0 = params["m0"];
   String method = params["method"];
-  List priors = RSTr_obj["priors"];
+  Rcpp::List priors = RSTr_obj["priors"];
   double tau_a = priors["tau_a"];
   double tau_b = priors["tau_b"];
   uword n_region = Z.n_rows;
@@ -76,15 +76,15 @@ void update_tau2_eucar(List& RSTr_obj) {
 
 //[[Rcpp::export]]
 void update_tau2_mstcar(List& RSTr_obj) {
-  List sample = RSTr_obj["sample"];
+  Rcpp::List sample = RSTr_obj["sample"];
   mat tau2 = sample["tau2"];
   cube lambda = sample["lambda"];
   cube beta = sample["beta"];
   cube Z = sample["Z"];
-  List priors = RSTr_obj["priors"];
+  Rcpp::List priors = RSTr_obj["priors"];
   double tau_a = priors["tau_a"];
   double tau_b = priors["tau_b"];
-  List sp_data = RSTr_obj["sp_data"];
+  Rcpp::List sp_data = RSTr_obj["sp_data"];
   uvec isl_id = sp_data["isl_id"];
   uword n_region = Z.n_rows;
   uword n_group  = Z.n_cols;
