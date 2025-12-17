@@ -149,10 +149,10 @@ argument:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_mst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">mstcar</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, data <span class="op">=</span> <span class="va">miheart</span>, adjacency <span class="op">=</span> <span class="va">miadj</span>, seed <span class="op">=</span> <span class="fl">1234</span>, perc_ci <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
 <span><span class="co">#&gt; NAs detected in Y. Events will be imputed for missing values</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Tue Dec 16 20:47:31</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Wed Dec 17 20:56:09</span></span></code></pre></div>
 <p><img src="RSTr-reliability_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Tue Dec 16 20:47:59</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Wed Dec 17 20:56:38</span></span></code></pre>
 <p>Here, we specify <code>perc_ci = 0.95</code>, which means our
 relative precision estimates will be based on a 95% credible interval.
 If we want to generate our suppressed estimates, we can simply input our
@@ -176,20 +176,20 @@ with small population counts:</p>
 <span><span class="co">#&gt; Number of reliable rates: 3605 / 4980 (72.4%)</span></span>
 <span><span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   county group year  medians medians_suppressed credible_interval_lower</span></span>
-<span><span class="co">#&gt; 1  26001 35-44 1979 41.98634                 NA                29.79605</span></span>
-<span><span class="co">#&gt; 2  26003 35-44 1979 51.00178                 NA                37.86450</span></span>
-<span><span class="co">#&gt; 3  26005 35-44 1979 23.76272           23.76272                16.29719</span></span>
-<span><span class="co">#&gt; 4  26007 35-44 1979 33.61042           33.61042                24.15788</span></span>
-<span><span class="co">#&gt; 5  26009 35-44 1979 29.70584           29.70584                22.96456</span></span>
-<span><span class="co">#&gt; 6  26011 35-44 1979 38.17390                 NA                24.89862</span></span>
-<span><span class="co">#&gt;   credible_interval_upper relative_precision events population</span></span>
-<span><span class="co">#&gt; 1                56.17417          1.5917110      1        964</span></span>
-<span><span class="co">#&gt; 2               119.49006          0.6248260      1       1011</span></span>
-<span><span class="co">#&gt; 3                33.58478          1.3745537      0       9110</span></span>
-<span><span class="co">#&gt; 4                45.44376          1.5790005      0       3650</span></span>
-<span><span class="co">#&gt; 5                39.27994          1.8207267      0       1763</span></span>
-<span><span class="co">#&gt; 6                65.99126          0.9289717      0       1470</span></span></code></pre></div>
+<span><span class="co">#&gt;   county group year  medians medians_suppressed ci_lower  ci_upper  rel_prec</span></span>
+<span><span class="co">#&gt; 1  26001 35-44 1979 41.98634                 NA 29.79605  56.17417 1.5917110</span></span>
+<span><span class="co">#&gt; 2  26003 35-44 1979 51.00178                 NA 37.86450 119.49006 0.6248260</span></span>
+<span><span class="co">#&gt; 3  26005 35-44 1979 23.76272           23.76272 16.29719  33.58478 1.3745537</span></span>
+<span><span class="co">#&gt; 4  26007 35-44 1979 33.61042           33.61042 24.15788  45.44376 1.5790005</span></span>
+<span><span class="co">#&gt; 5  26009 35-44 1979 29.70584           29.70584 22.96456  39.27994 1.8207267</span></span>
+<span><span class="co">#&gt; 6  26011 35-44 1979 38.17390                 NA 24.89862  65.99126 0.9289717</span></span>
+<span><span class="co">#&gt;   events population</span></span>
+<span><span class="co">#&gt; 1      1        964</span></span>
+<span><span class="co">#&gt; 2      1       1011</span></span>
+<span><span class="co">#&gt; 3      0       9110</span></span>
+<span><span class="co">#&gt; 4      0       3650</span></span>
+<span><span class="co">#&gt; 5      0       1763</span></span>
+<span><span class="co">#&gt; 6      0       1470</span></span></code></pre></div>
 <p>By default, <code><a href="../reference/suppress_estimates.html">suppress_estimates()</a></code> will suppress based on
 population counts, but by specifying <code>type = "event"</code>, you
 can alternatively use an event count threshold. This is helpful when
@@ -252,7 +252,7 @@ and adjacency data, configure your model as necessary, age-standardize
 estimates, and determine which estimates are reliable. If you are
 interested in more advanced features of the RSTr involving sample
 processing, read <code><a href="../articles/RSTr-samples.html">vignette("RSTr-samples")</a></code>; if you’d like
-more information on defining custom <code>initial_values</code> and
+more information on defining custom <code>inits</code> and
 <code>priors</code>, check <code><a href="../articles/RSTr-initialvalues.html">vignette("RSTr-initialvalues")</a></code>
 and <code><a href="../articles/RSTr-priors.html">vignette("RSTr-priors")</a></code>, respectively; if you are
 interested in learning more about how the MSTCAR model itself works,

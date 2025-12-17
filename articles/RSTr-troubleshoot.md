@@ -37,7 +37,7 @@ to remove these datasets from the model to prevent unnecessary clutter.
   [`summary()`](https://rdrr.io/r/base/summary.html) for a quick look at
   your minimum values.
 
-## Errors and warnings with list `spatial_data`
+## Errors and warnings with list `sp_data`
 
 - `Adjacency different length than data. Ensure length(adjacency) == dim(Y)[1]`:
   Adjacency information must be present for all regions. Look at the
@@ -53,9 +53,9 @@ to remove these datasets from the model to prevent unnecessary clutter.
   information, read
   [`vignette("RSTr-adjacency")`](../articles/RSTr-adjacency.md).
 
-## `initial_values` and `priors`
+## `inits` and `priors`
 
-For troubleshooting inputs with `initial_values` and `priors`, reference
+For troubleshooting inputs with `inits` and `priors`, reference
 [`vignette("RSTr-initialvalues")`](../articles/RSTr-initialvalues.md)
 and [`vignette("RSTr-priors")`](../articles/RSTr-priors.md),
 respectively.

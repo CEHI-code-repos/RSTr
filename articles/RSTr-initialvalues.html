@@ -88,28 +88,28 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><code>initial_values</code> is a <code>list</code> specifying the
-starting values for parameters in the model. By default, all of these
-values are specified according to the literature, but RSTr allows the
-capability of specifying your own initial values. If you wish to provide
-initial values, note that you don’t have to specify
-<code>initial_values</code> for <em>all</em> parameters if you only want
-to specify some of them - any undefined <code>initial_values</code> will
-be defined by the default values. For example, you can specify only the
-initial values for <code>lambda</code> and all other values will be
-generated on their own. However, if one value is specified for a certain
-parameter in <code>initial_values</code>, all values must be specified
-for that parameter in <code>initial_values</code>: you cannot, for
-example, define initial values for just one year of <code>lambda</code>.
-Finally, any values included in your <code>initial_values</code> list
-that aren’t aligned with the above names will be ignored.</p>
+<p><code>inits</code> is a <code>list</code> specifying the starting
+values for parameters in the model. By default, all of these values are
+specified according to the literature, but RSTr allows the capability of
+specifying your own initial values. If you wish to provide initial
+values, note that you don’t have to specify <code>inits</code> for
+<em>all</em> parameters if you only want to specify some of them - any
+undefined <code>inits</code> will be defined by the default values. For
+example, you can specify only the initial values for <code>lambda</code>
+and all other values will be generated on their own. However, if one
+value is specified for a certain parameter in <code>inits</code>, all
+values must be specified for that parameter in <code>inits</code>: you
+cannot, for example, define initial values for just one year of
+<code>lambda</code>. Finally, any values included in your
+<code>inits</code> list that aren’t aligned with the above names will be
+ignored.</p>
 </div>
 <div class="section level2">
 <h2 id="initial-value-specifications">Initial value specifications<a class="anchor" aria-label="anchor" href="#initial-value-specifications"></a>
 </h2>
-<p>The models in RSTr share many <code>initial_values</code>, but a
-couple of models have <code>initial_values</code> that are unique to
-them. All potential initial values are presented here.</p>
+<p>The models in RSTr share many <code>inits</code>, but a couple of
+models have <code>inits</code> that are unique to them. All potential
+initial values are presented here.</p>
 <div class="section level3">
 <h3 id="initial-values-for-the-mstcar-model">Initial values for the MSTCAR model<a class="anchor" aria-label="anchor" href="#initial-values-for-the-mstcar-model"></a>
 </h3>
@@ -118,10 +118,9 @@ model:</p>
 <ul>
 <li><p><code>lambda</code>: The estimated spatially smoothed rate for
 each region-group-time. <code>lambda</code> is an <code>array</code> of
-real numbers with dimensions
-<code>num_region x num_group x num_time</code>. Has support
-<code>(0, 1)</code> for <code>method = "binomial"</code> and support
-<code>(0, Inf)</code> for `method = “poisson”;</p></li>
+real numbers with dimensions <code>n_region x n_group x n_time</code>.
+Has support <code>(0, 1)</code> for <code>method = "binomial"</code> and
+support <code>(0, Inf)</code> for `method = “poisson”;</p></li>
 <li><p><code>beta</code>: The mean rate for each island-group-year on a
 logit- or log-transformed scale. Islands are sets of regions that
 exclusively share adjacency information. For example, in
@@ -130,41 +129,41 @@ the Upper Peninsula and the Lower Peninsula. These islands don’t touch
 each other, and thus don’t share adjacency information. Each island is
 assigned its own <code>beta</code>. <code>beta</code> is an
 <code>array</code> of real numbers with dimensions
-<code>num_island x num_group x num_time</code>;</p></li>
+<code>n_island x n_group x n_time</code>;</p></li>
 <li><p><code>Z</code>: The spatiotemporal random effects. These are the
 parameters that induce smoothing on the counties, with the intensity of
 the smoothing dictated by the spatial covariance matrices
 <code>G</code>. <code>Z</code> is an <code>array</code> of real numbers
-with dimensions <code>num_region x num_group x num_time</code>;</p></li>
+with dimensions <code>n_region x n_group x n_time</code>;</p></li>
 <li><p><code>G</code>: The spatial covariance matrices. This parameter
 determines the intensity of the spatial smoothing performed by
 <code>Z</code> and represents the strength of the relationship between
 each group in a given time period. <code>G</code> is an
 <code>array</code> of temporally-evolving positive-definite symmetric
 matrices with dimensions
-<code>num_group x num_group x num_time</code>;</p></li>
+<code>n_group x n_group x n_time</code>;</p></li>
 <li><p><code>rho</code>: The temporal correlation. This parameter
 decides the strength of the relationship between values in time period
 <code>t</code> to values in time period <code>t-1</code>. It is a
-<code>matrix</code> of size <code>num_group x 1</code> of real numbers
+<code>matrix</code> of size <code>n_group x 1</code> of real numbers
 with support <code>[0,1]</code>;</p></li>
 <li><p><code>tau2</code>: The non-spatial variance. This parameter picks
 up any variance in values of <code>lambda</code> for each group. It is a
-<code>matrix</code> of size <code>num_group x 1</code> of positive real
+<code>matrix</code> of size <code>n_group x 1</code> of positive real
 numbers; and</p></li>
 <li><p><code>Ag</code>: The general spatial covariance matrix. This
 parameter describes the overall relationship between groups across the
 entire model and is used in the prior distribution for the matrices in
 <code>G</code>. <code>Ag</code> is a positive-definite symmetric matrix
-with dimensions <code>num_group x num_group</code>.</p></li>
+with dimensions <code>n_group x n_group</code>.</p></li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="initial-values-for-the-mcar-model">Initial values for the MCAR model<a class="anchor" aria-label="anchor" href="#initial-values-for-the-mcar-model"></a>
 </h3>
 <p>The MCAR model utilizes a majority of the initial values of the
-MSTCAR model. However, MCAR does not include <code>initial_values</code>
-for <code>rho</code> or <code>Ag</code>. Note that specification for the
+MSTCAR model. However, MCAR does not include <code>inits</code> for
+<code>rho</code> or <code>Ag</code>. Note that specification for the
 MCAR model is slightly different than that of the MSTCAR model. If an
 MCAR model is run with data containing several time periods,
 <code>tau2</code> will require values for every time period along with
@@ -185,7 +184,7 @@ place of <code>G</code> in the MCAR and MSTCAR models:</p>
 <code>sig2</code> represents the spatial variance of a UCAR/EUCAR
 model. This parameter picks up any variance in values of <code>Z</code>
 for each group. It is a <code>matrix</code> of size
-<code>num_group x num_time</code> of positive real numbers.</li>
+<code>n_group x n_time</code> of positive real numbers.</li>
 </ul>
 </div>
 </div>

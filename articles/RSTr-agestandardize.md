@@ -19,31 +19,24 @@ rates from an `RSTr` object, we can simply run
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 20:46:29
+#> Starting sampler on Batch 1 at Wed Dec 17 20:55:02
 ```
 
 ![](RSTr-agestandardize_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 20:46:56
+    #> Model finished at Wed Dec 17 20:55:32
 
 ``` r
 estimates <- get_estimates(mod_mst, rates_per = 1e5)
 head(estimates)
-#>   county group year  medians credible_interval_lower credible_interval_upper
-#> 1  26001 35-44 1979 45.07149                31.48676                59.17320
-#> 2  26003 35-44 1979 56.47176                35.01048                85.83469
-#> 3  26005 35-44 1979 24.35092                17.47599                30.61988
-#> 4  26007 35-44 1979 35.13386                18.28414                48.08389
-#> 5  26009 35-44 1979 34.24613                19.40691                45.97550
-#> 6  26011 35-44 1979 46.13104                28.16870                65.56977
-#>   relative_precision events population
-#> 1           1.627926      1        964
-#> 2           1.111119      1       1011
-#> 3           1.852641      0       9110
-#> 4           1.178999      0       3650
-#> 5           1.288970      0       1763
-#> 6           1.233415      0       1470
+#>   county group year  medians ci_lower ci_upper rel_prec events population
+#> 1  26001 35-44 1979 45.07149 31.48676 59.17320 1.627926      1        964
+#> 2  26003 35-44 1979 56.47176 35.01048 85.83469 1.111119      1       1011
+#> 3  26005 35-44 1979 24.35092 17.47599 30.61988 1.852641      0       9110
+#> 4  26007 35-44 1979 35.13386 18.28414 48.08389 1.178999      0       3650
+#> 5  26009 35-44 1979 34.24613 19.40691 45.97550 1.288970      0       1763
+#> 6  26011 35-44 1979 46.13104 28.16870 65.56977 1.233415      0       1470
 ```
 
 ## The `age_standardization()` function
@@ -131,20 +124,13 @@ mod_mst
 #> Estimates suppressed: No
 mst_estimates_as <- get_estimates(mod_mst)
 head(mst_estimates_as)
-#>   county group year  medians credible_interval_lower credible_interval_upper
-#> 1  26001 35-64 1979 203.3206                157.7320                241.9712
-#> 2  26003 35-64 1979 290.8983                223.9136                384.6817
-#> 3  26005 35-64 1979 124.6186                103.7021                142.7059
-#> 4  26007 35-64 1979 174.7536                138.9969                204.4177
-#> 5  26009 35-64 1979 171.6994                134.1164                209.4447
-#> 6  26011 35-64 1979 223.7704                183.4417                276.1411
-#>   relative_precision events population
-#> 1           2.413612      7       3353
-#> 2           1.809428     12       3105
-#> 3           3.195035     27      23926
-#> 4           2.671222     15      10000
-#> 5           2.279347     11       5152
-#> 6           2.413933      8       4517
+#>   county group year  medians ci_lower ci_upper rel_prec events population
+#> 1  26001 35-64 1979 203.3206 157.7320 241.9712 2.413612      7       3353
+#> 2  26003 35-64 1979 290.8983 223.9136 384.6817 1.809428     12       3105
+#> 3  26005 35-64 1979 124.6186 103.7021 142.7059 3.195035     27      23926
+#> 4  26007 35-64 1979 174.7536 138.9969 204.4177 2.671222     15      10000
+#> 5  26009 35-64 1979 171.6994 134.1164 209.4447 2.279347     11       5152
+#> 6  26011 35-64 1979 223.7704 183.4417 276.1411 2.413933      8       4517
 ```
 
 Now, `get_estimates(mod_mst)` shows the age-standardized estimates as

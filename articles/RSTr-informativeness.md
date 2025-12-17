@@ -29,13 +29,13 @@ running a UCAR model to see the evolution of `Z` over time:
 data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_ucar <- ucar("my_test_model", data_u, miadj, tempdir(), seed = 1234)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 20:47:06
+#> Starting sampler on Batch 1 at Wed Dec 17 20:55:41
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 20:47:12
+    #> Model finished at Wed Dec 17 20:55:48
 
 The magnitude of `sig2` has further implications on the rate estimates
 `lambda`. Smaller `sig2` values mean that the variance between neighbors
@@ -55,9 +55,9 @@ counts to their corresponding relative precisions:
 
 ``` r
 estimates <- get_estimates(mod_ucar)
-estimates_supp <- estimates[estimates$relative_precision > 1 & estimates$events < 10, ]
-plot(estimates$events, estimates$relative_precision, xlab = "Events", ylab = "Relative Precision")
-points(estimates_supp$events, estimates_supp$relative_precision, col = "red")
+estimates_supp <- estimates[estimates$rel_prec > 1 & estimates$events < 10, ]
+plot(estimates$events, estimates$rel_prec, xlab = "Events", ylab = "Relative Precision")
+points(estimates_supp$events, estimates_supp$rel_prec, col = "red")
 abline(h = 1, col = "blue")
 abline(v = 10, col = "blue")
 ```
@@ -123,13 +123,13 @@ function, setting an informativeness ceiling of `A = 6`:
 ``` r
 mod_eucar <- eucar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 20:47:12
+#> Starting sampler on Batch 1 at Wed Dec 17 20:55:48
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 20:47:18
+    #> Model finished at Wed Dec 17 20:55:54
 
 Notice that the traceplots for `tau2` and `sig2` in our enhanced (i.e.,
 restricted) UCAR model have significantly higher values than those in
@@ -139,8 +139,8 @@ compare the two sets of results with another relative precision plot:
 
 ``` r
 estimates_eucar <- get_estimates(mod_eucar)
-plot(estimates_eucar$events, estimates_eucar$relative_precision, xlab = "Events", ylab = "Relative Precision", col = "purple")
-points(estimates$events, estimates$relative_precision)
+plot(estimates_eucar$events, estimates_eucar$rel_prec, xlab = "Events", ylab = "Relative Precision", col = "purple")
+points(estimates$events, estimates$rel_prec)
 abline(h = 1, col = "blue")
 abline(v = 10, col = "blue")
 ```
@@ -212,13 +212,13 @@ data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FA
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_eucar <- eucar("test_eucar", data_u, miadj, tempdir(), seed = 1234, A = A)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 20:47:19
+#> Starting sampler on Batch 1 at Wed Dec 17 20:55:56
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 20:47:26
+    #> Model finished at Wed Dec 17 20:56:03
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
@@ -308,7 +308,7 @@ choose and configure your model as necessary, age-standardize estimates,
 and determine which estimates are reliable. If you are interested in the
 more advanced features of the RSTr involving sample processing, read
 [`vignette("RSTr-samples")`](../articles/RSTr-samples.md); if you’d like
-more information on defining custom `initial_values` and `priors`, check
+more information on defining custom `inits` and `priors`, check
 [`vignette("RSTr-initialvalues")`](../articles/RSTr-initialvalues.md)
 and [`vignette("RSTr-priors")`](../articles/RSTr-priors.md),
 respectively; if you are interested in learning more about how RSTr’s

@@ -19,8 +19,8 @@ above names will be ignored.
 ## Prior specifications
 
 The models in RSTr share many `priors`, but a couple of models have
-`initial_values` that are unique to them. All potential priors are
-presented here.
+`inits` that are unique to them. All potential priors are presented
+here.
 
 ### Priors for the MSTCAR model
 
@@ -30,14 +30,13 @@ The following are all priors used in the MSTCAR model:
   priors used with
   [Wishart-distributed](https://en.wikipedia.org/wiki/Wishart_distribution)
   random variable `Ag`. `Ag_scale` is a positive-definite symmetric
-  matrix and `Ag_df` is a `double` of at least size `num_group`;
+  matrix and `Ag_df` is a `double` of at least size `n_group`;
 
 - `G_scale` and `G_df`: These are the scale and degrees of freedom
   priors used with [Inverse-Wishart
   distributed](https://en.wikipedia.org/wiki/Inverse-Wishart_distribution)
   matrix slices of random variable `G`. `G_scale` is a positive-definite
-  symmetric matrix and `G_df` is a `double` of at least size
-  `num_group`;
+  symmetric matrix and `G_df` is a `double` of at least size `n_group`;
 
 - `tau_a` and `tau_b`: These are the rate and scale priors used with
   [Inverse-Gamma

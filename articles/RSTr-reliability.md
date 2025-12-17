@@ -67,13 +67,13 @@ argument:
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234, perc_ci = 0.95)
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Tue Dec 16 20:47:31
+#> Starting sampler on Batch 1 at Wed Dec 17 20:56:09
 ```
 
 ![](RSTr-reliability_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 16 20:47:59
+    #> Model finished at Wed Dec 17 20:56:38
 
 Here, we specify `perc_ci = 0.95`, which means our relative precision
 estimates will be based on a 95% credible interval. If we want to
@@ -99,20 +99,20 @@ mod_mst
 #> Number of reliable rates: 3605 / 4980 (72.4%)
 estimates <- get_estimates(mod_mst)
 head(estimates)
-#>   county group year  medians medians_suppressed credible_interval_lower
-#> 1  26001 35-44 1979 41.98634                 NA                29.79605
-#> 2  26003 35-44 1979 51.00178                 NA                37.86450
-#> 3  26005 35-44 1979 23.76272           23.76272                16.29719
-#> 4  26007 35-44 1979 33.61042           33.61042                24.15788
-#> 5  26009 35-44 1979 29.70584           29.70584                22.96456
-#> 6  26011 35-44 1979 38.17390                 NA                24.89862
-#>   credible_interval_upper relative_precision events population
-#> 1                56.17417          1.5917110      1        964
-#> 2               119.49006          0.6248260      1       1011
-#> 3                33.58478          1.3745537      0       9110
-#> 4                45.44376          1.5790005      0       3650
-#> 5                39.27994          1.8207267      0       1763
-#> 6                65.99126          0.9289717      0       1470
+#>   county group year  medians medians_suppressed ci_lower  ci_upper  rel_prec
+#> 1  26001 35-44 1979 41.98634                 NA 29.79605  56.17417 1.5917110
+#> 2  26003 35-44 1979 51.00178                 NA 37.86450 119.49006 0.6248260
+#> 3  26005 35-44 1979 23.76272           23.76272 16.29719  33.58478 1.3745537
+#> 4  26007 35-44 1979 33.61042           33.61042 24.15788  45.44376 1.5790005
+#> 5  26009 35-44 1979 29.70584           29.70584 22.96456  39.27994 1.8207267
+#> 6  26011 35-44 1979 38.17390                 NA 24.89862  65.99126 0.9289717
+#>   events population
+#> 1      1        964
+#> 2      1       1011
+#> 3      0       9110
+#> 4      0       3650
+#> 5      0       1763
+#> 6      0       1470
 ```
 
 By default, [`suppress_estimates()`](../reference/suppress_estimates.md)
@@ -187,7 +187,7 @@ estimates, and determine which estimates are reliable. If you are
 interested in more advanced features of the RSTr involving sample
 processing, read
 [`vignette("RSTr-samples")`](../articles/RSTr-samples.md); if you’d like
-more information on defining custom `initial_values` and `priors`, check
+more information on defining custom `inits` and `priors`, check
 [`vignette("RSTr-initialvalues")`](../articles/RSTr-initialvalues.md)
 and [`vignette("RSTr-priors")`](../articles/RSTr-priors.md),
 respectively; if you are interested in learning more about how the
