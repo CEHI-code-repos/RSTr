@@ -114,13 +114,13 @@ mod_mst <- mstcar(
   seed = 1234
 )
 #> NAs detected in Y. Events will be imputed for missing values
-#> Starting sampler on Batch 1 at Wed Dec 17 20:57:30
+#> Starting sampler on Batch 1 at Wed Dec 17 22:47:34
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Wed Dec 17 20:58:00
+    #> Model finished at Wed Dec 17 22:48:02
 
 Here, we use the [`mstcar()`](../reference/ucar.md) function to specify
 our model. [`mstcar()`](../reference/ucar.md) accepts a few different
