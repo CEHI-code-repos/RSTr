@@ -11,117 +11,6 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// get_regs
-arma::cube get_regs(const arma::cube& arr, const arma::uvec& ind);
-RcppExport SEXP _RSTr_get_regs(SEXP arrSEXP, SEXP indSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::cube& >::type arr(arrSEXP);
-    Rcpp::traits::input_parameter< const arma::uvec& >::type ind(indSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_regs(arr, ind));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_subregs
-arma::vec get_subregs(const arma::cube& arr, const arma::uvec& ind, const arma::uword& grp, const arma::uword& time);
-RcppExport SEXP _RSTr_get_subregs(SEXP arrSEXP, SEXP indSEXP, SEXP grpSEXP, SEXP timeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::cube& >::type arr(arrSEXP);
-    Rcpp::traits::input_parameter< const arma::uvec& >::type ind(indSEXP);
-    Rcpp::traits::input_parameter< const arma::uword& >::type grp(grpSEXP);
-    Rcpp::traits::input_parameter< const arma::uword& >::type time(timeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_subregs(arr, ind, grp, time));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_grp
-arma::vec get_grp(const arma::cube& arr, const arma::uword& reg, const arma::uword& time);
-RcppExport SEXP _RSTr_get_grp(SEXP arrSEXP, SEXP regSEXP, SEXP timeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::cube& >::type arr(arrSEXP);
-    Rcpp::traits::input_parameter< const arma::uword& >::type reg(regSEXP);
-    Rcpp::traits::input_parameter< const arma::uword& >::type time(timeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_grp(arr, reg, time));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_subgrp
-arma::mat get_subgrp(const arma::cube& arr, const arma::uvec& ind, const arma::uword& time);
-RcppExport SEXP _RSTr_get_subgrp(SEXP arrSEXP, SEXP indSEXP, SEXP timeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::cube& >::type arr(arrSEXP);
-    Rcpp::traits::input_parameter< const arma::uvec& >::type ind(indSEXP);
-    Rcpp::traits::input_parameter< const arma::uword& >::type time(timeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_subgrp(arr, ind, time));
-    return rcpp_result_gen;
-END_RCPP
-}
-// get_row
-arma::vec get_row(const arma::cube& arr, const arma::uword& grp, const arma::uword& time);
-RcppExport SEXP _RSTr_get_row(SEXP arrSEXP, SEXP grpSEXP, SEXP timeSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::cube& >::type arr(arrSEXP);
-    Rcpp::traits::input_parameter< const arma::uword& >::type grp(grpSEXP);
-    Rcpp::traits::input_parameter< const arma::uword& >::type time(timeSEXP);
-    rcpp_result_gen = Rcpp::wrap(get_row(arr, grp, time));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Sig_eta_i
-arma::field<arma::mat> Sig_eta_i(const arma::cube& G, const arma::vec& rho);
-RcppExport SEXP _RSTr_Sig_eta_i(SEXP GSEXP, SEXP rhoSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::cube& >::type G(GSEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type rho(rhoSEXP);
-    rcpp_result_gen = Rcpp::wrap(Sig_eta_i(G, rho));
-    return rcpp_result_gen;
-END_RCPP
-}
-// Sig_eta
-arma::field<arma::mat> Sig_eta(const arma::field<arma::mat>& Sein);
-RcppExport SEXP _RSTr_Sig_eta(SEXP SeinSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::field<arma::mat>& >::type Sein(SeinSEXP);
-    rcpp_result_gen = Rcpp::wrap(Sig_eta(Sein));
-    return rcpp_result_gen;
-END_RCPP
-}
-// cpp_rmvnorm
-arma::mat cpp_rmvnorm(const arma::vec& mean, const arma::mat& covar);
-RcppExport SEXP _RSTr_cpp_rmvnorm(SEXP meanSEXP, SEXP covarSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::vec& >::type mean(meanSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type covar(covarSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_rmvnorm(mean, covar));
-    return rcpp_result_gen;
-END_RCPP
-}
-// geteig
-arma::mat geteig(const arma::mat& covar);
-RcppExport SEXP _RSTr_geteig(SEXP covarSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type covar(covarSEXP);
-    rcpp_result_gen = Rcpp::wrap(geteig(covar));
-    return rcpp_result_gen;
-END_RCPP
-}
 // update_Ag
 void update_Ag(Rcpp::List& RSTr_obj);
 RcppExport SEXP _RSTr_update_Ag(SEXP RSTr_objSEXP) {
@@ -284,15 +173,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_RSTr_get_regs", (DL_FUNC) &_RSTr_get_regs, 2},
-    {"_RSTr_get_subregs", (DL_FUNC) &_RSTr_get_subregs, 4},
-    {"_RSTr_get_grp", (DL_FUNC) &_RSTr_get_grp, 3},
-    {"_RSTr_get_subgrp", (DL_FUNC) &_RSTr_get_subgrp, 3},
-    {"_RSTr_get_row", (DL_FUNC) &_RSTr_get_row, 3},
-    {"_RSTr_Sig_eta_i", (DL_FUNC) &_RSTr_Sig_eta_i, 2},
-    {"_RSTr_Sig_eta", (DL_FUNC) &_RSTr_Sig_eta, 1},
-    {"_RSTr_cpp_rmvnorm", (DL_FUNC) &_RSTr_cpp_rmvnorm, 2},
-    {"_RSTr_geteig", (DL_FUNC) &_RSTr_geteig, 1},
     {"_RSTr_update_Ag", (DL_FUNC) &_RSTr_update_Ag, 1},
     {"_RSTr_update_G_default", (DL_FUNC) &_RSTr_update_G_default, 1},
     {"_RSTr_update_G_mstcar", (DL_FUNC) &_RSTr_update_G_mstcar, 1},

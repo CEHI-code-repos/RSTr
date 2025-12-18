@@ -14,22 +14,22 @@ cube get_regs(const cube& arr, const uvec& ind) {
   return out;
 }
 
-mat get_subgrp(const cube& arr, const uvec& ind, const uword& time) {
+mat get_subgrp(const cube& arr, const uvec& ind, uword time) {
   return arr.slice(time).rows(ind);
 }
 
-vec get_subregs(const cube& arr, const uvec& ind, const uword& grp,
-                const uword& time) {
+vec get_subregs(const cube& arr, const uvec& ind, uword grp,
+                uword time) {
   vec col = arr.slice(time).col(grp);
   return col.elem(ind);
 }
 
-vec get_grp(const cube& arr, const uword& reg, const uword& time) {
+vec get_grp(const cube& arr, uword reg, uword time) {
   return arr.slice(time).row(reg).t();
 }
 
-vec get_row(const cube& arr, const uword& grp,
-                  const uword& time) {
+vec get_row(const cube& arr, uword grp,
+                  uword time) {
   return arr.slice(time).col(grp);
 }
 
@@ -54,11 +54,12 @@ field<mat> Sig_eta(const field<mat>& Sein) {
   uword n_time = Sein.n_rows;
   field<mat> Se(n_time, n_time);
   for (uword time = 0; time < n_time; time++) {
+    mat Sinv = arma::inv_sympd(Sein(time, time));
     if (time > 0) {
-      Se(time, time - 1) = arma::inv_sympd(Sein(time, time)) * Sein(time, time - 1);
+      Se(time, time - 1) = Sinv * Sein(time, time - 1);
     }
     if (time < n_time - 1) {
-      Se(time, time + 1) = arma::inv_sympd(Sein(time, time)) * Sein(time, time + 1);
+      Se(time, time + 1) = Sinv * Sein(time, time + 1);
     }
   }
   return Se;
