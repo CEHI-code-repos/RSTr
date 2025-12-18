@@ -12,11 +12,6 @@ update_beta.eucar <- function(RSTr_obj) {
   update_beta_eucar(RSTr_obj)
 }
 
-#' @export
-update_beta.mstcar <- function(RSTr_obj) {
-  update_beta_mstcar(RSTr_obj)
-}
-
 update_G <- function(RSTr_obj) {
   UseMethod("update_G")
 }

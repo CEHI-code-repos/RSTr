@@ -33,10 +33,6 @@ update_beta_eucar <- function(RSTr_obj) {
     invisible(.Call(`_RSTr_update_beta_eucar`, RSTr_obj))
 }
 
-update_beta_mstcar <- function(RSTr_obj) {
-    invisible(.Call(`_RSTr_update_beta_mstcar`, RSTr_obj))
-}
-
 update_lambda <- function(RSTr_obj) {
     invisible(.Call(`_RSTr_update_lambda`, RSTr_obj))
 }

@@ -4,18 +4,19 @@
 using arma::mat;
 using arma::cube;
 using arma::uword;
+using Rcpp::List;
 
 //[[Rcpp::export]]
-void update_Ag(Rcpp::List& RSTr_obj) {
-  Rcpp::List sample = RSTr_obj["sample"];
+void update_Ag(List& RSTr_obj) {
+  List sample = RSTr_obj["sample"];
   mat Ag = sample["Ag"];
-  const cube G = sample["G"];
-  Rcpp::List priors = RSTr_obj["priors"];
-  mat Ag_scale = priors["Ag_scale"];
-  double G_df = priors["G_df"];
-  double Ag_df = priors["Ag_df"];
-  uword n_time = G.n_slices;
-  uword n_group = G.n_rows;
+  const cube& G = sample["G"];
+  const List& priors = RSTr_obj["priors"];
+  const mat& Ag_scale = priors["Ag_scale"];
+  const double G_df = priors["G_df"];
+  const double Ag_df = priors["Ag_df"];
+  const uword n_time = G.n_slices;
+  const uword n_group = G.n_rows;
   mat Ag_covar(n_group, n_group, arma::fill::zeros);
   Ag_covar += arma::inv_sympd(Ag_scale);
   for (uword time = 0; time < n_time; ++time) {

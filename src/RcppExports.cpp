@@ -12,11 +12,11 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // update_Ag
-void update_Ag(Rcpp::List& RSTr_obj);
+void update_Ag(List& RSTr_obj);
 RcppExport SEXP _RSTr_update_Ag(SEXP RSTr_objSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::List& >::type RSTr_obj(RSTr_objSEXP);
+    Rcpp::traits::input_parameter< List& >::type RSTr_obj(RSTr_objSEXP);
     update_Ag(RSTr_obj);
     return R_NilValue;
 END_RCPP
@@ -88,16 +88,6 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List& >::type RSTr_obj(RSTr_objSEXP);
     update_beta_eucar(RSTr_obj);
-    return R_NilValue;
-END_RCPP
-}
-// update_beta_mstcar
-void update_beta_mstcar(List& RSTr_obj);
-RcppExport SEXP _RSTr_update_beta_mstcar(SEXP RSTr_objSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List& >::type RSTr_obj(RSTr_objSEXP);
-    update_beta_mstcar(RSTr_obj);
     return R_NilValue;
 END_RCPP
 }
@@ -181,7 +171,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RSTr_update_Z_mstcar", (DL_FUNC) &_RSTr_update_Z_mstcar, 1},
     {"_RSTr_update_beta_default", (DL_FUNC) &_RSTr_update_beta_default, 1},
     {"_RSTr_update_beta_eucar", (DL_FUNC) &_RSTr_update_beta_eucar, 1},
-    {"_RSTr_update_beta_mstcar", (DL_FUNC) &_RSTr_update_beta_mstcar, 1},
     {"_RSTr_update_lambda", (DL_FUNC) &_RSTr_update_lambda, 1},
     {"_RSTr_update_rho", (DL_FUNC) &_RSTr_update_rho, 1},
     {"_RSTr_update_sig2_default", (DL_FUNC) &_RSTr_update_sig2_default, 1},
