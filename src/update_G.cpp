@@ -20,7 +20,7 @@ mat get_scale_G(const mat& G_scale, const cube& Z, const field<uvec>& adjacency,
   return scale_G;
 }
 
-mat get_Zmikt(const cube& Z, const uword reg, const uvec& adj_regs,
+inline mat get_Zmikt(const cube& Z, const uword reg, const uvec& adj_regs,
               const uword n_time) {
   mat Zmikt = Z.row(reg) - arma::mean(get_regs(Z, adj_regs), 0);
   if (n_time == 1) Zmikt = Zmikt.t();

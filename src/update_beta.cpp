@@ -89,6 +89,7 @@ void update_beta_eucar(List& RSTr_obj) {
   const field<uvec>& isl_region = sp_data["isl_region"];
   const List& params = RSTr_obj["params"];
   const uword n_island = isl_region.n_elem;
+  const uword n_time = Z.n_slices;
   const mat& A = params["A"];
   const double m0 = params["m0"];
   const String method = params["method"];
@@ -96,7 +97,7 @@ void update_beta_eucar(List& RSTr_obj) {
   for (uword isl = 0; isl < n_island; ++isl) {
     const uvec& isl_idx = isl_region[isl];
     const uword n_isl_region = isl_idx.n_elem;
-    const mat sd_beta = get_sd_beta(tau2, n_isl_region, tau2.n_cols);
+    const mat sd_beta = get_sd_beta(tau2, n_isl_region, n_time);
     const mat mean_beta = get_mean_beta(lambda, Z, isl_idx);
     if (method == "binomial") {
       beta.row(isl) = rtnorm_mat(mean_beta, sd_beta, beta_thres);
