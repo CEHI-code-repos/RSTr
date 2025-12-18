@@ -32,13 +32,7 @@ test_that("all MSTCAR models work", {
 test_that("all MSTCAR models work with update_rho = TRUE", {
   for (x in data_list) {
     expect_no_error(
-      mstcar(
-        "test",
-        x,
-        miadj,
-        update_rho = TRUE,
-        show_plots = FALSE
-      )
+      mstcar("test", x, miadj, update_rho = TRUE, show_plots = FALSE)
     )
   }
 })
