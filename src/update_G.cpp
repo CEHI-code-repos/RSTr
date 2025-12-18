@@ -1,28 +1,33 @@
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
 #include "cpp_helpers.h"
-using namespace Rcpp;
-using namespace arma;
+using arma::vec;
+using arma::mat;
+using arma::cube;
+using arma::uword;
+using arma::field;
+using arma::uvec;
+using Rcpp::List;
 
 //[[Rcpp::export]]
 void update_G_default(List& RSTr_obj) {
-  Rcpp::List sample = RSTr_obj["sample"];
+  List sample = RSTr_obj["sample"];
   cube G = sample["G"];
-  cube Z = sample["Z"];
-  Rcpp::List priors = RSTr_obj["priors"];
-  double G_df = priors["G_df"];
-  mat G_scale = priors["G_scale"];
-  Rcpp::List sp_data = RSTr_obj["sp_data"];
-  field<uvec> adjacency = sp_data["adjacency"];
-  uword n_island = sp_data["n_island"];
-  uword n_region = Z.n_rows;
-  uword n_time = Z.n_slices;
-  double df_G = n_region - n_island + G_df;
+  const cube& Z = sample["Z"];
+  const List& priors = RSTr_obj["priors"];
+  const double G_df = priors["G_df"];
+  const mat& G_scale = priors["G_scale"];
+  const List& sp_data = RSTr_obj["sp_data"];
+  const field<uvec>& adjacency = sp_data["adjacency"];
+  const uword n_island = sp_data["n_island"];
+  const uword n_region = Z.n_rows;
+  const uword n_time = Z.n_slices;
+  const double df_G = n_region - n_island + G_df;
   for (uword time = 0; time < n_time; time++) {
     mat scale_G = G_scale;
     for (uword reg = 0; reg < n_region; reg++) {
-      vec Zit = get_grp(Z, reg, time);
-      vec sum_adj = sum(get_subgrp(Z, adjacency(reg), time), 0).t();
+      const vec Zit = get_grp(Z, reg, time);
+      const vec sum_adj = sum(get_subgrp(Z, adjacency(reg), time), 0).t();
       scale_G += adjacency(reg).n_elem * Zit * Zit.t() - sum_adj * Zit.t();
     }
     G.slice(time) = riwish(df_G, scale_G);
@@ -33,14 +38,14 @@ void update_G_default(List& RSTr_obj) {
 
 //[[Rcpp::export]]
 void update_G_mstcar(List& RSTr_obj) {
-  Rcpp::List sample = RSTr_obj["sample"];
+  List sample = RSTr_obj["sample"];
   cube G = sample["G"];
   cube Z = sample["Z"];
   mat Ag = sample["Ag"];
   vec rho = sample["rho"];
-  Rcpp::List priors = RSTr_obj["priors"];
+  List priors = RSTr_obj["priors"];
   double G_df = priors["G_df"];
-  Rcpp::List sp_data = RSTr_obj["sp_data"];
+  List sp_data = RSTr_obj["sp_data"];
   field<uvec> adjacency = sp_data["adjacency"];
   uword n_island = sp_data["n_island"];
   uword n_region = Z.n_rows;

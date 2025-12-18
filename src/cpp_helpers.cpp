@@ -34,14 +34,14 @@ vec get_row(const cube& arr, uword grp,
 }
 
 field<mat> Sig_eta_i(const cube& G, const vec& rho) {
-  uword n_group = rho.n_elem;
-  uword n_time  = G.n_slices;
-  mat r  = arma::repmat(rho, 1, n_group);
-  mat sr = arma::sqrt(1 - pow(r, 2));
+  const uword n_group = rho.n_elem;
+  const uword n_time  = G.n_slices;
+  const mat r  = arma::repmat(rho, 1, n_group);
+  const mat sr = arma::sqrt(1 - pow(r, 2));
   field<mat> Sei(n_time, n_time);
   Sei(0, 0) = arma::inv_sympd(G.slice(0));
   for (uword time = 1; time < n_time; time++) {
-    mat Gi = arma::inv_sympd(G.slice(time));
+    const mat Gi = arma::inv_sympd(G.slice(time));
     Sei(time - 1, time - 1) += ( r / sr).t() % (r / sr % Gi);
     Sei(time    , time    )  = ( 1 / sr).t() % (1 / sr % Gi);
     Sei(time - 1, time    )  = (-r / sr)     % (1 / sr % Gi).t();
@@ -51,10 +51,10 @@ field<mat> Sig_eta_i(const cube& G, const vec& rho) {
 }
 
 field<mat> Sig_eta(const field<mat>& Sein) {
-  uword n_time = Sein.n_rows;
+  const uword n_time = Sein.n_rows;
   field<mat> Se(n_time, n_time);
   for (uword time = 0; time < n_time; time++) {
-    mat Sinv = arma::inv_sympd(Sein(time, time));
+    const mat Sinv = arma::inv_sympd(Sein(time, time));
     if (time > 0) {
       Se(time, time - 1) = Sinv * Sein(time, time - 1);
     }
@@ -67,7 +67,7 @@ field<mat> Sig_eta(const field<mat>& Sein) {
 
 mat cpp_rmvnorm(const vec& mean, const mat& covar) {
   vec out  = mean;
-  vec rand = Rcpp::rnorm(covar.n_cols, 0, 1);
+  const vec rand = Rcpp::rnorm(covar.n_cols, 0, 1);
   out += covar * rand;
   return out;
 }
