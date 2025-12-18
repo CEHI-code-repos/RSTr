@@ -53,7 +53,7 @@ load_samples <- function(RSTr_obj, param = "lambda", burn = 2000) {
   } else if (param == "tau2") {
     if (params$model == "mstcar") {
       dimnames(output) <- list(group = dims[[2]], its = its)
-    } else if (params$model %in% c("ucar", "mcar")) {
+    } else if (params$model %in% c("car", "mcar")) {
       dimnames(output) <- list(group = dims[[2]], time = dims[[3]], its = its)
     }
   } else if (param == "Ag") {

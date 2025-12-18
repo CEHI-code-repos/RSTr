@@ -34,16 +34,12 @@ get_params <- function(
     set.seed(seed)
     params$seed <- .Random.seed
   }
-  if (model %in% c("ucar", "eucar")) {
+  if (model %in% c("car", "rcar")) {
     params$restricted <- restricted
     if (restricted) {
-      if (is.null(A)) {
-        A <- array(6 / dim(data$Y)[2], dim = dim(data$Y)[-1])
-      }
-      if (is.null(m0)) {
-        m0 <- 3
-      }
-      params$A <- array(A, dim = dim(data$Y)[2:3])
+      A <- array(A, dim = dim(data$Y)[2:3]) %||% array(6, dim = dim(data$Y)[-1])
+      m0 <- m0 %||% 3
+      params$A <- A
       params$m0 <- m0
     }
   } else if (model == "mstcar") {

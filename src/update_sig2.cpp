@@ -36,7 +36,7 @@ void update_sig2_default(List& RSTr_obj) {
 }
 
 //[[Rcpp::export]]
-void update_sig2_eucar(List& RSTr_obj) {
+void update_sig2_rcar(List& RSTr_obj) {
   Rcpp::List sample = RSTr_obj["sample"];
   mat sig2 = sample["sig2"];
   cube Z = sample["Z"];

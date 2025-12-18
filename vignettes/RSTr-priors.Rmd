@@ -42,6 +42,6 @@ The following are all priors used in the MSTCAR model:
 
 The MCAR model shares all of the priors as the MSTCAR model, but does not include the following: `Ag_scale`, `Ag_df`, `rho_a`, `rho_b`, `rho_sd`.
 
-### Priors for the UCAR/EUCAR model
+### Priors for the CAR/RCAR model
 
-The UCAR models include only the following from above: `lambda_sd`, `tau_a`, and `tau_b`. UCAR models also take priors `sig_a` and `sig_b`, which hold similar shape and restriction to `tau_a` and `tau_b`.
+The CAR models include only the following from above: `lambda_sd`, `tau_a`, and `tau_b`. CAR models also take priors `sig_a` and `sig_b`, which hold similar shape and restriction to `tau_a` and `tau_b`.

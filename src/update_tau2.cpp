@@ -9,6 +9,7 @@ mat get_tau_scale(const cube& lambda, const cube& beta_0, const cube& Z,
   const cube square_resid = arma::square(lambda - beta_0 - Z);
   mat sum_sq_gt = arma::sum(square_resid, 0);
   mat tau_scale = 1.0 / (0.5 * sum_sq_gt + tau_b);
+  if (lambda.n_slices == 1) tau_scale = tau_scale.t();
   return tau_scale;
 }
 
@@ -45,7 +46,7 @@ void update_tau2_default(List& RSTr_obj) {
 }
 
 //[[Rcpp::export]]
-void update_tau2_eucar(List& RSTr_obj) {
+void update_tau2_rcar(List& RSTr_obj) {
   Rcpp::List sample = RSTr_obj["sample"];
   mat tau2 = sample["tau2"];
   cube lambda = sample["lambda"];

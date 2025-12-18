@@ -1,6 +1,6 @@
 #' Create CAR model
 #'
-#' \code{*car()} generates an \code{RSTr} model object, samples, and estimates for either an MSTCAR, MCAR, EUCAR, or UCAR model.
+#' \code{*car()} generates an \code{RSTr} model object, samples, and estimates for either an MSTCAR, MCAR, RCAR, or CAR model.
 #'
 #' @param name Name of model and corresponding folder.
 #' @param data Dataset including mortality (Y) and population (n) information.
@@ -16,8 +16,8 @@
 #' @param impute_bounds If counts are suppressed for privacy reasons, \code{impute_bounds} is the lower/upper bound of suppression, typically 0 or 1 and 10, respectively.
 #' @param inits Optional list of initial conditions for each parameter.
 #' @param priors Optional list of priors for updates.
-#' @param m0 For EUCAR models, baseline neighbor count by region.
-#' @param A For EUCAR models, describes maximum intensity of smoothing between regions.
+#' @param m0 For RCAR models, baseline neighbor count by region.
+#' @param A For RCAR models, describes maximum intensity of smoothing between regions.
 #' @param update_rho For MSTCAR models, controls whether rho update is performed.
 #' @returns An \code{RSTr} model object.
 #' @examples
@@ -36,7 +36,7 @@
 #' unlink(paste0(tempdir(), "\\test"), recursive = TRUE)
 #' }
 #' @export
-ucar <- function(
+car <- function(
   name,
   data,
   adjacency,
@@ -67,7 +67,7 @@ ucar <- function(
     impute_bounds = impute_bounds,
     inits = inits,
     priors = priors,
-    model = "ucar",
+    model = "car",
     pars = pars,
     restricted = FALSE
   )
@@ -75,10 +75,10 @@ ucar <- function(
   RSTr_obj
 }
 
-#' Initialize Enhanced UCAR model
-#' @rdname ucar
+#' Initialize Restricted CAR model
+#' @rdname car
 #' @export
-eucar <- function(
+rcar <- function(
   name,
   data,
   adjacency,
@@ -111,7 +111,7 @@ eucar <- function(
     impute_bounds = impute_bounds,
     inits = inits,
     priors = priors,
-    model = "eucar",
+    model = "rcar",
     pars = pars,
     restricted = TRUE,
     A = A,
@@ -122,7 +122,7 @@ eucar <- function(
 }
 
 #' Initialize MCAR model
-#' @rdname ucar
+#' @rdname car
 #' @export
 mcar <- function(
   name,
@@ -163,7 +163,7 @@ mcar <- function(
 }
 
 #' Initialize MSTCAR model
-#' @rdname ucar
+#' @rdname car
 #' @export
 mstcar <- function(
   name,
@@ -221,7 +221,7 @@ initialize_model <- function(
   impute_bounds = NULL,
   inits = NULL,
   priors = NULL,
-  model = c("mstcar", "ucar", "mcar"),
+  model = c("mstcar", "car", "mcar"),
   pars,
   restricted = NULL,
   A = NULL,

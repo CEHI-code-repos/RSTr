@@ -3,7 +3,7 @@ get_inits <- function(RSTr_obj, inits, method) {
 }
 
 #' @export
-get_inits.ucar <- function(RSTr_obj, inits, method) {
+get_inits.car <- function(RSTr_obj, inits, method) {
   Y <- RSTr_obj$data$Y
   n <- RSTr_obj$data$n
   isl_id <- RSTr_obj$sp_data$isl_id

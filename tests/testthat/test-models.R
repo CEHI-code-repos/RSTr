@@ -5,15 +5,15 @@ data_list <- list(
   lapply(miheart, \(x) x[, 4:6, 1:3])
 )
 
-test_that("all UCAR models work", {
+test_that("all CAR models work", {
   for (x in data_list) {
-    expect_no_error(ucar("test", x, miadj, show_plots = FALSE))
+    expect_no_error(car("test", x, miadj, show_plots = FALSE))
   }
 })
 
-test_that("all EUCAR models work", {
+test_that("all RCAR models work", {
   for (x in data_list) {
-    expect_no_error(eucar("test", x, miadj, show_plots = FALSE))
+    expect_no_error(rcar("test", x, miadj, show_plots = FALSE))
   }
 })
 

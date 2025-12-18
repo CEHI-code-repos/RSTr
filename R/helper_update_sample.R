@@ -3,7 +3,7 @@ update_sample <- function(RSTr_obj) {
 }
 
 #' @export
-update_sample.ucar <- function(RSTr_obj) {
+update_sample.car <- function(RSTr_obj) {
   update_lambda(RSTr_obj)
   update_Z(RSTr_obj)
   update_tau2(RSTr_obj)

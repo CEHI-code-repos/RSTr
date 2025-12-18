@@ -20,7 +20,7 @@ An \code{RSTr} model object with suppressed estimates.
 Generates suppressed estimates for an \code{RSTr} model object with a given relative precision and population/event threshold.
 }
 \details{
-While the \code{threshold} argument is optional, population/event thresholds are necessary for non-enhanced models. Population/event thresholds should only be omitted for enhanced CAR models, such as the EUCAR.
+While the \code{threshold} argument is optional, population/event thresholds are necessary for non-restricted models. Population/event thresholds should only be omitted for restricted CAR models, such as the RCAR.
 }
 \examples{
 std_pop <- c(113154, 100640, 95799)

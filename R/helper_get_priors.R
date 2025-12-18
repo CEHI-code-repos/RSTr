@@ -3,7 +3,7 @@ get_priors <- function(RSTr_obj, priors) {
 }
 
 #' @export
-get_priors.ucar <- function(RSTr_obj, priors) {
+get_priors.car <- function(RSTr_obj, priors) {
   priors$lambda_sd <- priors$lambda_sd %||%
     array(0.025, dim = dim(RSTr_obj$data$Y))
   priors$lambda_acpt <- array(0, dim = dim(priors$lambda_sd))

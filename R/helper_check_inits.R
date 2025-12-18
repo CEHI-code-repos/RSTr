@@ -3,7 +3,7 @@ check_inits <- function(RSTr_obj) {
 }
 
 #' @export
-check_inits.ucar <- function(RSTr_obj) {
+check_inits.car <- function(RSTr_obj) {
   Y <- RSTr_obj$data$Y
   method <- RSTr_obj$params$method
   n_group <- dim(Y)[[2]]

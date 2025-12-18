@@ -2,7 +2,7 @@
 #'
 #' Generates suppressed estimates for an \code{RSTr} model object with a given relative precision and population/event threshold.
 #'
-#' While the \code{threshold} argument is optional, population/event thresholds are necessary for non-enhanced models. Population/event thresholds should only be omitted for enhanced CAR models, such as the EUCAR.
+#' While the \code{threshold} argument is optional, population/event thresholds are necessary for non-restricted models. Population/event thresholds should only be omitted for restricted CAR models, such as the RCAR.
 #'
 #' @param RSTr_obj An \code{RSTr} model object.
 #' @param threshold The population/event suppression threshold.
@@ -27,14 +27,14 @@ suppress_estimates <- function(
   type <- match.arg(type)
   RSTr_obj$params$suppressed <- TRUE
   RSTr_obj$params$supp_thres <- threshold
-  if (threshold == 0 && !(RSTr_obj$params$model %in% c("eucar"))) {
+  if (threshold == 0 && !(RSTr_obj$params$model %in% c("rcar"))) {
     warning(
-      "Suppressing estimates without a population/event threshold is not recommended for non-enhanced models. Specify `threshold` or re-run with enhanced model"
+      "Suppressing estimates without a population/event threshold is not recommended for non-restricted models. Specify `threshold` or re-run with restricted model"
     )
   }
-  if (threshold > 0 && (RSTr_obj$params$model %in% c("eucar"))) {
+  if (threshold > 0 && (RSTr_obj$params$model %in% c("rcar"))) {
     warning(
-      "Suppressing estimates with a population/event threshold not necessary for EUCAR models"
+      "Suppressing estimates with a population/event threshold not necessary for restricted models"
     )
   }
   medians_suppressed <- RSTr_obj$medians

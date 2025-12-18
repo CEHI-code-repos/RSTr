@@ -52,7 +52,7 @@ check_zero_events <- function(RSTr_obj) {
 }
 
 #' @export
-check_zero_events.ucar <- function(RSTr_obj) {
+check_zero_events.car <- function(RSTr_obj) {
   if (any(apply(RSTr_obj$data$Y, 2:3, sum) == 0)) {
     "At least one set of regions has no events. Ensure that Y has at least one event for each set of regions"
   }

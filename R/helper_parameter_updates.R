@@ -8,8 +8,8 @@ update_beta.default <- function(RSTr_obj) {
 }
 
 #' @export
-update_beta.eucar <- function(RSTr_obj) {
-  update_beta_eucar(RSTr_obj)
+update_beta.rcar <- function(RSTr_obj) {
+  update_beta_rcar(RSTr_obj)
 }
 
 update_G <- function(RSTr_obj) {
@@ -36,8 +36,8 @@ update_sig2.default <- function(RSTr_obj) {
 }
 
 #' @export
-update_sig2.eucar <- function(RSTr_obj) {
-  update_sig2_eucar(RSTr_obj)
+update_sig2.rcar <- function(RSTr_obj) {
+  update_sig2_rcar(RSTr_obj)
 }
 
 update_tau2 <- function(RSTr_obj) {
@@ -50,8 +50,8 @@ update_tau2.default <- function(RSTr_obj) {
 }
 
 #' @export
-update_tau2.eucar <- function(RSTr_obj) {
-  update_tau2_eucar(RSTr_obj)
+update_tau2.rcar <- function(RSTr_obj) {
+  update_tau2_rcar(RSTr_obj)
 }
 
 #' @export
@@ -64,8 +64,8 @@ update_Z <- function(RSTr_obj) {
 }
 
 #' @export
-update_Z.ucar <- function(RSTr_obj) {
-  update_Z_ucar(RSTr_obj)
+update_Z.car <- function(RSTr_obj) {
+  update_Z_car(RSTr_obj)
 }
 
 #' @export

@@ -24,7 +24,7 @@ reference:
   - add_neighbors
 - title: Modeling
   contents:
-  - ucar
+  - car
   - update_model
   - load_model
 - title: Estimates

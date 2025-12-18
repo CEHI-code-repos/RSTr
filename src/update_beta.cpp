@@ -23,7 +23,7 @@ mat get_beta_thres(const mat& tau2, const mat& sig2, const double m0,
 mat get_mean_beta(const cube& lambda, const cube& Z, const uvec& isl_idx) {
   const cube sub_diff = get_regs(lambda, isl_idx) - get_regs(Z, isl_idx);
   mat mean = arma::mean(sub_diff, 0);
-  if (sub_diff.n_slices == 1) mean = mean.t();
+  if (lambda.n_slices == 1) mean = mean.t();
   return mean;
 }
 
@@ -78,7 +78,7 @@ void update_beta_default(List& RSTr_obj) {
 }
 
 //[[Rcpp::export]]
-void update_beta_eucar(List& RSTr_obj) {
+void update_beta_rcar(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
   cube beta = sample["beta"];
   const cube& lambda = sample["lambda"];

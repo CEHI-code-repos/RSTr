@@ -3,7 +3,7 @@ check_priors <- function(RSTr_obj) {
 }
 
 #' @export
-check_priors.ucar <- function(RSTr_obj) {
+check_priors.car <- function(RSTr_obj) {
   priors <- RSTr_obj$priors
   chk <- c("tau_a", "tau_b", "lambda_sd", "lambda_acpt", "sig_a", "sig_b")
   check_missing_priors(priors, chk)

@@ -20,11 +20,11 @@ The RSTr package is a tool that provides a host of Bayesian spatiotemporal model
 library(RSTr)
 ```
 
-The models provided in the RSTr package are based on the [Besag, York, and Mollié (1991)](https://link.springer.com/article/10.1007/bf00116466) Conditional Autoregressive (CAR) model (heretofore referred to as the "Univariate CAR" or "UCAR" model), which spatially smooths data by incorporating information such as event and population counts from neighboring geographic units (counties, census tracts, etc.). The degree of spatial smoothing is determined by a spatial region's respective population size. The CAR model can be extended to several levels of complexity, depending on the input data:
+The models provided in the RSTr package are based on the [Besag, York, and Mollié (1991)](https://link.springer.com/article/10.1007/bf00116466) Conditional Autoregressive (CAR) model, which spatially smooths data by incorporating information such as event and population counts from neighboring geographic units (counties, census tracts, etc.). The degree of spatial smoothing is determined by a spatial region's respective population size. The CAR model can be extended to several levels of complexity, depending on the input data:
 
--   Univariate CAR (UCAR): Spatially smooths across geographies;
+-   BYM CAR (CAR): Spatially smooths across geographies;
 
--   Enhanced Univariate CAR (EUCAR): Spatially smooths across geographies and prevents over-smoothing;
+-   Restricted CAR (RCAR): Spatially smooths across geographies and prevents over-smoothing;
 
 -   Multivariate CAR (MCAR): Spatially smooths across geographies and sociodemographic groups; and
 
@@ -32,9 +32,9 @@ The models provided in the RSTr package are based on the [Besag, York, and Molli
 
 For this vignette, we will demonstrate RSTr's functionality with an MSTCAR model.
 
-### Enhanced models to prevent over-smoothing {#sec-enhanced-models}
+### Restricted models to prevent over-smoothing {#sec-restricted-models}
 
-A problem with CAR models pointed out by [Quick, et al. (2021)](https://pubmed.ncbi.nlm.nih.gov/33980402/) is that of over-smoothing due to the informativeness of the BYM model. The RSTr package provides enhancements to the UCAR models for both Poisson- and binomial-distributed data that prevent over-smoothing by restricting model informativeness through the `eucar()` function. Enhancements for the MCAR and MSTCAR models are under progress, and will be incorporated into the RSTr package as they are developed.
+A problem with CAR models pointed out by [Quick, et al. (2021)](https://pubmed.ncbi.nlm.nih.gov/33980402/) is that of over-smoothing due to the informativeness of the BYM model. The RSTr package provides enhancements to the CAR models for both Poisson- and binomial-distributed data that prevent over-smoothing by restricting model informativeness through the `rcar()` function. Enhancements for the MCAR and MSTCAR models are under progress, and will be incorporated into the RSTr package as they are developed.
 
 ## Datasets {#sec-datasets}
 

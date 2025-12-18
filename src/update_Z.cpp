@@ -5,7 +5,7 @@ using namespace Rcpp;
 using namespace arma;
 
 //[[Rcpp::export]]
-void update_Z_ucar(List& RSTr_obj) {
+void update_Z_car(List& RSTr_obj) {
   Rcpp::List sample = RSTr_obj["sample"];
   cube Z = sample["Z"];
   mat sig2 = sample["sig2"];
