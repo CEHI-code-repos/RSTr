@@ -15,7 +15,7 @@ run_sampler <- function(
   total <- RSTr_obj$params$total
   method <- RSTr_obj$params$method
   batches <- seq(start_batch + 1, start_batch + iterations / 100)
-  if (verbose) {
+  if (verbose && missing_Y) {
     message("NAs detected in Y. Events will be imputed for missing values")
   }
   if (verbose) {
