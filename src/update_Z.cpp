@@ -26,7 +26,7 @@ void update_Z_ucar(List& RSTr_obj) {
       for (uword time = 0; time < n_time; time++) {
         double sum_adj = sum(get_subregs(Z, adjacency(reg), grp, time));
         double rate_diff = (lambda(reg, grp, time) - beta(isl_id(reg), grp, time));
-        double var_Z  = 1 / (1 / tau2(grp, time) + n_adj(reg) / sig2(grp, time));
+        double var_Z  = 1.0 / (1.0 / tau2(grp, time) + n_adj(reg) / sig2(grp, time));
         double mean_Z = var_Z * (rate_diff / tau2(grp, time) + sum_adj / sig2(grp, time));
         Z(reg, grp, time) = R::rnorm(mean_Z, sqrt(var_Z));
       }
@@ -66,7 +66,7 @@ void update_Z_mcar(List& RSTr_obj) {
     vec taut = tau2.col(time);
     mat Gt = G.slice(time);
     for (uword count : unique_n_adj) {
-      Z_cov(count, time) = inv_sympd(diagmat(1 / taut) + count * Gt);
+      Z_cov(count, time) = inv_sympd(diagmat(1.0 / taut) + count * Gt);
       Z_coveig(count, time) = geteig(Z_cov(count, time));
     }
     for (uword reg = 0; reg < n_region; reg++) {
@@ -112,7 +112,7 @@ void update_Z_mstcar(List& RSTr_obj) {
   vec unique_n_adj = unique(n_adj);
   for (uword time = 0; time < n_time; time++) {
     for (uword count : unique_n_adj) {
-      Z_cov   (time, count) = inv_sympd(diagmat(1 / tau2) + count * Sein(time, time));
+      Z_cov   (time, count) = inv_sympd(diagmat(1.0 / tau2) + count * Sein(time, time));
       Z_coveig(time, count) = geteig(Z_cov(time, count));
     }
   }

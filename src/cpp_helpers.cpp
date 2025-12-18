@@ -42,10 +42,10 @@ field<mat> Sig_eta_i(const cube& G, const vec& rho) {
   Sei(0, 0) = arma::inv_sympd(G.slice(0));
   for (uword time = 1; time < n_time; time++) {
     const mat Gi = arma::inv_sympd(G.slice(time));
-    Sei(time - 1, time - 1) += ( r / sr).t() % (r / sr % Gi);
-    Sei(time    , time    )  = ( 1 / sr).t() % (1 / sr % Gi);
-    Sei(time - 1, time    )  = (-r / sr)     % (1 / sr % Gi).t();
-    Sei(time    , time - 1)  = (-r / sr).t() % (1 / sr % Gi);
+    Sei(time - 1, time - 1) += ( r   / sr).t() % (r   / sr % Gi);
+    Sei(time    , time    )  = ( 1.0 / sr).t() % (1.0 / sr % Gi);
+    Sei(time - 1, time    )  = (-r   / sr)     % (1.0 / sr % Gi).t();
+    Sei(time    , time - 1)  = (-r   / sr).t() % (1.0 / sr % Gi);
   }
   return Sei;
 }

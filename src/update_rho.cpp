@@ -24,7 +24,7 @@ void update_rho(List& RSTr_obj) {
   vec logit_rho = log(rho / (1 - rho));
   vec rand = Rcpp::rnorm(n_group, 0, 1);
   vec expit_rho = rand % rho_sd + logit_rho;
-  vec rho_star_0 = 1 / (1 + exp(-expit_rho));
+  vec rho_star_0 = 1.0 / (1 + exp(-expit_rho));
   vec r(n_group, arma::fill::zeros);
   vec ra(n_group, arma::fill::zeros);
   vec rb(n_group, arma::fill::zeros);

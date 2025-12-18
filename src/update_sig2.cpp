@@ -27,8 +27,8 @@ void update_sig2_default(List& RSTr_obj) {
         sum_adj += Z(reg, grp, time) * sum(get_subregs(Z, adjacency(reg), grp, time));
       }
       double sig_shape = (n_region - n_island) / 2 + sig_a;
-      double sig_scale = 1 / ((sum(pow(get_row(Z, grp, time), 2) % n_adj) - sum_adj) / 2 + sig_b);
-      sig2(grp, time) = 1 / R::rgamma(sig_shape, sig_scale);
+      double sig_scale = 1.0 / ((sum(pow(get_row(Z, grp, time), 2) % n_adj) - sum_adj) / 2 + sig_b);
+      sig2(grp, time) = 1.0 / R::rgamma(sig_shape, sig_scale);
     }
   }
   sample["sig2"] = sig2;
@@ -65,18 +65,18 @@ void update_sig2_eucar(List& RSTr_obj) {
         sum_adj += Z(reg, grp, time) * sum(get_subregs(Z, adjacency(reg), grp, time));
       }
       double sig_shape = (n_region - n_island) / 2 + sig_a;
-      double sig_scale = 1 / ((sum(pow(get_row(Z, grp, time), 2) % n_adj) - sum_adj) / 2 + sig_b);
+      double sig_scale = 1.0 / ((sum(pow(get_row(Z, grp, time), 2) % n_adj) - sum_adj) / 2 + sig_b);
       double sig_thres = 0;
       if (method == "binomial") {
         double pi = sum(get_row(beta, grp, time) % n_isl_region / n_region);
         pi = exp(pi) / (1 + exp(pi));
-        sig_thres = (1 / ((A(grp, time) + pi) * (1 - pi)) - tau2(grp, time) * (1 + 1 / m0)) * m0;
+        sig_thres = (1.0 / ((A(grp, time) + pi) * (1 - pi)) - tau2(grp, time) * (1 + 1.0 / m0)) * m0;
       } else if (method == "poisson") {
-        sig_thres = (log(1 / A(grp, time) + 1) - tau2(grp, time) * (1 + 1 / m0)) * m0;
+        sig_thres = (log(1.0 / A(grp, time) + 1) - tau2(grp, time) * (1 + 1.0 / m0)) * m0;
       }
       sig_thres = (sig_thres < 0) ? 0 : sig_thres;
-      double u = R::runif(0, R::pgamma(1 / sig_thres, sig_shape, sig_scale, true, false));
-      sig2(grp, time) = 1 / R::qgamma(u, sig_shape, sig_scale, true, false);
+      double u = R::runif(0, R::pgamma(1.0 / sig_thres, sig_shape, sig_scale, true, false));
+      sig2(grp, time) = 1.0 / R::qgamma(u, sig_shape, sig_scale, true, false);
     }
   }
   sample["sig2"] = sig2;
