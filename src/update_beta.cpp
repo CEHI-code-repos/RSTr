@@ -37,8 +37,8 @@ mat rtnorm_mat(const mat& mean, const mat& sd, const mat& thres) {
   const uword nr = mean.n_rows;
   const uword nc = mean.n_cols;
   mat x(nr, nc, arma::fill::zeros);
-  for (uword r = 0; r < nr; r++) {
-    for (uword c = 0; c < nc; c++) {
+  for (uword r = 0; r < nr; ++r) {
+    for (uword c = 0; c < nc; ++c) {
       double beta_max = R::pnorm(thres(r, c), mean(r, c), sd(r, c), true, false);
       if (beta_max > 0) {
         double u = R::runif(0, beta_max);
@@ -66,7 +66,7 @@ void update_beta_default(List& RSTr_obj) {
   const field<uvec>& isl_region = sp_data["isl_region"];
   const uword n_island = isl_region.n_elem;
   const uword n_time = Z.n_slices;
-  for (uword isl = 0; isl < n_island; isl++) {
+  for (uword isl = 0; isl < n_island; ++isl) {
     const uvec& isl_idx = isl_region[isl];
     const uword n_isl_region = isl_idx.n_elem;
     const mat mean_beta = get_mean_beta(lambda, Z, isl_idx);
@@ -93,7 +93,7 @@ void update_beta_eucar(List& RSTr_obj) {
   const double m0 = params["m0"];
   const String method = params["method"];
   const mat beta_thres = get_beta_thres(tau2, sig2, m0, A);
-  for (uword isl = 0; isl < n_island; isl++) {
+  for (uword isl = 0; isl < n_island; ++isl) {
     const uvec& isl_idx = isl_region[isl];
     const uword n_isl_region = isl_idx.n_elem;
     const mat sd_beta = get_sd_beta(tau2, n_isl_region, tau2.n_cols);
