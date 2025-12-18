@@ -39,9 +39,9 @@ mat rtnorm_mat(const mat& mean, const mat& sd, const mat& thres) {
   mat x(nr, nc, arma::fill::zeros);
   for (uword r = 0; r < nr; ++r) {
     for (uword c = 0; c < nc; ++c) {
-      double beta_max = R::pnorm(thres(r, c), mean(r, c), sd(r, c), true, false);
-      if (beta_max > 0) {
-        double u = R::runif(0, beta_max);
+      double max = R::pnorm(thres(r, c), mean(r, c), sd(r, c), true, false);
+      if (max > 0) {
+        double u = R::runif(0, max);
         x(r, c) = R::qnorm(u, mean(r, c), sd(r, c), true, false);
       }
     }

@@ -1,8 +1,12 @@
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
 #include "cpp_helpers.h"
-using namespace Rcpp;
-using namespace arma;
+using arma::mat;
+using arma::cube;
+using arma::uword;
+using arma::uvec;
+using Rcpp::List;
+using Rcpp::String;
 
 mat get_tau_scale(const cube& lambda, const cube& beta_0, const cube& Z,
                   const double tau_b) {
@@ -71,17 +75,19 @@ void update_tau2_rcar(List& RSTr_obj) {
   for (uword grp = 0; grp < n_group; grp++) {
     for (uword time = 0; time < n_time; time++) {
       double tau_scale = 1.0 / (sum(get_row(square_resid, grp, time)) / 2.0 + tau_b);
-      double tau_thres = 0;
+      double max = 0;
       if (method == "binomial") {
         double pi = sum(get_row(beta, grp, time) % n_isl_region / n_region);
         pi = exp(pi) / (1 + exp(pi));
-        tau_thres = (1.0 / ((A(grp, time) + pi) * (1 - pi)) - sig2(grp, time) / m0) / (1 + 1.0 / m0);
+        max = (1.0 / ((A(grp, time) + pi) * (1 - pi)) - sig2(grp, time) / m0) / (1 + 1.0 / m0);
       } else if (method == "poisson") {
-        tau_thres = (log(1.0 / A(grp, time) + 1) - sig2(grp, time) / m0) / (1 + 1.0 / m0);
+        max = (log(1.0 / A(grp, time) + 1) - sig2(grp, time) / m0) / (1 + 1.0 / m0);
       }
-      tau_thres = (tau_thres < 0) ? 0 : tau_thres;
-      double u = R::runif(0, R::pgamma(1.0 / tau_thres, tau_shape, tau_scale, true, false));
-      tau2(grp, time) = 1.0 / R::qgamma(u, tau_shape, tau_scale, true, false);
+      max = (max < 0) ? 0 : max;
+      if (max > 0) {
+        double u = R::runif(0, R::pgamma(1.0 / max, tau_shape, tau_scale, true, false));
+        tau2(grp, time) = 1.0 / R::qgamma(u, tau_shape, tau_scale, true, false);
+      }
     }
   }
   sample["tau2"] = tau2;

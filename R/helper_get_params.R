@@ -37,7 +37,8 @@ get_params <- function(
   if (model %in% c("car", "rcar")) {
     params$restricted <- restricted
     if (restricted) {
-      A <- array(A, dim = dim(data$Y)[2:3]) %||% array(6, dim = dim(data$Y)[-1])
+      A <- A %||% array(6, dim = dim(data$Y)[-1])
+      A <- array(A, dim = dim(data$Y)[2:3])
       m0 <- m0 %||% 3
       params$A <- A
       params$m0 <- m0
