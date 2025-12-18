@@ -4,6 +4,14 @@
 using namespace Rcpp;
 using namespace arma;
 
+mat get_tau_scale(const cube& lambda, const cube& beta_0, const cube& Z,
+                  const double tau_b) {
+  const cube square_resid = arma::square(lambda - beta_0 - Z);
+  mat sum_sq_gt = arma::sum(square_resid, 0);
+  mat tau_scale = 1.0 / (0.5 * sum_sq_gt + tau_b);
+  return tau_scale;
+}
+
 mat irgamma_mat(const double shape, const mat& scale) {
   const uword nr = scale.n_rows;
   const uword nc = scale.n_cols;
@@ -30,9 +38,7 @@ void update_tau2_default(List& RSTr_obj) {
   const double& tau_b = priors["tau_b"];
   const uword n_region = Z.n_rows;
   const double tau_shape = n_region / 2.0 + tau_a;
-  const cube square_resid = arma::square(lambda - get_regs(beta, isl_id) - Z);
-  mat sum_sq_gt = arma::sum(square_resid, 0);
-  mat tau_scale = 1.0 / (0.5 * sum_sq_gt + tau_b);
+  const mat tau_scale = get_tau_scale(lambda, get_regs(beta, isl_id), Z, tau_b);
   tau2 = irgamma_mat(tau_shape, tau_scale);
   sample["tau2"] = tau2;
   RSTr_obj["sample"] = sample;
