@@ -36,7 +36,7 @@ test_that("all MSTCAR models work with update_rho = TRUE", {
         "test",
         x,
         miadj,
-        update_rhow = TRUE,
+        update_rho = TRUE,
         show_plots = FALSE
       )
     )
