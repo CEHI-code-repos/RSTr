@@ -28,13 +28,13 @@ running a UCAR model to see the evolution of `Z` over time:
 ``` r
 data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_ucar <- ucar("my_test_model", data_u, miadj, tempdir(), seed = 1234)
-#> Starting sampler on Batch 1 at Thu Dec 18 18:57:11
+#> Starting sampler on Batch 1 at Thu Dec 18 19:55:41
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 18 18:57:18
+    #> Model finished at Thu Dec 18 19:55:47
 
 The magnitude of `sig2` has further implications on the rate estimates
 `lambda`. Smaller `sig2` values mean that the variance between neighbors
@@ -121,13 +121,13 @@ function, setting an informativeness ceiling of `A = 6`:
 
 ``` r
 mod_eucar <- eucar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
-#> Starting sampler on Batch 1 at Thu Dec 18 18:57:18
+#> Starting sampler on Batch 1 at Thu Dec 18 19:55:48
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 18 18:57:24
+    #> Model finished at Thu Dec 18 19:55:54
 
 Notice that the traceplots for `tau2` and `sig2` in our enhanced (i.e.,
 restricted) UCAR model have significantly higher values than those in
@@ -209,13 +209,13 @@ events:
 data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FALSE])
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_eucar <- eucar("test_eucar", data_u, miadj, tempdir(), seed = 1234, A = A)
-#> Starting sampler on Batch 1 at Thu Dec 18 18:57:26
+#> Starting sampler on Batch 1 at Thu Dec 18 19:55:56
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 18 18:57:33
+    #> Model finished at Thu Dec 18 19:56:03
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
