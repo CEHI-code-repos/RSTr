@@ -60,19 +60,19 @@ Reliability can be easily tested in CAR models using two criteria:
   mean that we don’t need this criterion when evaluating reliability.
 
 Let’s get some reliability metrics for our dataset. The
-[`mstcar()`](../reference/ucar.md) function automatically generates
+[`mstcar()`](../reference/car.md) function automatically generates
 credible intervals and relative precisions based on the `perc_ci`
 argument:
 
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234, perc_ci = 0.95)
-#> Starting sampler on Batch 1 at Thu Dec 18 21:04:30
+#> Starting sampler on Batch 1 at Thu Dec 18 22:57:54
 ```
 
 ![](RSTr-reliability_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 18 21:04:55
+    #> Model finished at Thu Dec 18 22:58:20
 
 Here, we specify `perc_ci = 0.95`, which means our relative precision
 estimates will be based on a 95% credible interval. If we want to

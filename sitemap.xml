@@ -24,6 +24,7 @@
 <url><loc>/reference/age_standardize.html</loc></url>
 <url><loc>/reference/aggregate_count.html</loc></url>
 <url><loc>/reference/aggregate_samples.html</loc></url>
+<url><loc>/reference/car.html</loc></url>
 <url><loc>/reference/get_estimates.html</loc></url>
 <url><loc>/reference/get_medians.html</loc></url>
 <url><loc>/reference/index.html</loc></url>
@@ -38,7 +39,6 @@
 <url><loc>/reference/mishp.html</loc></url>
 <url><loc>/reference/standardize_samples.html</loc></url>
 <url><loc>/reference/suppress_estimates.html</loc></url>
-<url><loc>/reference/ucar.html</loc></url>
 <url><loc>/reference/update_model.html</loc></url>
 </urlset>
 

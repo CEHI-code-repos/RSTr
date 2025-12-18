@@ -170,18 +170,18 @@ MCAR model is run with data containing several time periods,
 every group.</p>
 </div>
 <div class="section level3">
-<h3 id="initial-values-for-the-ucareucar-model">Initial values for the UCAR/EUCAR model<a class="anchor" aria-label="anchor" href="#initial-values-for-the-ucareucar-model"></a>
+<h3 id="initial-values-for-the-carrcar-model">Initial values for the CAR/RCAR model<a class="anchor" aria-label="anchor" href="#initial-values-for-the-carrcar-model"></a>
 </h3>
-<p>The UCAR models have the smallest set of initial values, using only
+<p>The CAR models have the smallest set of initial values, using only
 <code>lambda</code>, <code>beta</code>, <code>Z</code>, and
-<code>tau2</code> from the MCAR model. Similar to the MCAR, if a UCAR
+<code>tau2</code> from the MCAR model. Similar to the MCAR, if a CAR
 model is run with multiple groups and time periods, <code>tau2</code>
 requires values for every group and time period present. The only new
-initial value for the UCAR models is <code>sig2</code>, which takes the
+initial value for the CAR models is <code>sig2</code>, which takes the
 place of <code>G</code> in the MCAR and MSTCAR models:</p>
 <ul>
 <li>
-<code>sig2</code> represents the spatial variance of a UCAR/EUCAR
+<code>sig2</code> represents the spatial variance of a CAR/RCAR
 model. This parameter picks up any variance in values of <code>Z</code>
 for each group. It is a <code>matrix</code> of size
 <code>n_group x n_time</code> of positive real numbers.</li>

@@ -75,15 +75,15 @@ the MSTCAR model. If an MCAR model is run with data containing several
 time periods, `tau2` will require values for every time period along
 with every group.
 
-### Initial values for the UCAR/EUCAR model
+### Initial values for the CAR/RCAR model
 
-The UCAR models have the smallest set of initial values, using only
+The CAR models have the smallest set of initial values, using only
 `lambda`, `beta`, `Z`, and `tau2` from the MCAR model. Similar to the
-MCAR, if a UCAR model is run with multiple groups and time periods,
+MCAR, if a CAR model is run with multiple groups and time periods,
 `tau2` requires values for every group and time period present. The only
-new initial value for the UCAR models is `sig2`, which takes the place
-of `G` in the MCAR and MSTCAR models:
+new initial value for the CAR models is `sig2`, which takes the place of
+`G` in the MCAR and MSTCAR models:
 
-- `sig2` represents the spatial variance of a UCAR/EUCAR model. This
+- `sig2` represents the spatial variance of a CAR/RCAR model. This
   parameter picks up any variance in values of `Z` for each group. It is
   a `matrix` of size `n_group x n_time` of positive real numbers.

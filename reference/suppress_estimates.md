@@ -31,8 +31,8 @@ An `RSTr` model object with suppressed estimates.
 ## Details
 
 While the `threshold` argument is optional, population/event thresholds
-are necessary for non-enhanced models. Population/event thresholds
-should only be omitted for enhanced CAR models, such as the EUCAR.
+are necessary for non-restricted models. Population/event thresholds
+should only be omitted for restricted CAR models, such as the RCAR.
 
 ## Examples
 

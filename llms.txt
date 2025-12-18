@@ -39,8 +39,8 @@ to see added to the package.
 
 ## Modeling
 
-- [`ucar()`](ucar.md) [`eucar()`](ucar.md) [`mcar()`](ucar.md)
-  [`mstcar()`](ucar.md) : Create CAR model
+- [`car()`](car.md) [`rcar()`](car.md) [`mcar()`](car.md)
+  [`mstcar()`](car.md) : Create CAR model
 - [`update_model()`](update_model.md) : Update model
 - [`load_model()`](load_model.md) : Load model
 

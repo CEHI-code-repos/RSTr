@@ -109,16 +109,16 @@ your data.</p>
 how much to either increase or decrease its corresponding estimated rate
 <code>lambda</code>. In CAR models, the strength of <code>Z</code>
 itself is determined by a host of factors, most importantly the spatial
-variance (<code>sig2</code> for UCAR; <code>G</code> for MCAR and
-MSTCAR). We can investigate spatial smoothing further by running a UCAR
+variance (<code>sig2</code> for CAR; <code>G</code> for MCAR and
+MSTCAR). We can investigate spatial smoothing further by running a CAR
 model to see the evolution of <code>Z</code> over time:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_u</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">miheart</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">[</span>, <span class="st">"55-64"</span>, <span class="st">"1979"</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">mod_ucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">ucar</a></span><span class="op">(</span><span class="st">"my_test_model"</span>, <span class="va">data_u</span>, <span class="va">miadj</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Thu Dec 18 21:04:02</span></span></code></pre></div>
+<span><span class="va">mod_car</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/car.html">car</a></span><span class="op">(</span><span class="st">"my_test_model"</span>, <span class="va">data_u</span>, <span class="va">miadj</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Thu Dec 18 22:57:27</span></span></code></pre></div>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Thu Dec 18 21:04:09</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Thu Dec 18 22:57:33</span></span></code></pre>
 <p>The magnitude of <code>sig2</code> has further implications on the
 rate estimates <code>lambda</code>. Smaller <code>sig2</code> values
 mean that the variance between neighbors is also smaller. In short, the
@@ -136,7 +136,7 @@ we can still mark it as unreliable if this threshold is too small. We
 can investigate this over all of our datapoints by comparing the event
 counts to their corresponding relative precisions:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_ucar</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_car</span><span class="op">)</span></span>
 <span><span class="va">estimates_supp</span> <span class="op">&lt;-</span> <span class="va">estimates</span><span class="op">[</span><span class="va">estimates</span><span class="op">$</span><span class="va">rel_prec</span> <span class="op">&gt;</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">estimates</span><span class="op">$</span><span class="va">events</span> <span class="op">&lt;</span> <span class="fl">10</span>, <span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">$</span><span class="va">events</span>, <span class="va">estimates</span><span class="op">$</span><span class="va">rel_prec</span>, xlab <span class="op">=</span> <span class="st">"Events"</span>, ylab <span class="op">=</span> <span class="st">"Relative Precision"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">estimates_supp</span><span class="op">$</span><span class="va">events</span>, <span class="va">estimates_supp</span><span class="op">$</span><span class="va">rel_prec</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span>
@@ -148,7 +148,7 @@ vertical blue line shows an event cutoff based on the suppression
 criteria currently used by CDC WONDER (event counts less than 10 are
 suppressed for privacy reasons). Red datapoints are below the population
 threshold but above the relative precision threshold.</p>
-<p>This plot showcases the intense oversmoothing done by the UCAR model
+<p>This plot showcases the intense oversmoothing done by the CAR model
 in small-event areas. Several regions with less than 10 events (25, or
 30% of our regions) have relative precisions well over the necessary
 threshold for reliability, despite having low event counts. Hence, we
@@ -167,7 +167,7 @@ limit on model informativeness.</p>
 example above, this resulted in 25 regions which had a sufficiently high
 number of events added through oversmoothing to over-inflate their
 relative precision.</p>
-<p>The UCAR model’s informativeness, <code>a0</code>, is determined by a
+<p>The CAR model’s informativeness, <code>a0</code>, is determined by a
 mix of the spatial variance <code>sig2</code>, the non-spatial variance
 <code>tau2</code>, and the mean region rate <code>beta</code> for
 Binomially-distributed likelihoods. For Poisson-distributed likelihoods,
@@ -175,11 +175,11 @@ only <code>sig2</code> and <code>tau2</code> determine
 informativeness.</p>
 </div>
 <div class="section level2">
-<h2 id="the-enhanced-ucar-eucar-model">The Enhanced UCAR (EUCAR) model<a class="anchor" aria-label="anchor" href="#the-enhanced-ucar-eucar-model"></a>
+<h2 id="the-restricted-car-rcar-model">The Restricted CAR (RCAR) model<a class="anchor" aria-label="anchor" href="#the-restricted-car-rcar-model"></a>
 </h2>
-<p>RSTr features unrestricted UCAR/MCAR/MSTCAR models, but also features
-an enhanced UCAR (EUCAR) model which incorporates measures to prevent
-oversmoothing. With the EUCAR model, we can limit our informativeness
+<p>RSTr features unrestricted CAR/MCAR/MSTCAR models, but also features
+a restricted CAR (RCAR) model which incorporates measures to prevent
+oversmoothing. With the RCAR model, we can limit our informativeness
 <code>a0</code> to a ceiling, <code>A</code>, by tweaking the estimation
 process of <code>sig2</code>, <code>tau2</code>, and <code>beta</code>.
 This will ensure that our spatial smoothing does not contribute more
@@ -196,29 +196,29 @@ et al. 2021</a> suggests an informativeness ceiling <code>A</code> of 6
 and an <code>m0</code> of 3 to ensure that regions with event counts
 less than 10 will not erroneously generate precise estimates. RSTr sets
 <code>A</code> to 6 and <code>m0</code> to 3 by default.</p>
-<p>Let’s run an EUCAR model using the <code><a href="../reference/ucar.html">eucar()</a></code> function,
+<p>Let’s run an RCAR model using the <code><a href="../reference/car.html">rcar()</a></code> function,
 setting an informativeness ceiling of <code>A = 6</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mod_eucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">eucar</a></span><span class="op">(</span><span class="st">"my_test_model"</span>, <span class="va">data_u</span>, <span class="va">miadj</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1234</span>, A <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Thu Dec 18 21:04:09</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">mod_rcar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/car.html">rcar</a></span><span class="op">(</span><span class="st">"my_test_model"</span>, <span class="va">data_u</span>, <span class="va">miadj</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1234</span>, A <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Thu Dec 18 22:57:33</span></span></code></pre></div>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Thu Dec 18 21:04:15</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Thu Dec 18 22:57:40</span></span></code></pre>
 <p>Notice that the traceplots for <code>tau2</code> and
-<code>sig2</code> in our enhanced (i.e., restricted) UCAR model have
-significantly higher values than those in the unrestricted UCAR model.
-This is due to the EUCAR model ‘blocking’ lower values and ensuring that
-regions don’t oversmooth. We can directly compare the two sets of
-results with another relative precision plot:</p>
+<code>sig2</code> in our restricted CAR model have significantly higher
+values than those in the unrestricted CAR model. This is due to the rcar
+model ‘blocking’ lower values and ensuring that regions don’t
+oversmooth. We can directly compare the two sets of results with another
+relative precision plot:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">estimates_eucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_eucar</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">estimates_eucar</span><span class="op">$</span><span class="va">events</span>, <span class="va">estimates_eucar</span><span class="op">$</span><span class="va">rel_prec</span>, xlab <span class="op">=</span> <span class="st">"Events"</span>, ylab <span class="op">=</span> <span class="st">"Relative Precision"</span>, col <span class="op">=</span> <span class="st">"purple"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">estimates_rcar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_rcar</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">estimates_rcar</span><span class="op">$</span><span class="va">events</span>, <span class="va">estimates_rcar</span><span class="op">$</span><span class="va">rel_prec</span>, xlab <span class="op">=</span> <span class="st">"Events"</span>, ylab <span class="op">=</span> <span class="st">"Relative Precision"</span>, col <span class="op">=</span> <span class="st">"purple"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">$</span><span class="va">events</span>, <span class="va">estimates</span><span class="op">$</span><span class="va">rel_prec</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">1</span>, col <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span>v <span class="op">=</span> <span class="fl">10</span>, col <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" width="700"></p>
-<p>Here, the estimates for the EUCAR are in purple and the estimates for
-the unrestricted UCAR are in black. Notice how the points on the purple
+<p>Here, the estimates for the RCAR are in purple and the estimates for
+the unrestricted CAR are in black. Notice how the points on the purple
 curve stay below the black curve at low event counts and that no purple
 points enter the high-precision, low-event quadrant. With
 <code>A = 6</code>, the points lie below 1 relative precision until
@@ -230,7 +230,7 @@ compare the models:</p>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mishp</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">estimates</span><span class="op">$</span><span class="va">medians</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Spatially Smoothed Estimates, Unrestricted UCAR Model"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Spatially Smoothed Estimates, Unrestricted CAR Model"</span>,</span>
 <span>    fill <span class="op">=</span> <span class="st">"Deaths per 100,000"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -238,31 +238,31 @@ compare the models:</p>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" width="700"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mishp</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">estimates_eucar</span><span class="op">$</span><span class="va">medians</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">estimates_rcar</span><span class="op">$</span><span class="va">medians</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Spatially Smoothed Estimates, EUCAR Model"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Spatially Smoothed Estimates, RCAR Model"</span>,</span>
 <span>    fill <span class="op">=</span> <span class="st">"Deaths per 100,000"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-6-2.png" class="r-plt" width="700"></p>
-<p>As expected, the gradient of estimates is much more sharp on the
-EUCAR model map in comparison to the unrestricted UCAR map. This is due
-to the decreased intensity of our spatial smoothing. Additionally, the
-spread of estimates for the EUCAR model is wider than that of the
-unrestricted UCAR model because of its increased spatial variance.</p>
+<p>As expected, the gradient of estimates is much more sharp on the RCAR
+model map in comparison to the unrestricted CAR map. This is due to the
+decreased intensity of our spatial smoothing. Additionally, the spread
+of estimates for the RCAR model is wider than that of the unrestricted
+CAR model because of its increased spatial variance.</p>
 </div>
 <div class="section level2">
-<h2 id="enhanced-models-and-age-standardization">Enhanced models and age-standardization<a class="anchor" aria-label="anchor" href="#enhanced-models-and-age-standardization"></a>
+<h2 id="restricted-models-and-age-standardization">Restricted models and age-standardization<a class="anchor" aria-label="anchor" href="#restricted-models-and-age-standardization"></a>
 </h2>
 <p>When age-standardizing across a CAR model, informativeness is
 cumulative: informativeness in individual rates when spatially smoothing
 will compound the informativeness in estimates age-standardized by
-spatially smoothed rates. Therefore, the EUCAR is an excellent choice
-for modeling with age-standardization. Not only will individual
-estimates not be over-smoothed, the age-standardized estimates will
-benefit from enhanced reliability due to increased event counts in the
-crude data.</p>
+spatially smoothed rates. Therefore, the RCAR is an excellent choice for
+modeling with age-standardization. Not only will individual estimates
+not be over-smoothed, the age-standardized estimates will benefit from
+enhanced reliability due to increased event counts in the crude
+data.</p>
 <p>We can re-run our model with three age groups: 65-74, 75-84, and 85+.
 Since we are now running our models across multiple groups, we will need
 to extend our <code>A</code>s to match the number of groups.
@@ -273,23 +273,23 @@ we can weight each group’s <code>A</code> by their total events:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_u</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">miheart</span>, \<span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"65-74"</span>, <span class="st">"75-84"</span>, <span class="st">"85+"</span><span class="op">)</span>, <span class="st">"1988"</span>, drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fl">6</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colSums</a></span><span class="op">(</span><span class="va">data_u</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">data_u</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
-<span><span class="va">mod_eucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">eucar</a></span><span class="op">(</span><span class="st">"test_eucar"</span>, <span class="va">data_u</span>, <span class="va">miadj</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1234</span>, A <span class="op">=</span> <span class="va">A</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Thu Dec 18 21:04:17</span></span></code></pre></div>
+<span><span class="va">mod_rcar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/car.html">rcar</a></span><span class="op">(</span><span class="st">"test_rcar"</span>, <span class="va">data_u</span>, <span class="va">miadj</span>, <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, seed <span class="op">=</span> <span class="fl">1234</span>, A <span class="op">=</span> <span class="va">A</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Thu Dec 18 22:57:41</span></span></code></pre></div>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Thu Dec 18 21:04:24</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Thu Dec 18 22:57:48</span></span></code></pre>
 <p>While our individual groups will have lower relative precisions due
 to lower respective <code>A</code>s, when we age-standardize, we will
 have the same effective smoothing power as our singular
 <code>A = 6</code> restricted model:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">std_pop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">68775</span>, <span class="fl">34116</span>, <span class="fl">9888</span><span class="op">)</span></span>
-<span><span class="va">mod_eucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/age_standardize.html">age_standardize</a></span><span class="op">(</span><span class="va">mod_eucar</span>, <span class="va">std_pop</span>, <span class="st">"65up"</span><span class="op">)</span></span>
-<span><span class="va">est_eucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_eucar</span><span class="op">)</span></span>
+<span><span class="va">mod_rcar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/age_standardize.html">age_standardize</a></span><span class="op">(</span><span class="va">mod_rcar</span>, <span class="va">std_pop</span>, <span class="st">"65up"</span><span class="op">)</span></span>
+<span><span class="va">est_rcar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_rcar</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mishp</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">est_eucar</span><span class="op">$</span><span class="va">medians</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">est_rcar</span><span class="op">$</span><span class="va">medians</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Age-Standardized Spatially Smoothed Estimates, EUCAR Model"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Age-Standardized Spatially Smoothed Estimates, RCAR Model"</span>,</span>
 <span>    fill <span class="op">=</span> <span class="st">"Deaths per 100,000"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
@@ -297,38 +297,38 @@ have the same effective smoothing power as our singular
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" width="700"></p>
 </div>
 <div class="section level2">
-<h2 id="the-eucar-model-reliability-and-suppression">The EUCAR Model, Reliability, and Suppression<a class="anchor" aria-label="anchor" href="#the-eucar-model-reliability-and-suppression"></a>
+<h2 id="the-rcar-model-reliability-and-suppression">The RCAR Model, Reliability, and Suppression<a class="anchor" aria-label="anchor" href="#the-rcar-model-reliability-and-suppression"></a>
 </h2>
 <p>Remember that for unrestricted CAR models, we have to impose an
 additional event/population threshold for reliability to capture
 high-precision estimates in low-event areas. As we saw in the
 event/relative precision plot, these thresholds are no longer necessary
-when we suppress our estimates with an EUCAR model:</p>
+when we suppress our estimates with an RCAR model:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mod_eucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/suppress_estimates.html">suppress_estimates</a></span><span class="op">(</span><span class="va">mod_eucar</span><span class="op">)</span></span>
-<span><span class="va">est_eucar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_eucar</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">mod_rcar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/suppress_estimates.html">suppress_estimates</a></span><span class="op">(</span><span class="va">mod_rcar</span><span class="op">)</span></span>
+<span><span class="va">est_rcar</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_rcar</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mishp</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">est_eucar</span><span class="op">$</span><span class="va">medians_suppressed</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">est_rcar</span><span class="op">$</span><span class="va">medians_suppressed</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    title <span class="op">=</span> <span class="st">"Spatially Smoothed Estimates, EUCAR Model"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Spatially Smoothed Estimates, RCAR Model"</span>,</span>
 <span>    fill <span class="op">=</span> <span class="st">"Deaths per 100,000"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="RSTr-informativeness_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" width="700"></p>
-<p>With the EUCAR model, we get the benefit of age-standardizing our
+<p>With the RCAR model, we get the benefit of age-standardizing our
 spatially smoothed estimates without the compounded oversmoothing from
 unrestricted models.</p>
 </div>
 <div class="section level2">
-<h2 id="choosing-between-enhanced-vs-unrestricted-models">Choosing between enhanced vs unrestricted models<a class="anchor" aria-label="anchor" href="#choosing-between-enhanced-vs-unrestricted-models"></a>
+<h2 id="choosing-between-restricted-vs-unrestricted-models">Choosing between restricted vs unrestricted models<a class="anchor" aria-label="anchor" href="#choosing-between-restricted-vs-unrestricted-models"></a>
 </h2>
-<p>Now that we’ve elucidated the benefits of using enhanced models, we
+<p>Now that we’ve elucidated the benefits of using restricted models, we
 can work through the most appropriate use case for each model:</p>
 <ul>
-<li><p>The EUCAR model is virtually always preferred to the unrestricted
-UCAR model. If you are not interested in temporal trends or group/time
-interactions, the EUCAR will likely be your best option, particularly if
+<li><p>The RCAR model is virtually always preferred to the unrestricted
+CAR model. If you are not interested in temporal trends or group/time
+interactions, the RCAR will likely be your best option, particularly if
 you are age-standardizing.</p></li>
 <li><p>The MCAR model is useful if you are specifically interested in
 interactions between sociodemographic groups and don’t have temporal
@@ -338,7 +338,7 @@ data.</p></li>
 interested in interactions between sociodemographic groups across time.
 If your trends depict multiple behaviors, it is recommended to either
 run two MSTCAR models with separate time periods for each trend or to
-run concurrent EUCAR models. Note that all <code>*car()</code> functions
+run concurrent RCAR models. Note that all <code>*car()</code> functions
 accept up to three-dimensional arrays and will concurrently run models
 for different groups/time periods if necessary.</p></li>
 </ul>
@@ -346,17 +346,17 @@ for different groups/time periods if necessary.</p></li>
 <div class="section level2">
 <h2 id="future-developments">Future developments<a class="anchor" aria-label="anchor" href="#future-developments"></a>
 </h2>
-<p>Enhanced models for MCAR and MSTCAR continue to be under development.
-Development for an enhanced Univariate Spatiotemporal CAR (USTCAR) model
-is also underway. RSTr will incorporate these enhanced models as they
-become available.</p>
+<p>Restricted models for MCAR and MSTCAR continue to be under
+development. Development for a restricted Univariate Spatiotemporal CAR
+(STCAR) model is also underway. RSTr will incorporate these restricted
+models as they become available.</p>
 </div>
 <div class="section level2">
 <h2 id="final-thoughts">Final thoughts<a class="anchor" aria-label="anchor" href="#final-thoughts"></a>
 </h2>
 <p>In this vignette, we investigated model informativeness and the
 tendency of unrestricted BYM models to oversmooth estimates, along with
-some benefits of enhanced CAR models. This vignette concludes the main
+some benefits of restricted CAR models. This vignette concludes the main
 sections on using the functions in the RSTr package. After reading
 these, you should be able to prepare your event and adjacency data,
 choose and configure your model as necessary, age-standardize estimates,

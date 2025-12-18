@@ -27,8 +27,8 @@ with a `data.frame`.
 
 - For a given CAR model, `Y` must have at least one total event. The CAR
   model will not be able to smooth information if there is no event data
-  present. For a UCAR model, this includes any set of all regions; for
-  an MCAR model, this is any set of all regions and groups; and for the
+  present. For a CAR model, this includes any set of all regions; for an
+  MCAR model, this is any set of all regions and groups; and for the
   MSTCAR model, this is the entire dataset;
 
 - `Y` and `n` can be up to a three-dimensional array: the first margin
@@ -163,7 +163,7 @@ principles as above.
 ## Data setup for other models
 
 The above dataset is prepared specifically for an MSTCAR model. But what
-if we want to prepare data for an MCAR or even a UCAR model? We can
+if we want to prepare data for an MCAR or even a CAR model? We can
 filter the original dataset and follow a similar procedure to prepare
 our data for the MCAR model:
 
@@ -178,11 +178,11 @@ argument. In the case of the MCAR model, we filter down to the year we
 want because otherwise, it would give us the mortality and population
 counts for all years in our dataset instead of just for 1979.
 
-For the UCAR model, setup is similar:
+For the CAR model, setup is similar:
 
 ``` r
-ma_mort_ucar <- ma_mort[ma_mort$Year == 1979 & ma_mort$Sex == "Male", ] # filter dataset to only show 1979 data for men
-ma_data_ucar <- long_to_list_matrix(ma_mort_ucar, Deaths, Population, County.Code)
+ma_mort_car <- ma_mort[ma_mort$Year == 1979 & ma_mort$Sex == "Male", ] # filter dataset to only show 1979 data for men
+ma_data_car <- long_to_list_matrix(ma_mort_car, Deaths, Population, County.Code)
 ```
 
 ## Closing Thoughts

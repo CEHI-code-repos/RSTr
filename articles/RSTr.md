@@ -13,18 +13,17 @@ to get small area estimates.
 
 The models provided in the RSTr package are based on the [Besag, York,
 and Mollié (1991)](https://link.springer.com/article/10.1007/bf00116466)
-Conditional Autoregressive (CAR) model (heretofore referred to as the
-“Univariate CAR” or “UCAR” model), which spatially smooths data by
+Conditional Autoregressive (CAR) model, which spatially smooths data by
 incorporating information such as event and population counts from
 neighboring geographic units (counties, census tracts, etc.). The degree
 of spatial smoothing is determined by a spatial region’s respective
 population size. The CAR model can be extended to several levels of
 complexity, depending on the input data:
 
-- Univariate CAR (UCAR): Spatially smooths across geographies;
+- BYM CAR (CAR): Spatially smooths across geographies;
 
-- Enhanced Univariate CAR (EUCAR): Spatially smooths across geographies
-  and prevents over-smoothing;
+- Restricted CAR (RCAR): Spatially smooths across geographies and
+  prevents over-smoothing;
 
 - Multivariate CAR (MCAR): Spatially smooths across geographies and
   sociodemographic groups; and
@@ -35,14 +34,14 @@ complexity, depending on the input data:
 For this vignette, we will demonstrate RSTr’s functionality with an
 MSTCAR model.
 
-### Enhanced models to prevent over-smoothing
+### Restricted models to prevent over-smoothing
 
 A problem with CAR models pointed out by [Quick, et
 al. (2021)](https://pubmed.ncbi.nlm.nih.gov/33980402/) is that of
 over-smoothing due to the informativeness of the BYM model. The RSTr
-package provides enhancements to the UCAR models for both Poisson- and
+package provides enhancements to the CAR models for both Poisson- and
 binomial-distributed data that prevent over-smoothing by restricting
-model informativeness through the [`eucar()`](../reference/ucar.md)
+model informativeness through the [`rcar()`](../reference/car.md)
 function. Enhancements for the MCAR and MSTCAR models are under
 progress, and will be incorporated into the RSTr package as they are
 developed.
@@ -113,16 +112,16 @@ mod_mst <- mstcar(
   dir = tempdir(),
   seed = 1234
 )
-#> Starting sampler on Batch 1 at Thu Dec 18 21:05:45
+#> Starting sampler on Batch 1 at Thu Dec 18 22:59:08
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 18 21:06:11
+    #> Model finished at Thu Dec 18 22:59:34
 
-Here, we use the [`mstcar()`](../reference/ucar.md) function to specify
-our model. [`mstcar()`](../reference/ucar.md) accepts a few different
+Here, we use the [`mstcar()`](../reference/car.md) function to specify
+our model. [`mstcar()`](../reference/car.md) accepts a few different
 arguments in this case:
 
 - The `name` argument specifies the folder where the model data lives;
@@ -133,19 +132,19 @@ arguments in this case:
 - The `seed` argument specifies a random seed for replicability
   purposes.
 
-[`mstcar()`](../reference/ucar.md) creates a folder named
-`my_test_model` in R’s temporary directory containing folders that will
-hold batches of outputs for each parameter update. Additionally, an
-`RSTr` object which holds all information associated with the model
-(aside from samples) is created in the R environment and in the
-temporary directory. No samples are saved in the R environment because,
-given a sufficiently large dataset, MSTCAR models can become so large
-that it’s impossible to hold all the model samples in RAM. Therefore,
-all of the samples are saved locally. Should you want to save your model
-somewhere besides the temporary directory for future use, you can
-specify a folder with the `dir` argument.
+[`mstcar()`](../reference/car.md) creates a folder named `my_test_model`
+in R’s temporary directory containing folders that will hold batches of
+outputs for each parameter update. Additionally, an `RSTr` object which
+holds all information associated with the model (aside from samples) is
+created in the R environment and in the temporary directory. No samples
+are saved in the R environment because, given a sufficiently large
+dataset, MSTCAR models can become so large that it’s impossible to hold
+all the model samples in RAM. Therefore, all of the samples are saved
+locally. Should you want to save your model somewhere besides the
+temporary directory for future use, you can specify a folder with the
+`dir` argument.
 
-Note that [`mstcar()`](../reference/ucar.md) accepts more arguments than
+Note that [`mstcar()`](../reference/car.md) accepts more arguments than
 are used here, but these are the only ones needed to get started. Priors
 and initial values, for example, can be specified manually, but this is
 outside the scope of this vignette. There will also be checks performed
@@ -171,17 +170,17 @@ as the sampler progresses in case you need to reload your model at a
 later date. If the model crashes for any reason or R closes while the
 model is being run, the model `Rds` file will keep track of the current
 batch and pick back up where it left off when re-run. While
-[`mstcar()`](../reference/ucar.md) is running, the R plot window will
+[`mstcar()`](../reference/car.md) is running, the R plot window will
 show traceplots from a selection of estimates to check stability and
 diagnose any potential issues.
 
-If you want to learn more about [`mstcar()`](../reference/ucar.md) and
+If you want to learn more about [`mstcar()`](../reference/car.md) and
 the other model functions, read
 [`vignette("RSTr-car")`](../articles/RSTr-car.md).
 
 ### `get_estimates()`
 
-[`mstcar()`](../reference/ucar.md) takes care of the vast majority of
+[`mstcar()`](../reference/car.md) takes care of the vast majority of
 model preparation: within the function, the model is set up, samples are
 generated, and our medians are estimated. Once the function finishes, we
 can get an overview of our model:
@@ -279,7 +278,7 @@ Should you want to see those instead, you can set the argument
 
 While the main benefit of RSTr is generating reliable estimates from
 small-population areas, we cannot guarantee that all estimates generated
-by [`mstcar()`](../reference/ucar.md) will be reliable. Therefore, it is
+by [`mstcar()`](../reference/car.md) will be reliable. Therefore, it is
 prudent to suppress estimates that are deemed unreliable. For MSTCAR
 models, we can use two criteria to test for reliability: relative
 precision (i.e., the ratio of the median estimate to the width of its
@@ -394,7 +393,7 @@ main motivation for running this spatiotemporal model.
 ## Closing Thoughts
 
 This vignette introduces you to inputting data into the
-[`mstcar()`](../reference/ucar.md) function, extracting estimates with
+[`mstcar()`](../reference/car.md) function, extracting estimates with
 the [`get_estimates()`](../reference/get_estimates.md) function,
 age-standardizing estimates with the
 [`age_standardize()`](../reference/age_standardize.md) function,

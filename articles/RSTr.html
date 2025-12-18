@@ -99,18 +99,17 @@ to get small area estimates.</p>
 <h2 id="sec-models">Models<a class="anchor" aria-label="anchor" href="#sec-models"></a>
 </h2>
 <p>The models provided in the RSTr package are based on the <a href="https://link.springer.com/article/10.1007/bf00116466" class="external-link">Besag, York,
-and Mollié (1991)</a> Conditional Autoregressive (CAR) model (heretofore
-referred to as the “Univariate CAR” or “UCAR” model), which spatially
-smooths data by incorporating information such as event and population
-counts from neighboring geographic units (counties, census tracts,
-etc.). The degree of spatial smoothing is determined by a spatial
-region’s respective population size. The CAR model can be extended to
-several levels of complexity, depending on the input data:</p>
+and Mollié (1991)</a> Conditional Autoregressive (CAR) model, which
+spatially smooths data by incorporating information such as event and
+population counts from neighboring geographic units (counties, census
+tracts, etc.). The degree of spatial smoothing is determined by a
+spatial region’s respective population size. The CAR model can be
+extended to several levels of complexity, depending on the input
+data:</p>
 <ul>
-<li><p>Univariate CAR (UCAR): Spatially smooths across
-geographies;</p></li>
-<li><p>Enhanced Univariate CAR (EUCAR): Spatially smooths across
-geographies and prevents over-smoothing;</p></li>
+<li><p>BYM CAR (CAR): Spatially smooths across geographies;</p></li>
+<li><p>Restricted CAR (RCAR): Spatially smooths across geographies and
+prevents over-smoothing;</p></li>
 <li><p>Multivariate CAR (MCAR): Spatially smooths across geographies and
 sociodemographic groups; and</p></li>
 <li><p>Multivariate Spatiotemporal CAR (MSTCAR): Spatially smooths
@@ -119,14 +118,14 @@ across geographies, sociodemographic groups, and time periods.</p></li>
 <p>For this vignette, we will demonstrate RSTr’s functionality with an
 MSTCAR model.</p>
 <div class="section level3">
-<h3 id="sec-enhanced-models">Enhanced models to prevent over-smoothing<a class="anchor" aria-label="anchor" href="#sec-enhanced-models"></a>
+<h3 id="sec-restricted-models">Restricted models to prevent over-smoothing<a class="anchor" aria-label="anchor" href="#sec-restricted-models"></a>
 </h3>
 <p>A problem with CAR models pointed out by <a href="https://pubmed.ncbi.nlm.nih.gov/33980402/" class="external-link">Quick, et
 al. (2021)</a> is that of over-smoothing due to the informativeness of
-the BYM model. The RSTr package provides enhancements to the UCAR models
+the BYM model. The RSTr package provides enhancements to the CAR models
 for both Poisson- and binomial-distributed data that prevent
 over-smoothing by restricting model informativeness through the
-<code><a href="../reference/ucar.html">eucar()</a></code> function. Enhancements for the MCAR and MSTCAR
+<code><a href="../reference/car.html">rcar()</a></code> function. Enhancements for the MCAR and MSTCAR
 models are under progress, and will be incorporated into the RSTr
 package as they are developed.</p>
 </div>
@@ -200,19 +199,19 @@ containing information on each region/group/time in the model.</li>
 can start running our first model. The example datasets are set up to
 run out-of-the-box:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mod_mst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ucar.html">mstcar</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">mod_mst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/car.html">mstcar</a></span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="st">"my_test_model"</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">miheart</span>,</span>
 <span>  adjacency <span class="op">=</span> <span class="va">miadj</span>,</span>
 <span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">1234</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Thu Dec 18 21:05:45</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Thu Dec 18 22:59:08</span></span></code></pre></div>
 <p><img src="RSTr_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Thu Dec 18 21:06:11</span></span></code></pre>
-<p>Here, we use the <code><a href="../reference/ucar.html">mstcar()</a></code> function to specify our model.
-<code><a href="../reference/ucar.html">mstcar()</a></code> accepts a few different arguments in this
+<span><span class="co">#&gt; Model finished at Thu Dec 18 22:59:34</span></span></code></pre>
+<p>Here, we use the <code><a href="../reference/car.html">mstcar()</a></code> function to specify our model.
+<code><a href="../reference/car.html">mstcar()</a></code> accepts a few different arguments in this
 case:</p>
 <ul>
 <li>The <code>name</code> argument specifies the folder where the model
@@ -225,7 +224,7 @@ the folder; and</li>
 <li>The <code>seed</code> argument specifies a random seed for
 replicability purposes.</li>
 </ul>
-<p><code><a href="../reference/ucar.html">mstcar()</a></code> creates a folder named
+<p><code><a href="../reference/car.html">mstcar()</a></code> creates a folder named
 <code>my_test_model</code> in R’s temporary directory containing folders
 that will hold batches of outputs for each parameter update.
 Additionally, an <code>RSTr</code> object which holds all information
@@ -236,7 +235,7 @@ can become so large that it’s impossible to hold all the model samples
 in RAM. Therefore, all of the samples are saved locally. Should you want
 to save your model somewhere besides the temporary directory for future
 use, you can specify a folder with the <code>dir</code> argument.</p>
-<p>Note that <code><a href="../reference/ucar.html">mstcar()</a></code> accepts more arguments than are used
+<p>Note that <code><a href="../reference/car.html">mstcar()</a></code> accepts more arguments than are used
 here, but these are the only ones needed to get started. Priors and
 initial values, for example, can be specified manually, but this is
 outside the scope of this vignette. There will also be checks performed
@@ -261,17 +260,17 @@ will be updated as the sampler progresses in case you need to reload
 your model at a later date. If the model crashes for any reason or R
 closes while the model is being run, the model <code>Rds</code> file
 will keep track of the current batch and pick back up where it left off
-when re-run. While <code><a href="../reference/ucar.html">mstcar()</a></code> is running, the R plot window
+when re-run. While <code><a href="../reference/car.html">mstcar()</a></code> is running, the R plot window
 will show traceplots from a selection of estimates to check stability
 and diagnose any potential issues.</p>
-<p>If you want to learn more about <code><a href="../reference/ucar.html">mstcar()</a></code> and the other
+<p>If you want to learn more about <code><a href="../reference/car.html">mstcar()</a></code> and the other
 model functions, read <code><a href="../articles/RSTr-car.html">vignette("RSTr-car")</a></code>.</p>
 </div>
 <div class="section level3">
 <h3 id="sec-getestimates">
 <code>get_estimates()</code><a class="anchor" aria-label="anchor" href="#sec-getestimates"></a>
 </h3>
-<p><code><a href="../reference/ucar.html">mstcar()</a></code> takes care of the vast majority of model
+<p><code><a href="../reference/car.html">mstcar()</a></code> takes care of the vast majority of model
 preparation: within the function, the model is set up, samples are
 generated, and our medians are estimated. Once the function finishes, we
 can get an overview of our model:</p>
@@ -360,7 +359,7 @@ argument <code>standardized = FALSE</code>.</p>
 </h3>
 <p>While the main benefit of RSTr is generating reliable estimates from
 small-population areas, we cannot guarantee that all estimates generated
-by <code><a href="../reference/ucar.html">mstcar()</a></code> will be reliable. Therefore, it is prudent to
+by <code><a href="../reference/car.html">mstcar()</a></code> will be reliable. Therefore, it is prudent to
 suppress estimates that are deemed unreliable. For MSTCAR models, we can
 use two criteria to test for reliability: relative precision (i.e., the
 ratio of the median estimate to the width of its credible interval) and
@@ -465,7 +464,7 @@ main motivation for running this spatiotemporal model.</p>
 <h2 id="closing-thoughts">Closing Thoughts<a class="anchor" aria-label="anchor" href="#closing-thoughts"></a>
 </h2>
 <p>This vignette introduces you to inputting data into the
-<code><a href="../reference/ucar.html">mstcar()</a></code> function, extracting estimates with the
+<code><a href="../reference/car.html">mstcar()</a></code> function, extracting estimates with the
 <code><a href="../reference/get_estimates.html">get_estimates()</a></code> function, age-standardizing estimates with
 the <code><a href="../reference/age_standardize.html">age_standardize()</a></code> function, suppressing estimates with
 the <code><a href="../reference/suppress_estimates.html">suppress_estimates()</a></code> function, and finally making a map

@@ -6,9 +6,9 @@ In this vignette, we outline the hierarchical models used in the RSTr
 package, along with the full-conditional distributions used for each
 update.
 
-## The UCAR Hierarchical Model
+## The CAR Hierarchical Model
 
-The UCAR model used by RSTr is based on the model developed by [Besag,
+The CAR model used by RSTr is based on the model developed by [Besag,
 York, and Mollié (1991)](https://doi.org/10.1007/BF00116466) with
 modifications using inverse transform sampling for restricted
 informativeness based on [Quick, et

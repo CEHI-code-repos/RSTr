@@ -21,20 +21,20 @@ Spatial smoothing acts by way of a spatial random effects estimator `Z`;
 this is essentially the parameter that tells the model how much to
 either increase or decrease its corresponding estimated rate `lambda`.
 In CAR models, the strength of `Z` itself is determined by a host of
-factors, most importantly the spatial variance (`sig2` for UCAR; `G` for
+factors, most importantly the spatial variance (`sig2` for CAR; `G` for
 MCAR and MSTCAR). We can investigate spatial smoothing further by
-running a UCAR model to see the evolution of `Z` over time:
+running a CAR model to see the evolution of `Z` over time:
 
 ``` r
 data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
-mod_ucar <- ucar("my_test_model", data_u, miadj, tempdir(), seed = 1234)
-#> Starting sampler on Batch 1 at Thu Dec 18 21:04:02
+mod_car <- car("my_test_model", data_u, miadj, tempdir(), seed = 1234)
+#> Starting sampler on Batch 1 at Thu Dec 18 22:57:27
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 18 21:04:09
+    #> Model finished at Thu Dec 18 22:57:33
 
 The magnitude of `sig2` has further implications on the rate estimates
 `lambda`. Smaller `sig2` values mean that the variance between neighbors
@@ -53,7 +53,7 @@ can investigate this over all of our datapoints by comparing the event
 counts to their corresponding relative precisions:
 
 ``` r
-estimates <- get_estimates(mod_ucar)
+estimates <- get_estimates(mod_car)
 estimates_supp <- estimates[estimates$rel_prec > 1 & estimates$events < 10, ]
 plot(estimates$events, estimates$rel_prec, xlab = "Events", ylab = "Relative Precision")
 points(estimates_supp$events, estimates_supp$rel_prec, col = "red")
@@ -69,7 +69,7 @@ criteria currently used by CDC WONDER (event counts less than 10 are
 suppressed for privacy reasons). Red datapoints are below the population
 threshold but above the relative precision threshold.
 
-This plot showcases the intense oversmoothing done by the UCAR model in
+This plot showcases the intense oversmoothing done by the CAR model in
 small-event areas. Several regions with less than 10 events (25, or 30%
 of our regions) have relative precisions well over the necessary
 threshold for reliability, despite having low event counts. Hence, we
@@ -88,17 +88,17 @@ above, this resulted in 25 regions which had a sufficiently high number
 of events added through oversmoothing to over-inflate their relative
 precision.
 
-The UCAR model’s informativeness, `a0`, is determined by a mix of the
+The CAR model’s informativeness, `a0`, is determined by a mix of the
 spatial variance `sig2`, the non-spatial variance `tau2`, and the mean
 region rate `beta` for Binomially-distributed likelihoods. For
 Poisson-distributed likelihoods, only `sig2` and `tau2` determine
 informativeness.
 
-## The Enhanced UCAR (EUCAR) model
+## The Restricted CAR (RCAR) model
 
-RSTr features unrestricted UCAR/MCAR/MSTCAR models, but also features an
-enhanced UCAR (EUCAR) model which incorporates measures to prevent
-oversmoothing. With the EUCAR model, we can limit our informativeness
+RSTr features unrestricted CAR/MCAR/MSTCAR models, but also features a
+restricted CAR (RCAR) model which incorporates measures to prevent
+oversmoothing. With the RCAR model, we can limit our informativeness
 `a0` to a ceiling, `A`, by tweaking the estimation process of `sig2`,
 `tau2`, and `beta`. This will ensure that our spatial smoothing does not
 contribute more than `A` events to any estimate in our model. There is
@@ -116,28 +116,28 @@ suggests an informativeness ceiling `A` of 6 and an `m0` of 3 to ensure
 that regions with event counts less than 10 will not erroneously
 generate precise estimates. RSTr sets `A` to 6 and `m0` to 3 by default.
 
-Let’s run an EUCAR model using the [`eucar()`](../reference/ucar.md)
+Let’s run an RCAR model using the [`rcar()`](../reference/car.md)
 function, setting an informativeness ceiling of `A = 6`:
 
 ``` r
-mod_eucar <- eucar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
-#> Starting sampler on Batch 1 at Thu Dec 18 21:04:09
+mod_rcar <- rcar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
+#> Starting sampler on Batch 1 at Thu Dec 18 22:57:33
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 18 21:04:15
+    #> Model finished at Thu Dec 18 22:57:40
 
-Notice that the traceplots for `tau2` and `sig2` in our enhanced (i.e.,
-restricted) UCAR model have significantly higher values than those in
-the unrestricted UCAR model. This is due to the EUCAR model ‘blocking’
-lower values and ensuring that regions don’t oversmooth. We can directly
-compare the two sets of results with another relative precision plot:
+Notice that the traceplots for `tau2` and `sig2` in our restricted CAR
+model have significantly higher values than those in the unrestricted
+CAR model. This is due to the rcar model ‘blocking’ lower values and
+ensuring that regions don’t oversmooth. We can directly compare the two
+sets of results with another relative precision plot:
 
 ``` r
-estimates_eucar <- get_estimates(mod_eucar)
-plot(estimates_eucar$events, estimates_eucar$rel_prec, xlab = "Events", ylab = "Relative Precision", col = "purple")
+estimates_rcar <- get_estimates(mod_rcar)
+plot(estimates_rcar$events, estimates_rcar$rel_prec, xlab = "Events", ylab = "Relative Precision", col = "purple")
 points(estimates$events, estimates$rel_prec)
 abline(h = 1, col = "blue")
 abline(v = 10, col = "blue")
@@ -145,20 +145,20 @@ abline(v = 10, col = "blue")
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-5-1.png)
 
-Here, the estimates for the EUCAR are in purple and the estimates for
-the unrestricted UCAR are in black. Notice how the points on the purple
-curve stay below the black curve at low event counts and that no purple
-points enter the high-precision, low-event quadrant. With `A = 6`, the
-points lie below 1 relative precision until events are greater than 10,
-meaning this informativeness ceiling is smoothing an ideal amount. We
-can also map the two estimates to visually compare the models:
+Here, the estimates for the RCAR are in purple and the estimates for the
+unrestricted CAR are in black. Notice how the points on the purple curve
+stay below the black curve at low event counts and that no purple points
+enter the high-precision, low-event quadrant. With `A = 6`, the points
+lie below 1 relative precision until events are greater than 10, meaning
+this informativeness ceiling is smoothing an ideal amount. We can also
+map the two estimates to visually compare the models:
 
 ``` r
 library(ggplot2)
 ggplot(mishp) +
   geom_sf(aes(fill = estimates$medians)) +
   labs(
-    title = "Spatially Smoothed Estimates, Unrestricted UCAR Model",
+    title = "Spatially Smoothed Estimates, Unrestricted CAR Model",
     fill = "Deaths per 100,000"
   ) +
   scale_fill_viridis_c() +
@@ -169,9 +169,9 @@ ggplot(mishp) +
 
 ``` r
 ggplot(mishp) +
-  geom_sf(aes(fill = estimates_eucar$medians)) +
+  geom_sf(aes(fill = estimates_rcar$medians)) +
   labs(
-    title = "Spatially Smoothed Estimates, EUCAR Model",
+    title = "Spatially Smoothed Estimates, RCAR Model",
     fill = "Deaths per 100,000"
   ) +
   scale_fill_viridis_c() +
@@ -180,22 +180,21 @@ ggplot(mishp) +
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-6-2.png)
 
-As expected, the gradient of estimates is much more sharp on the EUCAR
-model map in comparison to the unrestricted UCAR map. This is due to the
+As expected, the gradient of estimates is much more sharp on the RCAR
+model map in comparison to the unrestricted CAR map. This is due to the
 decreased intensity of our spatial smoothing. Additionally, the spread
-of estimates for the EUCAR model is wider than that of the unrestricted
-UCAR model because of its increased spatial variance.
+of estimates for the RCAR model is wider than that of the unrestricted
+CAR model because of its increased spatial variance.
 
-## Enhanced models and age-standardization
+## Restricted models and age-standardization
 
 When age-standardizing across a CAR model, informativeness is
 cumulative: informativeness in individual rates when spatially smoothing
 will compound the informativeness in estimates age-standardized by
-spatially smoothed rates. Therefore, the EUCAR is an excellent choice
-for modeling with age-standardization. Not only will individual
-estimates not be over-smoothed, the age-standardized estimates will
-benefit from enhanced reliability due to increased event counts in the
-crude data.
+spatially smoothed rates. Therefore, the RCAR is an excellent choice for
+modeling with age-standardization. Not only will individual estimates
+not be over-smoothed, the age-standardized estimates will benefit from
+enhanced reliability due to increased event counts in the crude data.
 
 We can re-run our model with three age groups: 65-74, 75-84, and 85+.
 Since we are now running our models across multiple groups, we will need
@@ -208,14 +207,14 @@ events:
 ``` r
 data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FALSE])
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
-mod_eucar <- eucar("test_eucar", data_u, miadj, tempdir(), seed = 1234, A = A)
-#> Starting sampler on Batch 1 at Thu Dec 18 21:04:17
+mod_rcar <- rcar("test_rcar", data_u, miadj, tempdir(), seed = 1234, A = A)
+#> Starting sampler on Batch 1 at Thu Dec 18 22:57:41
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
 
     #> Generating estimates...
-    #> Model finished at Thu Dec 18 21:04:24
+    #> Model finished at Thu Dec 18 22:57:48
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
@@ -223,12 +222,12 @@ effective smoothing power as our singular `A = 6` restricted model:
 
 ``` r
 std_pop <- c(68775, 34116, 9888)
-mod_eucar <- age_standardize(mod_eucar, std_pop, "65up")
-est_eucar <- get_estimates(mod_eucar)
+mod_rcar <- age_standardize(mod_rcar, std_pop, "65up")
+est_rcar <- get_estimates(mod_rcar)
 ggplot(mishp) +
-  geom_sf(aes(fill = est_eucar$medians)) +
+  geom_sf(aes(fill = est_rcar$medians)) +
   labs(
-    title = "Age-Standardized Spatially Smoothed Estimates, EUCAR Model",
+    title = "Age-Standardized Spatially Smoothed Estimates, RCAR Model",
     fill = "Deaths per 100,000"
   ) +
   scale_fill_viridis_c() +
@@ -237,21 +236,21 @@ ggplot(mishp) +
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-8-1.png)
 
-## The EUCAR Model, Reliability, and Suppression
+## The RCAR Model, Reliability, and Suppression
 
 Remember that for unrestricted CAR models, we have to impose an
 additional event/population threshold for reliability to capture
 high-precision estimates in low-event areas. As we saw in the
 event/relative precision plot, these thresholds are no longer necessary
-when we suppress our estimates with an EUCAR model:
+when we suppress our estimates with an RCAR model:
 
 ``` r
-mod_eucar <- suppress_estimates(mod_eucar)
-est_eucar <- get_estimates(mod_eucar)
+mod_rcar <- suppress_estimates(mod_rcar)
+est_rcar <- get_estimates(mod_rcar)
 ggplot(mishp) +
-  geom_sf(aes(fill = est_eucar$medians_suppressed)) +
+  geom_sf(aes(fill = est_rcar$medians_suppressed)) +
   labs(
-    title = "Spatially Smoothed Estimates, EUCAR Model",
+    title = "Spatially Smoothed Estimates, RCAR Model",
     fill = "Deaths per 100,000"
   ) +
   scale_fill_viridis_c() +
@@ -260,18 +259,18 @@ ggplot(mishp) +
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-9-1.png)
 
-With the EUCAR model, we get the benefit of age-standardizing our
+With the RCAR model, we get the benefit of age-standardizing our
 spatially smoothed estimates without the compounded oversmoothing from
 unrestricted models.
 
-## Choosing between enhanced vs unrestricted models
+## Choosing between restricted vs unrestricted models
 
-Now that we’ve elucidated the benefits of using enhanced models, we can
-work through the most appropriate use case for each model:
+Now that we’ve elucidated the benefits of using restricted models, we
+can work through the most appropriate use case for each model:
 
-- The EUCAR model is virtually always preferred to the unrestricted UCAR
+- The RCAR model is virtually always preferred to the unrestricted CAR
   model. If you are not interested in temporal trends or group/time
-  interactions, the EUCAR will likely be your best option, particularly
+  interactions, the RCAR will likely be your best option, particularly
   if you are age-standardizing.
 
 - The MCAR model is useful if you are specifically interested in
@@ -282,23 +281,23 @@ work through the most appropriate use case for each model:
   in temporal data or if you are specifically interested in interactions
   between sociodemographic groups across time. If your trends depict
   multiple behaviors, it is recommended to either run two MSTCAR models
-  with separate time periods for each trend or to run concurrent EUCAR
+  with separate time periods for each trend or to run concurrent RCAR
   models. Note that all `*car()` functions accept up to
   three-dimensional arrays and will concurrently run models for
   different groups/time periods if necessary.
 
 ## Future developments
 
-Enhanced models for MCAR and MSTCAR continue to be under development.
-Development for an enhanced Univariate Spatiotemporal CAR (USTCAR) model
-is also underway. RSTr will incorporate these enhanced models as they
+Restricted models for MCAR and MSTCAR continue to be under development.
+Development for a restricted Univariate Spatiotemporal CAR (STCAR) model
+is also underway. RSTr will incorporate these restricted models as they
 become available.
 
 ## Final thoughts
 
 In this vignette, we investigated model informativeness and the tendency
 of unrestricted BYM models to oversmooth estimates, along with some
-benefits of enhanced CAR models. This vignette concludes the main
+benefits of restricted CAR models. This vignette concludes the main
 sections on using the functions in the RSTr package. After reading
 these, you should be able to prepare your event and adjacency data,
 choose and configure your model as necessary, age-standardize estimates,
