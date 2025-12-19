@@ -75,10 +75,8 @@ void update_sig2_rcar(List& RSTr_obj) {
         max = (log(1.0 / A(grp, time) + 1) - tau2(grp, time) * (1 + 1.0 / m0)) * m0;
       }
       max = (max < 0) ? 0 : max;
-      if (max > 0) {
-        double u = R::runif(0, R::pgamma(1.0 / max, sig_shape, sig_scale, true, false));
-        sig2(grp, time) = 1.0 / R::qgamma(u, sig_shape, sig_scale, true, false);
-      }
+      double u = R::runif(0, R::pgamma(1.0 / max, sig_shape, sig_scale, true, false));
+      sig2(grp, time) = 1.0 / R::qgamma(u, sig_shape, sig_scale, true, false);
     }
   }
   sample["sig2"] = sig2;
