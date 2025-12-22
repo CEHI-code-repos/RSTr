@@ -206,10 +206,10 @@ run out-of-the-box:</p>
 <span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">1234</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Fri Dec 19 00:10:44</span></span></code></pre></div>
-<p><img src="RSTr_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" width="700"></p>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Mon Dec 22 16:30:22</span></span></code></pre></div>
+<p><img src="RSTr_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Fri Dec 19 00:11:10</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Mon Dec 22 16:30:49</span></span></code></pre>
 <p>Here, we use the <code><a href="../reference/car.html">mstcar()</a></code> function to specify our model.
 <code><a href="../reference/car.html">mstcar()</a></code> accepts a few different arguments in this
 case:</p>
@@ -428,7 +428,7 @@ smoothed:</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="RSTr_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" width="700"></p>
+<p><img src="RSTr_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Spatially Smoothed MI Death Rates in MI</span></span>
 <span><span class="va">est_3564</span> <span class="op">&lt;-</span> <span class="va">estimates_3564</span><span class="op">$</span><span class="va">medians</span></span>
@@ -440,7 +440,7 @@ smoothed:</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_void</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="RSTr_files/figure-html/unnamed-chunk-8-2.png" class="r-plt" width="700"></p>
+<p><img src="RSTr_files/figure-html/unnamed-chunk-8-2.png" class="r-plt" alt="" width="700"></p>
 <p>This map helps us see how RSTr smooths rates. First, notice how the
 range of the two plots are different: the smoothed map has a smaller
 range because RSTr stabilizes high and low extreme values which are
