@@ -66,13 +66,13 @@ argument:
 
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234, perc_ci = 0.95)
-#> Starting sampler on Batch 1 at Mon Dec 22 17:31:45
+#> Starting sampler on Batch 1 at Mon Dec 22 21:44:09
 ```
 
 ![](RSTr-reliability_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Mon Dec 22 17:32:11
+    #> Model finished at Mon Dec 22 21:44:35
 
 Here, we specify `perc_ci = 0.95`, which means our relative precision
 estimates will be based on a 95% credible interval. If we want to
@@ -95,16 +95,16 @@ mod_mst
 #> Number of samples: 6000 
 #> Estimates age-standardized: No 
 #> Estimates suppressed: Yes 
-#> Number of reliable rates: 3605 / 4980 (72.4%)
+#> Number of reliable rates: 3676 / 4980 (73.8%)
 estimates <- get_estimates(mod_mst)
 head(estimates)
-#>   county group year  medians medians_suppressed ci_lower  ci_upper  rel_prec
-#> 1  26001 35-44 1979 41.98634                 NA 29.79605  56.17417 1.5917110
-#> 2  26003 35-44 1979 51.00178                 NA 37.86450 119.49006 0.6248260
-#> 3  26005 35-44 1979 23.76272           23.76272 16.29719  33.58478 1.3745537
-#> 4  26007 35-44 1979 33.61042           33.61042 24.15788  45.44376 1.5790005
-#> 5  26009 35-44 1979 29.70584           29.70584 22.96456  39.27994 1.8207267
-#> 6  26011 35-44 1979 38.17390                 NA 24.89862  65.99126 0.9289717
+#>   county group year  medians medians_suppressed ci_lower  ci_upper rel_prec
+#> 1  26001 35-44 1979 39.85662                 NA 30.84580  48.82141 2.217262
+#> 2  26003 35-44 1979 89.79059           89.79059 53.98285 123.53019 1.291072
+#> 3  26005 35-44 1979 24.80909           24.80909 18.85431  31.52768 1.957576
+#> 4  26007 35-44 1979 28.48940           28.48940 21.53838  47.26193 1.107522
+#> 5  26009 35-44 1979 32.03517           32.03517 19.93526  42.57695 1.414875
+#> 6  26011 35-44 1979 45.27433           45.27433 32.77846  72.92343 1.127771
 #>   events population
 #> 1      1        964
 #> 2      1       1011

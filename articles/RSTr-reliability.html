@@ -148,10 +148,10 @@ intervals and relative precisions based on the <code>perc_ci</code>
 argument:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mod_mst</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/car.html">mstcar</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"my_test_model"</span>, data <span class="op">=</span> <span class="va">miheart</span>, adjacency <span class="op">=</span> <span class="va">miadj</span>, seed <span class="op">=</span> <span class="fl">1234</span>, perc_ci <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Starting sampler on Batch 1 at Mon Dec 22 17:31:45</span></span></code></pre></div>
+<span><span class="co">#&gt; Starting sampler on Batch 1 at Mon Dec 22 21:44:09</span></span></code></pre></div>
 <p><img src="RSTr-reliability_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" alt="" width="700"></p>
 <pre><code><span><span class="co">#&gt; Generating estimates...</span></span>
-<span><span class="co">#&gt; Model finished at Mon Dec 22 17:32:11</span></span></code></pre>
+<span><span class="co">#&gt; Model finished at Mon Dec 22 21:44:35</span></span></code></pre>
 <p>Here, we specify <code>perc_ci = 0.95</code>, which means our
 relative precision estimates will be based on a 95% credible interval.
 If we want to generate our suppressed estimates, we can simply input our
@@ -172,16 +172,16 @@ with small population counts:</p>
 <span><span class="co">#&gt; Number of samples: 6000 </span></span>
 <span><span class="co">#&gt; Estimates age-standardized: No </span></span>
 <span><span class="co">#&gt; Estimates suppressed: Yes </span></span>
-<span><span class="co">#&gt; Number of reliable rates: 3605 / 4980 (72.4%)</span></span>
+<span><span class="co">#&gt; Number of reliable rates: 3676 / 4980 (73.8%)</span></span>
 <span><span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   county group year  medians medians_suppressed ci_lower  ci_upper  rel_prec</span></span>
-<span><span class="co">#&gt; 1  26001 35-44 1979 41.98634                 NA 29.79605  56.17417 1.5917110</span></span>
-<span><span class="co">#&gt; 2  26003 35-44 1979 51.00178                 NA 37.86450 119.49006 0.6248260</span></span>
-<span><span class="co">#&gt; 3  26005 35-44 1979 23.76272           23.76272 16.29719  33.58478 1.3745537</span></span>
-<span><span class="co">#&gt; 4  26007 35-44 1979 33.61042           33.61042 24.15788  45.44376 1.5790005</span></span>
-<span><span class="co">#&gt; 5  26009 35-44 1979 29.70584           29.70584 22.96456  39.27994 1.8207267</span></span>
-<span><span class="co">#&gt; 6  26011 35-44 1979 38.17390                 NA 24.89862  65.99126 0.9289717</span></span>
+<span><span class="co">#&gt;   county group year  medians medians_suppressed ci_lower  ci_upper rel_prec</span></span>
+<span><span class="co">#&gt; 1  26001 35-44 1979 39.85662                 NA 30.84580  48.82141 2.217262</span></span>
+<span><span class="co">#&gt; 2  26003 35-44 1979 89.79059           89.79059 53.98285 123.53019 1.291072</span></span>
+<span><span class="co">#&gt; 3  26005 35-44 1979 24.80909           24.80909 18.85431  31.52768 1.957576</span></span>
+<span><span class="co">#&gt; 4  26007 35-44 1979 28.48940           28.48940 21.53838  47.26193 1.107522</span></span>
+<span><span class="co">#&gt; 5  26009 35-44 1979 32.03517           32.03517 19.93526  42.57695 1.414875</span></span>
+<span><span class="co">#&gt; 6  26011 35-44 1979 45.27433           45.27433 32.77846  72.92343 1.127771</span></span>
 <span><span class="co">#&gt;   events population</span></span>
 <span><span class="co">#&gt; 1      1        964</span></span>
 <span><span class="co">#&gt; 2      1       1011</span></span>
