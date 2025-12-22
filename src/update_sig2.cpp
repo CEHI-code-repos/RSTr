@@ -33,9 +33,6 @@ mat get_scale_sig(const cube& Z, const field<uvec>& adjacency, const vec& n_adj,
       scale_sig(grp, time) = 1.0 / (0.5 * (dot_Zkt2 - adj_xprod) + sig_b);
     }
   }
-  if (Z.n_slices == 1) {
-    return scale_sig.t();
-  }
   return scale_sig;
 }
 
