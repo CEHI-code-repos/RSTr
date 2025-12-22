@@ -9,6 +9,20 @@ using arma::field;
 using arma::uvec;
 using Rcpp::List;
 
+
+mat get_mean_Z(const cube& Z, const cube& lambda, const cube& beta, 
+               const mat& tau2, const mat& sig2, const field<uvec>& adjacency,
+               const uvec& isl_id, const mat& var_Z, const uword reg) {
+  mat sum_adj = arma::sum(get_regs(Z, adjacency[reg]));
+  mat rate_diff = lambda.row(reg) - beta.row(isl_id[reg]);
+  if (Z.n_slices == 1) {
+    sum_adj = sum_adj.t();
+    rate_diff = rate_diff.t();
+  }
+  const mat mean_Z = var_Z % (rate_diff / tau2 + sum_adj / sig2);
+  return mean_Z;
+}
+
 void demean_Z(cube& Z, const field<uvec>& isl_region, const uvec& isl_id) {
   const uword n_group = Z.n_cols;
   const uword n_time = Z.n_slices;
@@ -37,9 +51,8 @@ void update_Z_car(List& RSTr_obj) {
   
   for (uword reg = 0; reg < n_region; ++reg) {
     const mat var_Z = 1.0 / (1.0 / tau2 + n_adj[reg] / sig2);
-    const mat sum_adj = arma::sum(get_regs(Z, adjacency[reg]));
-    const mat rate_diff = lambda.row(reg) - beta.row(isl_id[reg]);
-    const mat mean_Z = var_Z % (rate_diff / tau2 + sum_adj / sig2);
+    const mat mean_Z = get_mean_Z(Z, lambda, beta, tau2, sig2, adjacency, 
+                                  isl_id, var_Z, reg);
     Z.row(reg) = rnorm_mat(mean_Z, sqrt(var_Z));
   }
   demean_Z(Z, isl_region, isl_id);
