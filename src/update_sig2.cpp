@@ -11,6 +11,31 @@ using arma::uvec;
 using Rcpp::List;
 using std::string;
 
+double get_adj_prod(const vec& Zkt, const field<uvec>& adj) {
+  const uword n_region = adj.n_elem;
+  double adj_xprod = 0;
+  for (uword reg = 0; reg < n_region; ++reg) {
+    adj_xprod += Zkt[reg] * arma::sum(Zkt.elem(adj[reg]));
+  }
+  return adj_xprod;
+}
+
+mat get_sig_scale(const cube& Z, const field<uvec>& adjacency, const vec& n_adj,
+                  const double sig_b) {
+  const uword n_group = Z.n_cols;
+  const uword n_time = Z.n_slices;
+  mat sig_scale(n_group, n_time, arma::fill::none);
+  for (uword grp = 0; grp < n_group; ++grp) {
+    for (uword time = 0; time < n_time; ++time) {
+      const vec Zkt = get_row(Z, grp, time);
+      const double adj_xprod = get_adj_prod(Zkt, adjacency);
+      const double dot_Zkt2 = arma::dot(arma::square(Zkt), n_adj);
+      sig_scale(grp, time) = 1.0 / (0.5 * (dot_Zkt2 - adj_xprod) + sig_b);
+    }
+  }
+  return sig_scale;
+}
+
 //[[Rcpp::export]]
 void update_sig2_default(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
@@ -24,21 +49,11 @@ void update_sig2_default(List& RSTr_obj) {
   const double sig_a = priors["sig_a"];
   const double sig_b = priors["sig_b"];
   const uword n_region = Z.n_rows;
-  const uword n_group = Z.n_cols;
-  const uword n_time = Z.n_slices;
   const uword n_island = isl_region.n_elem;
 
-  for (uword grp = 0; grp < n_group; grp++) {
-    for (uword time = 0; time < n_time; time++) {
-      double sum_adj = 0;
-      for (uword reg = 0; reg < n_region; reg++) {
-        sum_adj += Z(reg, grp, time) * arma::sum(get_subregs(Z, adjacency(reg), grp, time));
-      }
-      double sig_shape = (n_region - n_island) / 2 + sig_a;
-      double sig_scale = 1.0 / ((arma::sum(arma::pow(get_row(Z, grp, time), 2) % n_adj) - sum_adj) / 2 + sig_b);
-      sig2(grp, time) = 1.0 / R::rgamma(sig_shape, sig_scale);
-    }
-  }
+  const double sig_shape = (n_region - n_island) / 2 + sig_a;
+  const mat sig_scale = get_sig_scale(Z, adjacency, n_adj, sig_b);
+  sig2 = irgamma_mat(sig_shape, sig_scale);
   
   sample["sig2"] = sig2;
   RSTr_obj["sample"] = sample;
@@ -67,14 +82,14 @@ void update_sig2_rcar(List& RSTr_obj) {
   uword n_group = Z.n_cols;
   uword n_time = Z.n_slices;
   uword n_island = isl_region.n_elem;
-  for (uword grp = 0; grp < n_group; grp++) {
-    for (uword time = 0; time < n_time; time++) {
-      double sum_adj = 0;
-      for (uword reg = 0; reg < n_region; reg++) {
-        sum_adj += Z(reg, grp, time) * arma::sum(get_subregs(Z, adjacency(reg), grp, time));
+  for (uword grp = 0; grp < n_group; ++grp) {
+    for (uword time = 0; time < n_time; ++time) {
+      double adj_xprod = 0;
+      for (uword reg = 0; reg < n_region; ++reg) {
+        adj_xprod += Z(reg, grp, time) * arma::sum(get_subregs(Z, adjacency[reg], grp, time));
       }
       double sig_shape = (n_region - n_island) / 2 + sig_a;
-      double sig_scale = 1.0 / ((arma::sum(arma::pow(get_row(Z, grp, time), 2) % n_adj) - sum_adj) / 2 + sig_b);
+      double sig_scale = 1.0 / ((arma::sum(arma::pow(get_row(Z, grp, time), 2) % n_adj) - adj_xprod) / 2 + sig_b);
       double max = 0;
       if (method == "binomial") {
         double pi = arma::sum(get_row(beta, grp, time) % n_isl_region / n_region);

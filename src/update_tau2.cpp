@@ -69,7 +69,7 @@ void update_tau2_default(List& RSTr_obj) {
   const double tau_b = priors["tau_b"];
   const uword n_region = Z.n_rows;
 
-  const double shape = n_region / 2.0 + tau_a;
+  const double shape = 0.5 * n_region + tau_a;
   const mat scale = get_tau_scale(lambda, get_regs(beta, isl_id), Z, tau_b);
   tau2 = irgamma_mat(shape, scale);
 
@@ -97,7 +97,7 @@ void update_tau2_rcar(List& RSTr_obj) {
   const double tau_b = priors["tau_b"];
   const uword n_region = Z.n_rows;
 
-  const double shape = n_region / 2.0 + tau_a;
+  const double shape = 0.5 * n_region + tau_a;
   const mat scale = get_tau_scale(lambda, get_regs(beta, isl_id), Z, tau_b);
   const mat thres = get_tau_thres(beta, n_isl_region, n_region, method, A, sig2, m0);
   tau2 = irtgamma_mat(shape, scale, thres);
@@ -121,7 +121,7 @@ void update_tau2_mstcar(List& RSTr_obj) {
   const uword n_region = Z.n_rows;
   const uword n_time = Z.n_slices;
 
-  const double shape = n_region * n_time / 2.0 + tau_a;
+  const double shape = 0.5 * n_region * n_time + tau_a;
   const mat scale = get_tau_scale_mst(lambda, get_regs(beta, isl_id), Z, tau_b);
   tau2 = irgamma_mat(shape, scale);
 
