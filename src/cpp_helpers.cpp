@@ -80,6 +80,19 @@ mat geteig(const mat& covar) {
   return eigvec.t();
 }
 
+mat get_pi_rcar(const cube& beta, const uvec& n_isl_reg, const uword n_reg) {
+  const uword n_group = beta.n_cols;
+  const uword n_time = beta.n_slices;
+  mat pi(n_group, n_time);
+  for (uword grp = 0; grp < n_group; ++grp) {
+    for (uword time = 0; time < n_time; ++time) {
+      pi(grp, time) = arma::sum(get_row(beta, grp, time) % n_isl_reg / n_reg);
+    }
+  }
+  mat exp_pi = arma::exp(pi);
+  return (exp_pi / (1 + exp_pi));
+}
+
 mat irgamma_mat(const double shape, const mat& scale) {
   const uword nr = scale.n_rows;
   const uword nc = scale.n_cols;
@@ -125,5 +138,11 @@ mat rtnorm_mat(const mat& mean, const mat& sd, const mat& thres) {
 mat rnorm_mat(const mat& mean, const mat& sd) {
   const uword nr = mean.n_rows;
   const uword nc = mean.n_cols;
-  return (mat(nr, nc, arma::fill::randn) % sd + mean);
+  mat x(nr, nc, arma::fill::none);
+  for (uword r = 0; r < nr; ++r) {
+    for (uword c = 0; c < nc; ++c) {
+      x(r, c) = R::rnorm(mean(r, c), sd(r, c));
+    }
+  }
+  return x;
 }

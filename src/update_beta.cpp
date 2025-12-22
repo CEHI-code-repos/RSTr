@@ -10,29 +10,31 @@ using arma::uvec;
 using Rcpp::List;
 using std::string;
 
-mat get_beta_thres(const mat& tau2, const mat& sig2, const double m0,
+mat get_thres_beta(const mat& tau2, const mat& sig2, const double m0,
                    const mat& A) {
   const mat var_latent = tau2 + (tau2 + sig2) / m0;
   const mat pi_beta = arma::square(A - 1) + 4 * (A - 1.0 / var_latent);
-  mat thres = ((1 - A) + arma::sqrt(pi_beta)) / 2;
-  thres = log(thres / (1 - thres));
-  thres = arma::clamp(thres, 0.0, arma::datum::inf);
-  return thres;
+  mat thres_beta = ((1 - A) + arma::sqrt(pi_beta)) / 2;
+  thres_beta = log(thres_beta / (1 - thres_beta));
+  thres_beta = arma::clamp(thres_beta, 0.0, arma::datum::inf);
+  return thres_beta;
 }
 
 mat get_mean_beta(const cube& lambda, const cube& Z, const uvec& isl_idx) {
   const cube sub_diff = get_regs(lambda, isl_idx) - get_regs(Z, isl_idx);
-  mat mean = arma::mean(sub_diff, 0);
+  mat mean_beta = arma::mean(sub_diff, 0);
   if (lambda.n_slices == 1) {
-    return mean.t();
+    return mean_beta.t();
   }
-  return mean;
+  return mean_beta;
 }
 
 mat get_sd_beta(const mat& tau2, const double n_isl_region, const uword n_time) {
-  mat sd = arma::sqrt(tau2 / n_isl_region);
-  if (tau2.n_cols != n_time) sd = repmat(sd, 1, n_time);
-  return sd;
+  mat sd_beta = arma::sqrt(tau2 / n_isl_region);
+  if (tau2.n_cols != n_time) {
+    return repmat(sd_beta, 1, n_time);
+  }
+  return sd_beta;
 }
 
 //[[Rcpp::export]]
@@ -50,9 +52,9 @@ void update_beta_default(List& RSTr_obj) {
   for (uword isl = 0; isl < n_island; ++isl) {
     const uvec& isl_idx = isl_region[isl];
     const uword n_isl_region = isl_idx.n_elem;
-    const mat mean = get_mean_beta(lambda, Z, isl_idx);
-    const mat sd = get_sd_beta(tau2, n_isl_region, n_time);
-    beta.row(isl) = rnorm_mat(mean, sd);
+    const mat mean_beta = get_mean_beta(lambda, Z, isl_idx);
+    const mat sd_beta = get_sd_beta(tau2, n_isl_region, n_time);
+    beta.row(isl) = rnorm_mat(mean_beta, sd_beta);
   }
 
   sample["beta"] = beta;
@@ -76,16 +78,16 @@ void update_beta_rcar(List& RSTr_obj) {
   const double m0 = params["m0"];
   const string method = Rcpp::as<string>(params["method"]);
 
-  const mat thres = get_beta_thres(tau2, sig2, m0, A);
+  const mat thres_beta = get_thres_beta(tau2, sig2, m0, A);
   for (uword isl = 0; isl < n_island; ++isl) {
     const uvec& isl_idx = isl_region[isl];
     const uword n_isl_region = isl_idx.n_elem;
-    const mat sd = get_sd_beta(tau2, n_isl_region, n_time);
-    const mat mean = get_mean_beta(lambda, Z, isl_idx);
+    const mat sd_beta = get_sd_beta(tau2, n_isl_region, n_time);
+    const mat mean_beta = get_mean_beta(lambda, Z, isl_idx);
     if (method == "binomial") {
-      beta.row(isl) = rtnorm_mat(mean, sd, thres);
+      beta.row(isl) = rtnorm_mat(mean_beta, sd_beta, thres_beta);
     } else if (method == "poisson") {
-      beta.row(isl) = rnorm_mat(mean, sd);
+      beta.row(isl) = rnorm_mat(mean_beta, sd_beta);
     }
   }
 

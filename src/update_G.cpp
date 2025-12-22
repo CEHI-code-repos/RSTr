@@ -21,7 +21,7 @@ mat get_scale_G(const mat& G_scale, const cube& Z, const field<uvec>& adjacency,
 }
 
 inline mat get_Zmikt(const cube& Z, const uword reg, const uvec& adj_regs,
-              const uword n_time) {
+                     const uword n_time) {
   mat Zmikt = Z.row(reg) - arma::mean(get_regs(Z, adj_regs), 0);
   if (n_time == 1) Zmikt = Zmikt.t();
   return Zmikt;
@@ -66,11 +66,13 @@ void update_G_default(List& RSTr_obj) {
   const uword n_island = sp_data["n_island"];
   const uword n_region = Z.n_rows;
   const uword n_time = Z.n_slices;
+
   const double df_G = n_region - n_island + G_df;
   for (uword time = 0; time < n_time; ++time) {
     const mat scale_G = get_scale_G(G_scale, Z, adjacency, n_region, time);
     G.slice(time) = riwish(df_G, scale_G);
   }
+
   sample["G"] = G;
   RSTr_obj["sample"] = sample;
 }
@@ -89,10 +91,12 @@ void update_G_mstcar(List& RSTr_obj) {
   const uword n_island = sp_data["n_island"];
   const uword n_region = Z.n_rows;
   const uword n_time = Z.n_slices;
+
   const cube Ags = get_Ags(Ag, Z, rho, adjacency);
   for (uword time = 0; time < n_time; ++time) {
     G.slice(time) = riwish((n_region - n_island) + G_df, Ags.slice(time));
   }
+  
   sample["G"] = G;
   RSTr_obj["sample"] = sample;
 }
