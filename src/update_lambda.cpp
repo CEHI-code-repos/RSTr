@@ -9,10 +9,10 @@ using arma::uword;
 using arma::field;
 using arma::uvec;
 using Rcpp::List;
-using Rcpp::String;
+using std::string;
 
 inline double get_r2(const double l_0, const double l_star, const double n_0,
-              const std::string& method) {
+                     const string method) {
   double r2 = 0;
   if (method == "binomial") {
     r2 = n_0 * (std::log1p(std::exp(l_star)) - std::log1p(std::exp(l_0)));
@@ -23,8 +23,8 @@ inline double get_r2(const double l_0, const double l_star, const double n_0,
 }
 
 inline double get_r(const double l_0, const double l_star, const double b_0,
-              const double Z_0, const double t_0, const double Y_0, 
-              const double n_0, const std::string& method) {
+                    const double Z_0, const double t_0, const double Y_0, 
+                    const double n_0, const string& method) {
   const double r1 = Y_0 * (l_star - l_0);
   const double r2 = get_r2(l_0, l_star, n_0, method);
   const double delta = l_star - l_0;
@@ -49,8 +49,7 @@ void update_lambda(List& RSTr_obj) {
   const List& sp_data = RSTr_obj["sp_data"];
   const uvec& isl_id = sp_data["isl_id"];
   const List& params = RSTr_obj["params"];
-  const String method = params["method"];
-  const std::string method_0 = Rcpp::as<std::string>(params["method"]);
+  const string method = Rcpp::as<string>(params["method"]);
   const uword n_region = Z.n_rows;
   const uword n_group = Z.n_cols;
   const uword n_time = Z.n_slices;
@@ -65,7 +64,7 @@ void update_lambda(List& RSTr_obj) {
         const double t_0 = tau2(grp, time);
         const double Y_0 = Y(reg, grp, time);
         const double n_0 = n(reg, grp, time);
-        const double r = get_r(l_0, l_star, b_0, Z_0, t_0, Y_0, n_0, method_0);
+        const double r = get_r(l_0, l_star, b_0, Z_0, t_0, Y_0, n_0, method);
         if (r >= R::runif(0, 1)) {
           lambda(reg, grp, time) = l_star;
           ++lambda_acpt(reg, grp, time);

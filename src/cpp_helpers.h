@@ -13,5 +13,9 @@ arma::field<arma::mat> Sig_eta_i(const arma::cube& G, const arma::vec& rho);
 arma::field<arma::mat> Sig_eta(const arma::field<arma::mat>& Sein);
 arma::mat cpp_rmvnorm(const arma::vec& mean, const arma::mat& covar);
 arma::mat geteig(const arma::mat& covar);
+arma::mat irgamma_mat(const double shape, const arma::mat& scale);
+arma::mat irtgamma_mat(const double shape, const arma::mat& scale, const arma::mat& thres);
+arma::mat rtnorm_mat(const arma::mat& mean, const arma::mat& sd, const arma::mat& thres);
+arma::mat rnorm_mat(const arma::mat& mean, const arma::mat& sd);
 
 #endif // CPP_HELPERS_H

@@ -79,3 +79,51 @@ mat geteig(const mat& covar) {
   eigvec *= eigvec.t() % arma::repmat(sqrt(eigval), 1, covar.n_cols);
   return eigvec.t();
 }
+
+mat irgamma_mat(const double shape, const mat& scale) {
+  const uword nr = scale.n_rows;
+  const uword nc = scale.n_cols;
+  mat x(nr, nc, arma::fill::none);
+  for (uword r = 0; r < nr; r++) {
+    for (uword c = 0; c < nc; c++) {
+      x(r, c) = 1.0 / R::rgamma(shape, scale(r, c));
+    }
+  }
+  return x;
+}
+
+mat irtgamma_mat(const double shape, const mat& scale, const mat& thres) {
+  const uword nr = scale.n_rows;
+  const uword nc = scale.n_cols;
+  mat x(nr, nc, arma::fill::none);
+  for (uword r = 0; r < nr; r++) {
+    for (uword c = 0; c < nc; c++) {
+      const double max = R::pgamma(thres(r, c), shape, scale(r, c), true, false);
+      double u = R::runif(0, max);
+      x(r, c) = 1.0 / R::qgamma(u, shape, scale(r, c), true, false);
+    }
+  }
+  return x;
+}
+
+mat rtnorm_mat(const mat& mean, const mat& sd, const mat& thres) {
+  const uword nr = mean.n_rows;
+  const uword nc = mean.n_cols;
+  mat x(nr, nc, arma::fill::none);
+  for (uword r = 0; r < nr; ++r) {
+    for (uword c = 0; c < nc; ++c) {
+      double max = R::pnorm(thres(r, c), mean(r, c), sd(r, c), true, false);
+      if (max > 0) {
+        double u = R::runif(0, max);
+        x(r, c) = R::qnorm(u, mean(r, c), sd(r, c), true, false);
+      }
+    }
+  }
+  return x;
+}
+
+mat rnorm_mat(const mat& mean, const mat& sd) {
+  const uword nr = mean.n_rows;
+  const uword nc = mean.n_cols;
+  return (mat(nr, nc, arma::fill::randn) % sd + mean);
+}

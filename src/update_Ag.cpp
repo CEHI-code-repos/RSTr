@@ -17,12 +17,14 @@ void update_Ag(List& RSTr_obj) {
   const double Ag_df = priors["Ag_df"];
   const uword n_time = G.n_slices;
   const uword n_group = G.n_rows;
+
   mat Ag_covar(n_group, n_group, arma::fill::zeros);
   Ag_covar += arma::inv_sympd(Ag_scale);
   for (uword time = 0; time < n_time; ++time) {
     Ag_covar += arma::inv_sympd(G.slice(time));
   }
   Ag = rwish(n_time * G_df + Ag_df, arma::inv_sympd(Ag_covar));
+  
   sample["Ag"] = Ag;
   RSTr_obj["sample"] = sample;
 }
