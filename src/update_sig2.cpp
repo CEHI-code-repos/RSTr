@@ -27,6 +27,7 @@ void update_sig2_default(List& RSTr_obj) {
   const uword n_group = Z.n_cols;
   const uword n_time = Z.n_slices;
   const uword n_island = isl_region.n_elem;
+
   for (uword grp = 0; grp < n_group; grp++) {
     for (uword time = 0; time < n_time; time++) {
       double sum_adj = 0;
@@ -38,6 +39,7 @@ void update_sig2_default(List& RSTr_obj) {
       sig2(grp, time) = 1.0 / R::rgamma(sig_shape, sig_scale);
     }
   }
+  
   sample["sig2"] = sig2;
   RSTr_obj["sample"] = sample;
 }
