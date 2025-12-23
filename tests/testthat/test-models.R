@@ -7,7 +7,7 @@ data_list <- list(
 
 test_that("all CAR models work", {
   for (x in data_list) {
-    expect_no_error(car("test", x, miadj, show_plots = FALSE, seed = 1234))
+    expect_warning(car("test", x, miadj, show_plots = FALSE, seed = 1234))
   }
 })
 

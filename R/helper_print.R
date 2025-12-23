@@ -7,7 +7,6 @@ print.RSTr <- function(x, ...) {
   ci_str <- paste0(round(x$params$perc_ci * 100, 2), "%")
   cat("Estimate Credible Interval:", ci_str, "\n")
   cat("Number of geographic units:", dim(x$data$Y)[1], "\n")
-  #cat("Model informativeness:", "TBD", "\n")
   cat("Number of samples:", x$params$total, "\n")
   cat(
     "Estimates age-standardized:",

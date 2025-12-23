@@ -72,6 +72,7 @@ car <- function(
     restricted = FALSE
   )
   RSTr_obj <- update_model(RSTr_obj, iterations, show_plots, verbose)
+  check_informativeness(RSTr_obj)
   RSTr_obj
 }
 
