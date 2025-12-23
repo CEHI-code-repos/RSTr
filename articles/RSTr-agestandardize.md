@@ -18,13 +18,13 @@ rates from an `RSTr` object, we can simply run
 
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
-#> Starting sampler on Batch 1 at Tue Dec 23 16:03:38
+#> Starting sampler on Batch 1 at Tue Dec 23 17:20:36
 ```
 
 ![](RSTr-agestandardize_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 23 16:04:04
+    #> Model finished at Tue Dec 23 17:21:02
 
 ``` r
 estimates <- get_estimates(mod_mst, rates_per = 1e5)
