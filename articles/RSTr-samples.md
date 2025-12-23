@@ -22,13 +22,13 @@ To begin, let’s generate samples for a new model:
 
 ``` r
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234)
-#> Starting sampler on Batch 1 at Tue Dec 23 17:35:14
+#> Starting sampler on Batch 1 at Tue Dec 23 18:00:18
 ```
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 23 17:35:40
+    #> Model finished at Tue Dec 23 18:00:45
 
 ## The `load_samples()` function
 

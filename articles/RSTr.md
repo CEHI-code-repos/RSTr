@@ -115,13 +115,13 @@ mod_mst <- mstcar(
   dir = tempdir(),
   seed = 1234
 )
-#> Starting sampler on Batch 1 at Tue Dec 23 17:35:58
+#> Starting sampler on Batch 1 at Tue Dec 23 18:01:02
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 23 17:36:24
+    #> Model finished at Tue Dec 23 18:01:29
 
 Here, we use the [`mstcar()`](../reference/car.md) function to specify
 our model. [`mstcar()`](../reference/car.md) accepts a few different
