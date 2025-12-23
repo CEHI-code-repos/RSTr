@@ -1,6 +1,5 @@
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
-#include "cpp_helpers.h"
 using arma::mat;
 using arma::cube;
 using arma::uword;

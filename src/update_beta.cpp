@@ -1,6 +1,7 @@
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
-#include "cpp_helpers.h"
+#include "helpers_indexing.h"
+#include "helpers_prob.h"
 using arma::vec;
 using arma::mat;
 using arma::cube;

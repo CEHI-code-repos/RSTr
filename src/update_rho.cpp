@@ -1,7 +1,8 @@
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
 #include <cmath>
-#include "cpp_helpers.h"
+#include "helpers_indexing.h"
+#include "helpers_car.h"
 using arma::vec;
 using arma::rowvec;
 using arma::mat;
@@ -36,7 +37,7 @@ inline double get_diff_quad(const cube& Z, const cube& Zm,
 }
 
 double get_rb(const vec& rho, const vec& rho_star, const cube& G, const cube& Z,
-              const cube& Zm, const field<uvec>& adjacency) {
+              const cube& Zm, const vec& n_adj) {
   const uword n_time = G.n_slices;
   const uword n_region = Z.n_rows;
   const field<mat> Sein_diff = get_Sein_diff(G, rho, rho_star);
@@ -47,7 +48,7 @@ double get_rb(const vec& rho, const vec& rho_star, const cube& G, const cube& Z,
       const uword t2_u = (t1 == n_time - 1) ? n_time : t1 + 2;
       for (uword t2 = t2_l; t2 < t2_u; ++t2) {
         const double diff_quad = get_diff_quad(Z, Zm, Sein_diff, reg, t1, t2);
-        rb += adjacency[reg].n_elem * diff_quad / 2;
+        rb += n_adj[reg] * diff_quad / 2;
       }
     }
   }
@@ -55,14 +56,14 @@ double get_rb(const vec& rho, const vec& rho_star, const cube& G, const cube& Z,
 }
 
 double get_r(const vec& rho, const vec& rho_star, const cube& G, const cube& Z,
-             const cube& Zm, const field<uvec>& adjacency, const double rho_a,
+             const cube& Zm, const vec& n_adj, const double rho_a,
              const double rho_b, const uword n_island, const uword grp) {
   const uword n_region = Z.n_rows;
   const uword n_time = Z.n_slices;
   const double r2 = rho[grp] * rho[grp];
   const double r_s2 = rho_star[grp] * rho_star[grp];
   const double ra = std::log((1 - r2) / (1 - r_s2));
-  const double rb = get_rb(rho, rho_star, G, Z, Zm, adjacency);
+  const double rb = get_rb(rho, rho_star, G, Z, Zm, n_adj);
   const double rsr = rho_star[grp] / rho[grp];
   const double rsr1m = (1 - rho_star[grp]) / (1 - rho[grp]);
   const double rc = std::pow(rsr, rho_a) * std::pow(rsr1m, rho_b);
@@ -71,7 +72,7 @@ double get_r(const vec& rho, const vec& rho_star, const cube& G, const cube& Z,
 
 cube get_Zm(const cube& Z, const field<uvec>& adjacency) {
   const uword n_region = Z.n_rows;
-  cube Zm(size(Z), arma::fill::none);
+  cube Zm(arma::size(Z), arma::fill::none);
   for (uword reg = 0; reg < n_region; ++reg) {
     Zm.row(reg) = Z.row(reg) - arma::mean(get_regs(Z, adjacency[reg]), 0);
   }
@@ -100,6 +101,7 @@ void update_rho(List& RSTr_obj) {
   const List& sp_data = RSTr_obj["sp_data"];
   const field<uvec>& adjacency = sp_data["adjacency"];
   const uword n_island = sp_data["n_island"];
+  const vec& n_adj = sp_data["n_adj"];
   const uword n_group = Z.n_cols;
 
   const vec rho_star_0 = get_rho_star_0(rho, rho_sd);
@@ -107,8 +109,7 @@ void update_rho(List& RSTr_obj) {
   for (uword grp = 0; grp < n_group; grp++) {
     vec rho_star = rho;
     rho_star[grp] = rho_star_0[grp];
-    const double r = get_r(rho, rho_star, G, Z, Zm, adjacency, rho_a, rho_b, 
-                           n_island, grp);
+    const double r = get_r(rho, rho_star, G, Z, Zm, n_adj, rho_a, rho_b, n_island, grp);
     if (r >= R::runif(0, 1)) {
       rho[grp] = rho_star[grp];
       rho_acpt[grp]++;

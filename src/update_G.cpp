@@ -1,6 +1,6 @@
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
-#include "cpp_helpers.h"
+#include "helpers_indexing.h"
 using arma::vec;
 using arma::mat;
 using arma::cube;
@@ -14,7 +14,7 @@ mat get_scale_G(const mat& G_scale, const cube& Z, const field<uvec>& adjacency,
   mat scale_G = G_scale;
   for (uword reg = 0; reg < n_region; ++reg) {
     const vec Zit = get_grp(Z, reg, time);
-    const vec sum_adj = sum(get_subgrp(Z, adjacency[reg], time), 0).t();
+    const vec sum_adj = arma::sum(get_subgrp(Z, adjacency[reg], time), 0).t();
     scale_G += adjacency[reg].n_elem * Zit * Zit.t() - sum_adj * Zit.t();
   }
   return scale_G;

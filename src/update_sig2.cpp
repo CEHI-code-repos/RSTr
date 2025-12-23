@@ -1,7 +1,9 @@
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
 #include <cmath>
-#include "cpp_helpers.h"
+#include "helpers_indexing.h"
+#include "helpers_car.h"
+#include "helpers_prob.h"
 using arma::vec;
 using arma::mat;
 using arma::cube;
@@ -46,7 +48,7 @@ mat get_thres_sig(const cube& beta, const uvec& n_isl_region,
     const mat pi = get_pi_rcar(beta, n_isl_region, n_region);
     thres_sig = (1.0 / ((A + pi) % (1 - pi)) - tau2 * (1 + 1.0 / m0)) * m0;
   } else if (method == "poisson") {
-    thres_sig = (log(1.0 / A + 1) - tau2 * (1 + 1.0 / m0)) * m0;
+    thres_sig = (arma::log(1.0 / A + 1) - tau2 * (1 + 1.0 / m0)) * m0;
   }
   thres_sig = 1.0 / arma::clamp(thres_sig, 0.0, arma::datum::inf);
   return thres_sig;

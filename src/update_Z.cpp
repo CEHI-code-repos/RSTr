@@ -1,6 +1,8 @@
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
-#include "cpp_helpers.h"
+#include "helpers_indexing.h"
+#include "helpers_car.h"
+#include "helpers_prob.h"
 using arma::vec;
 using arma::mat;
 using arma::cube;
@@ -49,6 +51,16 @@ inline vec get_muZp(const mat& nZm, const field<mat>& Se, const cube& Z,
   return muZp;
 }
 
+field<mat> get_cov_Z_mcar(const mat& tau2, const mat& G, const vec& n_adj) {
+  const vec unique_n_adj = arma::unique(n_adj);
+  field<mat> cov_Z(arma::max(n_adj) + 1);
+  const mat it2_diag = arma::diagmat(1.0 / tau2);
+  for (uword count : unique_n_adj) {
+    cov_Z(count) = arma::inv_sympd(it2_diag + count * G);
+  }
+  return cov_Z;
+}
+
 field<mat> get_cov_Z_mstcar(const field<mat>& Sein, const vec& tau2, 
                             const vec& n_adj) {
   const uword n_time = Sein.n_rows;
@@ -61,6 +73,23 @@ field<mat> get_cov_Z_mstcar(const field<mat>& Sein, const vec& tau2,
     }
   }
   return cov_Z;
+}
+
+mat geteig(const mat& covar) {
+  vec eigval;
+  mat eigvec;
+  arma::eig_sym(eigval, eigvec, covar);
+  eigvec *= eigvec.t() % arma::repmat(arma::sqrt(eigval), 1, covar.n_cols);
+  return eigvec.t();
+}
+
+field<mat> get_coveig_Z_mcar(const field<mat>& cov_Z, const vec& n_adj) {
+  const vec unique_n_adj = arma::unique(n_adj);
+  field<mat> coveig_Z(arma::max(n_adj) + 1);
+  for (uword count : unique_n_adj) {
+    coveig_Z(count) = geteig(cov_Z(count));
+  }
+  return coveig_Z;
 }
 
 field<mat> get_coveig_Z_mstcar(const field<mat>& cov_Z, const vec& n_adj) {
@@ -86,29 +115,10 @@ void demean_Z(cube& Z, const field<uvec>& isl_region, const uvec& isl_id) {
   Z -= get_regs(Zkt, isl_id);
 }
 
-field<mat> get_cov_Z_mcar(const mat& tau2, const mat& G, const vec& n_adj) {
-  const vec unique_n_adj = arma::unique(n_adj);
-  field<mat> cov_Z(max(n_adj) + 1);
-  const mat it2_diag = arma::diagmat(1.0 / tau2);
-  for (uword count : unique_n_adj) {
-    cov_Z(count) = arma::inv_sympd(it2_diag + count * G);
-  }
-  return cov_Z;
-}
-
-field<mat> get_coveig_Z_mcar(const field<mat>& cov_Z, const vec& n_adj) {
-  const vec unique_n_adj = arma::unique(n_adj);
-  field<mat> coveig_Z(arma::max(n_adj) + 1);
-  for (uword count : unique_n_adj) {
-    coveig_Z(count) = geteig(cov_Z(count));
-  }
-  return coveig_Z;
-}
-
 void replace_Zit(cube& Z, const vec& mean_Z, const mat& cov_Z, const uword reg,
                  const uword time) {
   const uword n_group = Z.n_cols;
-  vec Z_new = cpp_rmvnorm(mean_Z, cov_Z);
+  vec Z_new = rmvnorm_vec(mean_Z, cov_Z);
   for (uword grp = 0; grp < n_group; ++grp) {
     Z(reg, grp, time) = Z_new[grp];
   }

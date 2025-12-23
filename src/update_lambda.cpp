@@ -1,7 +1,6 @@
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
 #include <cmath>
-#include "cpp_helpers.h"
 using arma::vec;
 using arma::mat;
 using arma::cube;
@@ -53,7 +52,7 @@ void update_lambda(List& RSTr_obj) {
   const uword n_region = Z.n_rows;
   const uword n_group = Z.n_cols;
   const uword n_time = Z.n_slices;
-  if (tau2.n_cols == 1) tau2 = repmat(tau2, 1, n_time);
+  if (tau2.n_cols == 1) tau2 = arma::repmat(tau2, 1, n_time);
   for (uword time = 0; time < n_time; ++time) {
     for (uword reg = 0; reg < n_region; ++reg) {
       for (uword grp = 0; grp < n_group; ++grp) {

@@ -1,6 +1,8 @@
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
-#include "cpp_helpers.h"
+#include "helpers_indexing.h"
+#include "helpers_car.h"
+#include "helpers_prob.h"
 using arma::mat;
 using arma::cube;
 using arma::uword;
