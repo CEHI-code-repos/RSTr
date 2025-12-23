@@ -31,7 +31,7 @@ data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_car <- car("my_test_model", data_u, miadj, tempdir(), seed = 1234)
 ```
 
-The magnitude of `sig2` has further implications on the rate estimates `lambda`. Smaller `sig2` values mean that the variance between neighbors is also smaller. In short, the smaller the `sig2`, the closer in value an estimate and its neighbors will be. When combined with the comparatively intense smoothing applied to smaller event/population regions, these unrestricted CAR models will work too hard to fill in the gaps in information, not only pushing the estimate value too close to the mean `beta` but also artificially inflating its relative precision.
+The magnitude of `sig2` has further implications on the rate estimates `lambda`. Smaller `sig2` values mean that the variance between neighbors is smaller. In short, the smaller the `sig2`, the closer in value an estimate and its neighbors will be. When combined with the comparatively intense smoothing applied to smaller event/population regions, these unrestricted CAR models will work too hard to fill in the gaps in information, not only pushing the estimate value too close to the mean `beta` but also artificially inflating its relative precision.
 
 In unrestricted CAR models, oversmoothing is partially addressed by imposing an additional reliability criterion of either a population or event threshold. If an estimate has a relative precision greater than 1, we can still mark it as unreliable if this threshold is too small. We can investigate this over all of our datapoints by comparing the event counts to their corresponding relative precisions:
 
@@ -56,7 +56,7 @@ The CAR model's informativeness, `a0`, is determined by a mix of the spatial var
 
 ## The Restricted CAR (RCAR) model
 
-RSTr features unrestricted CAR/MCAR/MSTCAR models, but also features a restricted CAR (RCAR) model which incorporates measures to prevent oversmoothing. With the RCAR model, we can limit our informativeness `a0` to a ceiling, `A`, by tweaking the estimation process of `sig2`, `tau2`, and `beta`. This will ensure that our spatial smoothing does not contribute more than `A` events to any estimate in our model. There is an additional `m0` parameter which defines a baseline number of neighbors per region. Consequently, our spatial/non-spatial variances will increase and our over-smoothing will be appropriately attenuated; this will permit the model to allow more pronounced differences between neighboring regions. Most importantly, this gives us a happy medium between no smoothing in our crude estimates and oversmoothing caused by unrestricted CAR models.
+RSTr features unrestricted CAR/MCAR/MSTCAR models, but also features a restricted CAR (RCAR) model which incorporates measures to prevent oversmoothing. With the RCAR model, we can limit our informativeness `a0` to a ceiling, `A`, by tweaking the estimation process of `sig2`, `tau2`, and `beta`. This will ensure that our spatial smoothing does not contribute more than `A` events to any estimate in our model. There is an additional `m0` parameter which defines a baseline number of neighbors per region. Consequently, our spatial/non-spatial variances will increase and our over-smoothing will be appropriately attenuated; this will allow more pronounced differences between neighboring regions. Most importantly, this gives us a happy medium between no smoothing in our crude estimates and oversmoothing caused by unrestricted CAR models.
 
 [Quick et al. 2021](https://www.sciencedirect.com/science/article/pii/S1877584521000198) suggests an informativeness ceiling `A` of 6 and an `m0` of 3 to ensure that regions with event counts less than 10 will not erroneously generate precise estimates. RSTr sets `A` to 6 and `m0` to 3 by default.
 
@@ -152,7 +152,7 @@ With the RCAR model, we get the benefit of age-standardizing our spatially smoot
 
 Now that we've elucidated the benefits of using restricted models, we can work through the most appropriate use case for each model:
 
--   The RCAR model is virtually always preferred to the unrestricted CAR model. If you are not interested in temporal trends or group/time interactions, the RCAR will likely be your best option, particularly if you are age-standardizing.
+-   The RCAR model is virtually always preferred to the unrestricted CAR model; we do not recommend using the unrestricted CAR model over the RCAR model. If you are not interested in temporal trends or group/time interactions, the RCAR will likely be your best option, particularly if you are age-standardizing.
 
 -   The MCAR model is useful if you are specifically interested in interactions between sociodemographic groups and don't have temporal data.
 

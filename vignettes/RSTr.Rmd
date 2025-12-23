@@ -36,6 +36,8 @@ For this vignette, we will demonstrate RSTr's functionality with an MSTCAR model
 
 A problem with CAR models pointed out by [Quick, et al. (2021)](https://pubmed.ncbi.nlm.nih.gov/33980402/) is that of over-smoothing due to the informativeness of the BYM model. The RSTr package provides enhancements to the CAR models for both Poisson- and binomial-distributed data that prevent over-smoothing by restricting model informativeness through the `rcar()` function. Enhancements for the MCAR and MSTCAR models are under progress, and will be incorporated into the RSTr package as they are developed.
 
+To learn more about restricted CAR models, read `vignette("RSTr-informativeness")`.
+
 ## Datasets {#sec-datasets}
 
 RSTr comes with three main datasets: `miheart`, `miadj`, and `mishp`. `miheart` and `miadj` are related to the necessary components of our models, and `mishp` is a shapefile that helps map your results. To run an MSTCAR model, two components are necessary:
