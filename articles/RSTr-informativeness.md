@@ -28,22 +28,22 @@ running a CAR model to see the evolution of `Z` over time:
 ``` r
 data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_car <- car("my_test_model", data_u, miadj, tempdir(), seed = 1234)
-#> Starting sampler on Batch 1 at Tue Dec 23 17:21:12
+#> Starting sampler on Batch 1 at Tue Dec 23 17:34:16
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 23 17:21:18
+    #> Model finished at Tue Dec 23 17:34:22
 
 The magnitude of `sig2` has further implications on the rate estimates
 `lambda`. Smaller `sig2` values mean that the variance between neighbors
-is also smaller. In short, the smaller the `sig2`, the closer in value
-an estimate and its neighbors will be. When combined with the
-comparatively intense smoothing applied to smaller event/population
-regions, these unrestricted CAR models will work too hard to fill in the
-gaps in information, not only pushing the estimate value too close to
-the mean `beta` but also artificially inflating its relative precision.
+is smaller. In short, the smaller the `sig2`, the closer in value an
+estimate and its neighbors will be. When combined with the comparatively
+intense smoothing applied to smaller event/population regions, these
+unrestricted CAR models will work too hard to fill in the gaps in
+information, not only pushing the estimate value too close to the mean
+`beta` but also artificially inflating its relative precision.
 
 In unrestricted CAR models, oversmoothing is partially addressed by
 imposing an additional reliability criterion of either a population or
@@ -105,10 +105,9 @@ contribute more than `A` events to any estimate in our model. There is
 an additional `m0` parameter which defines a baseline number of
 neighbors per region. Consequently, our spatial/non-spatial variances
 will increase and our over-smoothing will be appropriately attenuated;
-this will permit the model to allow more pronounced differences between
-neighboring regions. Most importantly, this gives us a happy medium
-between no smoothing in our crude estimates and oversmoothing caused by
-unrestricted CAR models.
+this will allow more pronounced differences between neighboring regions.
+Most importantly, this gives us a happy medium between no smoothing in
+our crude estimates and oversmoothing caused by unrestricted CAR models.
 
 [Quick et
 al. 2021](https://www.sciencedirect.com/science/article/pii/S1877584521000198)
@@ -121,13 +120,13 @@ function, setting an informativeness ceiling of `A = 6`:
 
 ``` r
 mod_rcar <- rcar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
-#> Starting sampler on Batch 1 at Tue Dec 23 17:21:18
+#> Starting sampler on Batch 1 at Tue Dec 23 17:34:22
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 23 17:21:25
+    #> Model finished at Tue Dec 23 17:34:29
 
 Notice that the traceplots for `tau2` and `sig2` in our restricted CAR
 model have significantly higher values than those in the unrestricted
@@ -208,13 +207,13 @@ events:
 data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FALSE])
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_rcar <- rcar("test_rcar", data_u, miadj, tempdir(), seed = 1234, A = A)
-#> Starting sampler on Batch 1 at Tue Dec 23 17:21:26
+#> Starting sampler on Batch 1 at Tue Dec 23 17:34:31
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 23 17:21:33
+    #> Model finished at Tue Dec 23 17:34:37
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
@@ -269,7 +268,8 @@ Now that we’ve elucidated the benefits of using restricted models, we
 can work through the most appropriate use case for each model:
 
 - The RCAR model is virtually always preferred to the unrestricted CAR
-  model. If you are not interested in temporal trends or group/time
+  model; we do not recommend using the unrestricted CAR model over the
+  RCAR model. If you are not interested in temporal trends or group/time
   interactions, the RCAR will likely be your best option, particularly
   if you are age-standardizing.
 

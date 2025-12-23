@@ -46,6 +46,9 @@ function. Enhancements for the MCAR and MSTCAR models are under
 progress, and will be incorporated into the RSTr package as they are
 developed.
 
+To learn more about restricted CAR models, read
+[`vignette("RSTr-informativeness")`](../articles/RSTr-informativeness.md).
+
 ## Datasets
 
 RSTr comes with three main datasets: `miheart`, `miadj`, and `mishp`.
@@ -112,13 +115,13 @@ mod_mst <- mstcar(
   dir = tempdir(),
   seed = 1234
 )
-#> Starting sampler on Batch 1 at Tue Dec 23 17:22:54
+#> Starting sampler on Batch 1 at Tue Dec 23 17:35:58
 ```
 
 ![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
 
     #> Generating estimates...
-    #> Model finished at Tue Dec 23 17:23:20
+    #> Model finished at Tue Dec 23 17:36:24
 
 Here, we use the [`mstcar()`](../reference/car.md) function to specify
 our model. [`mstcar()`](../reference/car.md) accepts a few different
