@@ -1,8 +1,6 @@
 #include <RcppArmadillo.h>
 #include <RcppDist.h>
 #include "cpp_helpers.h"
-using namespace arma;
-using namespace Rcpp;
 using arma::vec;
 using arma::mat;
 using arma::cube;
@@ -31,7 +29,7 @@ inline vec get_lmb_it(const cube& lambda, const cube& beta, const uvec& isl_id,
 
 inline mat get_nZm(const cube& Z, const uvec& regs) {
   const uword n_time = Z.n_slices;
-  mat nZm = mean(get_regs(Z, regs), 0);
+  mat nZm = arma::mean(get_regs(Z, regs), 0);
   if (n_time == 1) {
     return nZm.t();
   }
@@ -54,12 +52,12 @@ inline vec get_muZp(const mat& nZm, const field<mat>& Se, const cube& Z,
 field<mat> get_cov_Z_mstcar(const field<mat>& Sein, const vec& tau2, 
                             const vec& n_adj) {
   const uword n_time = Sein.n_rows;
-  field<mat> cov_Z(n_time, max(n_adj) + 1);
-  const vec unique_n_adj = unique(n_adj);
+  field<mat> cov_Z(n_time, arma::max(n_adj) + 1);
+  const vec unique_n_adj = arma::unique(n_adj);
+  const mat it2_diag = arma::diagmat(1.0 / tau2);
   for (uword time = 0; time < n_time; ++time) {
     for (uword count : unique_n_adj) {
-      const mat it2_diag = diagmat(1.0 / tau2);
-      cov_Z(time, count) = inv_sympd(it2_diag + count * Sein(time, time));
+      cov_Z(time, count) = arma::inv_sympd(it2_diag + count * Sein(time, time));
     }
   }
   return cov_Z;
@@ -67,8 +65,8 @@ field<mat> get_cov_Z_mstcar(const field<mat>& Sein, const vec& tau2,
 
 field<mat> get_coveig_Z_mstcar(const field<mat>& cov_Z, const vec& n_adj) {
   const uword n_time = cov_Z.n_rows;
-  field<mat> coveig_Z(n_time, max(n_adj) + 1);
-  const vec unique_n_adj = unique(n_adj);
+  field<mat> coveig_Z(n_time, arma::max(n_adj) + 1);
+  const vec unique_n_adj = arma::unique(n_adj);
   for (uword time = 0; time < n_time; ++time) {
     for (uword count : unique_n_adj) {
       coveig_Z(time, count) = geteig(cov_Z(time, count));
@@ -89,18 +87,18 @@ void demean_Z(cube& Z, const field<uvec>& isl_region, const uvec& isl_id) {
 }
 
 field<mat> get_cov_Z_mcar(const mat& tau2, const mat& G, const vec& n_adj) {
-  const vec unique_n_adj = unique(n_adj);
+  const vec unique_n_adj = arma::unique(n_adj);
   field<mat> cov_Z(max(n_adj) + 1);
+  const mat it2_diag = arma::diagmat(1.0 / tau2);
   for (uword count : unique_n_adj) {
-    const mat it2_diag = diagmat(1.0 / tau2);
-    cov_Z(count) = inv_sympd(it2_diag + count * G);
+    cov_Z(count) = arma::inv_sympd(it2_diag + count * G);
   }
   return cov_Z;
 }
 
 field<mat> get_coveig_Z_mcar(const field<mat>& cov_Z, const vec& n_adj) {
-  const vec unique_n_adj = unique(n_adj);
-  field<mat> coveig_Z(max(n_adj) + 1);
+  const vec unique_n_adj = arma::unique(n_adj);
+  field<mat> coveig_Z(arma::max(n_adj) + 1);
   for (uword count : unique_n_adj) {
     coveig_Z(count) = geteig(cov_Z(count));
   }
@@ -112,7 +110,7 @@ void replace_Zit(cube& Z, const vec& mean_Z, const mat& cov_Z, const uword reg,
   const uword n_group = Z.n_cols;
   vec Z_new = cpp_rmvnorm(mean_Z, cov_Z);
   for (uword grp = 0; grp < n_group; ++grp) {
-    Z(reg, grp, time) = Z_new(grp);
+    Z(reg, grp, time) = Z_new[grp];
   }
 }
 
@@ -135,7 +133,7 @@ void update_Z_car(List& RSTr_obj) {
     const mat var_Z = 1.0 / (1.0 / tau2 + n_adj[reg] / sig2);
     const mat mean_Z = get_mean_Z_car(Z, lambda, beta, tau2, sig2, adjacency, 
                                       isl_id, var_Z, reg);
-    Z.row(reg) = rnorm_mat(mean_Z, sqrt(var_Z));
+    Z.row(reg) = rnorm_mat(mean_Z, arma::sqrt(var_Z));
   }
   demean_Z(Z, isl_region, isl_id);
 
@@ -167,7 +165,7 @@ void update_Z_mcar(List& RSTr_obj) {
     const field<mat> coveig_Z = get_coveig_Z_mcar(cov_Z, n_adj);
     for (uword reg = 0; reg < n_region; ++reg) {
       const vec lmb_it = get_lmb_it(lambda, beta, isl_id, time, reg);
-      const vec sum_adj = sum(get_subgrp(Z, adjacency[reg], time), 0).t();
+      const vec sum_adj = arma::sum(get_subgrp(Z, adjacency[reg], time), 0).t();
       const vec mean_Z = cov_Z(n_adj[reg]) * (lmb_it / tau2t + Gt * sum_adj);
       replace_Zit(Z, mean_Z, coveig_Z(n_adj[reg]), reg, time);
     }
