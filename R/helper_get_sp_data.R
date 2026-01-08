@@ -21,6 +21,7 @@ get_sp_data <- function(adjacency) {
 }
 
 convert_index <- function(RSTr_obj, index = c("zero", "one")) {
+  match.arg(index)
   adjacency <- RSTr_obj$sp_data$adjacency
   isl_id <- RSTr_obj$sp_data$isl_id
   isl_region <- RSTr_obj$sp_data$isl_region

@@ -57,7 +57,7 @@ void update_lambda(List& RSTr_obj) {
     for (uword reg = 0; reg < n_region; ++reg) {
       for (uword grp = 0; grp < n_group; ++grp) {
         const double l_0 = lambda(reg, grp, time);
-        const double l_star = R::rnorm(l_0, lambda_sd(reg, grp, time));
+        const double l_star = std::clamp(R::rnorm(l_0, lambda_sd(reg, grp, time)), -100.0, 15.0);
         const double b_0 = beta(isl_id[reg], grp, time);
         const double Z_0 = Z(reg, grp, time);
         const double t_0 = tau2(grp, time);

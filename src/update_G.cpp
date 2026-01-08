@@ -50,6 +50,7 @@ cube get_Ags(const mat& Ag, const cube& Z, const vec& rho,
       Ags.slice(time) += n_adj * (Zm_diff * Zt_diff.t());
     }
   }
+  //Rcpp::Rcout << Ags << "\n";
   return Ags;
 }
 
