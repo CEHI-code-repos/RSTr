@@ -28,13 +28,10 @@ running a CAR model to see the evolution of `Z` over time:
 ``` r
 data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_car <- car("my_test_model", data_u, miadj, tempdir(), seed = 1234)
-#> Starting sampler on Batch 1 at Thu Jan 08 23:20:34
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
 
-    #> Generating estimates...
-    #> Model finished at Thu Jan 08 23:20:40
     #> Warning in check_informativeness(RSTr_obj): Model informativeness is too high.
     #> Re-run data with restricted CAR model using 'rcar()'. See
     #> vignette('rstr-informativeness') for more details
@@ -123,13 +120,9 @@ function, setting an informativeness ceiling of `A = 6`:
 
 ``` r
 mod_rcar <- rcar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
-#> Starting sampler on Batch 1 at Thu Jan 08 23:20:41
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
-
-    #> Generating estimates...
-    #> Model finished at Thu Jan 08 23:20:47
 
 Notice that the traceplots for `tau2` and `sig2` in our restricted CAR
 model have significantly higher values than those in the unrestricted
@@ -210,13 +203,9 @@ events:
 data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FALSE])
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_rcar <- rcar("test_rcar", data_u, miadj, tempdir(), seed = 1234, A = A)
-#> Starting sampler on Batch 1 at Thu Jan 08 23:20:49
 ```
 
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
-
-    #> Generating estimates...
-    #> Model finished at Thu Jan 08 23:20:56
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
