@@ -7,25 +7,53 @@ data_list <- list(
 
 test_that("all CAR models work", {
   for (x in data_list) {
-    expect_warning(car("test", x, miadj, show_plots = FALSE, seed = 1234))
+    expect_warning(car(
+      "test",
+      x,
+      miadj,
+      show_plots = FALSE,
+      verbose = FALSE,
+      seed = 1234
+    ))
   }
 })
 
 test_that("all RCAR models work", {
   for (x in data_list) {
-    expect_no_error(rcar("test", x, miadj, show_plots = FALSE, seed = 1234))
+    expect_no_error(rcar(
+      "test",
+      x,
+      miadj,
+      show_plots = FALSE,
+      verbose = FALSE,
+      seed = 1234
+    ))
   }
 })
 
 test_that("all MCAR models work", {
   for (x in data_list) {
-    expect_no_error(mcar("test", x, miadj, show_plots = FALSE, seed = 1234))
+    expect_no_error(mcar(
+      "test",
+      x,
+      miadj,
+      show_plots = FALSE,
+      verbose = FALSE,
+      seed = 1234
+    ))
   }
 })
 
 test_that("all MSTCAR models work", {
   for (x in data_list) {
-    expect_no_error(mstcar("test", x, miadj, show_plots = FALSE, seed = 1234))
+    expect_no_error(mstcar(
+      "test",
+      x,
+      miadj,
+      show_plots = FALSE,
+      verbose = FALSE,
+      seed = 1234
+    ))
   }
 })
 
@@ -38,6 +66,7 @@ test_that("all MSTCAR models work with update_rho = TRUE", {
         miadj,
         update_rho = TRUE,
         show_plots = FALSE,
+        verbose = FALSE,
         seed = 1234
       )
     )
