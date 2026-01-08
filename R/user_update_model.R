@@ -23,7 +23,7 @@ update_model <- function(
   verbose = TRUE
 ) {
   RSTr_obj <- run_sampler(RSTr_obj, iterations, show_plots, verbose)
-  if (verbose) {
+  if (verbose && interactive()) {
     if (RSTr_obj$params$age_standardized) {
       message("Age-standardized estimates detected. Updating estimates...")
     } else if (RSTr_obj$params$suppressed) {
@@ -56,7 +56,7 @@ update_model <- function(
     RSTr_obj <- suppress_estimates(RSTr_obj, RSTr_obj$params$supp_thres)
   }
   save_model(RSTr_obj)
-  if (verbose) {
+  if (verbose && interactive()) {
     message("Model finished at ", format(Sys.time(), "%a %b %d %X"))
   }
   RSTr_obj

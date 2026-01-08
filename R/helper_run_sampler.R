@@ -15,15 +15,15 @@ run_sampler <- function(
   total <- RSTr_obj$params$total
   method <- RSTr_obj$params$method
   batches <- seq(start_batch + 1, start_batch + iterations / 100)
-  if (verbose && missing_Y) {
+  if (verbose && interactive() && missing_Y) {
     message("NAs detected in Y. Events will be imputed for missing values")
   }
-  if (verbose) {
+  if (verbose && interactive()) {
     t0 <- Sys.time() |> format("%a %b %d %X")
     message("Starting sampler on Batch ", start_batch + 1, " at ", t0)
   }
   for (batch in batches) {
-    if (verbose) {
+    if (verbose && interactive()) {
       display_progress(batch, max(batches), total, 0, sampler_start)
     }
     output <- stats::setNames(
@@ -40,7 +40,7 @@ run_sampler <- function(
       if (it %% 10 == 0) {
         output <- append_to_output(output, RSTr_obj)
       }
-      if (verbose) {
+      if (verbose && interactive()) {
         display_progress(batch, max(batches), total, it, sampler_start)
       }
     }
