@@ -11,14 +11,14 @@
 
 ## Citation
 
-DeLara D, Centers for Disease Control and Prevention (2025). *RSTr:
+DeLara D, Centers for Disease Control and Prevention (2026). *RSTr:
 Gibbs Samplers for Discrete Bayesian Spatiotemporal Models*. R package
 version 1.0.0, <https://cehi-code-repos.github.io/RSTr/>.
 
     @Manual{,
       title = {RSTr: Gibbs Samplers for Discrete Bayesian Spatiotemporal Models},
       author = {David DeLara and {Centers for Disease Control and Prevention}},
-      year = {2025},
+      year = {2026},
       note = {R package version 1.0.0},
       url = {https://cehi-code-repos.github.io/RSTr/},
     }
