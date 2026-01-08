@@ -6,13 +6,13 @@ Includes measures to prevent estimate over-smoothing through a
 restriction of model informativeness for select models. Also provides
 tools to load output and get median estimates. Implements methods from
 Besag, York, and Mollié (1991) "Bayesian image restoration, with two
-applications in spatial statistics" \doi{10.1007/BF00116466}, Gelfand
+applications in spatial statistics" \<doi:10.1007/BF00116466\>, Gelfand
 and Vounatsou (2003) "Proper multivariate conditional autoregressive
-models for spatial data analysis" doi:10.1093/biostatistics/4.1.11,
+models for spatial data analysis" \<doi:10.1093/biostatistics/4.1.11\>,
 Quick et al. (2017) "Multivariate spatiotemporal modeling of
-age-specific stroke mortality" doi:10.1214/17-AOAS1068, and Quick et al.
-(2021) "Evaluating the informativeness of the Besag-York-Mollié CAR
-model" doi:10.1016/j.sste.2021.100420.
+age-specific stroke mortality" \<doi:10.1214/17-AOAS1068\>, and Quick et
+al. (2021) "Evaluating the informativeness of the Besag-York-Mollié CAR
+model" \<doi:10.1016/j.sste.2021.100420\>.
 
 ## Details
 
