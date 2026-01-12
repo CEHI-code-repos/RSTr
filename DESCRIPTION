@@ -34,7 +34,7 @@ Imports:
     RcppDist (>= 0.1.1.1),
     spdep
 Depends:
-	R (>= 4.1.0)
+	R (>= 4.3.0)
 LazyData: true
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr, rmarkdown
