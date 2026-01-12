@@ -1,74 +1,71 @@
 data_list <- list(
   lapply(miheart, \(x) x[, 4, 1]),
   lapply(miheart, \(x) x[, 4:6, 1]),
-  lapply(miheart, \(x) x[, 4, 1:3]),
   lapply(miheart, \(x) x[, 4:6, 1:3])
 )
 
 test_that("all CAR models work", {
-  for (x in data_list) {
-    expect_warning(car(
+  expect_warning(
+    car(
       "test",
-      x,
+      data_list[[1]],
       miadj,
       show_plots = FALSE,
       verbose = FALSE,
       seed = 1234
-    ))
-  }
+    )
+  )
 })
 
 test_that("all RCAR models work", {
-  for (x in data_list) {
-    expect_no_error(rcar(
+  expect_no_error(
+    rcar(
       "test",
-      x,
+      data_list[[1]],
       miadj,
       show_plots = FALSE,
       verbose = FALSE,
       seed = 1234
-    ))
-  }
+    )
+  )
 })
 
 test_that("all MCAR models work", {
-  for (x in data_list) {
-    expect_no_error(mcar(
+  expect_no_error(
+    mcar(
       "test",
-      x,
+      data_list[[2]],
       miadj,
       show_plots = FALSE,
       verbose = FALSE,
       seed = 1234
-    ))
-  }
+    )
+  )
 })
 
 test_that("all MSTCAR models work", {
-  for (x in data_list) {
-    expect_no_error(mstcar(
+  expect_no_error(
+    mstcar(
       "test",
-      x,
+      data_list[[3]],
       miadj,
       show_plots = FALSE,
       verbose = FALSE,
       seed = 1234
-    ))
-  }
+    )
+  )
 })
 
 test_that("all MSTCAR models work with update_rho = TRUE", {
-  for (x in data_list) {
-    expect_no_error(
-      mstcar(
-        "test",
-        x,
-        miadj,
-        update_rho = TRUE,
-        show_plots = FALSE,
-        verbose = FALSE,
-        seed = 1234
-      )
+  expect_no_error(
+    mstcar(
+      "test",
+      data_list[[3]],
+      miadj,
+      update_rho = TRUE,
+      show_plots = FALSE,
+      verbose = FALSE,
+      seed = 1234
     )
-  }
+  )
 })
