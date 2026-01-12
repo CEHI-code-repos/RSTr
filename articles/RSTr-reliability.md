@@ -70,6 +70,14 @@ mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, see
 
 ![](RSTr-reliability_files/figure-html/unnamed-chunk-1-1.png)
 
+``` r
+# For computational reasons, full model fitting is not run during CRAN checks.
+# When building on CRAN, this vignette loads a pre-fitted example model included with the package.
+# The pkgdown website shows the full model-fitting workflow.
+example_dir <- system.file("extdata", package = "RSTr")
+mod_mst <- load_model("mstcar_example", example_dir)
+```
+
 Here, we specify `perc_ci = 0.95`, which means our relative precision
 estimates will be based on a 95% credible interval. If we want to
 generate our suppressed estimates, we can simply input our `RSTr` model
@@ -133,7 +141,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-reliability_files/figure-html/unnamed-chunk-3-1.png)
+![](RSTr-reliability_files/figure-html/unnamed-chunk-4-1.png)
 
 These suppressed maps highlight an important benefit of
 age-standardizing: we can combine age groups to both bolster our
@@ -163,7 +171,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-reliability_files/figure-html/unnamed-chunk-5-1.png)
+![](RSTr-reliability_files/figure-html/unnamed-chunk-7-1.png)
 
 As we increase our CI width from 0.50 to 0.95 to 0.99 and 0.995, our
 reliability criteria becomes more stringent and more counties become

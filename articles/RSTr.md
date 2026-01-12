@@ -119,6 +119,14 @@ mod_mst <- mstcar(
 
 ![](RSTr_files/figure-html/unnamed-chunk-1-1.png)
 
+``` r
+# For computational reasons, full model fitting is not run during CRAN checks.
+# When building on CRAN, this vignette loads a pre-fitted example model included with the package.
+# The pkgdown website shows the full model-fitting workflow.
+example_dir <- system.file("extdata", package = "RSTr")
+mod_mst <- load_model("mstcar_example", example_dir)
+```
+
 Here, we use the [`mstcar()`](../reference/car.md) function to specify
 our model. [`mstcar()`](../reference/car.md) accepts a few different
 arguments in this case:
@@ -337,7 +345,6 @@ a map. Using `ggplot` (or your favorite mapping package), Let’s see how
 the (non-age-standardized) estimates were smoothed:
 
 ``` r
-library(ggplot2)
 # Original Myocardial Infarction Death Rates in MI, Ages 35-64, 1988
 estimates_88 <- mst_estimates_as[mst_estimates_as$year == "1988", ]
 estimates_3564 <- estimates_88[estimates_88$group == "35-64", ]
@@ -352,7 +359,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr_files/figure-html/unnamed-chunk-7-1.png)
+![](RSTr_files/figure-html/unnamed-chunk-8-1.png)
 
 ``` r
 # Spatially Smoothed MI Death Rates in MI
@@ -367,7 +374,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr_files/figure-html/unnamed-chunk-7-2.png)
+![](RSTr_files/figure-html/unnamed-chunk-8-2.png)
 
 This map helps us see how RSTr smooths rates. First, notice how the
 range of the two plots are different: the smoothed map has a smaller

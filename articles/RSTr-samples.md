@@ -26,6 +26,14 @@ mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, see
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-1-1.png)
 
+``` r
+# For computational reasons, full model fitting is not run during CRAN checks.
+# When building on CRAN, this vignette loads a pre-fitted example model included with the package.
+# The pkgdown website shows the full model-fitting workflow.
+example_dir <- system.file("extdata", package = "RSTr")
+mod_mst <- load_model("mstcar_example", example_dir)
+```
+
 Once [`mstcar()`](../reference/car.md) tells you that the model is
 finished running, you can import samples into R using
 [`load_samples()`](../reference/load_samples.md).
@@ -198,7 +206,6 @@ medians_supp[low_rel_prec | low_population] <- NA
 Let’s now map our suppressed estimates:
 
 ``` r
-library(ggplot2)
 est_3544 <- medians_supp[, "35-44", "1988"]
 
 ggplot(mishp) +
@@ -211,7 +218,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-samples_files/figure-html/unnamed-chunk-13-1.png)
+![](RSTr-samples_files/figure-html/unnamed-chunk-14-1.png)
 
 With our samples available, we can generate estimates from different
 credible intervals without having to re-run the model:
@@ -235,7 +242,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-samples_files/figure-html/unnamed-chunk-14-1.png)
+![](RSTr-samples_files/figure-html/unnamed-chunk-16-1.png)
 
 We can even use these samples to learn more about our data. Let’s say we
 are interested in figuring out if a rate estimate is statistically
@@ -259,7 +266,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-samples_files/figure-html/unnamed-chunk-15-1.png)
+![](RSTr-samples_files/figure-html/unnamed-chunk-18-1.png)
 
 On this map, we can see that much of the northern Lower Peninsula is
 significantly lower than the state rate, whereas the southern portion of

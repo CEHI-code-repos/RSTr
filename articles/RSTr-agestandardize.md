@@ -23,6 +23,14 @@ mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 ![](RSTr-agestandardize_files/figure-html/unnamed-chunk-1-1.png)
 
 ``` r
+# For computational reasons, full model fitting is not run during CRAN checks.
+# When building on CRAN, this vignette loads a pre-fitted example model included with the package.
+# The pkgdown website shows the full model-fitting workflow.
+example_dir <- system.file("extdata", package = "RSTr")
+mod_mst <- load_model("mstcar_example", example_dir)
+```
+
+``` r
 estimates <- get_estimates(mod_mst, rates_per = 1e5)
 head(estimates)
 #>   county group year  medians ci_lower ci_upper rel_prec events population

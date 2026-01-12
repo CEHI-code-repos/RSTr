@@ -109,12 +109,12 @@ According to this, our two no-link counties are Dukes and Nantucket
 data to further investigate:
 
 ``` r
-library(ggplot2)
-
 ggplot(mamap) +
   geom_sf(aes(fill = NAME)) +
   geom_sf_label(aes(label = NAME))
 ```
+
+![](RSTr-adjacency_files/figure-html/unnamed-chunk-6-1.png)
 
 Here, we’ve generated a map colored by region and labeled with the name
 of each county. We can see Dukes and Nantucket in the southeast corner,

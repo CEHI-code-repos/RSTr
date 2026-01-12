@@ -36,6 +36,14 @@ mod_car <- car("my_test_model", data_u, miadj, tempdir(), seed = 1234)
     #> Re-run data with restricted CAR model using 'rcar()'. See
     #> vignette('rstr-informativeness') for more details
 
+``` r
+# For computational reasons, full model fitting is not run during CRAN checks.
+# When building on CRAN, this vignette loads a pre-fitted example model included with the package.
+# The pkgdown website shows the full model-fitting workflow.
+example_dir <- system.file("extdata", package = "RSTr")
+mod_car <- load_model("car_example", example_dir)
+```
+
 The magnitude of `sig2` has further implications on the rate estimates
 `lambda`. Smaller `sig2` values mean that the variance between neighbors
 is smaller. In short, the smaller the `sig2`, the closer in value an
@@ -61,7 +69,7 @@ abline(h = 1, col = "blue")
 abline(v = 10, col = "blue")
 ```
 
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-2-1.png)
+![](RSTr-informativeness_files/figure-html/unnamed-chunk-3-1.png)
 
 The horizontal blue line shows the relative precision cutoff, and the
 vertical blue line shows an event cutoff based on the suppression
@@ -122,7 +130,13 @@ function, setting an informativeness ceiling of `A = 6`:
 mod_rcar <- rcar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
 ```
 
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-3-1.png)
+![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
+
+``` r
+# Same as above, but for RCAR model
+example_dir <- system.file("extdata", package = "RSTr")
+mod_rcar <- load_model("rcar_example", example_dir)
+```
 
 Notice that the traceplots for `tau2` and `sig2` in our restricted CAR
 model have significantly higher values than those in the unrestricted
@@ -138,7 +152,7 @@ abline(h = 1, col = "blue")
 abline(v = 10, col = "blue")
 ```
 
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-4-1.png)
+![](RSTr-informativeness_files/figure-html/unnamed-chunk-6-1.png)
 
 Here, the estimates for the RCAR are in purple and the estimates for the
 unrestricted CAR are in black. Notice how the points on the purple curve
@@ -149,7 +163,6 @@ this informativeness ceiling is smoothing an ideal amount. We can also
 map the two estimates to visually compare the models:
 
 ``` r
-library(ggplot2)
 ggplot(mishp) +
   geom_sf(aes(fill = estimates$medians)) +
   labs(
@@ -160,7 +173,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-5-1.png)
+![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
 
 ``` r
 ggplot(mishp) +
@@ -173,7 +186,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-5-2.png)
+![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-2.png)
 
 As expected, the gradient of estimates is much more sharp on the RCAR
 model map in comparison to the unrestricted CAR map. This is due to the
@@ -205,7 +218,7 @@ A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_rcar <- rcar("test_rcar", data_u, miadj, tempdir(), seed = 1234, A = A)
 ```
 
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-6-1.png)
+![](RSTr-informativeness_files/figure-html/unnamed-chunk-9-1.png)
 
 While our individual groups will have lower relative precisions due to
 lower respective `A`s, when we age-standardize, we will have the same
@@ -225,7 +238,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
+![](RSTr-informativeness_files/figure-html/unnamed-chunk-10-1.png)
 
 ## The RCAR Model, Reliability, and Suppression
 
@@ -248,7 +261,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-informativeness_files/figure-html/unnamed-chunk-8-1.png)
+![](RSTr-informativeness_files/figure-html/unnamed-chunk-12-1.png)
 
 With the RCAR model, we get the benefit of age-standardizing our
 spatially smoothed estimates without the compounded oversmoothing from
