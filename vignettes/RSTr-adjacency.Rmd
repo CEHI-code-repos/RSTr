@@ -12,9 +12,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
 ```
 
-## Overview {#sec-overview}
+## Overview
 
 The adjacency structure is a set of instructions that show the spatial relationship between each region and informs RSTr which counties to pull information from when spatially smoothing. In this vignette, we will cover the requirements for the `adjacency` object along with walking through the setup of the adjacency information.
 
@@ -68,7 +69,7 @@ ma_shp[no_neigh, ]
 
 According to this, our two no-link counties are Dukes and Nantucket (FIPS 25007 and 25019, respectively). Let's check out a ggplot of our data to further investigate:
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, eval = interactive()}
 library(ggplot2)
 
 ggplot(mamap) +

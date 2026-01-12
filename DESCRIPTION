@@ -22,10 +22,10 @@ LinkingTo:
     RcppArmadillo (>= 15.2.2.1),
     RcppDist (>= 0.1.1.1)
 Suggests: 
-    knitr,
     ggplot2,
-    sf,
+    knitr,
     rmarkdown,
+    sf,
     testthat (>= 3.0.0)
 Imports:
     abind,

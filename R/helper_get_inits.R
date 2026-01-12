@@ -14,6 +14,7 @@ get_inits.car <- function(RSTr_obj, inits, method) {
     get_inits_beta(Y, n, n_group, n_time, n_island, method)
   inits$lambda <- inits$lambda %||%
     get_inits_lambda(inits, Y, n, method, isl_id)
+
   inits$Z <- inits$Z %||%
     log_logit(inits$lambda, method) -
     inits$beta[isl_id, , , drop = FALSE]
