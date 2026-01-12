@@ -12,6 +12,12 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+required_pkgs <- c("ggplot2")
+missing <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
+if (length(missing) > 0) {
+  knitr::knit_exit()
+}
+library(RSTr)
 ```
 
 ## Overview
@@ -19,10 +25,6 @@ knitr::opts_chunk$set(
 Though RSTr is designed to stabilize low-population regions, there is a limit to the amount of information the model can gather, and estimates from exceedingly low-population regions may be over-smoothed. To address these issues, we can establish criteria that indicate whether our estimates are reliable enough to display. In this vignette, we will take a deep dive into estimate reliability and showcase how we can use reliability criteria to suppress our estimates with `suppress_estimates()`.
 
 ### Traceplots
-```{r, include = FALSE}
-library(RSTr)
-```
-
 Let's quickly demonstrate the importance of reliability metrics by comparing the traceplots of high- and low-population counties:
 
 ![](images/reliability-figures.png)

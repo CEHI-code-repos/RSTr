@@ -12,7 +12,12 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
+required_pkgs <- c("sf", "ggplot2")
+missing <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
+if (length(missing) > 0) {
+  knitr::knit_exit()
+}
+library(RSTr)
 ```
 
 ## Overview
@@ -24,10 +29,6 @@ The adjacency structure is a set of instructions that show the spatial relations
 Adjacency information is input as a `list` `adj` where each element `adj[[i]]` is a vector of indices denoting regions that are neighbors of region `i`. Below, we will walk through the construction of the adjacency information and address common issues that may arise.
 
 ## Example: Massachusetts Map Data
-```{r, include = FALSE}
-library(RSTr)
-```
-
 For this example, we will continue using Massachusetts data as we did in section 2. Included is an example dataset that contains Massachusetts shapefile information, generated using the `tigris` package:
 
 ```{r, results = "hide"}

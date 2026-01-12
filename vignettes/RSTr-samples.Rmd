@@ -12,6 +12,12 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+required_pkgs <- c("ggplot2")
+missing <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
+if (length(missing) > 0) {
+  knitr::knit_exit()
+}
+library(RSTr)
 ```
 
 ## Overview
@@ -21,16 +27,11 @@ In the first series of vignettes, we worked with high-level wrapper functions li
 Before we begin, note that the above functions make direct changes to our `RSTr` model object. We can manually save our estimates to the model object, but these estimates will not be automatically added. In exchange for more power with sample processing, we lose some of the convenience afforded to us by these wrapper functions.
 
 ## The `load_samples()` function
-```{r, include = FALSE}
-library(RSTr)
-```
 To begin, let's generate samples for a new model:
 
 ```{r, results = "hide", fig.keep = "last"}
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234)
 ```
-
-## The `load_samples()` function
 
 Once `mstcar()` tells you that the model is finished running, you can import samples into R using `load_samples()`. `load_samples()` takes in four arguments:
 

@@ -9,6 +9,12 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
+required_pkgs <- c("ggplot2")
+missing <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
+if (length(missing) > 0) {
+  knitr::knit_exit()
+}
+library(RSTr)
 ```
 
 ## Overview
@@ -16,10 +22,6 @@ knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 The RSTr package is a tool that provides a host of Bayesian spatiotemporal models in conjunction with C++ to quickly and easily generate spatially-smoothed age-standardized estimates for your spatial data. This vignette introduces you to the basics of the RSTr package and shows you how to apply the basic functions to the included example data to get small area estimates.
 
 ## Models
-```{r, include = FALSE}
-library(RSTr)
-```
-
 The models provided in the RSTr package are based on the [Besag, York, and Mollié (1991)](https://link.springer.com/article/10.1007/bf00116466) Conditional Autoregressive (CAR) model, which spatially smooths data by incorporating information such as event and population counts from neighboring geographic units (counties, census tracts, etc.). The degree of spatial smoothing is determined by a spatial region's respective population size. The CAR model can be extended to several levels of complexity, depending on the input data:
 
 -   BYM CAR (CAR): Spatially smooths across geographies;

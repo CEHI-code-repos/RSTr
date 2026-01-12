@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(RSTr)
 ```
 
 ## Overview
@@ -19,10 +20,6 @@ knitr::opts_chunk$set(
 The event and population data are at the core of the BYM-based models used in the RSTr package. They work alongside the adjacency information to generate smoothed estimates. In this vignette, we'll discuss requirements for event and population data and walk through an example with a `data.frame`.
 
 ## Requirements
-```{r, include = FALSE}
-library(RSTr)
-```
-
 -   Data must be a `list` object with names `Y` and `n` for the event counts and for the population counts, respectively;
 
 -   `Y` and `n` are intended to be entire-population data. While it is possible to use RSTr to analyze survey data or datasets that don't include all members of a population of interest, RSTr does not currently allow for the inclusion of survey weights and thus assumes that each `Y / n` is an unbiased estimate of the underlying event rate;

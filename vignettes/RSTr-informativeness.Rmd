@@ -12,6 +12,12 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+required_pkgs <- c("ggplot2")
+missing <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
+if (length(missing) > 0) {
+  knitr::knit_exit()
+}
+library(RSTr)
 ```
 
 ## Overview
@@ -19,11 +25,6 @@ knitr::opts_chunk$set(
 Up to this point, we've discussed preparing count/adjacency data, model setup, and age-standardization. In `vignette("RSTr-reliability")`, we discussed how to suppress estimates based on reliability criteria, including population thresholds and relative precision. However, there are cases where the event or population counts are too low for RSTr to meaningfully gather information from neighboring regions; in these cases, the standard BYM models will apply excessive spatial smoothing, artificially inflating the estimate's relative precision. In this vignette, we will look under the hood of the CAR models and how they perform spatial smoothing, discuss model informativeness, and how to work with restricted models in your data.
 
 ## How does spatial smoothing work?
-
-```{r, include = FALSE}
-library(RSTr)
-```
-
 Spatial smoothing acts by way of a spatial random effects estimator `Z`; this is essentially the parameter that tells the model how much to either increase or decrease its corresponding estimated rate `lambda`. In CAR models, the strength of `Z` itself is determined by a host of factors, most importantly the spatial variance (`sig2` for CAR; `G` for MCAR and MSTCAR). We can investigate spatial smoothing further by running a CAR model to see the evolution of `Z` over time:
 
 ```{r, results = "hide", fig.keep = "last"}
