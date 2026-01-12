@@ -20,7 +20,7 @@ rates from an `RSTr` object, we can simply run
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 ```
 
-![](RSTr-agestandardize_files/figure-html/unnamed-chunk-2-1.png)
+![](RSTr-agestandardize_files/figure-html/unnamed-chunk-1-1.png)
 
 ``` r
 estimates <- get_estimates(mod_mst, rates_per = 1e5)

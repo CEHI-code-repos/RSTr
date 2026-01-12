@@ -24,9 +24,7 @@ To begin, let’s generate samples for a new model:
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234)
 ```
 
-![](RSTr-samples_files/figure-html/unnamed-chunk-2-1.png)
-
-## The `load_samples()` function
+![](RSTr-samples_files/figure-html/unnamed-chunk-1-1.png)
 
 Once [`mstcar()`](../reference/car.md) tells you that the model is
 finished running, you can import samples into R using
@@ -213,7 +211,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-samples_files/figure-html/unnamed-chunk-14-1.png)
+![](RSTr-samples_files/figure-html/unnamed-chunk-13-1.png)
 
 With our samples available, we can generate estimates from different
 credible intervals without having to re-run the model:
@@ -237,7 +235,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-samples_files/figure-html/unnamed-chunk-15-1.png)
+![](RSTr-samples_files/figure-html/unnamed-chunk-14-1.png)
 
 We can even use these samples to learn more about our data. Let’s say we
 are interested in figuring out if a rate estimate is statistically
@@ -261,7 +259,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr-samples_files/figure-html/unnamed-chunk-16-1.png)
+![](RSTr-samples_files/figure-html/unnamed-chunk-15-1.png)
 
 On this map, we can see that much of the northern Lower Peninsula is
 significantly lower than the state rate, whereas the southern portion of

@@ -117,7 +117,7 @@ mod_mst <- mstcar(
 )
 ```
 
-![](RSTr_files/figure-html/unnamed-chunk-2-1.png)
+![](RSTr_files/figure-html/unnamed-chunk-1-1.png)
 
 Here, we use the [`mstcar()`](../reference/car.md) function to specify
 our model. [`mstcar()`](../reference/car.md) accepts a few different
@@ -352,7 +352,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr_files/figure-html/unnamed-chunk-8-1.png)
+![](RSTr_files/figure-html/unnamed-chunk-7-1.png)
 
 ``` r
 # Spatially Smoothed MI Death Rates in MI
@@ -367,7 +367,7 @@ ggplot(mishp) +
   theme_void()
 ```
 
-![](RSTr_files/figure-html/unnamed-chunk-8-2.png)
+![](RSTr_files/figure-html/unnamed-chunk-7-2.png)
 
 This map helps us see how RSTr smooths rates. First, notice how the
 range of the two plots are different: the smoothed map has a smaller
