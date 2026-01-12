@@ -86,7 +86,7 @@
     
     
 <div class="section level2">
-<h2 id="sec-overview">Overview<a class="anchor" aria-label="anchor" href="#sec-overview"></a>
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <p>The RSTr package is a tool that provides a host of Bayesian
 spatiotemporal models in conjunction with C++ to quickly and easily
@@ -96,7 +96,7 @@ shows you how to apply the basic functions to the included example data
 to get small area estimates.</p>
 </div>
 <div class="section level2">
-<h2 id="sec-models">Models<a class="anchor" aria-label="anchor" href="#sec-models"></a>
+<h2 id="models">Models<a class="anchor" aria-label="anchor" href="#models"></a>
 </h2>
 <p>The models provided in the RSTr package are based on the <a href="https://link.springer.com/article/10.1007/bf00116466" class="external-link">Besag, York,
 and Mollié (1991)</a> Conditional Autoregressive (CAR) model, which
@@ -118,7 +118,7 @@ across geographies, sociodemographic groups, and time periods.</p></li>
 <p>For this vignette, we will demonstrate RSTr’s functionality with an
 MSTCAR model.</p>
 <div class="section level3">
-<h3 id="sec-restricted-models">Restricted models to prevent over-smoothing<a class="anchor" aria-label="anchor" href="#sec-restricted-models"></a>
+<h3 id="restricted-models-to-prevent-over-smoothing">Restricted models to prevent over-smoothing<a class="anchor" aria-label="anchor" href="#restricted-models-to-prevent-over-smoothing"></a>
 </h3>
 <p>A problem with CAR models pointed out by <a href="https://pubmed.ncbi.nlm.nih.gov/33980402/" class="external-link">Quick, et
 al. (2021)</a> is that of over-smoothing due to the informativeness of
@@ -133,7 +133,7 @@ package as they are developed.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="sec-datasets">Datasets<a class="anchor" aria-label="anchor" href="#sec-datasets"></a>
+<h2 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a>
 </h2>
 <p>RSTr comes with three main datasets: <code>miheart</code>,
 <code>miadj</code>, and <code>mishp</code>. <code>miheart</code> and
@@ -169,7 +169,7 @@ structures must be listed in the same order as your count data.</p></li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="sec-functions">Functions<a class="anchor" aria-label="anchor" href="#sec-functions"></a>
+<h2 id="functions">Functions<a class="anchor" aria-label="anchor" href="#functions"></a>
 </h2>
 <p>RSTr comes with a set of functions to generate small area estimates
 from your dataset. Here is a brief overview of the basic functions and
@@ -191,7 +191,7 @@ containing information on each region/group/time in the model.</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="sec-mstcar">Example Model<a class="anchor" aria-label="anchor" href="#sec-mstcar"></a>
+<h2 id="example-model">Example Model<a class="anchor" aria-label="anchor" href="#example-model"></a>
 </h2>
 <div class="section level3">
 <h3 id="mstcar">
@@ -266,8 +266,8 @@ and diagnose any potential issues.</p>
 model functions, read <code><a href="../articles/RSTr-car.html">vignette("RSTr-car")</a></code>.</p>
 </div>
 <div class="section level3">
-<h3 id="sec-getestimates">
-<code>get_estimates()</code><a class="anchor" aria-label="anchor" href="#sec-getestimates"></a>
+<h3 id="get_estimates">
+<code>get_estimates()</code><a class="anchor" aria-label="anchor" href="#get_estimates"></a>
 </h3>
 <p><code><a href="../reference/car.html">mstcar()</a></code> takes care of the vast majority of model
 preparation: within the function, the model is set up, samples are
@@ -309,8 +309,8 @@ intervals, the relative precisions, and the event/population counts;
 region, group, and time period columns are also provided.</p>
 </div>
 <div class="section level3">
-<h3 id="sec-agestandardize">
-<code>age_standardize()</code><a class="anchor" aria-label="anchor" href="#sec-agestandardize"></a>
+<h3 id="age_standardize">
+<code>age_standardize()</code><a class="anchor" aria-label="anchor" href="#age_standardize"></a>
 </h3>
 <p>One of the most important features of the RSTr package is the ability
 to easily generate age-standardized estimates. Let’s say we want to get
@@ -353,8 +353,8 @@ estimates. Should you want to see those instead, you can set the
 argument <code>standardized = FALSE</code>.</p>
 </div>
 <div class="section level3">
-<h3 id="sec-suppressestimates">
-<code>suppress_estimates()</code><a class="anchor" aria-label="anchor" href="#sec-suppressestimates"></a>
+<h3 id="suppress_estimates">
+<code>suppress_estimates()</code><a class="anchor" aria-label="anchor" href="#suppress_estimates"></a>
 </h3>
 <p>While the main benefit of RSTr is generating reliable estimates from
 small-population areas, we cannot guarantee that all estimates generated

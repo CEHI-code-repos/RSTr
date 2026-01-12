@@ -116,8 +116,6 @@ ggplot(mamap) +
   geom_sf_label(aes(label = NAME))
 ```
 
-![](RSTr-adjacency_files/figure-html/unnamed-chunk-7-1.png)
-
 Here, we’ve generated a map colored by region and labeled with the name
 of each county. We can see Dukes and Nantucket in the southeast corner,
 and if you zoom in, you can see that these two counties aren’t touching
