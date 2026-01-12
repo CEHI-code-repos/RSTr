@@ -123,6 +123,8 @@ mod_mst <- mstcar(
 # For computational reasons, full model fitting is not run during CRAN checks.
 # When building on CRAN, this vignette loads a pre-fitted example model included with the package.
 # The pkgdown website shows the full model-fitting workflow.
+stopifnot(dir.exists(example_dir))
+list.files(example_dir)
 example_dir <- system.file("extdata", package = "RSTr")
 mod_mst <- load_model("mstcar_example", example_dir)
 ```
