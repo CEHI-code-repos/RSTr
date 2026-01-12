@@ -12,12 +12,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-required_pkgs <- c("ggplot2")
-missing <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
-if (length(missing) > 0) {
-  knitr::knit_exit()
-}
+is_cran <- identical(Sys.getenv("NOT_CRAN"), "false")
+if (Sys.getenv("NOT_CRAN") == "") is_cran <- TRUE
 library(RSTr)
+library(ggplot2)
 ```
 
 ## Overview
@@ -27,9 +25,17 @@ Up to this point, we've discussed preparing count/adjacency data, model setup, a
 ## How does spatial smoothing work?
 Spatial smoothing acts by way of a spatial random effects estimator `Z`; this is essentially the parameter that tells the model how much to either increase or decrease its corresponding estimated rate `lambda`. In CAR models, the strength of `Z` itself is determined by a host of factors, most importantly the spatial variance (`sig2` for CAR; `G` for MCAR and MSTCAR). We can investigate spatial smoothing further by running a CAR model to see the evolution of `Z` over time:
 
-```{r, results = "hide", fig.keep = "last"}
+```{r, eval = !is_cran, results = "hide", fig.keep = "last"}
 data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_car <- car("my_test_model", data_u, miadj, tempdir(), seed = 1234)
+```
+
+```{r, eval = is_cran}
+# For computational reasons, full model fitting is not run during CRAN checks.
+# When building on CRAN, this vignette loads a pre-fitted example model included with the package.
+# The pkgdown website shows the full model-fitting workflow.
+example_dir <- system.file("extdata", package = "RSTr")
+mod_car <- load_model("car_example", example_dir)
 ```
 
 The magnitude of `sig2` has further implications on the rate estimates `lambda`. Smaller `sig2` values mean that the variance between neighbors is smaller. In short, the smaller the `sig2`, the closer in value an estimate and its neighbors will be. When combined with the comparatively intense smoothing applied to smaller event/population regions, these unrestricted CAR models will work too hard to fill in the gaps in information, not only pushing the estimate value too close to the mean `beta` but also artificially inflating its relative precision.
@@ -63,8 +69,14 @@ RSTr features unrestricted CAR/MCAR/MSTCAR models, but also features a restricte
 
 Let's run an RCAR model using the `rcar()` function, setting an informativeness ceiling of `A = 6`:
 
-```{r, results = "hide", fig.keep = "last"}
+```{r, eval = !is_cran, results = "hide", fig.keep = "last"}
 mod_rcar <- rcar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
+```
+
+```{r, eval = is_cran}
+# Same as above, but for RCAR model
+example_dir <- system.file("extdata", package = "RSTr")
+mod_rcar <- load_model("rcar_example", example_dir)
 ```
 
 Notice that the traceplots for `tau2` and `sig2` in our restricted CAR model have significantly higher values than those in the unrestricted CAR model. This is due to the rcar model 'blocking' lower values and ensuring that regions don't oversmooth. We can directly compare the two sets of results with another relative precision plot:
@@ -75,13 +87,11 @@ plot(estimates_rcar$events, estimates_rcar$rel_prec, xlab = "Events", ylab = "Re
 points(estimates$events, estimates$rel_prec)
 abline(h = 1, col = "blue")
 abline(v = 10, col = "blue")
-
 ```
 
 Here, the estimates for the RCAR are in purple and the estimates for the unrestricted CAR are in black. Notice how the points on the purple curve stay below the black curve at low event counts and that no purple points enter the high-precision, low-event quadrant. With `A = 6`, the points lie below 1 relative precision until events are greater than 10, meaning this informativeness ceiling is smoothing an ideal amount. We can also map the two estimates to visually compare the models:
 
-```{r}
-library(ggplot2)
+```{r, eval = !is_cran}
 ggplot(mishp) +
   geom_sf(aes(fill = estimates$medians)) +
   labs(
@@ -100,6 +110,11 @@ ggplot(mishp) +
   theme_void()
 ```
 
+```{r, eval = is_cran, echo = FALSE}
+# This map is shown on the pkgdown website, but skipped for CRAN checks
+NULL
+```
+
 As expected, the gradient of estimates is much more sharp on the RCAR model map in comparison to the unrestricted CAR map. This is due to the decreased intensity of our spatial smoothing. Additionally, the spread of estimates for the RCAR model is wider than that of the unrestricted CAR model because of its increased spatial variance.
 
 ## Restricted models and age-standardization
@@ -108,7 +123,7 @@ When age-standardizing across a CAR model, informativeness is cumulative: inform
 
 We can re-run our model with three age groups: 65-74, 75-84, and 85+. Since we are now running our models across multiple groups, we will need to extend our `A`s to match the number of groups. Additionally, since our informativeness measures are cumulative when age-standardizing, we should split our `A = 6` informativeness ceiling among all of our groups of interest. If we want, we can weight each group's `A` by their total events:
 
-```{r, results = "hide", fig.keep = "last"}
+```{r, eval = !is_cran, results = "hide", fig.keep = "last"}
 data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FALSE])
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_rcar <- rcar("test_rcar", data_u, miadj, tempdir(), seed = 1234, A = A)
@@ -116,7 +131,7 @@ mod_rcar <- rcar("test_rcar", data_u, miadj, tempdir(), seed = 1234, A = A)
 
 While our individual groups will have lower relative precisions due to lower respective `A`s, when we age-standardize, we will have the same effective smoothing power as our singular `A = 6` restricted model:
 
-```{r}
+```{r, eval = !is_cran}
 std_pop <- c(68775, 34116, 9888)
 mod_rcar <- age_standardize(mod_rcar, std_pop, "65up")
 est_rcar <- get_estimates(mod_rcar)
@@ -130,11 +145,16 @@ ggplot(mishp) +
   theme_void()
 ```
 
+```{r, eval = is_cran, echo = FALSE}
+# This map is shown on the pkgdown website, but skipped for CRAN checks
+NULL
+```
+
 ## The RCAR Model, Reliability, and Suppression
 
 Remember that for unrestricted CAR models, we have to impose an additional event/population threshold for reliability to capture high-precision estimates in low-event areas. As we saw in the event/relative precision plot, these thresholds are no longer necessary when we suppress our estimates with an RCAR model:
 
-```{r}
+```{r, eval = !is_cran}
 mod_rcar <- suppress_estimates(mod_rcar)
 est_rcar <- get_estimates(mod_rcar)
 ggplot(mishp) +
@@ -145,6 +165,11 @@ ggplot(mishp) +
   ) +
   scale_fill_viridis_c() +
   theme_void()
+```
+
+```{r, eval = is_cran, echo = FALSE}
+# This map is shown on the pkgdown website, but skipped for CRAN checks
+NULL
 ```
 
 With the RCAR model, we get the benefit of age-standardizing our spatially smoothed estimates without the compounded oversmoothing from unrestricted models.

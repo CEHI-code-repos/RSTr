@@ -12,8 +12,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
 library(RSTr)
+is_cran <- identical(Sys.getenv("NOT_CRAN"), "false")
+if (Sys.getenv("NOT_CRAN") == "") is_cran <- TRUE
 ```
 
 ## Overview
@@ -23,8 +24,16 @@ In the previous vignette, we discussed the model setup process in-depth. But how
 ## The `get_estimates()` function
 In the RSTr introductory vignette, we generated age-standardized estimates for `lambda` based on our example Michigan dataset. To extract rates from an `RSTr` object, we can simply run `get_estimates()`:
 
-```{r, results = "hide", fig.keep = "last"}
+```{r, eval = !is_cran, results = "hide", fig.keep = "last"}
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
+```
+
+```{r, eval = is_cran}
+# For computational reasons, full model fitting is not run during CRAN checks.
+# When building on CRAN, this vignette loads a pre-fitted example model included with the package.
+# The pkgdown website shows the full model-fitting workflow.
+example_dir <- system.file("extdata", package = "RSTr")
+mod_mst <- load_model("mstcar_example", example_dir)
 ```
 
 ```{r}

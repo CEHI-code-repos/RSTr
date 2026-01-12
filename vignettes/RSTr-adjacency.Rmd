@@ -12,12 +12,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-required_pkgs <- c("sf", "ggplot2")
-missing <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
-if (length(missing) > 0) {
-  knitr::knit_exit()
-}
+library(ggplot2)
 library(RSTr)
+is_cran <- identical(Sys.getenv("NOT_CRAN"), "false")
+if (Sys.getenv("NOT_CRAN") == "") is_cran <- TRUE
 ```
 
 ## Overview
@@ -70,12 +68,15 @@ ma_shp[no_neigh, ]
 
 According to this, our two no-link counties are Dukes and Nantucket (FIPS 25007 and 25019, respectively). Let's check out a ggplot of our data to further investigate:
 
-```{r, warning = FALSE, eval = interactive()}
-library(ggplot2)
-
+```{r, warning = FALSE, eval = !is_cran}
 ggplot(mamap) +
   geom_sf(aes(fill = NAME)) +
   geom_sf_label(aes(label = NAME))
+```
+
+```{r, eval = is_cran, echo = FALSE}
+# This map is shown on the pkgdown website, but skipped for CRAN checks
+NULL
 ```
 
 Here, we've generated a map colored by region and labeled with the name of each county. We can see Dukes and Nantucket in the southeast corner, and if you zoom in, you can see that these two counties aren't touching any other counties. Upon closer inspection, Barnstable County seems like a good contender for a neighbor to both Dukes and Nantucket County; Dukes and Nantucket County are also close enough to be neighbors to each other. To rectify this, we can make some changes to our adjacency information. Let's first get a feel for which counties are associated with which indices:

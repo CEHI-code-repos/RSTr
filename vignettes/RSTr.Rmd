@@ -9,16 +9,13 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
-required_pkgs <- c("ggplot2")
-missing <- required_pkgs[!vapply(required_pkgs, requireNamespace, logical(1), quietly = TRUE)]
-if (length(missing) > 0) {
-  knitr::knit_exit()
-}
 library(RSTr)
+library(ggplot2)
+is_cran <- identical(Sys.getenv("NOT_CRAN"), "false")
+if (Sys.getenv("NOT_CRAN") == "") is_cran <- TRUE
 ```
 
 ## Overview
-
 The RSTr package is a tool that provides a host of Bayesian spatiotemporal models in conjunction with C++ to quickly and easily generate spatially-smoothed age-standardized estimates for your spatial data. This vignette introduces you to the basics of the RSTr package and shows you how to apply the basic functions to the included example data to get small area estimates.
 
 ## Models
@@ -69,7 +66,7 @@ RSTr comes with a set of functions to generate small area estimates from your da
 
 With an understanding of the example datasets and the functions, we can start running our first model. The example datasets are set up to run out-of-the-box:
 
-```{r, results = "hide", fig.keep = "last"}
+```{r, eval = !is_cran, results = "hide", fig.keep = "last"}
 mod_mst <- mstcar(
   name = "my_test_model",
   data = miheart,
@@ -77,6 +74,14 @@ mod_mst <- mstcar(
   dir = tempdir(),
   seed = 1234
 )
+```
+
+```{r, eval = is_cran}
+# For computational reasons, full model fitting is not run during CRAN checks.
+# When building on CRAN, this vignette loads a pre-fitted example model included with the package.
+# The pkgdown website shows the full model-fitting workflow.
+example_dir <- system.file("extdata", package = "RSTr")
+mod_mst <- load_model("mstcar_example", example_dir)
 ```
 
 Here, we use the `mstcar()` function to specify our model. `mstcar()` accepts a few different arguments in this case:
@@ -152,8 +157,7 @@ If you want to learn more about `get_estimates()`, `age_standardize()`, and `sup
 
 We can get a better picture of the geographic patterns in our data with a map. Using `ggplot` (or your favorite mapping package), Let's see how the (non-age-standardized) estimates were smoothed:
 
-```{r}
-library(ggplot2)
+```{r, eval = !is_cran}
 # Original Myocardial Infarction Death Rates in MI, Ages 35-64, 1988
 estimates_88 <- mst_estimates_as[mst_estimates_as$year == "1988", ]
 estimates_3564 <- estimates_88[estimates_88$group == "35-64", ]
@@ -176,6 +180,11 @@ ggplot(mishp) +
   ) +
   scale_fill_viridis_c() +
   theme_void()
+```
+
+```{r, eval = is_cran, echo = FALSE}
+# Mapping examples are shown on the RSTr pkgdown website.
+NULL
 ```
 
 This map helps us see how RSTr smooths rates. First, notice how the range of the two plots are different: the smoothed map has a smaller range because RSTr stabilizes high and low extreme values which are usually caused by low population counts. Also, notice how the transitions between high-rate and low-rate regions are more gradual on the smoothed map. This is a consequence of using neighboring regions to inform and stabilize estimates.
