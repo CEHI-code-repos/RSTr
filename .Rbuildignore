@@ -19,3 +19,4 @@
 ^\.github$
 ^cran-comments\.md$
 ^create_RSTr.R$
+^CRAN-SUBMISSION$
