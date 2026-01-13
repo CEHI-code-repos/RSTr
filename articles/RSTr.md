@@ -119,14 +119,6 @@ mod_mst <- mstcar(
 
 ![](RSTr_files/figure-html/unnamed-chunk-1-1.png)
 
-``` r
-# For computational reasons, full model fitting is not run during CRAN checks.
-# When building on CRAN, this vignette loads a pre-fitted example model included with the package.
-# The pkgdown website shows the full model-fitting workflow.
-example_dir <- system.file("extdata", package = "RSTr")
-mod_mst <- load_model("mstcar_example", example_dir)
-```
-
 Here, we use the [`mstcar()`](../reference/car.md) function to specify
 our model. [`mstcar()`](../reference/car.md) accepts a few different
 arguments in this case:

@@ -26,14 +26,6 @@ mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, see
 
 ![](RSTr-samples_files/figure-html/unnamed-chunk-1-1.png)
 
-``` r
-# For computational reasons, full model fitting is not run during CRAN checks.
-# When building on CRAN, this vignette loads a pre-fitted example model included with the package.
-# The pkgdown website shows the full model-fitting workflow.
-example_dir <- system.file("extdata", package = "RSTr")
-mod_mst <- load_model("mstcar_example", example_dir)
-```
-
 Once [`mstcar()`](../reference/car.md) tells you that the model is
 finished running, you can import samples into R using
 [`load_samples()`](../reference/load_samples.md).
