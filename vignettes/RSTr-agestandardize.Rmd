@@ -28,7 +28,7 @@ In the RSTr introductory vignette, we generated age-standardized estimates for `
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 ```
 
-```{r, eval = is_cran}
+```{r, eval = is_cran, echo = FALSE}
 # For computational reasons, full model fitting is not run during CRAN checks.
 # When building on CRAN, this vignette loads a pre-fitted example model included with the package.
 # The pkgdown website shows the full model-fitting workflow.

@@ -30,7 +30,7 @@ data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_car <- car("my_test_model", data_u, miadj, tempdir(), seed = 1234)
 ```
 
-```{r, eval = is_cran}
+```{r, eval = is_cran, echo = FALSE}
 # For computational reasons, full model fitting is not run during CRAN checks.
 # When building on CRAN, this vignette loads a pre-fitted example model included with the package.
 # The pkgdown website shows the full model-fitting workflow.
@@ -73,7 +73,7 @@ Let's run an RCAR model using the `rcar()` function, setting an informativeness 
 mod_rcar <- rcar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
 ```
 
-```{r, eval = is_cran}
+```{r, eval = is_cran, echo = FALSE}
 # Same as above, but for RCAR model
 example_dir <- system.file("extdata", package = "RSTr")
 mod_rcar <- load_model("rcar_example", example_dir)
