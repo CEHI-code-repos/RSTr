@@ -20,6 +20,8 @@
 #' @export
 split_sample_groups <- function(sample, new_groups, delimiter = "_") {
   ng <- length(new_groups)
+  nm <- length(dim(sample)) + ng - 1
+  resid_mar <- (ng + 2):nm
   group_dims <- dimnames(sample)[[2]] |>
     strsplit(delimiter) |>
     simplify2array() |>
@@ -29,13 +31,14 @@ split_sample_groups <- function(sample, new_groups, delimiter = "_") {
   new_dimnames <- c(
     dimnames(sample)[1],
     group_dims,
-    dimnames(sample)[3:4]
+    dimnames(sample)[resid_mar - 2]
   )
+
   sample_new <- array(
     sample,
     dim = sapply(new_dimnames, length),
     dimnames = new_dimnames
   ) |>
-    aperm(c(1, 2 + rev(0:(ng - 1)), ng + 2:3))
+    aperm(c(1, 2 + rev(0:(ng - 1)), resid_mar))
   sample_new
 }
