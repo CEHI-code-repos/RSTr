@@ -33,7 +33,7 @@ split_sample_groups <- function(sample, new_groups, delimiter = "_") {
   )
   sample_new <- array(
     sample,
-    dim = sapply(samples_new_dims, length),
+    dim = sapply(sample_new_dims, length),
     dimnames = samples_new_dims
   ) |>
     aperm(c(1, 2 + rev(0:(ng - 1)), ng + 2:3))
