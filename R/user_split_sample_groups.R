@@ -18,21 +18,21 @@
 #' age_margin <- 2
 #' sample_as <- standardize_samples(sample_split, std_pop, age_margin)
 #' @export
-split_sample_groups <- function(samples, new_groups, delimiter = "_") {
+split_sample_groups <- function(sample, new_groups, delimiter = "_") {
   ng <- length(new_groups)
-  group_dims <- dimnames(samples)[[2]] |>
+  group_dims <- dimnames(sample)[[2]] |>
     strsplit(delimiter) |>
     simplify2array() |>
     apply(1, unique) |>
     setNames(new_groups) |>
     rev()
-  samples_new_dims <- c(
-    dimnames(samples)[1],
+  sample_new_dims <- c(
+    dimnames(sample)[1],
     group_dims,
-    dimnames(samples)[3:4]
+    dimnames(sample)[3:4]
   )
   sample_new <- array(
-    samples,
+    sample,
     dim = sapply(samples_new_dims, length),
     dimnames = samples_new_dims
   ) |>
