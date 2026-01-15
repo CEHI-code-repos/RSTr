@@ -24,7 +24,7 @@ split_sample_groups <- function(sample, new_groups, delimiter = "_") {
     strsplit(delimiter) |>
     simplify2array() |>
     apply(1, unique) |>
-    setNames(new_groups) |>
+    stats::setNames(new_groups) |>
     rev()
   sample_new_dims <- c(
     dimnames(sample)[1],
