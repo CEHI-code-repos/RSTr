@@ -131,9 +131,8 @@ samples_3564 <- standardize_samples(samples, std_pop, margin_age, groups)
 Note that there may be times where you have groups stratified by both
 age and other sociodemographic groups. In these cases, you’ll have to
 refactor your sample array so that the age groups are separated from
-your other groups before doing age-standardization, such as using
-[`as.data.frame.table()`](https://rdrr.io/r/base/table.html) in
-conjunction with [`xtabs()`](https://rdrr.io/r/stats/xtabs.html).
+your other groups before doing age-standardization using
+[`split_sample_groups()`](../reference/split_sample_groups.md).
 
 Now, we have a standalone array for our age-standardized 35-64 age
 group. Similarly to

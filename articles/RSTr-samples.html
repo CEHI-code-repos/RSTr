@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">RSTr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -193,9 +193,8 @@ function:</p>
 <p>Note that there may be times where you have groups stratified by both
 age and other sociodemographic groups. In these cases, you’ll have to
 refactor your sample array so that the age groups are separated from
-your other groups before doing age-standardization, such as using
-<code><a href="https://rdrr.io/r/base/table.html" class="external-link">as.data.frame.table()</a></code> in conjunction with
-<code><a href="https://rdrr.io/r/stats/xtabs.html" class="external-link">xtabs()</a></code>.</p>
+your other groups before doing age-standardization using
+<code><a href="../reference/split_sample_groups.html">split_sample_groups()</a></code>.</p>
 <p>Now, we have a standalone array for our age-standardized 35-64 age
 group. Similarly to <code><a href="../reference/aggregate_samples.html">aggregate_samples()</a></code>, we can
 alternatively consolidate this into our main <code>samples</code> array

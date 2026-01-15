@@ -26,6 +26,8 @@
 ## Sample/array processing
 
 - [`load_samples()`](load_samples.md) : Load MCMC samples
+- [`split_sample_groups()`](split_sample_groups.md) : Split sample
+  groups
 - [`aggregate_count()`](aggregate_count.md) : Aggregate count arrays
 - [`aggregate_samples()`](aggregate_samples.md) : Aggregate samples by
   non-age group
@@ -45,6 +47,8 @@
   Data
 - [`mamap`](mamap.md) : Massachusetts Shapefile
 - [`minsample`](minsample.md) : Samples Generated for Michigan data
+- [`minsplit`](minsplit.md) : Age- and Sex-stratified Samples for
+  Michigan data
 
 ## Package details
 
