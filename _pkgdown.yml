@@ -50,6 +50,7 @@ reference:
   - maexample
   - mamap
   - minsample
+  - minsplit
 - title: Package details
 - contents:
   - RSTr-package 
