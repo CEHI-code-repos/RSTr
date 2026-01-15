@@ -51,11 +51,14 @@ dimnames(minsplit)[2] # Can't age-standardize due to age-sex stratification
 new_groups = c("age", "sex")
 delimiter = "_"
 sample_split <- split_sample_groups(minsplit, new_groups, delimiter)
-#> Error in split_sample_groups(minsplit, new_groups, delimiter): object 'samples_new_dims' not found
 dimnames(sample_split)[2:3] # can now age-standardize
-#> Error: object 'sample_split' not found
+#> $age
+#> [1] "35-44" "45-54" "55-64"
+#> 
+#> $sex
+#> [1] "f" "m"
+#> 
 std_pop <- c(113154, 100640, 95799)
 age_margin <- 2
 sample_as <- standardize_samples(sample_split, std_pop, age_margin)
-#> Error: object 'sample_split' not found
 ```
