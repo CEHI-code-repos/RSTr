@@ -100,7 +100,7 @@ groups <- c("35-44", "45-54", "55-64")
 samples_3564 <- standardize_samples(samples, std_pop, margin_age, groups)
 ```
 
-Note that there may be times where you have groups stratified by both age and other sociodemographic groups. In these cases, you'll have to refactor your sample array so that the age groups are separated from your other groups before doing age-standardization, such as using `as.data.frame.table()` in conjunction with `xtabs()`.
+Note that there may be times where you have groups stratified by both age and other sociodemographic groups. In these cases, you'll have to refactor your sample array so that the age groups are separated from your other groups before doing age-standardization using `split_sample_groups()`.
 
 Now, we have a standalone array for our age-standardized 35-64 age group. Similarly to `aggregate_samples()`, we can alternatively consolidate this into our main `samples` array by adding in values for the `bind_new` and `new_name` arguments:
 
