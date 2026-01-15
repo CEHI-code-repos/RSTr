@@ -4,14 +4,14 @@
 \alias{split_sample_groups}
 \title{Split sample groups}
 \usage{
-split_sample_groups(samples, new_groups, delimiter = "_")
+split_sample_groups(sample, new_groups, delimiter = "_")
 }
 \arguments{
+\item{sample}{an \code{array} of samples imported with \code{load_samples()}}
+
 \item{new_groups}{A string vector of names for each new group.}
 
 \item{delimiter}{A character that specifies the break between group categories.}
-
-\item{sample}{an \code{array} of samples imported with \code{load_samples()}}
 }
 \value{
 An \code{array} of samples with separate margins for stratified groups.
