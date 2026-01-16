@@ -26,15 +26,11 @@ aggregate_count <- function(
   if (!is.null(groups)) {
     sub_count <- subset_array(count, margin, groups)
   }
-  if (bind_new) {
-    new_dim <- dim(count)
-    new_dim[margin] <- 1
-    new_count <- array(apply(sub_count, mar, sum, na.rm = TRUE), dim = new_dim)
-    newnames <- c(dimnames(count)[[margin]], new_name)
-    array_agg <- abind::abind(count, new_count, along = margin)
-    dimnames(array_agg)[[margin]] <- newnames
-  } else {
-    array_agg <- apply(sub_count, mar, sum, na.rm = TRUE)
-  }
-  array_agg
+  perm <- c(margin, setdiff(seq_along(dim(sub_count)), margin))
+  rest <- prod(dim(sub_count)[-margin])
+  ng <- dim(sub_count)[margin]
+  sub_count |>
+    arr_to_matrix(perm, ng, rest) |>
+    colSums(na.rm = TRUE) |>
+    create_array_new(count, margin, bind_new, new_name)
 }

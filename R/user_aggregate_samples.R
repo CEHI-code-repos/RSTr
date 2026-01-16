@@ -30,27 +30,20 @@ aggregate_samples <- function(
   bind_new = FALSE,
   new_name = NULL
 ) {
-  perm <- c(margin, setdiff(seq_along(dim(sample)), margin))
-  d <- dim(sample)[length(dim(sample))]
-  m <- dim(sample)[margin]
-  rest <- prod(dim(sample)[-c(margin, length(dim(sample)))])
-  x <- sample |> aperm(perm) |> matrix(nrow = m, ncol = rest * d)
-  w <- pop |> aperm(perm[-length(perm)]) |> matrix(nrow = m, ncol = rest)
-  num <- colSums(x * rep(w, times = d), na.rm = TRUE)
-  den <- rep(colSums(w, na.rm = TRUE), times = d)
-  wtd_avg <- num / den
-  if (bind_new) {
-    new_dim <- dim(sample)
-    new_dim[margin] <- 1
-    new_dimnames <- dimnames(sample)
-    new_dimnames[[margin]] <- c(new_dimnames[[margin]], new_name)
-    agg_sample <- array(wtd_avg, dim = new_dim)
-    array_new <- abind::abind(sample, agg_sample, along = margin)
-    dimnames(array_new) <- new_dimnames
-  } else {
-    new_dim <- dim(sample)[-margin]
-    new_dimnames <- dimnames(sample)[-margin]
-    array_new <- array(wtd_avg, dim = new_dim, dimnames = new_dimnames)
+  sub_sample <- sample
+  subpop <- pop
+  if (!is.null(groups)) {
+    sub_sample <- subset_array(sample, margin, groups)
+    subpop <- subset_array(pop, margin, groups)
   }
-  array_new
+  perm <- c(margin, setdiff(seq_along(dim(sub_sample)), margin))
+  rest <- prod(dim(sub_sample)[-c(margin, length(dim(sub_sample)))])
+  its <- dim(sub_sample)[length(dim(sub_sample))]
+  ng <- dim(sub_sample)[margin]
+  sub_sample <- arr_to_matrix(sub_sample, perm, ng, rest * its)
+  subpop <- arr_to_matrix(subpop, perm[-length(perm)], ng, rest)
+  num <- (sub_sample * rep(subpop, times = its)) |> colSums(na.rm = TRUE)
+  den <- subpop |> colSums(na.rm = TRUE) |> rep(times = its)
+  (num / den) |>
+    create_array_new(sample, margin, bind_new, new_name)
 }

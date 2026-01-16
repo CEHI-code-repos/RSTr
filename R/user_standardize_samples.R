@@ -33,29 +33,18 @@ standardize_samples <- function(
   bind_new = FALSE,
   new_name = NULL
 ) {
-  mar <- seq_along(dim(sample))[-margin]
   wts <- std_pop / sum(std_pop)
   sub_sample <- sample
   if (!is.null(groups)) {
     sub_sample <- subset_array(sample, margin, groups)
   }
-  if (bind_new) {
-    new_dim <- dim(sample)
-    new_dim[margin] <- 1
-    agg_sample <- array(
-      apply(sweep(sub_sample, margin, wts, "*"), mar, sum, na.rm = TRUE),
-      dim <- new_dim
-    )
-    array_new <- abind::abind(sample, agg_sample, along = margin)
-    newnames <- c(dimnames(sample)[[margin]], new_name)
-    dimnames(array_new)[[margin]] <- newnames
-  } else {
-    array_new <- apply(
-      sweep(sub_sample, margin, wts, "*"),
-      mar,
-      sum,
-      na.rm = TRUE
-    )
-  }
-  array_new
+  perm <- c(margin, setdiff(seq_along(dim(sub_sample)), margin))
+  rest <- prod(dim(sub_sample)[-margin])
+  ng <- dim(sub_sample)[margin]
+
+  sub_sample |>
+    sweep(margin, wts, "*") |>
+    arr_to_matrix(perm, ng, rest) |>
+    colSums(na.rm = TRUE) |>
+    create_array_new(sample, margin, bind_new, new_name)
 }

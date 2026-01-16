@@ -25,19 +25,32 @@
 #' low_rp <- minrp_75 < 1
 #' @export
 get_medians <- function(sample) {
-  ndims <- length(dim(sample)) - 1
-  apply(sample, 1:ndims, stats::median)
+  margin <- length(dim(sample))
+  perm <- c(margin, setdiff(seq_along(dim(sample)), margin))
+  rest <- prod(dim(sample)[-margin])
+  ng <- dim(sample)[margin]
+  sample |>
+    arr_to_matrix(perm, ng, rest) |>
+    matrixStats::colMedians() |>
+    array(dim = dim(sample)[-margin], dimnames = dimnames(sample)[-margin])
 }
 
 #' @rdname get_medians
 #' @export
 get_credible_interval <- function(sample, perc_ci = 0.95) {
-  ndims <- length(dim(sample)) - 1
   alpha <- (1 - perc_ci) / 2
-  list(
-    lower = apply(sample, 1:ndims, stats::quantile, alpha),
-    upper = apply(sample, 1:ndims, stats::quantile, 1 - alpha)
-  )
+  margin <- length(dim(sample))
+  perm <- c(margin, setdiff(seq_along(dim(sample)), margin))
+  rest <- prod(dim(sample)[-margin])
+  ng <- dim(sample)[margin]
+  new_dim <- dim(sample)[-margin]
+  new_dimnames <- dimnames(sample)[-margin]
+  sample |>
+    arr_to_matrix(perm, ng, rest) |>
+    matrixStats::colQuantiles(probs = c(alpha, 1 - alpha)) |>
+    as.data.frame() |>
+    lapply(array, dim = new_dim, dimnames = new_dimnames) |>
+    stats::setNames(c("lower", "upper"))
 }
 
 #' @rdname get_medians
