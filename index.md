@@ -11,14 +11,22 @@ ArcGIS Python Toolbox, visit the [Rate Stabilizing Toolbox
 
 ## Installation
 
-Install the development version via
-[r-universe](https://cehi-code-repos.r-universe.dev/RSTr).
+RSTr is available for installation on
+[CRAN](https://cran.r-project.org/web/packages/RSTr/index.html):
+
+``` r
+install.packages('RSTr')
+```
+
+Or, install the development version via
+[r-universe](https://cehi-code-repos.r-universe.dev/RSTr):
 
 ``` r
 install.packages('RSTr', repos = c('https://cehi-code-repos.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
-If this is your first time using RSTr, check out
+If this is your first time using RSTr, visit the [RSTr pkgdown
+website](https://cehi-code-repos.github.io/RSTr/) or check out
 [`vignette("RSTr")`](articles/RSTr.md) to learn how to use the package.
 
 ## Thanks!
