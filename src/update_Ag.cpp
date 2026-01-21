@@ -8,10 +8,10 @@ using Rcpp::List;
 //[[Rcpp::export]]
 void update_Ag(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  mat Ag = sample["Ag"];
-  const cube& G = sample["G"];
+  auto Ag = Rcpp::as<mat>(sample["Ag"]);
+  const auto G = Rcpp::as<cube>(sample["G"]);
   const List& priors = RSTr_obj["priors"];
-  const mat& Ag_scale = priors["Ag_scale"];
+  const auto Ag_scale = Rcpp::as<mat>(priors["Ag_scale"]);
   const double G_df = priors["G_df"];
   const double Ag_df = priors["Ag_df"];
   const uword n_time = G.n_slices;
@@ -27,3 +27,8 @@ void update_Ag(List& RSTr_obj) {
   sample["Ag"] = Ag;
   RSTr_obj["sample"] = sample;
 }
+
+
+
+
+

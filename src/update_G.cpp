@@ -57,13 +57,13 @@ cube get_Ags(const mat& Ag, const cube& Z, const vec& rho,
 //[[Rcpp::export]]
 void update_G_default(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  cube G = sample["G"];
-  const cube& Z = sample["Z"];
+  auto G = Rcpp::as<cube>(sample["G"]);
+  const auto Z = Rcpp::as<cube>(sample["Z"]);
   const List& priors = RSTr_obj["priors"];
   const double G_df = priors["G_df"];
-  const mat& G_scale = priors["G_scale"];
+  const auto G_scale = Rcpp::as<mat>(priors["G_scale"]);
   const List& sp_data = RSTr_obj["sp_data"];
-  const field<uvec>& adjacency = sp_data["adjacency"];
+  const auto adjacency = Rcpp::as<field<uvec>>(sp_data["adjacency"]);
   const uword n_island = sp_data["n_island"];
   const uword n_region = Z.n_rows;
   const uword n_time = Z.n_slices;
@@ -81,14 +81,14 @@ void update_G_default(List& RSTr_obj) {
 //[[Rcpp::export]]
 void update_G_mstcar(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  cube G = sample["G"];
-  const cube& Z = sample["Z"];
-  const mat& Ag = sample["Ag"];
-  const vec& rho = sample["rho"];
+  auto G = Rcpp::as<cube>(sample["G"]);
+  const auto Z = Rcpp::as<cube>(sample["Z"]);
+  const auto Ag = Rcpp::as<mat>(sample["Ag"]);
+  const auto rho = Rcpp::as<vec>(sample["rho"]);
   const List& priors = RSTr_obj["priors"];
   const double G_df = priors["G_df"];
   const List& sp_data = RSTr_obj["sp_data"];
-  const field<uvec>& adjacency = sp_data["adjacency"];
+  const auto adjacency = Rcpp::as<field<uvec>>(sp_data["adjacency"]);
   const uword n_island = sp_data["n_island"];
   const uword n_region = Z.n_rows;
   const uword n_time = Z.n_slices;

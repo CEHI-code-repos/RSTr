@@ -57,12 +57,12 @@ mat get_thres_sig(const cube& beta, const uvec& n_isl_region,
 //[[Rcpp::export]]
 void update_sig2_default(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  mat sig2 = sample["sig2"];
-  const cube& Z = sample["Z"];
+  auto sig2 = Rcpp::as<mat>(sample["sig2"]);
+  const auto Z = Rcpp::as<cube>(sample["Z"]);
   const List& sp_data = RSTr_obj["sp_data"];
-  const field<uvec>& adjacency = sp_data["adjacency"];
-  const vec& n_adj = sp_data["n_adj"];
-  const field<uvec>& isl_region = sp_data["isl_region"];
+  const auto adjacency = Rcpp::as<field<uvec>>(sp_data["adjacency"]);
+  const auto n_adj = Rcpp::as<vec>(sp_data["n_adj"]);
+  const auto isl_region = Rcpp::as<field<uvec>>(sp_data["isl_region"]);
   const List& priors = RSTr_obj["priors"];
   const double sig_a = priors["sig_a"];
   const double sig_b = priors["sig_b"];
@@ -80,19 +80,19 @@ void update_sig2_default(List& RSTr_obj) {
 //[[Rcpp::export]]
 void update_sig2_rcar(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  mat sig2 = sample["sig2"];
-  const cube& Z = sample["Z"];
-  const cube& beta = sample["beta"];
-  const mat& tau2 = sample["tau2"];
+  auto sig2 = Rcpp::as<mat>(sample["sig2"]);
+  const auto Z = Rcpp::as<cube>(sample["Z"]);
+  const auto beta = Rcpp::as<cube>(sample["beta"]);
+  const auto tau2 = Rcpp::as<mat>(sample["tau2"]);
   const List& sp_data = RSTr_obj["sp_data"];
-  const field<uvec>& adjacency = sp_data["adjacency"];
-  const vec& n_adj = sp_data["n_adj"];
-  const field<uvec>& isl_region = sp_data["isl_region"];
-  const uvec& n_isl_region = sp_data["n_isl_region"];
+  const auto adjacency = Rcpp::as<field<uvec>>(sp_data["adjacency"]);
+  const auto n_adj = Rcpp::as<vec>(sp_data["n_adj"]);
+  const auto isl_region = Rcpp::as<field<uvec>>(sp_data["isl_region"]);
+  const auto n_isl_region = Rcpp::as<uvec>(sp_data["n_isl_region"]);
   const List& params = RSTr_obj["params"];
-  const mat& A = params["A"];
+  const auto A = Rcpp::as<mat>(params["A"]);
   const double m0 = params["m0"];
-  const string method = Rcpp::as<string>(params["method"]);
+  const auto method = Rcpp::as<string>(params["method"]);
   const List& priors = RSTr_obj["priors"];
   const double sig_a = priors["sig_a"];
   const double sig_b = priors["sig_b"];

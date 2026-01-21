@@ -35,20 +35,20 @@ inline double get_r(const double l_0, const double l_star, const double b_0,
 //[[Rcpp::export]]
 void update_lambda(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  cube lambda = sample["lambda"];
-  const cube& Z = sample["Z"];
-  const cube& beta = sample["beta"];
-  mat tau2 = sample["tau2"];
+  auto lambda = Rcpp::as<cube>(sample["lambda"]);
+  const auto Z = Rcpp::as<cube>(sample["Z"]);
+  const auto beta = Rcpp::as<cube>(sample["beta"]);
+  auto tau2 = Rcpp::as<mat>(sample["tau2"]);
   const List& data = RSTr_obj["data"];
-  const cube& Y = data["Y"];
-  const cube& n = data["n"];
+  const auto Y = Rcpp::as<cube>(data["Y"]);
+  const auto n = Rcpp::as<cube>(data["n"]);
   List priors = RSTr_obj["priors"];
-  cube lambda_acpt = priors["lambda_acpt"];
-  const cube& lambda_sd = priors["lambda_sd"];
+  auto lambda_acpt = Rcpp::as<cube>(priors["lambda_acpt"]);
+  const auto lambda_sd = Rcpp::as<cube>(priors["lambda_sd"]);
   const List& sp_data = RSTr_obj["sp_data"];
-  const uvec& isl_id = sp_data["isl_id"];
+  const auto isl_id = Rcpp::as<uvec>(sp_data["isl_id"]);
   const List& params = RSTr_obj["params"];
-  const string method = Rcpp::as<string>(params["method"]);
+  const auto method = Rcpp::as<string>(params["method"]);
   const uword n_region = Z.n_rows;
   const uword n_group = Z.n_cols;
   const uword n_time = Z.n_slices;

@@ -41,12 +41,12 @@ mat get_sd_beta(const mat& tau2, const double n_isl_region, const uword n_time) 
 //[[Rcpp::export]]
 void update_beta_default(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  cube beta = sample["beta"];
-  const cube& lambda = sample["lambda"];
-  const cube& Z = sample["Z"];
-  const mat& tau2 = sample["tau2"];
+  cube beta = Rcpp::as<cube>(sample["beta"]);
+  const cube lambda = Rcpp::as<cube>(sample["lambda"]);
+  const cube Z = Rcpp::as<cube>(sample["Z"]);
+  const mat tau2 = Rcpp::as<mat>(sample["tau2"]);
   const List& sp_data = RSTr_obj["sp_data"];
-  const field<uvec>& isl_region = sp_data["isl_region"];
+  const field<uvec> isl_region = Rcpp::as<field<uvec>>(sp_data["isl_region"]);
   const uword n_island = isl_region.n_elem;
   const uword n_time = Z.n_slices;
 
@@ -65,19 +65,19 @@ void update_beta_default(List& RSTr_obj) {
 //[[Rcpp::export]]
 void update_beta_rcar(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  cube beta = sample["beta"];
-  const cube& lambda = sample["lambda"];
-  const cube& Z = sample["Z"];
-  const mat& tau2 = sample["tau2"];
-  const mat& sig2 = sample["sig2"];
+  auto beta = Rcpp::as<cube>(sample["beta"]);
+  const auto lambda = Rcpp::as<cube>(sample["lambda"]);
+  const auto Z = Rcpp::as<cube>(sample["Z"]);
+  const auto tau2 = Rcpp::as<mat>(sample["tau2"]);
+  const auto sig2 = Rcpp::as<mat>(sample["sig2"]);
   const List& sp_data = RSTr_obj["sp_data"];
-  const field<uvec>& isl_region = sp_data["isl_region"];
+  const auto isl_region = Rcpp::as<field<uvec>>(sp_data["isl_region"]);
   const List& params = RSTr_obj["params"];
   const uword n_island = isl_region.n_elem;
   const uword n_time = Z.n_slices;
-  const mat& A = params["A"];
+  const auto A = Rcpp::as<mat>(params["A"]);
   const double m0 = params["m0"];
-  const string method = Rcpp::as<string>(params["method"]);
+  const auto method = Rcpp::as<string>(params["method"]);
 
   const mat thres_beta = get_thres_beta(tau2, sig2, m0, A);
   for (uword isl = 0; isl < n_island; ++isl) {

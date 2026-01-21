@@ -11,7 +11,7 @@ using arma::field;
 using arma::uvec;
 using Rcpp::List;
 
-mat get_mean_Z_car(const cube& Z, const cube& lambda, const cube& beta, 
+inline mat get_mean_Z_car(const cube& Z, const cube& lambda, const cube& beta, 
                    const mat& tau2, const mat& sig2, const field<uvec>& adjacency,
                    const uvec& isl_id, const mat& var_Z, const uword reg) {
   mat sum_adj = arma::sum(get_regs(Z, adjacency[reg]));
@@ -51,7 +51,7 @@ inline vec get_muZp(const mat& nZm, const field<mat>& Se, const cube& Z,
   return muZp;
 }
 
-field<mat> get_cov_Z_mcar(const mat& tau2, const mat& G, const vec& n_adj) {
+inline field<mat> get_cov_Z_mcar(const mat& tau2, const mat& G, const vec& n_adj) {
   const vec unique_n_adj = arma::unique(n_adj);
   field<mat> cov_Z(arma::max(n_adj) + 1);
   const mat it2_diag = arma::diagmat(1.0 / tau2);
@@ -61,7 +61,7 @@ field<mat> get_cov_Z_mcar(const mat& tau2, const mat& G, const vec& n_adj) {
   return cov_Z;
 }
 
-field<mat> get_cov_Z_mstcar(const field<mat>& Sein, const vec& tau2, 
+inline field<mat> get_cov_Z_mstcar(const field<mat>& Sein, const vec& tau2, 
                             const vec& n_adj) {
   const uword n_time = Sein.n_rows;
   field<mat> cov_Z(n_time, arma::max(n_adj) + 1);
@@ -75,7 +75,7 @@ field<mat> get_cov_Z_mstcar(const field<mat>& Sein, const vec& tau2,
   return cov_Z;
 }
 
-mat geteig(const mat& covar) {
+inline mat geteig(const mat& covar) {
   vec eigval;
   mat eigvec;
   arma::eig_sym(eigval, eigvec, covar);
@@ -83,7 +83,7 @@ mat geteig(const mat& covar) {
   return eigvec.t();
 }
 
-field<mat> get_coveig_Z_mcar(const field<mat>& cov_Z, const vec& n_adj) {
+inline field<mat> get_coveig_Z_mcar(const field<mat>& cov_Z, const vec& n_adj) {
   const vec unique_n_adj = arma::unique(n_adj);
   field<mat> coveig_Z(arma::max(n_adj) + 1);
   for (uword count : unique_n_adj) {
@@ -92,7 +92,7 @@ field<mat> get_coveig_Z_mcar(const field<mat>& cov_Z, const vec& n_adj) {
   return coveig_Z;
 }
 
-field<mat> get_coveig_Z_mstcar(const field<mat>& cov_Z, const vec& n_adj) {
+inline field<mat> get_coveig_Z_mstcar(const field<mat>& cov_Z, const vec& n_adj) {
   const uword n_time = cov_Z.n_rows;
   field<mat> coveig_Z(n_time, arma::max(n_adj) + 1);
   const vec unique_n_adj = arma::unique(n_adj);
@@ -104,7 +104,7 @@ field<mat> get_coveig_Z_mstcar(const field<mat>& cov_Z, const vec& n_adj) {
   return coveig_Z;
 }
 
-void demean_Z(cube& Z, const field<uvec>& isl_region, const uvec& isl_id) {
+inline void demean_Z(cube& Z, const field<uvec>& isl_region, const uvec& isl_id) {
   const uword n_group = Z.n_cols;
   const uword n_time = Z.n_slices;
   const uword n_island = isl_region.n_elem;
@@ -115,7 +115,7 @@ void demean_Z(cube& Z, const field<uvec>& isl_region, const uvec& isl_id) {
   Z -= get_regs(Zkt, isl_id);
 }
 
-void replace_Zit(cube& Z, const vec& mean_Z, const mat& cov_Z, const uword reg,
+inline void replace_Zit(cube& Z, const vec& mean_Z, const mat& cov_Z, const uword reg,
                  const uword time) {
   const uword n_group = Z.n_cols;
   vec Z_new = rmvnorm_vec(mean_Z, cov_Z);
@@ -127,16 +127,16 @@ void replace_Zit(cube& Z, const vec& mean_Z, const mat& cov_Z, const uword reg,
 //[[Rcpp::export]]
 void update_Z_car(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  cube Z = sample["Z"];
-  const mat& sig2 = sample["sig2"];
-  const cube& lambda = sample["lambda"];
-  const cube& beta = sample["beta"];
-  const mat& tau2 = sample["tau2"];
+  auto Z = Rcpp::as<cube>(sample["Z"]);
+  const auto sig2 = Rcpp::as<mat>(sample["sig2"]);
+  const auto lambda = Rcpp::as<cube>(sample["lambda"]);
+  const auto beta = Rcpp::as<cube>(sample["beta"]);
+  const auto tau2 = Rcpp::as<mat>(sample["tau2"]);
   const List& sp_data = RSTr_obj["sp_data"];
-  const field<uvec>& adjacency = sp_data["adjacency"];
-  const vec& n_adj = sp_data["n_adj"];
-  const field<uvec>& isl_region = sp_data["isl_region"];
-  const uvec& isl_id = sp_data["isl_id"];
+  const auto adjacency = Rcpp::as<field<uvec>>(sp_data["adjacency"]);
+  const auto n_adj = Rcpp::as<vec>(sp_data["n_adj"]);
+  const auto isl_region = Rcpp::as<field<uvec>>(sp_data["isl_region"]);
+  const auto isl_id = Rcpp::as<uvec>(sp_data["isl_id"]);
   const uword n_region = Z.n_rows;
   
   for (uword reg = 0; reg < n_region; ++reg) {
@@ -154,16 +154,16 @@ void update_Z_car(List& RSTr_obj) {
 //[[Rcpp::export]]
 void update_Z_mcar(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  cube Z = sample["Z"];
-  const cube& G = sample["G"];
-  const cube& lambda = sample["lambda"];
-  const cube& beta = sample["beta"];
-  const mat& tau2 = sample["tau2"];
+  auto Z = Rcpp::as<cube>(sample["Z"]);
+  const auto G = Rcpp::as<cube>(sample["G"]);
+  const auto lambda = Rcpp::as<cube>(sample["lambda"]);
+  const auto beta = Rcpp::as<cube>(sample["beta"]);
+  const auto tau2 = Rcpp::as<mat>(sample["tau2"]);
   const List& sp_data = RSTr_obj["sp_data"];
-  const field<uvec>& adjacency = sp_data["adjacency"];
-  const vec& n_adj = sp_data["n_adj"];
-  const field<uvec>& isl_region = sp_data["isl_region"];
-  const uvec& isl_id = sp_data["isl_id"];
+  const auto adjacency = Rcpp::as<field<uvec>>(sp_data["adjacency"]);
+  const auto n_adj = Rcpp::as<vec>(sp_data["n_adj"]);
+  const auto isl_region = Rcpp::as<field<uvec>>(sp_data["isl_region"]);
+  const auto isl_id = Rcpp::as<uvec>(sp_data["isl_id"]);
   const uword n_region = Z.n_rows;
   const uword n_time = Z.n_slices;
 
@@ -190,16 +190,16 @@ void update_Z_mcar(List& RSTr_obj) {
 void update_Z_mstcar(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
   cube Z = sample["Z"];
-  const cube& G = sample["G"];
-  const cube& lambda = sample["lambda"];
-  const cube& beta = sample["beta"];
-  const vec& rho = sample["rho"];
-  const vec& tau2 = sample["tau2"];
+  const auto G = Rcpp::as<cube>(sample["G"]);
+  const auto lambda = Rcpp::as<cube>(sample["lambda"]);
+  const auto beta = Rcpp::as<cube>(sample["beta"]);
+  const auto rho = Rcpp::as<vec>(sample["rho"]);
+  const auto tau2 = Rcpp::as<vec>(sample["tau2"]);
   const List& sp_data = RSTr_obj["sp_data"];
-  const field<uvec>& adjacency = sp_data["adjacency"];
-  const vec& n_adj = sp_data["n_adj"];
-  const field<uvec>& isl_region = sp_data["isl_region"];
-  const uvec& isl_id = sp_data["isl_id"];
+  const auto adjacency = Rcpp::as<field<uvec>>(sp_data["adjacency"]);
+  const auto n_adj = Rcpp::as<vec>(sp_data["n_adj"]);
+  const auto isl_region = Rcpp::as<field<uvec>>(sp_data["isl_region"]);
+  const auto isl_id = Rcpp::as<uvec>(sp_data["isl_id"]);
   const uword n_region = Z.n_rows;
   const uword n_time = Z.n_slices;
 

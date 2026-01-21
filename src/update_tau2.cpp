@@ -10,7 +10,7 @@ using arma::uvec;
 using Rcpp::List;
 using std::string;
 
-mat get_scale_tau(const cube& lambda, const cube& beta_0, const cube& Z,
+inline mat get_scale_tau(const cube& lambda, const cube& beta_0, const cube& Z,
                   const double tau_b) {
   const cube square_resid = arma::square(lambda - beta_0 - Z);
   mat sum_sq_gt = arma::sum(square_resid, 0);
@@ -21,7 +21,7 @@ mat get_scale_tau(const cube& lambda, const cube& beta_0, const cube& Z,
   return scale_tau;
 }
 
-mat get_scale_tau_mst(const cube& lambda, const cube& beta_0, const cube& Z,
+inline mat get_scale_tau_mst(const cube& lambda, const cube& beta_0, const cube& Z,
                       const double tau_b) {
   const cube square_resid = arma::square(lambda - beta_0 - Z);
   const mat sum_sq_grp = arma::sum(arma::sum(square_resid, 0), 2);
@@ -29,7 +29,7 @@ mat get_scale_tau_mst(const cube& lambda, const cube& beta_0, const cube& Z,
   return scale_tau;
 }
 
-mat get_thres_tau(const cube& beta, const uvec& n_isl_region, 
+inline mat get_thres_tau(const cube& beta, const uvec& n_isl_region, 
                   const uword n_region, const string method,
                   const mat& A, const mat& sig2, const double m0) {
   const uword n_group = beta.n_cols;
@@ -48,12 +48,12 @@ mat get_thres_tau(const cube& beta, const uvec& n_isl_region,
 //[[Rcpp::export]]
 void update_tau2_default(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  mat tau2 = sample["tau2"];
-  const cube& lambda = sample["lambda"];
-  const cube& beta = sample["beta"];
-  const cube& Z = sample["Z"];
+  auto tau2 = Rcpp::as<mat>(sample["tau2"]);
+  const auto lambda = Rcpp::as<cube>(sample["lambda"]);
+  const auto beta = Rcpp::as<cube>(sample["beta"]);
+  const auto Z = Rcpp::as<cube>(sample["Z"]);
   const List& sp_data = RSTr_obj["sp_data"];
-  const uvec& isl_id = sp_data["isl_id"];
+  const auto isl_id = Rcpp::as<uvec>(sp_data["isl_id"]);
   const List& priors = RSTr_obj["priors"];
   const double tau_a = priors["tau_a"];
   const double tau_b = priors["tau_b"];
@@ -70,18 +70,18 @@ void update_tau2_default(List& RSTr_obj) {
 //[[Rcpp::export]]
 void update_tau2_rcar(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  mat tau2 = sample["tau2"];
-  const cube& lambda = sample["lambda"];
-  const cube& beta = sample["beta"];
-  const cube& Z = sample["Z"];
-  const mat& sig2 = sample["sig2"];
+  auto tau2 = Rcpp::as<mat>(sample["tau2"]);
+  const auto lambda = Rcpp::as<cube>(sample["lambda"]);
+  const auto beta = Rcpp::as<cube>(sample["beta"]);
+  const auto Z = Rcpp::as<cube>(sample["Z"]);
+  const auto sig2 = Rcpp::as<mat>(sample["sig2"]);
   const List& sp_data = RSTr_obj["sp_data"];
-  const uvec& n_isl_region = sp_data["n_isl_region"];
-  const uvec& isl_id = sp_data["isl_id"];
+  const auto n_isl_region = Rcpp::as<uvec>(sp_data["n_isl_region"]);
+  const auto isl_id = Rcpp::as<uvec>(sp_data["isl_id"]);
   const List& params = RSTr_obj["params"];
-  const mat& A = params["A"];
+  const auto A = Rcpp::as<mat>(params["A"]);
   const double m0 = params["m0"];
-  const string method = Rcpp::as<string>(params["method"]);
+  const auto method = Rcpp::as<string>(params["method"]);
   const List& priors = RSTr_obj["priors"];
   const double tau_a = priors["tau_a"];
   const double tau_b = priors["tau_b"];
@@ -99,15 +99,15 @@ void update_tau2_rcar(List& RSTr_obj) {
 //[[Rcpp::export]]
 void update_tau2_mstcar(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  mat tau2 = sample["tau2"];
-  const cube& lambda = sample["lambda"];
-  const cube& beta = sample["beta"];
-  const cube& Z = sample["Z"];
+  auto tau2 = Rcpp::as<mat>(sample["tau2"]);
+  const auto lambda = Rcpp::as<cube>(sample["lambda"]);
+  const auto beta = Rcpp::as<cube>(sample["beta"]);
+  const auto Z = Rcpp::as<cube>(sample["Z"]);
   const List& priors = RSTr_obj["priors"];
   const double tau_a = priors["tau_a"];
   const double tau_b = priors["tau_b"];
   const List& sp_data = RSTr_obj["sp_data"];
-  const uvec& isl_id = sp_data["isl_id"];
+  const auto isl_id = Rcpp::as<uvec>(sp_data["isl_id"]);
   const uword n_region = Z.n_rows;
   const uword n_time = Z.n_slices;
 

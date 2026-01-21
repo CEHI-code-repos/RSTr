@@ -90,18 +90,18 @@ vec get_rho_star_0(const vec& rho, const vec& rho_sd) {
 //[[Rcpp::export]]
 void update_rho(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
-  vec rho = sample["rho"];
-  const cube& G = sample["G"];
-  const cube& Z = sample["Z"];
+  auto rho = Rcpp::as<vec>(sample["rho"]);
+  const auto G = Rcpp::as<cube>(sample["G"]);
+  const auto Z = Rcpp::as<cube>(sample["Z"]);
   List priors = RSTr_obj["priors"];
-  vec rho_acpt = priors["rho_acpt"];
-  const vec& rho_sd = priors["rho_sd"];
+  auto rho_acpt = Rcpp::as<vec>(priors["rho_acpt"]);
+  const auto rho_sd = Rcpp::as<vec>(priors["rho_sd"]);
   const double rho_a = priors["rho_a"];
   const double rho_b = priors["rho_b"];
   const List& sp_data = RSTr_obj["sp_data"];
-  const field<uvec>& adjacency = sp_data["adjacency"];
+  const auto adjacency = Rcpp::as<field<uvec>>(sp_data["adjacency"]);
   const uword n_island = sp_data["n_island"];
-  const vec& n_adj = sp_data["n_adj"];
+  const auto n_adj = Rcpp::as<vec>(sp_data["n_adj"]);
   const uword n_group = Z.n_cols;
 
   const vec rho_star_0 = get_rho_star_0(rho, rho_sd);
