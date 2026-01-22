@@ -123,6 +123,7 @@ An \code{RSTr} model object.
 data_min <- lapply(miheart, \(x) x[1:2, 1:3, 1:3])
 adj_min <- list(2, 1)
 # MSTCAR model
+on.exit(unlink(file.path(tempdir(), "test"), recursive = TRUE), add = TRUE)
 mod_mst <- mstcar(
   name = "test",
   data = data_min,
@@ -131,7 +132,4 @@ mod_mst <- mstcar(
   show_plots = FALSE,
   verbose = FALSE
 )
-\dontshow{
-unlink(paste0(tempdir(), "\\\\test"), recursive = TRUE)
-}
 }

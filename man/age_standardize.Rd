@@ -25,12 +25,10 @@ Age-standardizes samples using a standard population for an \code{RSTr} model ob
 std_pop <- c(113154, 100640, 95799)
 data_min <- lapply(miheart, \(x) x[1:2, 1:3, 1:3])
 adj_min <- list(2, 1)
+on.exit(unlink(file.path(tempdir(), "test"), recursive = TRUE), add = TRUE)
 mod_mst <- mstcar("test", data_min, adj_min, tempdir(), show_plots = FALSE, verbose = FALSE)
 # age-standardize by all age groups
 mod_mst <- age_standardize(mod_mst, std_pop, "35-64")
 # Add onto age-standardized estimates. Age-standardize only by the first two age groups
 mod_mst <- age_standardize(mod_mst, std_pop[1:2], "35-54", groups = 1:2)
-\dontshow{
-unlink(paste0(tempdir(), "\\\\test"), recursive = TRUE)
-}
 }

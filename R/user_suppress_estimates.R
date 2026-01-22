@@ -12,12 +12,10 @@
 #' std_pop <- c(113154, 100640, 95799)
 #' data_min <- lapply(miheart, \(x) x[1:2, 1:3, 1:3])
 #' adj_min <- list(2, 1)
+#' on.exit(unlink(file.path(tempdir(), "test"), recursive = TRUE), add = TRUE)
 #' mod_mst <- mstcar("test", data_min, adj_min, tempdir(), show_plots = FALSE, verbose = FALSE)
 #' mod_mst <- suppress_estimates(mod_mst, threshold = 1000, type = "population")
 #' estimates_table <- get_estimates(mod_mst)
-#' \dontshow{
-#' unlink(paste0(tempdir(), "\\test"), recursive = TRUE)
-#' }
 #' @export
 suppress_estimates <- function(
   RSTr_obj,

@@ -22,9 +22,7 @@ An \code{array} of samples from model \code{RSTr_obj}.
 \examples{
 data_min <- lapply(miheart, \(x) x[1:2, 1:3, 1:3])
 adj_min <- list(2, 1)
+on.exit(unlink(file.path(tempdir(), "test"), recursive = TRUE), add = TRUE)
 mod_mst <- mstcar("test", data_min, adj_min, tempdir(), show_plots = FALSE, verbose = FALSE)
 samples <- load_samples(mod_mst) * 1e5
-\dontshow{
-unlink(paste0(tempdir(), "\\\\test"), recursive = TRUE)
-}
 }
