@@ -1,6 +1,6 @@
 # Changelog
 
-## RSTr (development version)
+## RSTr 1.1.1
 
 ## RSTr 1.1.0
 
