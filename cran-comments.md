@@ -1,3 +1,13 @@
+<!-- version 1.1.2 -->
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+RSTr has been incremented to verison 1.1.2. One bug and some small tweaks have been made:
+- Fixed segmentation faults caused by sf::st_as_sf()
+- Modified temporary file management in example functions
+
+<!-- version 1.1.1 -->
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
@@ -14,7 +24,7 @@ RSTr has been incremented to version 1.1.1. One new feature and a few bugs have 
 
 - The tests also pointed out a NOTE that some file directories were particularly large. I have further shrunk the file size of the example models to as small as possible without impeding functionality
 
-<!-- from 2026/1/8 check-->
+<!-- version 1.0.0 -->
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note
