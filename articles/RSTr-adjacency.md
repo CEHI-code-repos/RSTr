@@ -43,6 +43,8 @@ adjacency information using the `spdep` package:
 ``` r
 ma_shp <- sf::st_as_sf(mamap[order(mamap$GEOID), ])
 ma_adj <- spdep::poly2nb(ma_shp)
+#> although coordinates are longitude/latitude, st_intersects assumes that they
+#> are planar
 #> Warning in spdep::poly2nb(ma_shp): some observations have no neighbours;
 #> if this seems unexpected, try increasing the snap argument.
 #> Warning in spdep::poly2nb(ma_shp): neighbour object has 3 sub-graphs;

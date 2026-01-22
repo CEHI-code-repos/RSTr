@@ -28,6 +28,7 @@ An `RSTr` model object.
 ``` r
 data_min <- lapply(miheart, \(x) x[1:2, 1:3, 1:3])
 adj_min <- list(2, 1)
+on.exit(unlink(file.path(tempdir(), "test"), recursive = TRUE), add = TRUE)
 mod_mst <- mstcar("test", data_min, adj_min, tempdir(), show_plots = FALSE, verbose = FALSE)
 mod_mst <- load_model(name = "test", dir = tempdir())
 ```

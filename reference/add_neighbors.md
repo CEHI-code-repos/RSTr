@@ -39,8 +39,13 @@ the first may not be connected to the last, several instances of
 ## Examples
 
 ``` r
+sf::sf_use_s2(FALSE)
+#> Spherical geometry (s2) switched off
+
 mamap <- sf::st_as_sf(mamap[order(mamap$GEOID), ])
 ma_adj <- spdep::poly2nb(mamap)
+#> although coordinates are longitude/latitude, st_intersects assumes that they
+#> are planar
 #> Warning: some observations have no neighbours;
 #> if this seems unexpected, try increasing the snap argument.
 #> Warning: neighbour object has 3 sub-graphs;
@@ -50,10 +55,14 @@ ma_adj <- add_neighbors(ma_adj, new_neighs)
 
 # Add neighbors by FIPS code instead of index
 ma_adj <- suppressWarnings(spdep::poly2nb(mamap))
+#> although coordinates are longitude/latitude, st_intersects assumes that they
+#> are planar
 names(ma_adj) <- mamap$GEOID
 ma_adj <- add_neighbors(ma_adj, neighs = c("25001", "25007", "25019"))
 
 ma_adj <- suppressWarnings(spdep::poly2nb(mamap))
+#> although coordinates are longitude/latitude, st_intersects assumes that they
+#> are planar
 ma_adj <- add_neighbors(ma_adj, c(1, 4)) # only attach 1 and 4
 ma_adj <- add_neighbors(ma_adj, c(4, 10)) # only attach 4 and 10
 ```
