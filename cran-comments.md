@@ -12,6 +12,8 @@ RSTr has been incremented to version 1.1.1. One new feature and a few bugs have 
 
 - Some of the CRAN-only outputs to ensure vignettes don't run model functions had `echo = FALSE` omitted. I've added these in where necessary.
 
+- The tests also pointed out a NOTE that some file directories were particularly large. I have further shrunk the file size of the example models to as small as possible without impeding functionality
+
 <!-- from 2026/1/8 check-->
 ## R CMD check results
 
