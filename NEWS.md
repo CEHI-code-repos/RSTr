@@ -1,3 +1,8 @@
+# RSTr 1.1.2
+
+- Fixed segmentation faults caused by sf::st_as_sf()
+- Modified temporary file management in example functions
+
 # RSTr 1.1.1
 
 - Fixed memory safety errors exposed by clang-ASAN, gcc-ASAN, and valgrind
