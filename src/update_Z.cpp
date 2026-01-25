@@ -190,6 +190,7 @@ void update_Z_mcar(List& RSTr_obj) {
 void update_Z_mstcar(List& RSTr_obj) {
   List sample = RSTr_obj["sample"];
   cube Z = sample["Z"];
+  //auto Z = Rcpp::as<cube>(sample["Z"]);
   const auto G = Rcpp::as<cube>(sample["G"]);
   const auto lambda = Rcpp::as<cube>(sample["lambda"]);
   const auto beta = Rcpp::as<cube>(sample["beta"]);
