@@ -6,6 +6,7 @@
 RSTr has been incremented to verison 1.1.2. One bug and some small tweaks have been made:
 - Fixed segmentation faults caused by sf::st_as_sf()
 - Modified temporary file management in example functions
+- Missed one potential instance of memory-unsafe calling of Lists in Rcpp code
 
 <!-- version 1.1.1 -->
 ## R CMD check results
