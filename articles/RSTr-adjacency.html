@@ -129,8 +129,6 @@ using the <code>spdep</code> package:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ma_shp</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span><span class="va">mamap</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">mamap</span><span class="op">$</span><span class="va">GEOID</span><span class="op">)</span>, <span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">ma_adj</span> <span class="op">&lt;-</span> <span class="fu">spdep</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/spdep/reference/poly2nb.html" class="external-link">poly2nb</a></span><span class="op">(</span><span class="va">ma_shp</span><span class="op">)</span></span>
-<span><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they</span></span>
-<span><span class="co">#&gt; are planar</span></span>
 <span><span class="co">#&gt; Warning in spdep::poly2nb(ma_shp): some observations have no neighbours;</span></span>
 <span><span class="co">#&gt; if this seems unexpected, try increasing the snap argument.</span></span>
 <span><span class="co">#&gt; Warning in spdep::poly2nb(ma_shp): neighbour object has 3 sub-graphs;</span></span>
