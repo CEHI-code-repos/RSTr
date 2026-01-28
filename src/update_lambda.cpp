@@ -38,7 +38,7 @@ void update_lambda(List& RSTr_obj) {
   auto lambda = Rcpp::as<cube>(sample["lambda"]);
   const auto Z = Rcpp::as<cube>(sample["Z"]);
   const auto beta = Rcpp::as<cube>(sample["beta"]);
-  auto tau2 = Rcpp::as<mat>(sample["tau2"]);
+  const auto tau2 = Rcpp::as<mat>(sample["tau2"]);
   const List& data = RSTr_obj["data"];
   const auto Y = Rcpp::as<cube>(data["Y"]);
   const auto n = Rcpp::as<cube>(data["n"]);
@@ -52,7 +52,8 @@ void update_lambda(List& RSTr_obj) {
   const uword n_region = Z.n_rows;
   const uword n_group = Z.n_cols;
   const uword n_time = Z.n_slices;
-  if (tau2.n_cols == 1) tau2 = arma::repmat(tau2, 1, n_time);
+  mat tau_2 = tau2;
+  if (tau_2.n_cols == 1) tau_2 = arma::repmat(tau_2, 1, n_time);
   for (uword time = 0; time < n_time; ++time) {
     for (uword reg = 0; reg < n_region; ++reg) {
       for (uword grp = 0; grp < n_group; ++grp) {
@@ -60,7 +61,7 @@ void update_lambda(List& RSTr_obj) {
         const double l_star = std::clamp(R::rnorm(l_0, lambda_sd(reg, grp, time)), -100.0, 15.0);
         const double b_0 = beta(isl_id[reg], grp, time);
         const double Z_0 = Z(reg, grp, time);
-        const double t_0 = tau2(grp, time);
+        const double t_0 = tau_2(grp, time);
         const double Y_0 = Y(reg, grp, time);
         const double n_0 = n(reg, grp, time);
         const double r = get_r(l_0, l_star, b_0, Z_0, t_0, Y_0, n_0, method);
