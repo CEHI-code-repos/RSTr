@@ -52,7 +52,13 @@ void update_lambda(List& RSTr_obj) {
   const uword n_region = Z.n_rows;
   const uword n_group = Z.n_cols;
   const uword n_time = Z.n_slices;
-  mat tau_2 = tau2;
+  mat tau_2;
+  if (tau_2.n_cols == 1 && n_time > 1) {
+    tau_2.set_size(n_group, n_time);
+    tau_2.each_col() = tau2;
+  } else {
+    tau_2 = tau2;
+  }
   if (tau_2.n_cols == 1) tau_2 = arma::repmat(tau_2, 1, n_time);
   for (uword time = 0; time < n_time; ++time) {
     for (uword reg = 0; reg < n_region; ++reg) {
