@@ -107,20 +107,13 @@ To extract rates from an <code>RSTr</code> object, we can simply run
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span>, rates_per <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   county group year     medians    ci_lower    ci_upper  rel_prec events</span></span>
-<span><span class="co">#&gt; 1  26001 35-44 1979 49674.50901 13974.97473 87500.47051 0.6756093      1</span></span>
-<span><span class="co">#&gt; 2  26003 35-44 1979    98.91197    98.91197    98.91197       Inf      1</span></span>
-<span><span class="co">#&gt; 3  26005 35-44 1979    25.30384    25.30384    25.30384       Inf      0</span></span>
-<span><span class="co">#&gt; 4  26007 35-44 1979    25.30384    25.30384    25.30384       Inf      0</span></span>
-<span><span class="co">#&gt; 5  26009 35-44 1979    25.30384    25.30384    25.30384       Inf      0</span></span>
-<span><span class="co">#&gt; 6  26011 35-44 1979    25.30384    25.30384    25.30384       Inf      0</span></span>
-<span><span class="co">#&gt;   population</span></span>
-<span><span class="co">#&gt; 1        964</span></span>
-<span><span class="co">#&gt; 2       1011</span></span>
-<span><span class="co">#&gt; 3       9110</span></span>
-<span><span class="co">#&gt; 4       3650</span></span>
-<span><span class="co">#&gt; 5       1763</span></span>
-<span><span class="co">#&gt; 6       1470</span></span></code></pre></div>
+<span><span class="co">#&gt;   county group year  medians ci_lower ci_upper rel_prec events population</span></span>
+<span><span class="co">#&gt; 1  26001 35-44 1979 51.49304 30.72002 68.05200 1.379328      1        964</span></span>
+<span><span class="co">#&gt; 2  26003 35-44 1979 58.59991 43.87673 77.01998 1.768080      1       1011</span></span>
+<span><span class="co">#&gt; 3  26005 35-44 1979 23.63339 18.36945 32.22858 1.705258      0       9110</span></span>
+<span><span class="co">#&gt; 4  26007 35-44 1979 36.97488 29.41410 49.58582 1.833006      0       3650</span></span>
+<span><span class="co">#&gt; 5  26009 35-44 1979 35.55064 28.42912 47.34143 1.879761      0       1763</span></span>
+<span><span class="co">#&gt; 6  26011 35-44 1979 46.25226 33.22648 57.35983 1.916528      0       1470</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="the-age_standardization-function">The <code>age_standardization()</code> function<a class="anchor" aria-label="anchor" href="#the-age_standardization-function"></a>
@@ -201,13 +194,13 @@ up, we can omit the <code>groups</code> argument and expand
 <span><span class="co">#&gt; Estimates suppressed: No</span></span>
 <span><span class="va">mst_estimates_as</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mst_estimates_as</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   county group year    medians  ci_lower   ci_upper  rel_prec events population</span></span>
-<span><span class="co">#&gt; 1  26001 35-64 1979 18318.3246 5270.4033 32143.4397 0.6816619      7       3353</span></span>
-<span><span class="co">#&gt; 2  26003 35-64 1979   349.8989  349.8989   349.8989       Inf     12       3105</span></span>
-<span><span class="co">#&gt; 3  26005 35-64 1979   125.0368  125.0368   125.0368       Inf     27      23926</span></span>
-<span><span class="co">#&gt; 4  26007 35-64 1979   163.8069  163.8069   163.8069       Inf     15      10000</span></span>
-<span><span class="co">#&gt; 5  26009 35-64 1979   203.5876  203.5876   203.5876       Inf     11       5152</span></span>
-<span><span class="co">#&gt; 6  26011 35-64 1979   172.7422  172.7422   172.7422       Inf      8       4517</span></span></code></pre></div>
+<span><span class="co">#&gt;   county group year  medians ci_lower ci_upper rel_prec events population</span></span>
+<span><span class="co">#&gt; 1  26001 35-64 1979 199.9485 150.7764 243.1451 2.164677      7       3353</span></span>
+<span><span class="co">#&gt; 2  26003 35-64 1979 250.2470 199.5386 306.6643 2.336011     12       3105</span></span>
+<span><span class="co">#&gt; 3  26005 35-64 1979 128.2994 107.0125 148.3130 3.106488     27      23926</span></span>
+<span><span class="co">#&gt; 4  26007 35-64 1979 166.3578 139.8204 203.4176 2.615804     15      10000</span></span>
+<span><span class="co">#&gt; 5  26009 35-64 1979 162.2197 139.1866 195.6046 2.875318     11       5152</span></span>
+<span><span class="co">#&gt; 6  26011 35-64 1979 201.0260 158.8854 235.5735 2.621344      8       4517</span></span></code></pre></div>
 <p>Now, <code>get_estimates(mod_mst)</code> shows the age-standardized
 estimates as opposed to our non-standardized estimates. Should you want
 to see the non-standardized estimates instead, you can set the argument

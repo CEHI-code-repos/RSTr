@@ -169,23 +169,23 @@ with small population counts:</p>
 <span><span class="co">#&gt; Number of samples: 6000 </span></span>
 <span><span class="co">#&gt; Estimates age-standardized: No </span></span>
 <span><span class="co">#&gt; Estimates suppressed: Yes </span></span>
-<span><span class="co">#&gt; Number of reliable rates: 3654 / 4980 (73.4%)</span></span>
+<span><span class="co">#&gt; Number of reliable rates: 3676 / 4980 (73.8%)</span></span>
 <span><span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   county group year     medians medians_suppressed    ci_lower    ci_upper</span></span>
-<span><span class="co">#&gt; 1  26001 35-44 1979 48743.77591                 NA 11388.32560 88124.53373</span></span>
-<span><span class="co">#&gt; 2  26003 35-44 1979    98.91197           98.91197    98.91197    98.91197</span></span>
-<span><span class="co">#&gt; 3  26005 35-44 1979    25.30384           25.30384    25.30384    25.30384</span></span>
-<span><span class="co">#&gt; 4  26007 35-44 1979    25.30384           25.30384    25.30384    25.30384</span></span>
-<span><span class="co">#&gt; 5  26009 35-44 1979    25.30384           25.30384    25.30384    25.30384</span></span>
-<span><span class="co">#&gt; 6  26011 35-44 1979    25.30384           25.30384    25.30384    25.30384</span></span>
-<span><span class="co">#&gt;    rel_prec events population</span></span>
-<span><span class="co">#&gt; 1 0.6352122      1        964</span></span>
-<span><span class="co">#&gt; 2       Inf      1       1011</span></span>
-<span><span class="co">#&gt; 3       Inf      0       9110</span></span>
-<span><span class="co">#&gt; 4       Inf      0       3650</span></span>
-<span><span class="co">#&gt; 5       Inf      0       1763</span></span>
-<span><span class="co">#&gt; 6       Inf      0       1470</span></span></code></pre></div>
+<span><span class="co">#&gt;   county group year  medians medians_suppressed ci_lower  ci_upper rel_prec</span></span>
+<span><span class="co">#&gt; 1  26001 35-44 1979 39.85662                 NA 30.84580  48.82141 2.217262</span></span>
+<span><span class="co">#&gt; 2  26003 35-44 1979 89.79059           89.79059 53.98285 123.53019 1.291072</span></span>
+<span><span class="co">#&gt; 3  26005 35-44 1979 24.80909           24.80909 18.85431  31.52768 1.957576</span></span>
+<span><span class="co">#&gt; 4  26007 35-44 1979 28.48940           28.48940 21.53838  47.26193 1.107522</span></span>
+<span><span class="co">#&gt; 5  26009 35-44 1979 32.03517           32.03517 19.93526  42.57695 1.414875</span></span>
+<span><span class="co">#&gt; 6  26011 35-44 1979 45.27433           45.27433 32.77846  72.92343 1.127771</span></span>
+<span><span class="co">#&gt;   events population</span></span>
+<span><span class="co">#&gt; 1      1        964</span></span>
+<span><span class="co">#&gt; 2      1       1011</span></span>
+<span><span class="co">#&gt; 3      0       9110</span></span>
+<span><span class="co">#&gt; 4      0       3650</span></span>
+<span><span class="co">#&gt; 5      0       1763</span></span>
+<span><span class="co">#&gt; 6      0       1470</span></span></code></pre></div>
 <p>By default, <code><a href="../reference/suppress_estimates.html">suppress_estimates()</a></code> will suppress based on
 population counts, but by specifying <code>type = "event"</code>, you
 can alternatively use an event count threshold. This is helpful when
