@@ -91,16 +91,6 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
-// update_lambda
-void update_lambda(List& RSTr_obj);
-RcppExport SEXP _RSTr_update_lambda(SEXP RSTr_objSEXP) {
-BEGIN_RCPP
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List& >::type RSTr_obj(RSTr_objSEXP);
-    update_lambda(RSTr_obj);
-    return R_NilValue;
-END_RCPP
-}
 // update_rho
 void update_rho(List& RSTr_obj);
 RcppExport SEXP _RSTr_update_rho(SEXP RSTr_objSEXP) {
@@ -171,7 +161,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RSTr_update_Z_mstcar", (DL_FUNC) &_RSTr_update_Z_mstcar, 1},
     {"_RSTr_update_beta_default", (DL_FUNC) &_RSTr_update_beta_default, 1},
     {"_RSTr_update_beta_rcar", (DL_FUNC) &_RSTr_update_beta_rcar, 1},
-    {"_RSTr_update_lambda", (DL_FUNC) &_RSTr_update_lambda, 1},
     {"_RSTr_update_rho", (DL_FUNC) &_RSTr_update_rho, 1},
     {"_RSTr_update_sig2_default", (DL_FUNC) &_RSTr_update_sig2_default, 1},
     {"_RSTr_update_sig2_rcar", (DL_FUNC) &_RSTr_update_sig2_rcar, 1},
