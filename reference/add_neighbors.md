@@ -41,7 +41,6 @@ the first may not be connected to the last, several instances of
 ``` r
 if (requireNamespace("sf", quietly = TRUE) &&
     requireNamespace("spdep", quietly = TRUE)) {
-  sf::sf_use_s2(FALSE)
 
   mamap <- sf::st_as_sf(mamap[order(mamap$GEOID), ])
   ma_adj <- spdep::poly2nb(mamap)
@@ -57,15 +56,8 @@ if (requireNamespace("sf", quietly = TRUE) &&
   ma_adj <- add_neighbors(ma_adj, c(1, 4)) # only attach 1 and 4
   ma_adj <- add_neighbors(ma_adj, c(4, 10)) # only attach 4 and 10
 }
-#> Spherical geometry (s2) switched off
-#> although coordinates are longitude/latitude, st_intersects assumes that they
-#> are planar
 #> Warning: some observations have no neighbours;
 #> if this seems unexpected, try increasing the snap argument.
 #> Warning: neighbour object has 3 sub-graphs;
 #> if this sub-graph count seems unexpected, try increasing the snap argument.
-#> although coordinates are longitude/latitude, st_intersects assumes that they
-#> are planar
-#> although coordinates are longitude/latitude, st_intersects assumes that they
-#> are planar
 ```
