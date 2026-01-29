@@ -17,8 +17,8 @@ library(RSTr)
 if (!requireNamespace("sf", quietly = TRUE)) {
   knitr::knit_exit()
 }
-is_cran <- identical(Sys.getenv("NOT_CRAN"), "false")
-if (Sys.getenv("NOT_CRAN") == "") is_cran <- TRUE
+is_cran <- !identical(Sys.getenv("NOT_CRAN"), "true")
+
 ```
 
 ## Overview
