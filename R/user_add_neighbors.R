@@ -10,7 +10,6 @@
 #' @examples
 #' if (requireNamespace("sf", quietly = TRUE) &&
 #'     requireNamespace("spdep", quietly = TRUE)) {
-#'   sf::sf_use_s2(FALSE)
 #'
 #'   mamap <- sf::st_as_sf(mamap[order(mamap$GEOID), ])
 #'   ma_adj <- spdep::poly2nb(mamap)
