@@ -1,5 +1,12 @@
 # Changelog
 
+## RSTr 1.1.3
+
+- Issues with testing examples that use package ‘sf’ fixed with
+  requireNamespace()
+- Fixed valgrind memory leaks directly associated with package cpp
+  functions
+
 ## RSTr 1.1.2
 
 - Fixed segmentation faults caused by sf::st_as_sf()
