@@ -1,3 +1,9 @@
+<!-- version 1.1.3 -->
+
+RSTr has been incremented to verison 1.1.3. Two bugs have been fixed:
+- Issues with testing examples that use package 'sf' fixed with requireNamespace()
+- After testing on valgrind with rhub, zero 'definitely lost' memory leaks found. I could not find any function calls that trace back to functions in my package, so these are likely from sources outside of the package.
+
 <!-- version 1.1.2 -->
 ## R CMD check results
 
