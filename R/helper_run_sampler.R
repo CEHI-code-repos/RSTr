@@ -36,7 +36,7 @@ run_sampler <- function(
       if (missing_Y) {
         RSTr_obj <- impute_missing_data(RSTr_obj)
       }
-      RSTr_obj <- update_sample(RSTr_obj)
+      #RSTr_obj <- update_sample(RSTr_obj)
       if (it %% 10 == 0) {
         output <- append_to_output(output, RSTr_obj)
       }
@@ -47,17 +47,17 @@ run_sampler <- function(
     RSTr_obj <- convert_index(RSTr_obj, "one")
     output <- prepare_output(output, method)
     RSTr_obj$sample$lambda <- exp_expit(RSTr_obj$sample$lambda, method)
-    RSTr_obj <- update_priors_sd(RSTr_obj)
+    #RSTr_obj <- update_priors_sd(RSTr_obj)
     RSTr_obj <- update_params(RSTr_obj, batch)
     save_model(RSTr_obj)
     save_output(output, batch, RSTr_obj$params$dir, RSTr_obj$params$name)
-    if (show_plots) {
-      if (!exists("plots")) {
-        plots <- NULL
-      }
-      plots <- update_plots(plots, output, RSTr_obj$params$batch, start_batch)
-      plot(plots, xlab = "Iterations", main = "Traceplots")
-    }
+    #if (show_plots) {
+    #  if (!exists("plots")) {
+    #    plots <- NULL
+    #  }
+    #  plots <- update_plots(plots, output, RSTr_obj$params$batch, start_batch)
+    #  plot(plots, xlab = "Iterations", main = "Traceplots")
+    #}
   }
   RSTr_obj
 }
