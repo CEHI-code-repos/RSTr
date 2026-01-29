@@ -17,8 +17,6 @@ library(RSTr)
 if (!requireNamespace("sf", quietly = TRUE)) {
   knitr::knit_exit()
 }
-old <- sf::sf_use_s2(FALSE)
-on.exit(sf::sf_use_s2(old), add = TRUE)
 is_cran <- identical(Sys.getenv("NOT_CRAN"), "false")
 if (Sys.getenv("NOT_CRAN") == "") is_cran <- TRUE
 ```
@@ -46,9 +44,15 @@ This dataset contains several variables related to Census information on Massach
 
 To begin, let's first arrange `mamap` by `GEOID` to ensure the counties are in the same order as our `maexample` data, then generate some adjacency information using the `spdep` package:
 
-```{r}
+```{r, eval = !is_cran}
 ma_shp <- sf::st_as_sf(mamap[order(mamap$GEOID), ])
 ma_adj <- spdep::poly2nb(ma_shp)
+```
+
+```{r, eval = is_cran, echo = FALSE}
+# The lines above cause segfault issues when trying to run checks on clang-san. This chunk will load in ma_adj identically to above.
+ma_adj <- readRDS(system.file("extdata", "ma_adj.Rds", package = "RSTr"))
+ma_shp <- mamap
 ```
 
 `spdep::poly2nb()` takes the information in `ma_shp$geometry` and looks for any regions with touching boundaries (i.e., queen contiguity). `ma_adj` is a list that contains the indices of each region that is a neighbor with a given region. Looking at `ma_adj` gives us some more information:
