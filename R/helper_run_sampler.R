@@ -1,7 +1,4 @@
 #' @useDynLib RSTr, .registration = TRUE
-#' @importFrom Rcpp evalCpp
-#' @importFrom RcppDist bayeslm
-#' @importFrom RcppArmadillo fastLm
 run_sampler <- function(
   RSTr_obj,
   iterations = 6000,

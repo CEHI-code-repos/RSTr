@@ -29,9 +29,6 @@ Suggests:
 Imports:
     abind,
     matrixStats,
-    Rcpp (>= 1.1.0),
-    RcppArmadillo (>= 15.2.2.1),
-    RcppDist (>= 0.1.1.1),
     spdep
 Depends:
 	R (>= 4.3.0)
