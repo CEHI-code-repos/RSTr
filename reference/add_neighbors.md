@@ -39,7 +39,8 @@ the first may not be connected to the last, several instances of
 ## Examples
 
 ``` r
-if (requireNamespace("sf", quietly = TRUE)) {
+if (requireNamespace("sf", quietly = TRUE) &&
+    requireNamespace("spdep", quietly = TRUE)) {
   sf::sf_use_s2(FALSE)
 
   mamap <- sf::st_as_sf(mamap[order(mamap$GEOID), ])
