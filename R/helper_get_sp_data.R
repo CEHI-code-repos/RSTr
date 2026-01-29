@@ -34,7 +34,7 @@ convert_index <- function(RSTr_obj, index = c("zero", "one")) {
     adjacency <- lapply(adjacency, \(x) x + 1)
     isl_region <- lapply(isl_region, \(x) x + 1)
     isl_id <- isl_id + 1
-    as_nb(adjacency)
+    adjacency <- as_nb(adjacency)
   }
   RSTr_obj$sp_data$adjacency <- adjacency
   RSTr_obj$sp_data$isl_id <- isl_id
