@@ -30,7 +30,7 @@ update_model <- function(
       message("Generating estimates...")
     }
   }
-  #RSTr_obj <- post_sampler_output(RSTr_obj)
+  RSTr_obj <- post_sampler_output(RSTr_obj)
   save_model(RSTr_obj)
   if (RSTr_obj$params$age_standardized) {
     old_class <- class(RSTr_obj)

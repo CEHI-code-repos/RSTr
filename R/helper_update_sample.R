@@ -24,11 +24,12 @@ update_sample.mcar <- function(RSTr_obj) {
 
 #' @export
 update_sample.mstcar <- function(RSTr_obj) {
-  update_lambda(RSTr_obj)
-  update_Z(RSTr_obj)
-  update_tau2(RSTr_obj)
-  update_beta(RSTr_obj)
-  update_G(RSTr_obj)
+  #update_lambda(RSTr_obj)
+  RSTr_obj$sample$lambda[1] <- rnorm(1)
+  #update_Z(RSTr_obj)
+  #update_tau2(RSTr_obj)
+  #update_beta(RSTr_obj)
+  #update_G(RSTr_obj)
   update_Ag(RSTr_obj)
   RSTr_obj
 }
