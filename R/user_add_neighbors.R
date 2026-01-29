@@ -8,7 +8,8 @@
 #' @param neighs A vector of regions to mark as adjacent. Accepts a vector of indices or names assigned to \code{adjacency}.
 #' @returns A modified \code{adjacency} \code{list}.
 #' @examples
-#' if (requireNamespace("sf", quietly = TRUE)) {
+#' if (requireNamespace("sf", quietly = TRUE) &&
+#'     requireNamespace("spdep", quietly = TRUE)) {
 #'   sf::sf_use_s2(FALSE)
 #'
 #'   mamap <- sf::st_as_sf(mamap[order(mamap$GEOID), ])
