@@ -53,7 +53,7 @@ void update_lambda(List& RSTr_obj) {
   const uword n_group = Z.n_cols;
   const uword n_time = Z.n_slices;
   mat tau_2;
-  if (tau_2.n_cols == 1 && n_time > 1) {
+  if (n_time > 1) {
     tau_2.set_size(n_group, n_time);
     tau_2.each_col() = tau2;
   } else {
