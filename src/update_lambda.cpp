@@ -59,7 +59,6 @@ void update_lambda(List& RSTr_obj) {
   } else {
     tau_2 = tau2;
   }
-  if (tau_2.n_cols == 1) tau_2 = arma::repmat(tau_2, 1, n_time);
   for (uword time = 0; time < n_time; ++time) {
     for (uword reg = 0; reg < n_region; ++reg) {
       for (uword grp = 0; grp < n_group; ++grp) {
