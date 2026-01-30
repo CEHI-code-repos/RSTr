@@ -4,7 +4,7 @@ update_sample <- function(RSTr_obj) {
 
 #' @export
 update_sample.car <- function(RSTr_obj) {
-  update_lambda(RSTr_obj)
+  RSTr_obj <- update_lambda(RSTr_obj)
   update_Z(RSTr_obj)
   update_tau2(RSTr_obj)
   update_beta(RSTr_obj)
@@ -14,7 +14,7 @@ update_sample.car <- function(RSTr_obj) {
 
 #' @export
 update_sample.mcar <- function(RSTr_obj) {
-  update_lambda(RSTr_obj)
+  RSTr_obj <- update_lambda(RSTr_obj)
   update_Z(RSTr_obj)
   update_tau2(RSTr_obj)
   update_beta(RSTr_obj)
@@ -24,7 +24,7 @@ update_sample.mcar <- function(RSTr_obj) {
 
 #' @export
 update_sample.mstcar <- function(RSTr_obj) {
-  update_lambda(RSTr_obj)
+  RSTr_obj <- update_lambda(RSTr_obj)
   update_Z(RSTr_obj)
   update_tau2(RSTr_obj)
   update_beta(RSTr_obj)
@@ -35,7 +35,7 @@ update_sample.mstcar <- function(RSTr_obj) {
 
 #' @export
 update_sample.mstcar_update_rho <- function(RSTr_obj) {
-  update_lambda(RSTr_obj)
+  RSTr_obj <- update_lambda(RSTr_obj)
   update_Z(RSTr_obj)
   update_tau2(RSTr_obj)
   update_beta(RSTr_obj)

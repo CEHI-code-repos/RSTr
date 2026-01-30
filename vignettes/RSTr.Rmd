@@ -165,7 +165,7 @@ raw_3564 <- (estimates_3564$events / estimates_3564$population * 1e5)
 ggplot(mishp) +
   geom_sf(aes(fill = raw_3564)) +
   labs(
-    title = "Raw Myocardial Infarction Death Rates in MI, Ages 65 and up, 1988",
+    title = "Raw Myocardial Infarction Death Rates in MI, Ages 35-64, 1988",
     fill = "Deaths per 100,000"
   ) +
   scale_fill_viridis_c() +
