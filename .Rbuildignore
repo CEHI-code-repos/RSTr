@@ -21,4 +21,7 @@
 ^create_RSTr.R$
 ^RSTr_scratchpad.R$
 ^CRAN-SUBMISSION$
-^.DStore$
+^.DS_Store$
+^Dockerfile$
+^RSTr_.*\.tar\.gz$
+^RST-Ex.R$

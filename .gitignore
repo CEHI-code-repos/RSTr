@@ -21,4 +21,7 @@ docs
 /Meta/
 create_RSTr.R
 RSTr_scratchpad.R
-.DStore
+.DS_Store
+Dockerfile
+RSTr_*.tar.gz
+RSTr-ex.R

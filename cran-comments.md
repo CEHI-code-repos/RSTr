@@ -1,3 +1,14 @@
+<!-- version 1.1.4 -->
+## R CMD check results
+
+0 errors | 0 warnings | 0 notes
+
+In version 1.1.4, all examples and vignettes that work with s2-related spdep/sf code are put under redundant requireNamespace() checks to avoid errors on systems that can't run spdep/sf.
+
+In previous submissions, C++ memory leak errors occured in the update_lambda() function; I have completely rewritten this function in R to avoid memory leaks and heap-use-after-free errors. 
+
+To verify that these errors have been corrected, I ran the standard devtools::check(cran = TRUE) along with checks using rhub's clang-asan, clang-ubsan, and gcc-asan on this current version with no errors. I also ran valgrind using docker and investigated all errors. All of the reported errors were either flagged as 'possibly lost' or 'still reachable', and all instances of errors related to my code were flagged as 'still reachable'.
+
 <!-- version 1.1.3 -->
 
 RSTr has been incremented to verison 1.1.3. Two bugs have been fixed:
