@@ -1,52 +1,8 @@
-<!-- version 1.1.4 -->
-## R CMD check results
-
+R CMD check --as-cran results:
 0 errors | 0 warnings | 0 notes
 
-In version 1.1.4, all examples and vignettes that work with s2-related spdep/sf code are put under redundant requireNamespace() checks to avoid errors on systems that can't run spdep/sf.
+This version addresses memory safety errors and segfaults in my previous CRAN submission. C++ code that was associated with safety errors has been entirely rewritten in R and taken out of the package.
 
-In previous submissions, C++ memory leak errors occured in the update_lambda() function; I have completely rewritten this function in R to avoid memory leaks and heap-use-after-free errors. 
+The package was checked using R CMD check . --as-cran along with different rhub sanitizer builds (clang-asan, clang-ubsan, gcc-asan). All checks completed without errors.
 
-To verify that these errors have been corrected, I ran the standard devtools::check(cran = TRUE) along with checks using rhub's clang-asan, clang-ubsan, and gcc-asan on this current version with no errors. I also ran valgrind using docker and investigated all errors. All of the reported errors were either flagged as 'possibly lost' or 'still reachable', and all instances of errors related to my code were flagged as 'still reachable'.
-
-<!-- version 1.1.3 -->
-
-RSTr has been incremented to verison 1.1.3. Two bugs have been fixed:
-- Issues with testing examples that use package 'sf' fixed with requireNamespace()
-- After testing on valgrind with rhub, zero 'definitely lost' memory leaks found. I could not find any function calls that trace back to functions in my package, so these are likely from sources outside of the package.
-
-<!-- version 1.1.2 -->
-## R CMD check results
-
-0 errors | 0 warnings | 0 notes
-
-RSTr has been incremented to verison 1.1.2. One bug and some small tweaks have been made:
-- Fixed segmentation faults caused by sf::st_as_sf()
-- Modified temporary file management in example functions
-- Missed one potential instance of memory-unsafe calling of Lists in Rcpp code
-
-<!-- version 1.1.1 -->
-## R CMD check results
-
-0 errors | 0 warnings | 0 notes
-
-RSTr has been incremented to version 1.1.1. One new feature and a few bugs have been patched to address CRAN issues:
-
-- clang-ASAN, gcc-ASAN, and valgrind exposed memory safety errors from Armadillo objects. I have done my best to rectify potential sources of error in all Rcpp parameter updates by converting calls such as `armatype& object = list["object"];` to `auto object = Rcpp::as<armatype>(list["object"]);`
-
-- a new function has been introduced: split_sample_groups()
-
-- The following functions have been tweaked for optimization, though no arguments or output has changed: standardize_samples(), aggregate_samples(), aggregate_count(), get_medians(), and get_credible_interval()
-
-- Some of the CRAN-only outputs to ensure vignettes don't run model functions had `echo = FALSE` omitted. I've added these in where necessary.
-
-- The tests also pointed out a NOTE that some file directories were particularly large. I have further shrunk the file size of the example models to as small as possible without impeding functionality
-
-<!-- version 1.0.0 -->
-## R CMD check results
-
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
-
-The previous CRAN submission on 2026/01/08 failed due to errors with vignettes and testing on Windows. I have reduced the scope of testing to help these tests run faster and have also modified the vignettes so that the MCMC models don't run when generating the vignettes for testing with CRAN.
+Examples and vignettes that depend on sf and spdep are now conditionally guarded with requireNamespace().
