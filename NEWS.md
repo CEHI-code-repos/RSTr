@@ -1,5 +1,8 @@
 # RSTr 1.1.4
 
+- Increased redundancy of requireNamespace() checks on examples and vignettes that use sf and spdep
+- Translated update_lambda() to R from C++ to fix memory safety issues
+
 # RSTr 1.1.3
 
 - Issues with testing examples that use package 'sf' fixed with requireNamespace()
