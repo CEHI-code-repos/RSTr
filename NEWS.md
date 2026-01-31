@@ -1,3 +1,5 @@
+# RSTr 1.1.4
+
 # RSTr 1.1.3
 
 - Issues with testing examples that use package 'sf' fixed with requireNamespace()
