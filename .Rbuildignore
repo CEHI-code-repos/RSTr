@@ -24,4 +24,4 @@
 ^.DS_Store$
 ^Dockerfile$
 ^RSTr_.*\.tar\.gz$
-^RST-Ex.R$
+^RSTr-Ex.R$
