@@ -7,7 +7,7 @@ be loaded. Users can also specify a burn-in period.
 ## Usage
 
 ``` r
-load_samples(RSTr_obj, param = "lambda", burn = 2000)
+load_samples(RSTr_obj, param = "lambda", burn = NULL)
 ```
 
 ## Arguments

@@ -14,6 +14,7 @@ car(
   seed = NULL,
   perc_ci = 0.95,
   iterations = 6000,
+  burn = 2000,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -33,6 +34,7 @@ rcar(
   A = NULL,
   m0 = NULL,
   iterations = 6000,
+  burn = 2000,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -50,6 +52,7 @@ mcar(
   seed = NULL,
   perc_ci = 0.95,
   iterations = 6000,
+  burn = 2000,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -67,6 +70,7 @@ mstcar(
   seed = NULL,
   perc_ci = 0.95,
   iterations = 6000,
+  burn = 2000,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -108,6 +112,10 @@ mstcar(
 - iterations:
 
   The number of iterations to run the model for.
+
+- burn:
+
+  The number of iterations to use for model burn-in.
 
 - show_plots:
 
