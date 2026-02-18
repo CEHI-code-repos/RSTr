@@ -2,6 +2,8 @@
 
 ## RSTr 1.1.4
 
+CRAN release: 2026-01-31
+
 - Increased redundancy of requireNamespace() checks on examples and
   vignettes that use sf and spdep
 - Translated update_lambda() to R from C++ to fix memory safety issues

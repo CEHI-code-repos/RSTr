@@ -297,12 +297,12 @@ population, so we set the <code>rates_per</code> argument in
 <code class="sourceCode R"><span><span class="va">mst_estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span>, rates_per <span class="op">=</span> <span class="fl">1e5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mst_estimates</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   county group year  medians ci_lower  ci_upper  rel_prec events population</span></span>
-<span><span class="co">#&gt; 1  26001 35-44 1979 41.49451 28.57933  58.50847 1.3864248      1        964</span></span>
-<span><span class="co">#&gt; 2  26003 35-44 1979 72.89229 36.16801 131.01400 0.7685332      1       1011</span></span>
-<span><span class="co">#&gt; 3  26005 35-44 1979 24.53290 16.21054  34.09613 1.3716575      0       9110</span></span>
-<span><span class="co">#&gt; 4  26007 35-44 1979 34.41058 24.53723  47.81005 1.4785740      0       3650</span></span>
-<span><span class="co">#&gt; 5  26009 35-44 1979 29.26647 20.32555  40.37018 1.4600660      0       1763</span></span>
-<span><span class="co">#&gt; 6  26011 35-44 1979 45.38196 27.48701  66.33825 1.1680958      0       1470</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  26001 35-44 1979 44.02662 30.63858  67.32566 1.2000580      1        964</span></span>
+<span><span class="co">#&gt; 2  26003 35-44 1979 76.91252 54.16346 140.01402 0.8958884      1       1011</span></span>
+<span><span class="co">#&gt; 3  26005 35-44 1979 20.95290 15.13452  27.64008 1.6754864      0       9110</span></span>
+<span><span class="co">#&gt; 4  26007 35-44 1979 34.91586 20.06479  47.20547 1.2864766      0       3650</span></span>
+<span><span class="co">#&gt; 5  26009 35-44 1979 35.72440 22.58465  53.36119 1.1607673      0       1763</span></span>
+<span><span class="co">#&gt; 6  26011 35-44 1979 50.38792 34.86763  77.69188 1.1766211      0       1470</span></span></code></pre></div>
 <p>The <code>mst_estimates</code> object contains in-depth information
 about our model estimates, including the medians, the credible
 intervals, the relative precisions, and the event/population counts;
@@ -342,12 +342,12 @@ groups.</p>
 <code class="sourceCode R"><span><span class="va">mst_estimates_as</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mst_estimates_as</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   county group year   medians  ci_lower  ci_upper rel_prec events population</span></span>
-<span><span class="co">#&gt; 1  26001 35-64 1979 105.20505  84.22959 124.22391 2.630500      7       3353</span></span>
-<span><span class="co">#&gt; 2  26003 35-64 1979 165.01902 132.53212 215.67681 1.984721     12       3105</span></span>
-<span><span class="co">#&gt; 3  26005 35-64 1979  67.55961  56.79077  81.62456 2.720470     27      23926</span></span>
-<span><span class="co">#&gt; 4  26007 35-64 1979  88.54772  73.41520 109.38727 2.461569     15      10000</span></span>
-<span><span class="co">#&gt; 5  26009 35-64 1979  86.95539  71.95734 105.06744 2.626250     11       5152</span></span>
-<span><span class="co">#&gt; 6  26011 35-64 1979 120.32508  95.77467 159.12284 1.899425      8       4517</span></span></code></pre></div>
+<span><span class="co">#&gt; 1  26001 35-64 1979 107.21691  83.59800 129.46863 2.337376      7       3353</span></span>
+<span><span class="co">#&gt; 2  26003 35-64 1979 186.94283 151.41174 248.32560 1.928959     12       3105</span></span>
+<span><span class="co">#&gt; 3  26005 35-64 1979  64.54074  54.69219  74.28448 3.294192     27      23926</span></span>
+<span><span class="co">#&gt; 4  26007 35-64 1979  84.66275  66.41816  99.32165 2.573063     15      10000</span></span>
+<span><span class="co">#&gt; 5  26009 35-64 1979  88.90282  68.02031 107.23080 2.267322     11       5152</span></span>
+<span><span class="co">#&gt; 6  26011 35-64 1979 120.13771  98.89313 153.58019 2.196822      8       4517</span></span></code></pre></div>
 <p>Now, <code>get_estimates(mod_mst)</code> shows the age-standardized
 estimates. Should you want to see those instead, you can set the
 argument <code>standardized = FALSE</code>.</p>
@@ -382,16 +382,16 @@ estimates for our age-standardized rates:</p>
 <span><span class="co">#&gt; Estimates age-standardized: Yes </span></span>
 <span><span class="co">#&gt; Age-standardized groups: 35-64 </span></span>
 <span><span class="co">#&gt; Estimates suppressed: Yes </span></span>
-<span><span class="co">#&gt; Number of reliable age-standardized rates: 819 / 830 (98.7%)</span></span>
+<span><span class="co">#&gt; Number of reliable age-standardized rates: 817 / 830 (98.4%)</span></span>
 <span><span class="va">mst_estimates_as</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mst_estimates_as</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   county group year   medians medians_suppressed  ci_lower  ci_upper rel_prec</span></span>
-<span><span class="co">#&gt; 1  26001 35-64 1979 105.20505          105.20505  84.22959 124.22391 2.630500</span></span>
-<span><span class="co">#&gt; 2  26003 35-64 1979 165.01902          165.01902 132.53212 215.67681 1.984721</span></span>
-<span><span class="co">#&gt; 3  26005 35-64 1979  67.55961           67.55961  56.79077  81.62456 2.720470</span></span>
-<span><span class="co">#&gt; 4  26007 35-64 1979  88.54772           88.54772  73.41520 109.38727 2.461569</span></span>
-<span><span class="co">#&gt; 5  26009 35-64 1979  86.95539           86.95539  71.95734 105.06744 2.626250</span></span>
-<span><span class="co">#&gt; 6  26011 35-64 1979 120.32508          120.32508  95.77467 159.12284 1.899425</span></span>
+<span><span class="co">#&gt; 1  26001 35-64 1979 107.21691          107.21691  83.59800 129.46863 2.337376</span></span>
+<span><span class="co">#&gt; 2  26003 35-64 1979 186.94283          186.94283 151.41174 248.32560 1.928959</span></span>
+<span><span class="co">#&gt; 3  26005 35-64 1979  64.54074           64.54074  54.69219  74.28448 3.294192</span></span>
+<span><span class="co">#&gt; 4  26007 35-64 1979  84.66275           84.66275  66.41816  99.32165 2.573063</span></span>
+<span><span class="co">#&gt; 5  26009 35-64 1979  88.90282           88.90282  68.02031 107.23080 2.267322</span></span>
+<span><span class="co">#&gt; 6  26011 35-64 1979 120.13771          120.13771  98.89313 153.58019 2.196822</span></span>
 <span><span class="co">#&gt;   events population</span></span>
 <span><span class="co">#&gt; 1      7       3353</span></span>
 <span><span class="co">#&gt; 2     12       3105</span></span>
