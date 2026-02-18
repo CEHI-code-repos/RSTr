@@ -6,6 +6,7 @@ get_params <- function(
   name,
   dir,
   perc_ci,
+  burn,
   restricted,
   A,
   m0,
@@ -21,6 +22,7 @@ get_params <- function(
     name = name,
     dir = dir,
     perc_ci = perc_ci,
+    burn = burn - burn %% 100,
     missing_Y = FALSE,
     age_standardized = FALSE,
     suppressed = FALSE

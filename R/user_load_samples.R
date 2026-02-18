@@ -13,7 +13,8 @@
 #' mod_mst <- mstcar("test", data_min, adj_min, tempdir(), show_plots = FALSE, verbose = FALSE)
 #' samples <- load_samples(mod_mst) * 1e5
 #' @export
-load_samples <- function(RSTr_obj, param = "lambda", burn = 2000) {
+load_samples <- function(RSTr_obj, param = "lambda", burn = NULL) {
+  burn <- burn %||% RSTr_obj$params$burn
   params <- RSTr_obj$params
   name <- RSTr_obj$params$name
   dir <- RSTr_obj$params$dir

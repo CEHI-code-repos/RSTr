@@ -4,7 +4,7 @@
 \alias{load_samples}
 \title{Load MCMC samples}
 \usage{
-load_samples(RSTr_obj, param = "lambda", burn = 2000)
+load_samples(RSTr_obj, param = "lambda", burn = NULL)
 }
 \arguments{
 \item{RSTr_obj}{\code{RSTr} model object to load in samples from.}

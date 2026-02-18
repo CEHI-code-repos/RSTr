@@ -15,6 +15,7 @@ car(
   seed = NULL,
   perc_ci = 0.95,
   iterations = 6000,
+  burn = 2000,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -34,6 +35,7 @@ rcar(
   A = NULL,
   m0 = NULL,
   iterations = 6000,
+  burn = 2000,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -51,6 +53,7 @@ mcar(
   seed = NULL,
   perc_ci = 0.95,
   iterations = 6000,
+  burn = 2000,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -68,6 +71,7 @@ mstcar(
   seed = NULL,
   perc_ci = 0.95,
   iterations = 6000,
+  burn = 2000,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -92,6 +96,8 @@ mstcar(
 \item{perc_ci}{The percentage of the desired estimate credible interval. Defaults to 95 percent (0.95).}
 
 \item{iterations}{The number of iterations to run the model for.}
+
+\item{burn}{The number of iterations to use for model burn-in.}
 
 \item{show_plots}{If set to \code{FALSE}, suppresses traceplots.}
 

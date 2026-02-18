@@ -10,6 +10,7 @@ run_sampler <- function(
   missing_Y <- RSTr_obj$params$missing_Y
   start_batch <- RSTr_obj$params$batch
   total <- RSTr_obj$params$total
+  burn <- RSTr_obj$params$burn
   method <- RSTr_obj$params$method
   batches <- seq(start_batch + 1, start_batch + iterations / 100)
   if (verbose && interactive() && missing_Y) {
@@ -52,21 +53,21 @@ run_sampler <- function(
       if (!exists("plots")) {
         plots <- NULL
       }
-      plots <- update_plots(plots, output, RSTr_obj$params$batch, start_batch)
+      plots <- update_plots(plots, output, batch, start_batch, burn)
       plot(plots, xlab = "Iterations", main = "Traceplots")
     }
   }
   RSTr_obj
 }
 
-update_plots <- function(plots, output, batch, start_batch) {
+update_plots <- function(plots, output, batch, start_batch, burn) {
   start <- ifelse(
     start_batch < 40,
-    min(batch * 100 / 2, 2000) + 10,
+    min(batch * 100 / 2, burn) + 10,
     start_batch * 100 + 10
   )
   plots <- rbind(plots, sapply(output, extract_last_margin))
-  if (start < 2000) {
+  if (start < burn) {
     plots <- plots[-(1:5), ]
   }
   stats::ts(plots, start = start, frequency = 0.1)
