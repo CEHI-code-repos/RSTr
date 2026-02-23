@@ -38,9 +38,8 @@ load_samples <- function(RSTr_obj, param = "lambda", burn = NULL) {
   dims <- params$dimnames
   its <- seq(burn + 10, max(batch) * 100, by = 10)
   if (param == "beta") {
-    n_island <- readRDS(paste0(dir, name, "/sp_data.Rds"))$n_island
     dimnames(output) <- list(
-      island = seq_len(n_island),
+      island = seq_len(dim(output)[1]),
       group = dims[[2]],
       time = dims[[3]],
       its = its
