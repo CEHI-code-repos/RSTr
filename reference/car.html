@@ -67,6 +67,8 @@
 <span>  perc_ci <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  iterations <span class="op">=</span> <span class="fl">6000</span>,</span>
 <span>  burn <span class="op">=</span> <span class="fl">2000</span>,</span>
+<span>  thin_100 <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  no_est <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_plots <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ignore_checks <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -87,6 +89,8 @@
 <span>  m0 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  iterations <span class="op">=</span> <span class="fl">6000</span>,</span>
 <span>  burn <span class="op">=</span> <span class="fl">2000</span>,</span>
+<span>  thin_100 <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  no_est <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_plots <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ignore_checks <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -105,6 +109,8 @@
 <span>  perc_ci <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  iterations <span class="op">=</span> <span class="fl">6000</span>,</span>
 <span>  burn <span class="op">=</span> <span class="fl">2000</span>,</span>
+<span>  thin_100 <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  no_est <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_plots <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ignore_checks <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -123,6 +129,8 @@
 <span>  perc_ci <span class="op">=</span> <span class="fl">0.95</span>,</span>
 <span>  iterations <span class="op">=</span> <span class="fl">6000</span>,</span>
 <span>  burn <span class="op">=</span> <span class="fl">2000</span>,</span>
+<span>  thin_100 <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  no_est <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_plots <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ignore_checks <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -168,6 +176,14 @@
 
 <dt id="arg-burn">burn<a class="anchor" aria-label="anchor" href="#arg-burn"></a></dt>
 <dd><p>The number of iterations to use for model burn-in.</p></dd>
+
+
+<dt id="arg-thin-">thin_100<a class="anchor" aria-label="anchor" href="#arg-thin-"></a></dt>
+<dd><p>If set to <code>TRUE</code>, thins out every 100 iterations as opposed to every 10 iterations (default).</p></dd>
+
+
+<dt id="arg-no-est">no_est<a class="anchor" aria-label="anchor" href="#arg-no-est"></a></dt>
+<dd><p>If set to <code>FALSE</code>, will automatically generate estimates for the model. Set this to <code>TRUE</code> if you plan on manually processing your samples.</p></dd>
 
 
 <dt id="arg-show-plots">show_plots<a class="anchor" aria-label="anchor" href="#arg-show-plots"></a></dt>

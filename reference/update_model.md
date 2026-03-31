@@ -5,7 +5,13 @@
 ## Usage
 
 ``` r
-update_model(RSTr_obj, iterations = 6000, show_plots = TRUE, verbose = TRUE)
+update_model(
+  RSTr_obj,
+  iterations = 6000,
+  show_plots = TRUE,
+  verbose = TRUE,
+  no_est = FALSE
+)
 ```
 
 ## Arguments
@@ -25,6 +31,12 @@ update_model(RSTr_obj, iterations = 6000, show_plots = TRUE, verbose = TRUE)
 - verbose:
 
   If set to `FALSE`, hides progress bar and other messages.
+
+- no_est:
+
+  If set to `FALSE`, will automatically generate estimates for the
+  model. Set this to `TRUE` if you plan on manually processing your
+  samples.
 
 ## Value
 
