@@ -4,7 +4,13 @@
 \alias{update_model}
 \title{Update model}
 \usage{
-update_model(RSTr_obj, iterations = 6000, show_plots = TRUE, verbose = TRUE)
+update_model(
+  RSTr_obj,
+  iterations = 6000,
+  show_plots = TRUE,
+  verbose = TRUE,
+  no_est = FALSE
+)
 }
 \arguments{
 \item{RSTr_obj}{The \code{RSTr} model object to generate samples for.}
@@ -14,6 +20,8 @@ update_model(RSTr_obj, iterations = 6000, show_plots = TRUE, verbose = TRUE)
 \item{show_plots}{If set to \code{FALSE}, hides traceplots.}
 
 \item{verbose}{If set to \code{FALSE}, hides progress bar and other messages.}
+
+\item{no_est}{If set to \code{FALSE}, will automatically generate estimates for the model. Set this to \code{TRUE} if you plan on manually processing your samples.}
 }
 \value{
 An \code{RSTr} model object.

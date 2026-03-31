@@ -6,6 +6,7 @@
 #' @param iterations Number of iterations to run.
 #' @param show_plots If set to \code{FALSE}, hides traceplots.
 #' @param verbose If set to \code{FALSE}, hides progress bar and other messages.
+#' @param no_est If set to \code{FALSE}, will automatically generate estimates for the model. Set this to \code{TRUE} if you plan on manually processing your samples.
 #' @returns An \code{RSTr} model object.
 #' @examples
 #' data_min <- lapply(miheart, \(x) x[1:2, 1:3, 1:3])
@@ -18,9 +19,19 @@ update_model <- function(
   RSTr_obj,
   iterations = 6000,
   show_plots = TRUE,
-  verbose = TRUE
+  verbose = TRUE,
+  no_est = FALSE
 ) {
   RSTr_obj <- run_sampler(RSTr_obj, iterations, show_plots, verbose)
+  save_model(RSTr_obj)
+  if (!no_est) {
+    RSTr_obj <- update_model_estimates(RSTr_obj, verbose)
+  }
+  RSTr_obj
+}
+
+
+update_model_estimates <- function(RSTr_obj, verbose = FALSE) {
   if (verbose && interactive()) {
     if (RSTr_obj$params$age_standardized) {
       message("Age-standardized estimates detected. Updating estimates...")
@@ -31,7 +42,6 @@ update_model <- function(
     }
   }
   RSTr_obj <- post_sampler_output(RSTr_obj)
-  save_model(RSTr_obj)
   if (RSTr_obj$params$age_standardized) {
     old_class <- class(RSTr_obj)
     RSTr_obj <- RSTr_obj[-grep(".*_as", names(RSTr_obj))]

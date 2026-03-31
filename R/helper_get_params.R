@@ -7,6 +7,8 @@ get_params <- function(
   dir,
   perc_ci,
   burn,
+  thin_100,
+  no_est,
   restricted,
   A,
   m0,
@@ -23,6 +25,8 @@ get_params <- function(
     dir = dir,
     perc_ci = perc_ci,
     burn = burn - burn %% 100,
+    thin_100 = thin_100,
+    no_est = no_est,
     missing_Y = FALSE,
     age_standardized = FALSE,
     suppressed = FALSE

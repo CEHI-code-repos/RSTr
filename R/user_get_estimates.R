@@ -17,6 +17,9 @@
 #' estimates_table_as <- get_estimates(mod_mst)
 #' @export
 get_estimates <- function(RSTr_obj, rates_per = 1e5, standardized = TRUE) {
+  if (is.null(RSTr_obj$medians)) {
+    RSTr_obj <- update_model_estimates(RSTr_obj, FALSE)
+  }
   marnames <- names(RSTr_obj$params$dimnames)
   if (is.null(marnames)) {
     marnames <- c("region", "group", "time")

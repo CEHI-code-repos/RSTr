@@ -23,6 +23,9 @@ suppress_estimates <- function(
   type = c("population", "event")
 ) {
   type <- match.arg(type)
+  if (is.null(RSTr_obj$medians)) {
+    RSTr_obj <- update_model_estimates(RSTr_obj, FALSE)
+  }
   RSTr_obj$params$suppressed <- TRUE
   RSTr_obj$params$supp_thres <- threshold
   if (threshold == 0 && !(RSTr_obj$params$model %in% c("rcar"))) {
@@ -35,6 +38,7 @@ suppress_estimates <- function(
       "Suppressing estimates with a population/event threshold not necessary for restricted models"
     )
   }
+
   medians_suppressed <- RSTr_obj$medians
   supp <- (RSTr_obj$rel_prec < 1) | (RSTr_obj$data$n < threshold)
   medians_suppressed[supp] <- NA

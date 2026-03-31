@@ -10,6 +10,8 @@
 #' @param perc_ci The percentage of the desired estimate credible interval. Defaults to 95 percent (0.95).
 #' @param iterations The number of iterations to run the model for.
 #' @param burn The number of iterations to use for model burn-in.
+#' @param thin_100 If set to \code{TRUE}, thins out every 100 iterations as opposed to every 10 iterations (default).
+#' @param no_est If set to \code{FALSE}, will automatically generate estimates for the model. Set this to \code{TRUE} if you plan on manually processing your samples.
 #' @param show_plots If set to \code{FALSE}, suppresses traceplots.
 #' @param verbose If set to \code{FALSE}, suppresses model progress messages.
 #' @param ignore_checks If set to \code{TRUE}, skips model validation.
@@ -44,6 +46,8 @@ car <- function(
   perc_ci = 0.95,
   iterations = 6000,
   burn = 2000,
+  thin_100 = FALSE,
+  no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -62,6 +66,7 @@ car <- function(
     seed = seed,
     perc_ci = perc_ci,
     burn = burn,
+    thin_100 = thin_100,
     show_plots = show_plots,
     ignore_checks = ignore_checks,
     method = method,
@@ -72,7 +77,7 @@ car <- function(
     pars = pars,
     restricted = FALSE
   )
-  RSTr_obj <- update_model(RSTr_obj, iterations, show_plots, verbose)
+  RSTr_obj <- update_model(RSTr_obj, iterations, show_plots, verbose, no_est)
   check_informativeness(RSTr_obj)
   RSTr_obj
 }
@@ -91,6 +96,8 @@ rcar <- function(
   m0 = NULL,
   iterations = 6000,
   burn = 2000,
+  thin_100 = FALSE,
+  no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -109,6 +116,7 @@ rcar <- function(
     seed = seed,
     perc_ci = perc_ci,
     burn = burn,
+    thin_100 = thin_100,
     show_plots = show_plots,
     ignore_checks = ignore_checks,
     method = method,
@@ -121,7 +129,7 @@ rcar <- function(
     A = A,
     m0 = m0
   )
-  RSTr_obj <- update_model(RSTr_obj, iterations, show_plots, verbose)
+  RSTr_obj <- update_model(RSTr_obj, iterations, show_plots, verbose, no_est)
   RSTr_obj
 }
 
@@ -137,6 +145,8 @@ mcar <- function(
   perc_ci = 0.95,
   iterations = 6000,
   burn = 2000,
+  thin_100 = FALSE,
+  no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -155,6 +165,7 @@ mcar <- function(
     seed = seed,
     perc_ci = perc_ci,
     burn = burn,
+    thin_100 = thin_100,
     show_plots = show_plots,
     ignore_checks = ignore_checks,
     method = method,
@@ -164,7 +175,7 @@ mcar <- function(
     model = "mcar",
     pars = pars
   )
-  RSTr_obj <- update_model(RSTr_obj, iterations, show_plots, verbose)
+  RSTr_obj <- update_model(RSTr_obj, iterations, show_plots, verbose, no_est)
   RSTr_obj
 }
 
@@ -180,6 +191,8 @@ mstcar <- function(
   perc_ci = 0.95,
   iterations = 6000,
   burn = 2000,
+  thin_100 = FALSE,
+  no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -202,6 +215,7 @@ mstcar <- function(
     seed = seed,
     perc_ci = perc_ci,
     burn = burn,
+    thin_100 = thin_100,
     show_plots = show_plots,
     ignore_checks = ignore_checks,
     method = method,
@@ -212,7 +226,7 @@ mstcar <- function(
     pars = pars,
     update_rho = update_rho
   )
-  RSTr_obj <- update_model(RSTr_obj, iterations, show_plots, verbose)
+  RSTr_obj <- update_model(RSTr_obj, iterations, show_plots, verbose, no_est)
   RSTr_obj
 }
 
@@ -224,6 +238,8 @@ initialize_model <- function(
   seed = NULL,
   perc_ci = 0.95,
   burn = 2000,
+  thin_100 = FALSE,
+  no_est = FALSE,
   show_plots = TRUE,
   ignore_checks = FALSE,
   method = "binomial",
@@ -247,6 +263,8 @@ initialize_model <- function(
     dir,
     perc_ci,
     burn,
+    thin_100,
+    no_est,
     restricted,
     A,
     m0,
