@@ -15,7 +15,6 @@ car(
   perc_ci = 0.95,
   iterations = 6000,
   burn = 2000,
-  thin_100 = FALSE,
   no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
@@ -37,7 +36,6 @@ rcar(
   m0 = NULL,
   iterations = 6000,
   burn = 2000,
-  thin_100 = FALSE,
   no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
@@ -57,7 +55,6 @@ mcar(
   perc_ci = 0.95,
   iterations = 6000,
   burn = 2000,
-  thin_100 = FALSE,
   no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
@@ -77,7 +74,6 @@ mstcar(
   perc_ci = 0.95,
   iterations = 6000,
   burn = 2000,
-  thin_100 = FALSE,
   no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
@@ -124,11 +120,6 @@ mstcar(
 - burn:
 
   The number of iterations to use for model burn-in.
-
-- thin_100:
-
-  If set to `TRUE`, thins out every 100 iterations as opposed to every
-  10 iterations (default).
 
 - no_est:
 
