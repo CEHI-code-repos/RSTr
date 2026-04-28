@@ -2,12 +2,13 @@
 
 ## Overview
 
-The RSTr package is a tool that provides a host of Bayesian
-spatiotemporal models in conjunction with C++ to quickly and easily
-generate spatially-smoothed age-standardized estimates for your spatial
-data. This vignette introduces you to the basics of the RSTr package and
-shows you how to apply the basic functions to the included example data
-to get small area estimates.
+RSTr is an R package that provides a host of Bayesian spatiotemporal
+models in conjunction with Rcpp to quickly and easily generate
+spatially-smoothed age-standardized estimates for your spatial data.
+This vignette introduces you to the basics of the RSTr package and shows
+you how to apply the basic functions to the included example data in a
+three-step workflow to get small area estimates: (1) data preparation,
+(2) running the model, and (3) extracting and post-processing estimates.
 
 ## Models
 
@@ -17,8 +18,10 @@ Conditional Autoregressive (CAR) model, which spatially smooths data by
 incorporating information such as event and population counts from
 neighboring geographic units (counties, census tracts, etc.). The degree
 of spatial smoothing is determined by a spatial region’s respective
-population size. The CAR model can be extended to several levels of
-complexity, depending on the input data:
+population size. These spatially smoothed estimates are generated based
+on the posterior samples generated in an MCMC algorithm. The CAR model
+can be extended to several levels of complexity, depending on the input
+data:
 
 - BYM CAR (CAR): Spatially smooths across geographies;
 
@@ -34,78 +37,77 @@ complexity, depending on the input data:
 For this vignette, we will demonstrate RSTr’s functionality with an
 MSTCAR model.
 
-### Restricted models to prevent over-smoothing
+## Example workflow with the MSTCAR model
 
-A problem with CAR models pointed out by [Quick, et
-al. (2021)](https://pubmed.ncbi.nlm.nih.gov/33980402/) is that of
-over-smoothing due to the informativeness of the BYM model. The RSTr
-package provides enhancements to the CAR models for both Poisson- and
-binomial-distributed data that prevent over-smoothing by restricting
-model informativeness through the [`rcar()`](../reference/car.md)
-function. Enhancements for the MCAR and MSTCAR models are under
-progress, and will be incorporated into the RSTr package as they are
-developed.
+The process of generating estimates with RSTr can be separated into
+three main steps: data preparation, model running, and estimate
+extraction. In the following section, we will work through each step
+one-by-one, using example data provided with RSTr. Here is a chart
+describing the three steps of the workflow:
 
-To learn more about restricted CAR models, read
-[`vignette("RSTr-informativeness")`](../articles/RSTr-informativeness.md).
+![](images/rstr-workflow.png)
 
-## Datasets
+### Data preparation
 
-RSTr comes with three main datasets: `miheart`, `miadj`, and `mishp`.
-`miheart` and `miadj` are related to the necessary components of our
-models, and `mishp` is a shapefile that helps map your results. To run
-an MSTCAR model, two components are necessary:
+Models with RSTr take, at a minimum, two pieces of data:
+event/population data, and adjacency information. Event and population
+data are packaged into a single `list` object, and the adjacency
+information is a neighbors `list` based on contiguous boundaries.
 
-- Event counts for a parameter of interest, stratified by region, group,
-  and time period, and its corresponding population counts. These data
-  may be binomial- or Poisson-distributed. The example dataset is
-  binomial-distributed myocardial infarction deaths in six age groups
-  from 1979-1988 in Michigan. Reference `miheart` to see how this data
-  looks or [`?miheart`](../reference/miheart.md) for more information on
-  the dataset. For more information on preparing your event data, read
-  [`vignette("RSTr-event")`](../articles/RSTr-event.md).
+#### Event/population data
 
-- An adjacency structure for your data. This is a `list` that tells RSTr
-  which regions are neighbors of one other based on their region index
-  (i.e., the order they appear in the dataset). Reference `miadj` for an
-  example adjacency structure list. For more information on preparing
-  your adjacency data, read
-  [`vignette("RSTr-adjacency")`](../articles/RSTr-adjacency.md).
+RSTr requires event counts for a parameter of interest, stratified by
+region, group, and time period, and its corresponding population counts.
+Event/population data must be organized in a very specific manner.
+RSTr’s models can accept up to three-dimensional arrays: in the MSTCAR
+model, for example, spatial regions must be on the rows,
+socio/demographic groups must be on the columns, and time periods must
+be on the matrix slices. In the current version of RSTr, universal data
+is required - the models are not yet designed to handle survey data.
 
-Some quick notes about data setup:
+RSTr includes `miheart`, a helper dataset included with RSTr for
+demonstration purposes. When running your own analysis, you will
+substitute this with your own event/population data structured in the
+same format. `miheart` is binomial-distributed myocardial infarction
+deaths in six age groups from 1979-1988 in Michigan. Reference `miheart`
+to see how this data looks or [`?miheart`](../reference/miheart.md) for
+more information on the dataset.
 
-- Event/population data must be organized in a very specific manner.
-  RSTr’s models can accept up to three-dimensional arrays: in the MSTCAR
-  model, for example, spatial regions must be on the rows,
-  socio/demographic groups must be on the columns, and time periods must
-  be on the matrix slices. Additionally, your event data’s regions
-  should be listed in the same order in your adjacency structure data.
+For more information on preparing your event data, read
+[`vignette("RSTr-event")`](../articles/RSTr-event.md)
 
-- Every region must have at least one neighbor. The adjacency structures
-  must be listed in the same order as your count data.
+#### Adjacency information
 
-## Functions
+The adjacency information is a `list` that tells RSTr which regions are
+neighbors of one other based on their region index (i.e., the order they
+appear in the dataset). Every region must have at least one neighbor.
+The adjacency structures must be listed in the same order as your count
+data. The easiest way to generate this adjacency information is through
+the
+[`spdep::poly2nb()`](https://r-spatial.github.io/spdep/reference/poly2nb.html)
+function.
 
-RSTr comes with a set of functions to generate small area estimates from
-your dataset. Here is a brief overview of the basic functions and their
-purpose:
+RSTr includes `miadj`, a helper dataset included with RSTr for
+demonstration purposes. When running your own analysis, you will
+substitute this with an adjacency structure derived from your own
+shapefile, for example using
+[`spdep::poly2nb()`](https://r-spatial.github.io/spdep/reference/poly2nb.html).
+For more information on preparing your adjacency data, read
+[`vignette("RSTr-adjacency")`](../articles/RSTr-adjacency.md).
 
-- `*car()`: Inputs data and model specifics and creates a local folder
-  with all associated files to prepare for sample generation;
-- [`age_standardize()`](../reference/age_standardize.md): Generates
-  age-standardized estimates based on user-specified age groups;
-- [`suppress_estimates()`](../reference/suppress_estimates.md):
-  Suppresses estimates based on reliability criteria; and
-- [`get_estimates()`](../reference/get_estimates.md): Creates a long
-  `table` containing information on each region/group/time in the model.
+### Running the model
 
-## Example Model
+RSTr’s `*car()` functions create an `RSTr` model object which contains
+all the information needed to run a model, such as the number of
+iterations, the model type, the current sample value, etc. This model
+object is periodically saved into a model folder `name`, which lives
+under the directory `dir`. As the models run, the MCMC samples are also
+saved in the model folder. A random seed can also be specified directly
+within the `*car()` functions for replicability purposes.
 
-### `mstcar()`
-
-With an understanding of the example datasets and the functions, we can
-start running our first model. The example datasets are set up to run
-out-of-the-box:
+With our data set up and a knowledge of the basic components of the
+`*car()` functions, we can run our first model. Let’s use the provided
+Michigan example data, `miheart` and `mishp`:
 
 ``` r
 mod_mst <- mstcar(
@@ -121,27 +123,25 @@ mod_mst <- mstcar(
 
 Here, we use the [`mstcar()`](../reference/car.md) function to specify
 our model. [`mstcar()`](../reference/car.md) accepts a few different
-arguments in this case:
+arguments:
 
 - The `name` argument specifies the folder where the model data lives;
 - The `data` argument specifies event/population data;
 - The `adjacency` argument specifies our adjacency structure;
 - The `dir` argument specifies the directory where to save the folder;
   and
-- The `seed` argument specifies a random seed for replicability
-  purposes.
+- The `seed` argument specifies the random seed.
 
-[`mstcar()`](../reference/car.md) creates a folder named `my_test_model`
-in R’s temporary directory containing folders that will hold batches of
-outputs for each parameter update. Additionally, an `RSTr` object which
-holds all information associated with the model (aside from samples) is
-created in the R environment and in the temporary directory. No samples
-are saved in the R environment because, given a sufficiently large
-dataset, MSTCAR models can become so large that it’s impossible to hold
-all the model samples in RAM. Therefore, all of the samples are saved
-locally. Should you want to save your model somewhere besides the
-temporary directory for future use, you can specify a folder with the
-`dir` argument.
+[`mstcar()`](../reference/car.md) sets up the sampler, runs 6,000 MCMC
+iterations in 60 batches of 100, and saves the results locally inside
+the folder specified by dir/name (e.g., tempdir()/my_test_model).
+Samples are not held in RAM because large MSTCAR models can exceed
+available memory.
+
+The `mod_mst` object created in your R environment does not contain a
+table of estimates. Instead, it stores model metadata (name, type,
+number of samples, etc.) and references to where the samples and
+summaries are saved on disk.
 
 Note that [`mstcar()`](../reference/car.md) accepts more arguments than
 are used here, but these are the only ones needed to get started. Priors
@@ -150,18 +150,6 @@ outside the scope of this vignette. There will also be checks performed
 on the input data: if something is wrong, warnings and error messages
 will tell you what is wrong and how to fix it. For a list of diagnostic
 errors and what they mean, read `vignette("RSTr-troubleshooting")`.
-
-The RSTr package works by generating samples in batches and saving them
-locally inside of the model directory to be retrieved once the model is
-finished running. Generating samples in batches helps facilitate the
-tuning of the underlying MCMC algorithm and helps avoid computational
-burden by only holding a fraction of the total samples in memory at any
-given time. RSTr runs 6,000 iterations split into 60 batches of size 100
-each. All batches are thinned for every 10 iterations by default, as the
-`lambdas` (a.k.a., the rate estimates) tend to exhibit autocorrelation.
-Moreover, thinning saves space when writing samples to the hard drive,
-as batches from larger models can balloon to gigabytes of size before
-thinning.
 
 Console outputs will show the current batch number, the progress within
 that batch, and the elapsed time. The model `Rds` file will be updated
@@ -172,12 +160,6 @@ batch and pick back up where it left off when re-run. While
 [`mstcar()`](../reference/car.md) is running, the R plot window will
 show traceplots from a selection of estimates to check stability and
 diagnose any potential issues.
-
-If you want to learn more about [`mstcar()`](../reference/car.md) and
-the other model functions, read
-[`vignette("RSTr-car")`](../articles/RSTr-car.md).
-
-### `get_estimates()`
 
 [`mstcar()`](../reference/car.md) takes care of the vast majority of
 model preparation: within the function, the model is set up, samples are
@@ -201,11 +183,31 @@ mod_mst
 Here, we get a birds-eye-view of the model, including the model we used
 (MSTCAR), the data likelihood type, the number of geographic units, and
 whether our estimates have been age-standardized or suppressed along
-reliability criteria. With the
-[`get_estimates()`](../reference/get_estimates.md) function, we can get
-a more detailed look at our estimates. For this type of mortality data,
-it is common to observe the rates per 100,000 population, so we set the
-`rates_per` argument in
+reliability criteria.
+
+Note that running [`mstcar()`](../reference/car.md) does not produce a
+ready-to-use table of estimates in memory.
+[`mstcar()`](../reference/car.md) only sets up the sampler, runs it, and
+saves raw samples and summaries to disk. Estimates must be extracted
+using the [`get_estimates()`](../reference/get_estimates.md) function
+described in the following section.
+
+If you want to learn more about [`mstcar()`](../reference/car.md) and
+the other model functions, read
+[`vignette("RSTr-car")`](../articles/RSTr-car.md).
+
+### Estimate extraction
+
+Now that we’ve run the [`mstcar()`](../reference/car.md) function, how
+do we get our estimates? The estimates are saved to disk and referenced
+by `mod_mst`, but because this object also holds all information related
+to the model, we have to extract the estimates specifially using other
+RSTr functions.
+
+With the [`get_estimates()`](../reference/get_estimates.md) function, we
+can get a more detailed look at our estimates. For this type of
+mortality data, it is common to observe the rates per 100,000
+population, so we set the `rates_per` argument in
 [`get_estimates()`](../reference/get_estimates.md) to 1e5:
 
 ``` r
@@ -225,7 +227,7 @@ estimates, including the medians, the credible intervals, the relative
 precisions, and the event/population counts; region, group, and time
 period columns are also provided.
 
-### `age_standardize()`
+### Age-standardization
 
 One of the most important features of the RSTr package is the ability to
 easily generate age-standardized estimates. Let’s say we want to get
@@ -273,7 +275,7 @@ Now, `get_estimates(mod_mst)` shows the age-standardized estimates.
 Should you want to see those instead, you can set the argument
 `standardized = FALSE`.
 
-### `suppress_estimates()`
+### Estimate suppression
 
 While the main benefit of RSTr is generating reliable estimates from
 small-population areas, we cannot guarantee that all estimates generated
