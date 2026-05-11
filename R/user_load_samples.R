@@ -32,6 +32,10 @@ load_samples <- function(RSTr_obj, param = "lambda", burn = NULL) {
     mar["tau2"] <- 2
   }
   batch <- which(seq_len(params$batch) * 100 > burn)
+  if (length(batch) == 0) {
+    burn <- 0
+    batch <- seq_len(params$batch)
+  }
   par_batch <- paste0(param, "_out_", batch, ".Rds")
   files <- file.path(dir, name, param, par_batch)
   output <- abind::abind(lapply(files, readRDS), along = mar[param])
