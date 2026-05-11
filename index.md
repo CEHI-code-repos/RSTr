@@ -15,6 +15,7 @@ RSTr is available for installation on
 [CRAN](https://cran.r-project.org/web/packages/RSTr/index.html):
 
 ``` r
+
 install.packages('RSTr')
 ```
 
@@ -22,6 +23,7 @@ Or, install the development version via
 [r-universe](https://cehi-code-repos.r-universe.dev/RSTr):
 
 ``` r
+
 install.packages('RSTr', repos = c('https://cehi-code-repos.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 

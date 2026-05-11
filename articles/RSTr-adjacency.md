@@ -22,6 +22,7 @@ section 2. Included is an example dataset that contains Massachusetts
 shapefile information, generated using the `tigris` package:
 
 ``` r
+
 head(mamap)
 ```
 
@@ -41,6 +42,7 @@ are in the same order as our `maexample` data, then generate some
 adjacency information using the `spdep` package:
 
 ``` r
+
 ma_shp <- sf::st_as_sf(mamap[order(mamap$GEOID), ])
 ma_adj <- spdep::poly2nb(ma_shp)
 #> Warning in spdep::poly2nb(ma_shp): some observations have no neighbours;
@@ -56,6 +58,7 @@ that contains the indices of each region that is a neighbor with a given
 region. Looking at `ma_adj` gives us some more information:
 
 ``` r
+
 ma_adj
 #> Neighbour list object:
 #> Number of regions: 14 
@@ -81,12 +84,14 @@ no links, but we can also use
 to give us the indices of our no-link counties:
 
 ``` r
+
 no_neigh <- spdep::card(ma_adj) == 0
 ```
 
 We can now investigate `ma_shp` for the counties with no neighbors:
 
 ``` r
+
 ma_shp[no_neigh, ]
 #> Simple feature collection with 2 features and 12 fields
 #> Geometry type: MULTIPOLYGON
@@ -109,6 +114,7 @@ According to this, our two no-link counties are Dukes and Nantucket
 data to further investigate:
 
 ``` r
+
 ggplot(mamap) +
   geom_sf(aes(fill = NAME)) +
   geom_sf_label(aes(label = NAME))
@@ -127,6 +133,7 @@ information. Let’s first get a feel for which counties are associated
 with which indices:
 
 ``` r
+
 county_key <- seq_along(ma_shp$NAME)
 names(county_key) <- ma_shp$NAME
 county_key
@@ -142,6 +149,7 @@ and Nantucket has an index of 10. We can use the
 counties as mutual neighbors:
 
 ``` r
+
 ma_adj <- add_neighbors(ma_adj, c(1, 4, 10))
 ```
 

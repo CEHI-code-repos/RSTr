@@ -21,6 +21,7 @@ afforded to us by these wrapper functions.
 To begin, let’s generate samples for a new model:
 
 ``` r
+
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234)
 ```
 
@@ -47,6 +48,7 @@ default arguments). We also multiply by 100,000 as it is common to
 display mortality rates per 100,000 individuals:
 
 ``` r
+
 samples <- load_samples(mod_mst, param = "lambda", burn = 2000) * 1e5
 ```
 
@@ -61,6 +63,7 @@ we need to check which margin contains our year information using the
 [`dim()`](https://rdrr.io/r/base/dim.html) function:
 
 ``` r
+
 dim(samples)
 #> [1]  83   6  10 400
 ```
@@ -75,6 +78,7 @@ population data needed to weight our samples can be pulled from our
 `RSTr` model object:
 
 ``` r
+
 margin_time <- 3
 pop <- mod_mst$data$n
 samples_7988 <- aggregate_samples(samples, pop, margin_time)
@@ -87,6 +91,7 @@ prevalence data? We can alternatively bind these new samples to our main
 arguments:
 
 ``` r
+
 samples <- aggregate_samples(samples, pop, margin_time, bind_new = TRUE, new_name = "1979-1988")
 ```
 
@@ -104,6 +109,7 @@ populations from
 generate a `std_pop` vector:
 
 ``` r
+
 age <- c("35-44", "45-54", "55-64")
 std_pop <- c(113154, 100640, 95799)
 ```
@@ -113,6 +119,7 @@ our age group information using the
 [`dim()`](https://rdrr.io/r/base/dim.html) function:
 
 ``` r
+
 dim(samples)
 #> [1]  83   6  11 400
 ```
@@ -123,6 +130,7 @@ using the [`standardize_samples()`](../reference/standardize_samples.md)
 function:
 
 ``` r
+
 margin_age <- 2
 groups <- c("35-44", "45-54", "55-64")
 samples_3564 <- standardize_samples(samples, std_pop, margin_age, groups)
@@ -141,6 +149,7 @@ alternatively consolidate this into our main `samples` array by adding
 in values for the `bind_new` and `new_name` arguments:
 
 ``` r
+
 samples <- standardize_samples(
   samples,
   std_pop,
@@ -163,6 +172,7 @@ aggregation done afterward.
 To get our medians, we simply put our samples into get_medians():
 
 ``` r
+
 medians <- get_medians(samples)
 ```
 
@@ -174,6 +184,7 @@ then create a `logical` `array` that tells us which estimates are
 unreliable:
 
 ``` r
+
 ci <- get_credible_interval(sample = samples, perc_ci = 0.95)
 rel_prec <- get_relative_precision(medians, ci)
 low_rel_prec <- rel_prec < 1
@@ -187,6 +198,7 @@ that since our samples are age-standardized, we also have to extend our
 [`aggregate_count()`](../reference/aggregate_count.md) function:
 
 ``` r
+
 pop <- aggregate_count(pop, margin_age, groups = 1:3, bind_new = TRUE, new_name = "35-64")
 pop <- aggregate_count(pop, margin_time, bind_new = TRUE, new_name = "1988-1988")
 low_population <- pop < 1000
@@ -197,6 +209,7 @@ medians_supp[low_rel_prec | low_population] <- NA
 Let’s now map our suppressed estimates:
 
 ``` r
+
 est_3544 <- medians_supp[, "35-44", "1988"]
 
 ggplot(mishp) +
@@ -215,6 +228,7 @@ With our samples available, we can generate estimates from different
 credible intervals without having to re-run the model:
 
 ``` r
+
 ci <- get_credible_interval(samples, 0.995)
 rel_prec50 <- get_relative_precision(medians, ci)
 low_rel_prec <- rel_prec50 < 1
@@ -243,6 +257,7 @@ against our samples. Note that we can make statistical significance
 comparisons, even if our rates are unreliable:
 
 ``` r
+
 crude_3544 <- sum(mod_mst$data$Y[, "35-44", "1988"]) / sum(mod_mst$data$n[, "35-44", "1988"]) * 1e5
 sample_3544 <- samples[, "35-44", "1988", ]
 p_higher <- apply(sample_3544, 1, \(county) mean(county > crude_3544)) * 100

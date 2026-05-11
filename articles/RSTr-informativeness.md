@@ -26,6 +26,7 @@ MCAR and MSTCAR). We can investigate spatial smoothing further by
 running a CAR model to see the evolution of `Z` over time:
 
 ``` r
+
 data_u <- lapply(miheart, \(x) x[, "55-64", "1979", drop = FALSE])
 mod_car <- car("my_test_model", data_u, miadj, tempdir(), seed = 1234)
 ```
@@ -53,6 +54,7 @@ can investigate this over all of our datapoints by comparing the event
 counts to their corresponding relative precisions:
 
 ``` r
+
 estimates <- get_estimates(mod_car)
 estimates_supp <- estimates[estimates$rel_prec > 1 & estimates$events < 10, ]
 plot(estimates$events, estimates$rel_prec, xlab = "Events", ylab = "Relative Precision")
@@ -119,6 +121,7 @@ Let’s run an RCAR model using the [`rcar()`](../reference/car.md)
 function, setting an informativeness ceiling of `A = 6`:
 
 ``` r
+
 mod_rcar <- rcar("my_test_model", data_u, miadj, tempdir(), seed = 1234, A = 6)
 ```
 
@@ -131,6 +134,7 @@ ensuring that regions don’t oversmooth. We can directly compare the two
 sets of results with another relative precision plot:
 
 ``` r
+
 estimates_rcar <- get_estimates(mod_rcar)
 plot(estimates_rcar$events, estimates_rcar$rel_prec, xlab = "Events", ylab = "Relative Precision", col = "purple")
 points(estimates$events, estimates$rel_prec)
@@ -149,6 +153,7 @@ this informativeness ceiling is smoothing an ideal amount. We can also
 map the two estimates to visually compare the models:
 
 ``` r
+
 ggplot(mishp) +
   geom_sf(aes(fill = estimates$medians)) +
   labs(
@@ -162,6 +167,7 @@ ggplot(mishp) +
 ![](RSTr-informativeness_files/figure-html/unnamed-chunk-7-1.png)
 
 ``` r
+
 ggplot(mishp) +
   geom_sf(aes(fill = estimates_rcar$medians)) +
   labs(
@@ -199,6 +205,7 @@ of interest. If we want, we can weight each group’s `A` by their total
 events:
 
 ``` r
+
 data_u <- lapply(miheart, \(x) x[, c("65-74", "75-84", "85+"), "1988", drop = FALSE])
 A <- 6 * colSums(data_u$Y) / sum(data_u$Y)
 mod_rcar <- rcar("test_rcar", data_u, miadj, tempdir(), seed = 1234, A = A)
@@ -211,6 +218,7 @@ lower respective `A`s, when we age-standardize, we will have the same
 effective smoothing power as our singular `A = 6` restricted model:
 
 ``` r
+
 std_pop <- c(68775, 34116, 9888)
 mod_rcar <- age_standardize(mod_rcar, std_pop, "65up")
 est_rcar <- get_estimates(mod_rcar)
@@ -235,6 +243,7 @@ event/relative precision plot, these thresholds are no longer necessary
 when we suppress our estimates with an RCAR model:
 
 ``` r
+
 mod_rcar <- suppress_estimates(mod_rcar)
 est_rcar <- get_estimates(mod_rcar)
 ggplot(mishp) +

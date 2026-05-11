@@ -17,12 +17,14 @@ rates from an `RSTr` object, we can simply run
 [`get_estimates()`](../reference/get_estimates.md):
 
 ``` r
+
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj)
 ```
 
 ![](RSTr-agestandardize_files/figure-html/unnamed-chunk-1-1.png)
 
 ``` r
+
 estimates <- get_estimates(mod_mst, rates_per = 1e5)
 head(estimates)
 #>   county group year  medians ci_lower  ci_upper rel_prec events population
@@ -60,6 +62,7 @@ arguments:
 Once we have our `std_pop` vector, we can age-standardize our estimates:
 
 ``` r
+
 std_pop <- c(113154, 100640, 95799)
 mod_mst <- age_standardize(mod_mst, std_pop, new_name = "35-64", groups = c("35-44", "45-54", "55-64"))
 mod_mst
@@ -82,6 +85,7 @@ add on to our list of age-standardized estimates by simply specifying a
 different group:
 
 ``` r
+
 std_pop <- c(68775, 34116, 9888)
 mod_mst <- age_standardize(mod_mst, std_pop, new_name = "65up", groups = c("65-74", "75-84", "85+"))
 mod_mst
@@ -103,6 +107,7 @@ can omit the `groups` argument and expand `std_pop` to include all of
 our populations:
 
 ``` r
+
 std_pop <- c(113154, 100640, 95799, 68775, 34116, 9888)
 mod_mst <- age_standardize(mod_mst, std_pop, new_name = "35up")
 mod_mst

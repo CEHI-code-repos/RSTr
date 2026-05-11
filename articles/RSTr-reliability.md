@@ -65,6 +65,7 @@ credible intervals and relative precisions based on the `perc_ci`
 argument:
 
 ``` r
+
 mod_mst <- mstcar(name = "my_test_model", data = miheart, adjacency = miadj, seed = 1234, perc_ci = 0.95)
 ```
 
@@ -79,6 +80,7 @@ Since we are using an MSTCAR model, we have to specify a population
 threshold to suppress counties with small population counts:
 
 ``` r
+
 mod_mst <- suppress_estimates(mod_mst, threshold = 1e3)
 mod_mst
 #> RSTr object:
@@ -121,6 +123,7 @@ relative precision (0.925). Now, we can map out our county estimates
 with suppression:
 
 ``` r
+
 library(ggplot2)
 est_3544 <- estimates$medians_suppressed[estimates$group == "35-44" & estimates$year == "1988"]
 ggplot(mishp) +
@@ -142,6 +145,7 @@ increasing values for both suppression criteria. Let’s age-standardize
 to 35-64 and see what counties are suppressed:
 
 ``` r
+
 std_pop <- c(113154, 100640, 95799)
 mod_mst <- age_standardize(mod_mst, std_pop, new_name = "35-64", groups = c("35-44", "45-54", "55-64"))
 estimates <- get_estimates(mod_mst)
@@ -152,6 +156,7 @@ and automatically performs suppression on our age-standardized
 estimates. Let’s map our age-standardized rates:
 
 ``` r
+
 est_3564 <- estimates$medians_suppressed[estimates$group == "35-64" & estimates$year == "1988"]
 ggplot(mishp) +
   geom_sf(aes(fill = est_3564)) +

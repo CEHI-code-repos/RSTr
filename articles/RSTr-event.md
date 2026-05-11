@@ -59,6 +59,7 @@ Death Compressed Mortality, ICD-9 database, found at
 <https://wonder.cdc.gov/cmf-icd9.html>:
 
 ``` r
+
 head(maexample)
 #>   Notes Year Year.Code                County County.Code    Sex Sex.Code Deaths
 #> 1       1979      1979 Barnstable County, MA       25001 Female        F     15
@@ -106,6 +107,7 @@ dataset, they will ultimately mess up our population arrays. Since
 filter our data:
 
 ``` r
+
 ma_mort <- maexample[which(!is.na(maexample$Year)), ]
 ```
 
@@ -114,6 +116,7 @@ and creates a new dataset containing only those rows. Before we start
 generating our arrays, let’s take stock of how our data is listed out:
 
 ``` r
+
 head(ma_mort)
 #>   Notes Year Year.Code                County County.Code    Sex Sex.Code Deaths
 #> 1       1979      1979 Barnstable County, MA       25001 Female        F     15
@@ -137,6 +140,7 @@ which can transform this dataset into mortality and population arrays
 with properly oriented margins:
 
 ``` r
+
 ma_data <- long_to_list_matrix(ma_mort, Deaths, Population, County.Code, Sex.Code, Year.Code)
 ```
 
@@ -145,6 +149,7 @@ arrays using the [`xtabs()`](https://rdrr.io/r/stats/xtabs.html)
 function and consolidate them into a `list` to be used with the model:
 
 ``` r
+
 Y <- xtabs(Deaths ~ County.Code + Sex.Code + Year.Code, data = ma_mort)
 n <- xtabs(Population ~ County.Code + Sex.Code + Year.Code, data = ma_mort)
 ma_data <- list(Y = Y, n = n)
@@ -168,6 +173,7 @@ filter the original dataset and follow a similar procedure to prepare
 our data for the MCAR model:
 
 ``` r
+
 ma_mort_mcar <- ma_mort[ma_mort$Year == 1979, ] # filter dataset to only show 1979 data
 ma_data_mcar <- long_to_list_matrix(ma_mort_mcar, Deaths, Population, County.Code, Sex.Code)
 ```
@@ -181,6 +187,7 @@ counts for all years in our dataset instead of just for 1979.
 For the CAR model, setup is similar:
 
 ``` r
+
 ma_mort_car <- ma_mort[ma_mort$Year == 1979 & ma_mort$Sex == "Male", ] # filter dataset to only show 1979 data for men
 ma_data_car <- long_to_list_matrix(ma_mort_car, Deaths, Population, County.Code)
 ```

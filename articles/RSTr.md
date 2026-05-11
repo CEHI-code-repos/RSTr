@@ -110,6 +110,7 @@ With our data set up and a knowledge of the basic components of the
 Michigan example data, `miheart` and `mishp`:
 
 ``` r
+
 mod_mst <- mstcar(
   name = "my_test_model",
   data = miheart,
@@ -167,6 +168,7 @@ generated, and our medians are estimated. Once the function finishes, we
 can get an overview of our model:
 
 ``` r
+
 mod_mst
 #> RSTr object:
 #> 
@@ -211,6 +213,7 @@ population, so we set the `rates_per` argument in
 [`get_estimates()`](../reference/get_estimates.md) to 1e5:
 
 ``` r
+
 mst_estimates <- get_estimates(mod_mst, rates_per = 1e5)
 head(mst_estimates)
 #>   county group year  medians ci_lower  ci_upper  rel_prec events population
@@ -240,6 +243,7 @@ from 1979-1988, we can use 1980 standard populations from
 generate a `std_pop` standard population vector:
 
 ``` r
+
 std_pop <- c(68775, 34116, 9888)
 mod_mst <- age_standardize(mod_mst, std_pop, new_name = "35-64", groups = c("35-44", "45-54", "55-64"))
 mod_mst
@@ -260,6 +264,7 @@ Notice now that the `mod_mst` object indicates we have age-standardized
 our estimates and the names of our age-standardized groups.
 
 ``` r
+
 mst_estimates_as <- get_estimates(mod_mst)
 head(mst_estimates_as)
 #>   county group year   medians  ci_lower  ci_upper rel_prec events population
@@ -291,6 +296,7 @@ typically aim for a population threshold of at least 1,000. Using the
 we can generate suppressed estimates for our age-standardized rates:
 
 ``` r
+
 mod_mst <- suppress_estimates(mod_mst, threshold = 1e3)
 mod_mst
 #> RSTr object:
@@ -339,6 +345,7 @@ a map. Using `ggplot` (or your favorite mapping package), Let’s see how
 the (non-age-standardized) estimates were smoothed:
 
 ``` r
+
 # Original Myocardial Infarction Death Rates in MI, Ages 35-64, 1988
 estimates_88 <- mst_estimates_as[mst_estimates_as$year == "1988", ]
 estimates_3564 <- estimates_88[estimates_88$group == "35-64", ]
@@ -356,6 +363,7 @@ ggplot(mishp) +
 ![](RSTr_files/figure-html/unnamed-chunk-8-1.png)
 
 ``` r
+
 # Spatially Smoothed MI Death Rates in MI
 est_3564 <- estimates_3564$medians
 ggplot(mishp) +
