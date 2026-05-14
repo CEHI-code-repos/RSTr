@@ -21,24 +21,17 @@
 split_sample_groups <- function(sample, new_groups, delimiter = "_") {
   ng <- length(new_groups)
   nm <- length(dim(sample)) + ng - 1
-  resid_mar <- (ng + 2):nm
+  new_mar <- (2 + ng - 1):2
   group_dims <- dimnames(sample)[[2]] |>
     strsplit(delimiter) |>
     simplify2array() |>
     apply(1, unique) |>
     stats::setNames(new_groups) |>
     rev()
-  new_dimnames <- c(
-    dimnames(sample)[1],
-    group_dims,
-    dimnames(sample)[resid_mar - 2]
-  )
-
-  sample_new <- array(
-    sample,
-    dim = sapply(new_dimnames, length),
-    dimnames = new_dimnames
-  ) |>
-    aperm(c(1, 2 + rev(0:(ng - 1)), resid_mar))
-  sample_new
+  new_dimnames <- append(dimnames(sample)[-2], group_dims, after = 1)
+  new_dims <- append(dim(sample)[-2], sapply(group_dims, length), after = 1)
+  new_perm <- seq_len(length(dim(sample)) + ng - 1) |>
+    setdiff(new_mar) |>
+    append(new_mar, after = 1)
+  array(sample, dim = new_dims, dimnames = new_dimnames) |> aperm(new_perm)
 }
