@@ -1,7 +1,7 @@
 # Age-standardize model objects
 
-Age-standardizes samples using a standard population for an `RSTr` model
-object.
+Generate instructions for age-standardizing samples using a standard
+population for an `RSTr` model object.
 
 ## Usage
 
@@ -30,7 +30,7 @@ age_standardize(RSTr_obj, std_pop, new_name, groups = NULL)
 
 ## Value
 
-An `RSTr` object with age-standardized estimates.
+An `RSTr` object with age-standardized parameters.
 
 ## Examples
 

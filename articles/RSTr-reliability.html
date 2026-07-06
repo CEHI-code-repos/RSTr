@@ -18,8 +18,8 @@
     }
   };
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="05: Generating Estimates: Reliability and Suppression">
 </head>
@@ -168,24 +168,23 @@ with small population counts:</p>
 <span><span class="co">#&gt; Number of geographic units: 83 </span></span>
 <span><span class="co">#&gt; Number of samples: 6000 </span></span>
 <span><span class="co">#&gt; Estimates age-standardized: No </span></span>
-<span><span class="co">#&gt; Estimates suppressed: Yes </span></span>
-<span><span class="co">#&gt; Number of reliable rates: 3589 / 4980 (72.1%)</span></span>
+<span><span class="co">#&gt; Estimates suppressed: Yes</span></span>
 <span><span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_estimates.html">get_estimates</a></span><span class="op">(</span><span class="va">mod_mst</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   county group year  medians medians_suppressed ci_lower  ci_upper  rel_prec</span></span>
-<span><span class="co">#&gt; 1  26001 35-44 1979 44.02662                 NA 30.63858  67.32566 1.2000580</span></span>
-<span><span class="co">#&gt; 2  26003 35-44 1979 76.91252                 NA 54.16346 140.01402 0.8958884</span></span>
-<span><span class="co">#&gt; 3  26005 35-44 1979 20.95290           20.95290 15.13452  27.64008 1.6754864</span></span>
-<span><span class="co">#&gt; 4  26007 35-44 1979 34.91586           34.91586 20.06479  47.20547 1.2864766</span></span>
-<span><span class="co">#&gt; 5  26009 35-44 1979 35.72440           35.72440 22.58465  53.36119 1.1607673</span></span>
-<span><span class="co">#&gt; 6  26011 35-44 1979 50.38792           50.38792 34.86763  77.69188 1.1766211</span></span>
+<span><span class="co">#&gt;   county group year  medians medians_suppressed ci_lower ci_upper rel_prec</span></span>
+<span><span class="co">#&gt; 1  26001 35-44 1979 44.02662                 NA 30.63858 67.32566 1.200058</span></span>
+<span><span class="co">#&gt; 2  26001 35-44 1980 46.67253                 NA 32.53640 69.47535 1.263505</span></span>
+<span><span class="co">#&gt; 3  26001 35-44 1981 38.06884                 NA 22.83596 57.40519 1.101235</span></span>
+<span><span class="co">#&gt; 4  26001 35-44 1982 39.29927           39.29927 23.16532 57.79578 1.134818</span></span>
+<span><span class="co">#&gt; 5  26001 35-44 1983 40.18206           40.18206 25.82975 59.35202 1.198668</span></span>
+<span><span class="co">#&gt; 6  26001 35-44 1984 31.84594           31.84594 19.06423 46.29784 1.169362</span></span>
 <span><span class="co">#&gt;   events population</span></span>
 <span><span class="co">#&gt; 1      1        964</span></span>
-<span><span class="co">#&gt; 2      1       1011</span></span>
-<span><span class="co">#&gt; 3      0       9110</span></span>
-<span><span class="co">#&gt; 4      0       3650</span></span>
-<span><span class="co">#&gt; 5      0       1763</span></span>
-<span><span class="co">#&gt; 6      0       1470</span></span></code></pre></div>
+<span><span class="co">#&gt; 2      1        995</span></span>
+<span><span class="co">#&gt; 3      0        988</span></span>
+<span><span class="co">#&gt; 4      1       1018</span></span>
+<span><span class="co">#&gt; 5      2       1039</span></span>
+<span><span class="co">#&gt; 6      0       1058</span></span></code></pre></div>
 <p>By default, <code><a href="../reference/suppress_estimates.html">suppress_estimates()</a></code> will suppress based on
 population counts, but by specifying <code>type = "event"</code>, you
 can alternatively use an event count threshold. This is helpful when

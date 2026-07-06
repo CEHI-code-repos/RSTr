@@ -1,7 +1,7 @@
 # Suppress estimates based on reliability criteria
 
-Generates suppressed estimates for an `RSTr` model object with a given
-relative precision and population/event threshold.
+Generates instructions for suppressing estimates for an `RSTr` model
+object with a given relative precision and population/event threshold.
 
 ## Usage
 

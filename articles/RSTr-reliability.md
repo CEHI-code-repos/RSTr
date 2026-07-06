@@ -92,24 +92,23 @@ mod_mst
 #> Number of geographic units: 83 
 #> Number of samples: 6000 
 #> Estimates age-standardized: No 
-#> Estimates suppressed: Yes 
-#> Number of reliable rates: 3589 / 4980 (72.1%)
+#> Estimates suppressed: Yes
 estimates <- get_estimates(mod_mst)
 head(estimates)
-#>   county group year  medians medians_suppressed ci_lower  ci_upper  rel_prec
-#> 1  26001 35-44 1979 44.02662                 NA 30.63858  67.32566 1.2000580
-#> 2  26003 35-44 1979 76.91252                 NA 54.16346 140.01402 0.8958884
-#> 3  26005 35-44 1979 20.95290           20.95290 15.13452  27.64008 1.6754864
-#> 4  26007 35-44 1979 34.91586           34.91586 20.06479  47.20547 1.2864766
-#> 5  26009 35-44 1979 35.72440           35.72440 22.58465  53.36119 1.1607673
-#> 6  26011 35-44 1979 50.38792           50.38792 34.86763  77.69188 1.1766211
+#>   county group year  medians medians_suppressed ci_lower ci_upper rel_prec
+#> 1  26001 35-44 1979 44.02662                 NA 30.63858 67.32566 1.200058
+#> 2  26001 35-44 1980 46.67253                 NA 32.53640 69.47535 1.263505
+#> 3  26001 35-44 1981 38.06884                 NA 22.83596 57.40519 1.101235
+#> 4  26001 35-44 1982 39.29927           39.29927 23.16532 57.79578 1.134818
+#> 5  26001 35-44 1983 40.18206           40.18206 25.82975 59.35202 1.198668
+#> 6  26001 35-44 1984 31.84594           31.84594 19.06423 46.29784 1.169362
 #>   events population
 #> 1      1        964
-#> 2      1       1011
-#> 3      0       9110
-#> 4      0       3650
-#> 5      0       1763
-#> 6      0       1470
+#> 2      1        995
+#> 3      0        988
+#> 4      1       1018
+#> 5      2       1039
+#> 6      0       1058
 ```
 
 By default, [`suppress_estimates()`](../reference/suppress_estimates.md)

@@ -15,7 +15,6 @@ car(
   perc_ci = 0.95,
   iterations = 6000,
   burn = 2000,
-  no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -36,7 +35,6 @@ rcar(
   m0 = NULL,
   iterations = 6000,
   burn = 2000,
-  no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -55,7 +53,6 @@ mcar(
   perc_ci = 0.95,
   iterations = 6000,
   burn = 2000,
-  no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -74,7 +71,6 @@ mstcar(
   perc_ci = 0.95,
   iterations = 6000,
   burn = 2000,
-  no_est = FALSE,
   show_plots = TRUE,
   verbose = TRUE,
   ignore_checks = FALSE,
@@ -120,12 +116,6 @@ mstcar(
 - burn:
 
   The number of iterations to use for model burn-in.
-
-- no_est:
-
-  If set to `FALSE`, will automatically generate estimates for the
-  model. Set this to `TRUE` if you plan on manually processing your
-  samples.
 
 - show_plots:
 
