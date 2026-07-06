@@ -14,20 +14,7 @@ print.RSTr <- function(x, ...) {
     "\n"
   )
   if (x$params$age_standardized) {
-    cat("Age-standardized groups:", colnames(x$medians_as), "\n")
+    cat("Age-standardized groups:", x$as_data$names, "\n")
   }
   cat("Estimates suppressed:", ifelse(x$params$suppressed, "Yes", "No"), "\n")
-  if (x$params$suppressed) {
-    if (x$params$age_standardized) {
-      n_rel_str <- "Number of reliable age-standardized rates:"
-      tot_reliable <- sum(!is.na(x$medians_suppressed_as))
-      tot_estimate <- length(x$medians_suppressed_as)
-    } else {
-      n_rel_str <- "Number of reliable rates:"
-      tot_reliable <- sum(!is.na(x$medians_suppressed))
-      tot_estimate <- length(x$medians_suppressed)
-    }
-    pct <- round(tot_reliable / tot_estimate * 100, 1)
-    cat(n_rel_str, tot_reliable, "/", tot_estimate, paste0("(", pct, "%)\n"))
-  }
 }

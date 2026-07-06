@@ -17,54 +17,77 @@
 #' estimates_table_as <- get_estimates(mod_mst)
 #' @export
 get_estimates <- function(RSTr_obj, rates_per = 1e5, standardized = TRUE) {
-  if (is.null(RSTr_obj$medians)) {
-    RSTr_obj <- update_model_estimates(RSTr_obj, FALSE)
-  }
-  marnames <- names(RSTr_obj$params$dimnames)
-  if (is.null(marnames)) {
-    marnames <- c("region", "group", "time")
-  }
-  marnames[!nzchar(marnames)] <- c("region", "group", "time")[!nzchar(marnames)]
+  samples <- load_samples(RSTr_obj) * rates_per
+  sample_data <- RSTr_obj$data
   if (RSTr_obj$params$age_standardized && standardized) {
-    est_table <- stats::setNames(
-      as.data.frame.table(RSTr_obj$medians_as * rates_per),
-      c(marnames, "medians")
-    )
-    if (RSTr_obj$params$suppressed) {
-      est_table$medians_suppressed <- c(
-        RSTr_obj$medians_suppressed_as * rates_per
-      )
-    }
-    est_table$ci_lower <- c(
-      RSTr_obj$ci_as$lower * rates_per
-    )
-    est_table$ci_upper <- c(
-      RSTr_obj$ci_as$upper * rates_per
-    )
-    est_table$rel_prec <- c(RSTr_obj$rel_prec_as)
-    est_table$events <- c(RSTr_obj$data_as$Y)
-    est_table$population <- c(RSTr_obj$data_as$n)
-  } else {
-    est_table <- stats::setNames(
-      as.data.frame.table(RSTr_obj$medians * rates_per),
-      c(marnames, "medians")
-    )
-    if (RSTr_obj$params$suppressed) {
-      est_table$medians_suppressed <- c(RSTr_obj$medians_suppressed * rates_per)
-    }
-    est_table$ci_lower <- c(
-      RSTr_obj$ci$lower * rates_per
-    )
-    est_table$ci_upper <- c(
-      RSTr_obj$ci$upper * rates_per
-    )
-    est_table$rel_prec <- c(RSTr_obj$rel_prec)
-    est_table$events <- c(RSTr_obj$data$Y)
-    est_table$population <- c(RSTr_obj$data$n)
+    samples <- get_as_samples(samples, RSTr_obj)
+    sample_data <- get_as_data(sample_data, RSTr_obj)
   }
-  na_test <- which(apply(est_table[, 1:3], 2, \(col) all(is.na(col))))
-  if (length(na_test) > 0) {
-    est_table <- est_table[, -na_test]
+  medians <- get_medians(samples)
+  ci <- get_credible_interval(samples)
+  rp <- get_relative_precision(medians, ci)
+
+  medians_table <- get_medians_table(medians, rp, sample_data, RSTr_obj)
+
+  ci_table_lower <- as.data.frame.table(ci$lower, responseName = "ci_lower")
+  ci_table_upper <- as.data.frame.table(ci$upper, responseName = "ci_upper")
+  ci_table <- merge(ci_table_lower, ci_table_upper)
+
+  rp_table <- as.data.frame.table(rp, responseName = "rel_prec")
+
+  events_table <- as.data.frame.table(sample_data$Y, responseName = "events")
+  population_table <- as.data.frame.table(
+    sample_data$n,
+    responseName = "population"
+  )
+  data_table <- merge(events_table, population_table)
+
+  medians_table |>
+    merge(ci_table) |>
+    merge(rp_table) |>
+    merge(data_table)
+}
+
+get_as_samples <- function(samples, RSTr_obj) {
+  m_age <- 2
+  for (new_name in RSTr_obj$as_data$names) {
+    stdpop <- RSTr_obj$as_data$std_pop[[new_name]]
+    grps <- RSTr_obj$as_data$groups[[new_name]] %||% seq_along(stdpop)
+    samples <- standardize_samples(
+      samples,
+      stdpop,
+      m_age,
+      grps,
+      bind_new = TRUE,
+      new_name = new_name
+    )
   }
-  est_table
+  subset_array(samples, m_age, RSTr_obj$as_data$names)
+}
+get_as_data <- function(sample_data, RSTr_obj) {
+  m_age <- 2
+  for (new_name in RSTr_obj$as_data$names) {
+    grps <- RSTr_obj$as_data$groups
+    sample_data <- lapply(
+      sample_data,
+      \(x) aggregate_count(x, m_age, grps[[new_name]], TRUE, new_name)
+    )
+  }
+  lapply(sample_data, subset_array, m_age, RSTr_obj$as_data$names)
+}
+get_medians_table <- function(medians, rp, sample_data, RSTr_obj) {
+  medians_table <- as.data.frame.table(medians, responseName = "medians")
+  if (RSTr_obj$params$suppressed) {
+    medians_suppressed <- medians
+    type <- RSTr_obj$params$supp_type %||% "population"
+    type <- ifelse(type == "event", "Y", "n")
+    supp_thres <- sample_data[[type]] < RSTr_obj$params$supp_thres
+    medians_suppressed[(rp < 1) | supp_thres] <- NA
+    supp_table <- as.data.frame.table(
+      medians_suppressed,
+      responseName = "medians_suppressed"
+    )
+    medians_table <- merge(medians_table, supp_table)
+  }
+  medians_table
 }

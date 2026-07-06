@@ -16,10 +16,10 @@ age_standardize(RSTr_obj, std_pop, new_name, groups = NULL)
 \item{groups}{A vector of either indices for each group or a vector of strings for each group name. If set to \code{NULL}, will use all groups in the dataset.}
 }
 \value{
-An \code{RSTr} object with age-standardized estimates.
+An \code{RSTr} object with age-standardized parameters.
 }
 \description{
-Age-standardizes samples using a standard population for an \code{RSTr} model object.
+Generate instructions for age-standardizing samples using a standard population for an \code{RSTr} model object.
 }
 \examples{
 std_pop <- c(113154, 100640, 95799)

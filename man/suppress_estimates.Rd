@@ -17,7 +17,7 @@ suppress_estimates(RSTr_obj, threshold = 0, type = c("population", "event"))
 An \code{RSTr} model object with suppressed estimates.
 }
 \description{
-Generates suppressed estimates for an \code{RSTr} model object with a given relative precision and population/event threshold.
+Generates instructions for suppressing estimates for an \code{RSTr} model object with a given relative precision and population/event threshold.
 }
 \details{
 While the \code{threshold} argument is optional, population/event thresholds are necessary for non-restricted models. Population/event thresholds should only be omitted for restricted CAR models, such as the RCAR.

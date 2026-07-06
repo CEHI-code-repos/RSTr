@@ -7,7 +7,6 @@ get_params <- function(
   dir,
   perc_ci,
   burn,
-  no_est,
   restricted,
   A,
   m0,
@@ -24,7 +23,6 @@ get_params <- function(
     dir = dir,
     perc_ci = perc_ci,
     burn = burn - burn %% 100,
-    no_est = no_est,
     missing_Y = FALSE,
     age_standardized = FALSE,
     suppressed = FALSE
@@ -43,6 +41,10 @@ get_params <- function(
     if (restricted) {
       A <- A %||% array(6, dim = dim(data$Y)[-1])
       A <- array(A, dim = dim(data$Y)[2:3])
+      if (any(A < 0.5)) {
+        warning("One or more values of A < 0.5. Capping small A at 0.5")
+        A <- pmax(A, 0.5)
+      }
       m0 <- m0 %||% 3
       params$A <- A
       params$m0 <- m0
