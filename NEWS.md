@@ -1,3 +1,9 @@
+# RSTr 1.2.0
+
+- Added limits to A
+- Refactored estimate generation process
+- Updated introductory vignette
+
 # RSTr 1.1.4
 
 - Increased redundancy of requireNamespace() checks on examples and vignettes that use sf and spdep

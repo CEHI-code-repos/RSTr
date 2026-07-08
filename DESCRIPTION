@@ -1,7 +1,7 @@
 Package: RSTr
 Type: Package
 Title: Gibbs Samplers for Discrete Bayesian Spatiotemporal Models
-Version: 1.1.4
+Version: 1.2.0
 Authors@R:
   c(person(given = "David", 
            family = "DeLara", 
