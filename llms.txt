@@ -28,7 +28,7 @@ install.packages('RSTr', repos = c('https://cehi-code-repos.r-universe.dev', 'ht
 ```
 
 If this is your first time using RSTr, visit the [RSTr pkgdown
-website](https://cehi-code-repos.github.io/RSTr/) or check out
+website](https://cehicapacitybuilding.org/RSTr/) or check out
 [`vignette("RSTr")`](articles/RSTr.md) to learn how to use the package.
 
 ## Thanks!
