@@ -14,7 +14,7 @@
 #' samples <- load_samples(mod_mst) * 1e5
 #' @export
 load_samples <- function(RSTr_obj, param = "lambda", burn = NULL) {
-  burn <- burn %||% RSTr_obj$params$burn
+  burn <- (burn %||% RSTr_obj$params$burn) %||% 2e3
   params <- RSTr_obj$params
   name <- RSTr_obj$params$name
   dir <- RSTr_obj$params$dir
