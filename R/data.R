@@ -4,8 +4,6 @@
 #' deaths in all 83 Michigan counties for individuals in 6 age groups across 10 years. This
 #' dataset also contains the corresponding population counts.
 #'
-#' test
-#'
 #' @format `miheart`
 #' a list with two array objects:
 #'
