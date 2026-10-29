@@ -2,6 +2,8 @@
 
 ## RSTr 1.2.0
 
+CRAN release: 2026-07-08
+
 - Added limits to A
 - Refactored estimate generation process
 - Updated introductory vignette
